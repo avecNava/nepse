@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StockPriceController;
+use App\Http\Controllers\MeroShareController;
 
 
 /*
@@ -19,4 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/latest-price',[StockPriceController::class, 'index']);
+Route::get('latest-price',[StockPriceController::class, 'index']);
+Route::get('meroshare/transaction',[MeroShareController::class, 'importTransactionForm']);
+Route::post('meroshare/transaction',[MeroShareController::class, 'importTransaction']);

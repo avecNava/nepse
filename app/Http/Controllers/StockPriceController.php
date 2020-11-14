@@ -7,7 +7,7 @@ use App\Models\StockPrice;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Log;
 
 class StockPriceController extends Controller
 {
@@ -36,14 +36,17 @@ class StockPriceController extends Controller
         $content = $body->getContents();
 
         if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
-            return 'Searched Date is not valid';
+            $msg = 'Searched Date is not valid';
+            Log::warning('Could nto pull data from nepalstock',['date'=>$date_string,'message'=>$msg]);
+            return $msg;
         }
 
         $data_array = json_decode($content, true);
         
         \App\Models\Stock::addOrUpdateStock($data_array['content']);
         \App\Models\StockPrice::updateOrCreateStockPrice($data_array['content']);
-
+        
+        Log::notice('Pulled data from nepalstock',['date'=>$date_string]);
         return $data_array['content'];
     }
 
