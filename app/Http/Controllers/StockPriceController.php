@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stock;
 use App\Models\StockPrice;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 
@@ -18,7 +18,7 @@ class StockPriceController extends Controller
      */
     public function index()
     {
-        $date_string = '2020-11-13';
+        $date_string = '2020-11-12';
 
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
@@ -41,45 +41,10 @@ class StockPriceController extends Controller
 
         $data_array = json_decode($content, true);
         
-        foreach ($data_array['content'] as $stock) {
-            
-            \DB::table('stocks')->insert([
-                'symbol' => $stock['symbol'],
-                'security_name' => $stock['securityName'],
-                'user_id' => 1,
-                'created_at' => Carbon::now()->toDateTimeString()
-                ]);
-                
-            \DB::table('stock_prices')->insert([
-                'symbol' => $stock['symbol'],
-                'security_name' => $stock['securityName'],   
-                // 'category_id' =>    
-                
-                'open_price' => $stock['openPrice'],
-                'high_price' => $stock['highPrice'],
-                'low_price' => $stock['lowPrice'],
-                'previous_day_close_price' => $stock['previousDayClosePrice'],
-                
-                'total_traded_qty' => $stock['totalTradedQuantity'],
-                'total_traded_value' => $stock['totalTradedValue'],
-                'total_trades' => $stock['totalTrades'],
-                
-                'avg_traded_price' => $stock['averageTradedPrice'],
-                'fifty_two_week_high_price' => $stock['fiftyTwoWeekHigh'],
-                'fifty_two_week_low_price' => $stock['fiftyTwoWeekLow'],
-                
-                // 'total_sell_qty' => 0,
-                // 'total_buy_qty' => 0,
-                
-                'last_updated_price' => $stock['lastUpdatedPrice'],
-                
-                'close_price' => empty($stock['previousDayClosePrice']) ? null : $stock['previousDayClosePrice'],
-                'last_updated_time' => empty($stock['lastUpdatedTime']) ? null : $stock['lastUpdatedTime'],
-                'transaction_date' => $stock['businessDate'],
-                'created_at' => Carbon::now()->toDateTimeString()
-                ]);
-            }
-        return $data_array;
+        \App\Models\Stock::addOrUpdateStock($data_array['content']);
+        \App\Models\StockPrice::updateOrCreateStockPrice($data_array['content']);
+
+        return $data_array['content'];
     }
 
     /**
