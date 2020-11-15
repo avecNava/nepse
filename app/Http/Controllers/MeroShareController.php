@@ -7,6 +7,7 @@ use App\Services\UtilityService;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Models\MeroShare;
+use App\Models\StockOffer;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 
@@ -18,8 +19,16 @@ class MeroShareController extends Controller
    }
 
    public function importTransactionForm()
-   {
-        return view('meroshare.import-transaction');
+   {   
+          $user_id=100;
+          // $offer_type = StockOffer::all();
+          $transactions = Meroshare::where('shareholder_id', $user_id)
+                                   ->orderBy('transaction_date','DESC')
+                                   ->get();
+          return view('meroshare.import-transaction', [
+                         'transactions' => $transactions,
+                         // 'stock_offers' => $offer_type->sortBy('offer_name')
+                    ]);
    }
    
    public function importTransaction(Request $request)
@@ -58,7 +67,7 @@ class MeroShareController extends Controller
                          'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
                          'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
                          'transaction_mode' => $this->getTransactionMode($remarks),
-                         'offering_type' => $this->getOfferingType($remarks),
+                         'offer_type' => $this->getOfferType($remarks),
                          'remarks' => $remarks,
                          'shareholder_id' =>$shareholder_id
                     )
@@ -82,7 +91,7 @@ class MeroShareController extends Controller
         
    }
 
-   public static function getOfferingType($str){
+   public static function getOfferType($str){
      
      $offering_txt = Str::lower($str);
 

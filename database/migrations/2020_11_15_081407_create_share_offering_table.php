@@ -13,7 +13,7 @@ class CreateShareOfferingTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_offerings', function (Blueprint $table) {
+        Schema::create('stock_offers', function (Blueprint $table) {
             $table->id();
             $table->string('offer_name');
             $table->string('offer_description')->nullable();
@@ -28,6 +28,6 @@ class CreateShareOfferingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_offerings');
+        Schema::dropIfExists('stock_offers');
     }
 }

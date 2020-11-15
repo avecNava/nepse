@@ -21,9 +21,10 @@ class MeroShare extends Model
                     'shareholder_id' => $trans['shareholder_id'],
                     'credit_quantity' => $trans['credit_quantity'],
                     'debit_quantity' => $trans['debit_quantity'],
-                    'offering_type' => $trans['offering_type'],
+                    'offer_type' => $trans['offer_type'],
                     'transaction_mode' => $trans['transaction_mode'],
-                    'remarks' => $trans['remarks'],
+                    'transaction_date' => $trans['transaction_date'],
+                    'remarks' => $trans['remarks']
                 ]);
             }
         });

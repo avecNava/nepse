@@ -18,10 +18,11 @@ class MeroshareTransactionHistory extends Migration
             $table->string('symbol');
             $table->integer('credit_quantity')->nullable();
             $table->integer('debit_quantity')->nullable();
-            $table->string('offering_type');
+            $table->string('offer_type');
             $table->string('transaction_mode');
             $table->string('remarks')->nullable();
             $table->foreignId('shareholder_id')->nullable();
+            $table->date('transaction_date')->nullable();
             $table->timestamps();
         });
 

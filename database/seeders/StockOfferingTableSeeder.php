@@ -13,7 +13,7 @@ class StockOfferingTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('stock_offerings')->truncate();
+        \DB::table('stock_offers')->truncate();
         $offers = [
             'IPO' => 'Initial Public offering',
             'FPO' => 'Fixed Premium offering',
@@ -23,7 +23,7 @@ class StockOfferingTableSeeder extends Seeder
             'Bonds' => 'Bonds',
         ];
         foreach ($offers as $key => $value) {
-            \DB::table('share_offerings')->insert([
+            \DB::table('stock_offers')->insert([
                 'offer_name' => $key,
                 'offer_description' => $value,
                 'created_at' => Carbon::now()->toDateTimeString()
