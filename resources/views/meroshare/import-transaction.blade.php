@@ -1,4 +1,6 @@
-<section id="menu-upload">
+<div class="transaction-history">
+
+<section class="upload">
 
     <section id="header-box">
         <h2>Import transaction from Meroshare account.</h2>
@@ -28,14 +30,15 @@
         </div>
         @endif -->
     </section>
+
     <section id="form">
         <form method="POST" action="/meroshare/transaction" enctype="multipart/form-data">
             @csrf()
             <div class="form-field">
-                <label for="category">Category</label>   
-                <select name="category" id="category">
-                    <option value="Food">Food</option>
-                    <option value="Drink">Drink</option>
+                <label for="shareholder_id">Shareholder</label>   
+                <select name="shareholder_id" id="category">
+                    <option value="100">Nava</option>
+                    <option value="101">Juna</option>
                 </select> 
             </div>
             <div class="form-field">
@@ -50,4 +53,23 @@
             </div>            
         </form>
     </section>
+
 </section>
+
+<section class="list">
+
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Quantity</th>
+            <th>Dr. Cr.</th>
+            <th>Offering type</th>
+            <th>Transacton date</th>
+            <th>Remarks</th>
+            <th>Shareholder</th>
+        </tr>
+    </table>
+
+</section>
+
+</div>

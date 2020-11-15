@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Services\UtilityService;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use App\Models\MeroShare;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 
@@ -46,11 +47,11 @@ class MeroShareController extends Controller
           
           // $rows is an instance of Illuminate\Support\LazyCollection
           $rows = SimpleExcelReader::create($pathToCSV)->getRows();
-          $trans = collect();
-
-          $rows->each(function(array $row) use ($trans) {
+          $transactions = collect();
+          $shareholder_id = $request->input('shareholder_id');
+          $rows->each(function(array $row) use ($transactions, $shareholder_id) {
                $remarks = $row['History Description'];
-               $trans->push( 
+               $transactions->push( 
                     array(
                          'symbol' => $row['Scrip'], 
                          'transaction_date' => $row['Transaction Date'],
@@ -58,12 +59,25 @@ class MeroShareController extends Controller
                          'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
                          'transaction_mode' => $this->getTransactionMode($remarks),
                          'offering_type' => $this->getOfferingType($remarks),
-                         'remarks' => $remarks
+                         'remarks' => $remarks,
+                         'shareholder_id' =>$shareholder_id
                     )
                );
                // array_merge($trans, $temp);
           });
-          dd($trans);
+
+          //Sample output : $transactions
+          //      [
+          //           "symbol" => "SGI"
+          //           "transaction_date" => DateTime @1604016000 {#334 …1}
+          //           "credit_quantity" => 10
+          //           "debit_quantity" => null
+          //           "transaction_mode" => "CR"
+          //           "offering_type" => "IPO"
+          //           "remarks" => "INITIAL PUBLIC OFFERING   00000183      SGILIPO7778 CREDIT"
+          //           "shareholder_id" => "100"
+          //     ]
+          MeroShare::importTransactions($transactions);
           return redirect()->back()->with('success', 'The transactions has been imported successfully.');   
         
    }
@@ -78,10 +92,10 @@ class MeroShareController extends Controller
      elseif(Str::contains($offering_txt,'ca-rights')){
           return 'RIGHTS';
      }
-     elseif(Str::containsAll($offering_txt,['initial public offering','ipo'])) {
+     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
           return 'IPO';
      }
-     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
+     elseif(Str::contains($offering_txt,['initial public offering','ipo'])) {
           return 'IPO';
      }
      elseif(Str::contains($offering_txt,'demat')){
