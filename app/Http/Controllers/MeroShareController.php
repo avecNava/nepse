@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Models\MeroShare;
 use App\Models\StockOffer;
+use App\Models\Shareholder;
+// use App\Models\Stock;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 
@@ -22,11 +24,14 @@ class MeroShareController extends Controller
    {   
           $user_id=100;
           // $offer_type = StockOffer::all();
+          $shareholders = Shareholder::where('user_id',3)->get();
           $transactions = Meroshare::where('shareholder_id', $user_id)
                                    ->orderBy('transaction_date','DESC')
                                    ->get();
+                                   
           return view('meroshare.import-transaction', [
                          'transactions' => $transactions,
+                         'shareholders' => $shareholders->sortBy('first_name'),
                          // 'stock_offers' => $offer_type->sortBy('offer_name')
                     ]);
    }

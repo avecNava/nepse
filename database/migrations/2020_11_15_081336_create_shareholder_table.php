@@ -18,6 +18,7 @@ class CreateShareholderTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('gender')->nullable();
             $table->string('email')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('relation')->nullable();

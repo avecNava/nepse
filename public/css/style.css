@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    /* font-family: 'Cutive', serif; */
+    /* font-family: 'Lora', serif; */
+    font-family: 'Scope One', serif; 
+}
+div#container {
+    margin: 0 auto;
+    width: 1024px;
+}
+img.c-logo__img {
+    height: 130px;
+    padding: 20px 0;
+}
+
+h1, h2, h3 {margin:0}
+h1 {font-family: 'Cutive', serif;}
+ul.thin {margin:0; padding: 0;}
+th {
+    background: aliceblue;
+    padding: 4px;
+    text-align: left;
+    font-size: 15px;
+}
+button {
+    padding: 10px;
+    min-width: 100px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #214b252e;
+}
+/*meroshare*/
+article {
+    padding: 20px 0;
+}
+main.c_trans_form {
+    margin: 20px 0;
+    border: 1px solid #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+}
+.c_trans_form .form-field {
+    padding: 10px 0;
+}
+.c_trans_form input[type="file"] {
+    border: 1px dotted #214b25;
+    width: 98%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 10px;
+}
+.c_trans_form  select#category {
+    min-width: 200px;
+    padding: 5px;
+    border: 1px solid #f7f7f7;
+    /* margin: 5px; */
+}
+article.c_transaction_list header {
+    margin: 10px 0;
+    display: block;
+    /* text-align: right; */
+}
+/*end of meroshare*/
