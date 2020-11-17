@@ -29,6 +29,38 @@ button {
     border-radius: 5px;
     box-shadow: 2px 2px 5px #214b252e;
 }
+/* form validation css */
+.success {
+    padding: 10px 60px;
+    background-image: url(//s.svgbox.net/social.svg?fill=805ad5#angellist);
+    /* background-image: url(//s.svgbox.net/hero-solid.svg?fill=805ad5#thumb-up); */
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-color: #c1dcca;
+    display: inline-block;
+    vertical-align: middle;
+    background-position: left center;
+    background-position-x: 10px;
+    font-weight: bold;
+}
+.error {
+    padding: 10px 60px;
+    background-image: url(//s.svgbox.net/hero-solid.svg?fill=e20f67#thumb-down);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-color: #eac9bf;
+    display: inline-block;
+    vertical-align: middle;
+    background-position: left center;
+    background-position-x: 10px;
+    font-weight: bold;
+}
+.is-invalid {
+    color: #fb0000;
+    font-weight: bold;
+    /* font-family: monospace; */
+}
+/* end of form validation css */
 /*meroshare*/
 article {
     padding: 20px 0;

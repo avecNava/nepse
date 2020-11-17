@@ -29,9 +29,9 @@ class CreatePortfoliosTable extends Migration
             // $table->float('dp_amount',8,2);
             // $table->float('name_transfer',8,2);
             // $table->foreignId('stock_category_id')->nullable();
-            $table->string('offer_type');
+            $table->string('offer_type')->nullable();
             $table->foreignId('group_id')->nullable();
-            $table->date('purchase_date');
+            $table->date('purchase_date')->nullable();
             // $table->string('purchase_number');
             // $table->integer('broker_no');
             $table->foreignId('created_by')->nullable();

@@ -73,7 +73,7 @@
                         <label for="file">Select a transaction file : (CSV or Excel files only) <br></label>
                         <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                         @error('file')
-                            <div class="">{{ $message }}</div>
+                            <div class="is-invalid">{{ $message }}</div>
                         @enderror
                     </div>
 
