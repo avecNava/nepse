@@ -22,9 +22,9 @@ class MeroShareController extends Controller
 
    public function importTransactionForm()
    {   
-          $user_id=100;
+          $user_id=5;
           // $offer_type = StockOffer::all();
-          $shareholders = Shareholder::where('user_id',3)->get();
+          $shareholders = Shareholder::all(); //where('user_id',3)->get();
           $transactions = Meroshare::where('shareholder_id', $user_id)
                                    ->orderBy('transaction_date','DESC')
                                    ->get();

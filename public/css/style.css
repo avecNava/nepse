@@ -14,14 +14,24 @@ img.c-logo__img {
 }
 
 h1, h2, h3 {margin:0}
-h1 {font-family: 'Cutive', serif;}
+h1 {font-family: 'Cutive', serif;font-size:1.5em;}
+h2 {font-size: 1.2em;}
 ul.thin {margin:0; padding: 0;}
+table {border-spacing: 0px;}
 th {
     background: aliceblue;
     padding: 4px;
     text-align: left;
     font-size: 15px;
+    height: 30px;
 }
+tr:nth-child(even) {background: #FFF}
+tr:nth-child(odd) {background: #CCC}
+/* first column a yellow background, and then every second column starting from column 3 a gray one:
+col:first-child {background: #FF0}
+col:nth-child(2n+3) {background: #CCC} 
+*/
+td {padding-left: 2px;height: 30px;}
 button {
     padding: 10px;
     min-width: 100px;
@@ -37,7 +47,7 @@ button {
     background-repeat: no-repeat;
     background-size: 30px;
     background-color: #c1dcca;
-    display: inline-block;
+    display: inline-block !important;
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
@@ -49,11 +59,26 @@ button {
     background-repeat: no-repeat;
     background-size: 30px;
     background-color: #eac9bf;
-    display: inline-block;
+    display: inline-block !important;
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
     font-weight: bold;
+}
+.loading {
+    padding: 10px 60px;
+    background-image: url(//s.svgbox.net/loaders.svg?fill=805ad5#three-dots);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-color: #d2fbab;
+    display: inline-block !important;
+    vertical-align: middle;
+    background-position: left center;
+    background-position-x: 10px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 .is-invalid {
     color: #fb0000;
@@ -70,6 +95,7 @@ main.c_trans_form {
     border: 1px solid #f7f7f7;
     border-radius: 10px;
     padding: 20px;
+    background: #fafafa;
 }
 .c_trans_form .form-field {
     padding: 10px 0;
@@ -79,7 +105,7 @@ main.c_trans_form {
     width: 98%;
     padding: 20px;
     box-sizing: border-box;
-    margin: 0 10px;
+    margin: 5px 0;
 }
 .c_trans_form  select#category {
     min-width: 200px;

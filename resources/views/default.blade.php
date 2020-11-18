@@ -39,11 +39,14 @@
         <footer>
 
             <div class="wlnz-footer">
-                {{ config('app.name', "NEPSE.TODAY") }}&nbsp;  © {{ date("Y") }} All rights reserved.
+                 © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
 
         </footer>
 
     </div>
+    <script>
+        @yield('js')
+    </script>
 </body>
 </html>

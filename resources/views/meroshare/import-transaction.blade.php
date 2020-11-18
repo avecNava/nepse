@@ -1,11 +1,16 @@
 @extends('default')
 
 @section('title')
-    NEPSE.today - Your stock portfolio management application over the browser
+    Your stock portfolio management application over the browser
+@endsection
+
+@section('js')
+    
 @endsection
 
 @section('content')
 
+    <div id="loading-message" style="display:none">Importing... Please wait...</div>
     <section class="transaction-history">
 
         <h1 class="c_title">Import transaction</h1>
@@ -56,6 +61,10 @@
                 
                 <form method="POST" action="/meroshare/transaction" enctype="multipart/form-data">
                     
+                    <div class="form-field">
+                        <button type="submit">Import</button>
+                    </div>
+                    
                     @csrf()
 
                     <div class="form-field">
@@ -70,15 +79,11 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="file">Select a transaction file : (CSV or Excel files only) <br></label>
+                        <label for="file">Select or drag and drop a transaction file (<mark>CSV or Excel files only</mark>) <br></label>
                         <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                         @error('file')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
-                    </div>
-
-                    <div class="form-field">
-                        <button type="submit">Import</button>
                     </div>
 
                 </form>
@@ -88,22 +93,24 @@
         
         </article>
 
+        @if( $transactions->isNotEmpty() )
         <article class="c_transaction_list">
         
             <header>
                 <button id="import_all" onClick="importToMyPortfolio()">Import to <strong>My Portfolio</strong></button>
+                <div id="import-message" style="display:none">
+                    The selected transactions have been successfully imported to your <a href="{{url('portfolio')}}"> Portfolio</a>.
+                </div>
             </header>
 
             <main>
-
             <table>
                 <tr>
                     <th>
                         <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
                         <label for="select_all" hidden>Select all</label>
                     </th>
-                    <!-- <th>Transaction ID</th> -->
-                    <th>Symbol</th>
+                    <th><label for="select_all">Symbol</label></th>
                     <th>Cr qty</th>
                     <th>Dr qty</th>
                     <th>Dr/Cr</th>
@@ -116,7 +123,6 @@
                 @foreach ($transactions as $trans)
                     <tr>
                         <td><input type="checkbox" name="t_id" id="{{ $trans->id }}"></td>
-                        <!-- <td>{{ $trans->id }}</td> -->
                         <td><label for="{{ $trans->id }}">{{ $trans->symbol }}</label></td>
                         <td>{{ $trans->credit_quantity }}</td>
                         <td>{{ $trans->debit_quantity }}</td>
@@ -128,17 +134,35 @@
                     </tr>
                 @endforeach            
             </table>
-
-            </main>
-
-            <footer></footer>
-
-        </article>
-
+        </main>
+        
+        <footer></footer>
+        
+    </article>
+    @endif
+    
     </section>
     
     <script>
-
+        function showLoadingMessage() {
+            let ele_loading = document.getElementById('loading-message');
+            ele_loading.classList.add('loading');
+        }
+        function hideLoadingMessage() {
+            let ele_loading = document.getElementById('loading-message');
+            ele_loading.classList.remove('loading');
+        }
+        function showImportMessage($t=5000) {
+            let ele_loading = document.getElementById('import-message');
+            ele_loading.classList.add('success');
+            setTimeout(function(){ 
+                ele_loading.classList.remove('success');
+             }, $t);
+        }
+        function hideImportMessage() {
+            let ele_loading = document.getElementById('import-message');
+            ele_loading.classList.remove('success');
+        }
         function checkAll() {
             var select_all = document.getElementById('select_all');
             var flag = select_all.checked;            
@@ -149,26 +173,32 @@
         }
 
         function importToMyPortfolio() {
-            var selected = [];
-            var elements = document.getElementsByName("t_id");
-            Array.prototype.forEach.call(elements, function(el, i){
+            let selected = [];
+            let elements = document.getElementsByName("t_id");
+            let ele_import = document.getElementById('import-message');
+            
+            showLoadingMessage();
+
+            Array.prototype.forEach.call(elements, functionel, i){
                 if(el.checked){
                     selected.push(el.id);
                 }
             });
-            // console.log(selected.toString());
 
             //call ajax 
-            var e = document.getElementById('shareholder_id');
-            var _token = document.getElementsByName('_token')[0].value;
-            var shareholder_id =e.options[e.selectedIndex].value;
+            let e = document.getElementById('shareholder_id');
+            let _token = document.getElementsByName('_token')[0].value;
+            let shareholder_id =e.options[e.selectedIndex].value;
 
-            var request = new XMLHttpRequest();
+            let request = new XMLHttpRequest();
             request.open('POST', '/meroshare/import-transaction', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            request.onload = function() {
+            request.onload = function(ele_success, ele_loading) {
                 if (this.status >= 200 && this.status < 400) {
-                    console.log(this.response);
+                    $msg = JSON.parse(this.response);
+                    console.log($msg);
+                    hideLoadingMessage();
+                    showImportMessage(5000*2);
                 }
             }
             request.send(`_token=${_token}&trans_id=${selected.toString()}&shareholder_id=${shareholder_id}`);

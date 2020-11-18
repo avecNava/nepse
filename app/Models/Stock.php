@@ -10,6 +10,10 @@ class Stock extends Model
     use HasFactory;
     protected $fillable = ['symbol','security_name'];
 
+    // public function belongsTo()
+    // {
+    //     return $this->hasMany('App\Models\Portfolio','symbol','symbol');
+    // }
 
     public static function addOrUpdateStock(Array $stocks)
     {

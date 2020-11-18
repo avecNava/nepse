@@ -17,12 +17,12 @@ use App\Http\Controllers\PortfolioController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PortfolioController::class, 'index']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction', [MeroShareController::class, 'importTransactionForm']);
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
 Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
 Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
+Route::get('portfolio', [PortfolioController::class, 'index'])->name('home');
+Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);

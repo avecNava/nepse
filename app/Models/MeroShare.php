@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,11 @@ class MeroShare extends Model
 
     protected $guarded = [];
     protected $table = "meroshare_transactions";
+
+    public function share()
+    {
+        return $this->belongsTo('App\Models\Stock','symbol','symbol');
+    }
 
     public static function importTransactions($transactions)
     {
