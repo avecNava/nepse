@@ -34,7 +34,7 @@
                 <div class="message">
                     @if (\Session::has('success'))
                     <div class="success">
-                        {!! \Session::get('success') !!}
+                        {!! \Session::get('success') !!}. <a href="{{ url('meroshare/transaction') }}">Refresh</a> the page to see them.
                     </div>
                     @endif
 
@@ -68,14 +68,18 @@
                     @csrf()
 
                     <div class="form-field">
-                        <label for="shareholder_id">Shareholder</label>   
-                        <select name="shareholder_id" id="shareholder_id">
+                        <label for="shareholder">Shareholder name</label>   
+                        <select name="shareholder" id="shareholder">
+                            <option value="">Shareholder name</option>
                             @if (!empty($shareholders))
                                 @foreach($shareholders as $member)
                                     <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} ({{$member->relation}})</option>
                                 @endforeach
                             @endif
                         </select> 
+                        @error('shareholder')
+                            <div class="is-invalid">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-field">
@@ -111,9 +115,10 @@
                         <label for="select_all" hidden>Select all</label>
                     </th>
                     <th><label for="select_all">Symbol</label></th>
-                    <th>Cr qty</th>
-                    <th>Dr qty</th>
-                    <th>Dr/Cr</th>
+                    <th title="Stock ID">ID</th>
+                    <th>Cr.</th>
+                    <th>Dr.</th>
+                    <th>Desc</th>
                     <th>Offer</th>
                     <th>Trans. date</th>
                     <th>Shareholder</th>
@@ -121,22 +126,57 @@
                 </tr>
                 
                 @foreach ($transactions as $trans)
+                
+                @php 
+                    $security_name = $trans->symbol;
+                    $stock_id = '';
+
+                    if( !empty($trans->share)){
+                        $security_name = $trans->share->security_name;
+                        $stock_id = $trans->share->id;
+                    }
+                   
+                @endphp
+
                     <tr>
-                        <td><input type="checkbox" name="t_id" id="{{ $trans->id }}"></td>
-                        <td><label for="{{ $trans->id }}">{{ $trans->symbol }}</label></td>
+                        <td>
+                            @if ( !empty($stock_id) )
+                                <input type="checkbox" name="t_id" id="{{ $trans->id }}">
+                            @endif
+                        </td>
+                        
+                        <td>
+                            <label for="{{ $trans->id }}" title="{{ $security_name }}">
+                                {{ $trans->symbol }}
+                            </label>
+                        </td>
+
+                        <td>{{ $stock_id }}</td>
                         <td>{{ $trans->credit_quantity }}</td>
                         <td>{{ $trans->debit_quantity }}</td>
                         <td>{{ $trans->transaction_mode }}</td>
                         <td>{{ $trans->offer_type }}</td>
                         <td>{{ $trans->transaction_date }}</td>
-                        <td>{{ $trans->shareholder_id }}</td>
+                        <td>
+                            @if( !empty($trans->shareholder) )
+                                {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
+                            @endif
+                        </td>
                         <td>{{ $trans->remarks }}</td>
                     </tr>
                 @endforeach            
             </table>
         </main>
         
-        <footer></footer>
+        <footer>
+            <p class="note">
+                <strong>Note : </strong>If you do not see a checkbox to select some of the transactions, chances are that they might be new and have not been updated into our system yet.
+            </p>
+            <p>
+                If you wish to notify us of this incident, you can do it via the 
+                <a href="{{url('contact-us')}}">Contact us</a> page.
+            </p>
+        </footer>
         
     </article>
     @endif
@@ -179,7 +219,7 @@
             
             showLoadingMessage();
 
-            Array.prototype.forEach.call(elements, functionel, i){
+            Array.prototype.forEach.call(elements, function(el, i){
                 if(el.checked){
                     selected.push(el.id);
                 }

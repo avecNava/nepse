@@ -14,6 +14,7 @@ class PortfolioController extends Controller
     {
         $user_id = 5;
         $symbol="API";
+        
         $portfolios = Portfolio::find($symbol)->shares()->get();
         // $portfolios = Portfolio::find($user_id)->shareholder()->select('first_name','last_name')->get();
         $portfolios->dd();
@@ -25,9 +26,16 @@ class PortfolioController extends Controller
         return response()->json(['script'=>$symbol]);
     }
     
+    /**
+     * reads data from MeroShare table (meroshare_transactions) along with related data from Shares table
+     * and forms array object
+     * http://dev.nepse/meroshare/import-transaction
+     * NOTE: this function is for testing purpose only and not used in PRODUCTION
+     * The same logic is applied in storeToPortfolio() function and used in PRODUCTION
+     */
     public function portfolio()
     {   
-        $user_id = 5;
+        $user_id = 2;
         $total_dr = 0;
         $total_cr = 0;
         $collection = collect([]);
@@ -36,24 +44,25 @@ class PortfolioController extends Controller
         //     ->get(['meroshare_transactions.*','stocks.id']);
 
         //https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
-        // $users = App\Models\User::with(['posts' => function ($query) {
+        // $transactions = MeroShare::with(['share' => function ($query) {
         //     $query->where('title', 'like', '%first%');
         // }])->get();
         
-        $transactions = MeroShare::where('shareholder_id', $user_id)->with('share:id,symbol,security_name')->get();
-        
-        // var_dump($transactions->toArray()); dd();
+        // $transactions = MeroShare::where('shareholder_id', $user_id)->with('share:id,symbol,security_name')->get();
+        $transactions = MeroShare::all(function($query){
+            $query-->where('shareholder_id', $user_id);  
+        })->with('share:id,symbol,security_name')
+            ->get();
         
         $temp = $transactions->groupBy('symbol');
         $temp->map(function($item) use($collection, $total_cr, $total_dr){
             
             foreach ($item as $value) {
                 
-                // dd($value);
-                // dd($value->share->security_name);
                 $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
                 $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
                 
+                //combine data from main and related table and bind add to collection
                 $portfolio = array(
                     'id' => $value->id,
                     'symbol' => $value->symbol,
@@ -70,8 +79,10 @@ class PortfolioController extends Controller
             };
         });
 
-        $collection->dd();
-
+        // $collection->dd();
+        
+        //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
+        //one shareholder = one unique stock
         foreach ($collection as $row) {
             Portfolio::updateOrCreate(
                 [
@@ -87,41 +98,62 @@ class PortfolioController extends Controller
         }
     }
 
+    /**
+     * This function is called via AJAX POST method 
+     * when "Import to Poftfolio" is clicked on http://dev.nepse/meroshare/transaction route
+     * Input parameters (Request object with trans_ids and shareholder_id)
+     * The trans_ids and related data are stored into the Portfolio table for the given shareholder_id
+     * 
+     */
     public function storeToPortfolio(Request $request)
     {
         $total_dr = 0;
         $total_cr = 0;
+        $user_id = $request->shareholder_id;    //todo : get from session
+        $shareholder_id = $request->shareholder_id;
         $collection = collect([]);
 
         if( !empty($request->trans_id) ){
 
-           $ids = Str::of($request->trans_id)->explode(',');
-           $transactions = MeroShare::where(function($query) use($ids){
-                               $query->whereIn('id', $ids);
-                            })->get();
-
+           //convert trans_ids to array and query table for records
+            $ids = Str::of($request->trans_id)->explode(',');
+            // Get data from meroshare_transactions along with related data from Shares table 
+            //consturct an array object
+            $transactions = MeroShare::where('shareholder_id', $shareholder_id)
+                                        ->with('share:id,symbol,security_name')
+                                        ->get();
+                
             $temp = $transactions->groupBy('symbol');
             $temp->map(function($item) use($collection, $total_cr, $total_dr){
-
-                foreach ($item as $key => $value) {
+            
+                foreach ($item as $value) {
+                    
                     $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
                     $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
-                };
-
-                $collection->push(
-                    array(
+                    
+                    //combine data from main and related table and bind add to collection
+                    $portfolio = array(
+                        'id' => $value->id,
                         'symbol' => $value->symbol,
                         'stock_id' => $value->id,
                         'quantity' => $total_cr - $total_dr,
+                        'user_id' => $value->shareholder_id,
                         'shareholder_id' => $value->shareholder_id,
-                    )
-                );
-            });
+                        'security_name' => empty($value->share) ? null :  $value->share->security_name,
+                        'stock_id' =>  empty($value->share) ? null : $value->share->id,
+                    );
+    
+                    $collection->push( $portfolio );
+                    
+                };
+            }); //map
 
+            //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
+            //one shareholder = one unique stock
             foreach ($collection as $row) {
                 Portfolio::updateOrCreate(
                     [
-                        'stock_id' => $row['stock_id'],
+                        'stock_id' => $row['stock_id'], 
                         'shareholder_id' => $row['shareholder_id']
                     ],
                     [
@@ -130,16 +162,18 @@ class PortfolioController extends Controller
                         'user_id' => $row['shareholder_id'],
                     ]
                 );
-            }      
+            }
+
             return response()->json([
                 'message' => 'success',
                 'transaction_id' => $collection,
-           ]);
+            ]);
  
-          }
-          return response()->json([
-               'message' => 'No data received.<br/>Please select the transactions that you would like to import.'
-          ]);
+        } //end if
+
+        return response()->json([
+            'message' => 'No data received.<br/>Please select the transactions that you would like to import.'
+        ]);
 
     }   
 }

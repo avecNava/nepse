@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             StockOfferingTableSeeder::class,
             StockCategoriesTableSeeder::class,
             ShareholderTableSeeder::class,
+            StockTableSeeder::class,
         ]);
     }
 }

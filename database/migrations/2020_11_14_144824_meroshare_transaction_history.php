@@ -15,6 +15,7 @@ class MeroshareTransactionHistory extends Migration
     {
         Schema::create('meroshare_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('stock_id')->nullable();
             $table->string('symbol');
             $table->integer('credit_quantity')->nullable();
             $table->integer('debit_quantity')->nullable();

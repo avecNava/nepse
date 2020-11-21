@@ -15,27 +15,46 @@ class MeroShare extends Model
 
     public function share()
     {
+        //related model, foreign_key in current model (meroshare_transactions), related column in the related model
         return $this->belongsTo('App\Models\Stock','symbol','symbol');
+    }
+    
+    public function shareholder()
+    {
+        //map shareholder_id of current model to the id field of shareholders table (shareholder_id)
+        return $this->belongsTo('App\Models\Shareholder','shareholder_id');
     }
 
     public static function importTransactions($transactions)
     {
-        $transactions->whenNotEmpty(function( $transactions ){
+        $transactions->whenNotEmpty(function() use($transactions){
+            
             foreach ($transactions as $trans ) {
-                MeroShare::updateOrCreate(
-                    [
-                        'symbol' => $trans['symbol'],
-                        'shareholder_id' => $trans['shareholder_id'],
-                        'transaction_date' => $trans['transaction_date'],
-                        'remarks' => $trans['remarks']
-                    ],
-                    [
-                        'offer_type' => $trans['offer_type'],
-                        'transaction_mode' => $trans['transaction_mode'],
-                        'credit_quantity' => $trans['credit_quantity'],
-                        'debit_quantity' => $trans['debit_quantity'],
-                    ]);
+                MeroShare::create([
+                    'symbol' => $trans['symbol'],
+                    'shareholder_id' => $trans['shareholder_id'],
+                    'transaction_date' => $trans['transaction_date'],
+                    'remarks' => $trans['remarks'],
+                    'offer_type' => $trans['offer_type'],
+                    'transaction_mode' => $trans['transaction_mode'],
+                    'credit_quantity' => $trans['credit_quantity'],
+                    'debit_quantity' => $trans['debit_quantity'],
+                ]);
+                // MeroShare::updateOrCreate(
+                // [
+                //     'symbol' => $trans['symbol'],
+                //     'shareholder_id' => $trans['shareholder_id'],
+                //     'transaction_date' => $trans['transaction_date'],
+                //     'remarks' => $trans['remarks']
+                // ],
+                // [
+                //     'offer_type' => $trans['offer_type'],
+                //     'transaction_mode' => $trans['transaction_mode'],
+                //     'credit_quantity' => $trans['credit_quantity'],
+                //     'debit_quantity' => $trans['debit_quantity'],
+                // ]);
             }
+
         });
     }
 

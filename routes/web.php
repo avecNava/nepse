@@ -26,3 +26,41 @@ Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeT
 Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
 Route::get('portfolio', [PortfolioController::class, 'index'])->name('home');
 Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::get('test',function(){
+
+
+});
+
+
+
+Route::get('contact-us',function(){
+    return '<p>Hi</p>
+            <p>Please write to : nava.bogatee@gmail.com <br/>until we come up with the contact us page 🙏
+            <br/><br/>Thank you
+            </p>';
+});

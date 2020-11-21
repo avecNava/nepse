@@ -15,7 +15,7 @@ class StockCategoriesTableSeeder extends Seeder
     public function run()
     {   
         \DB::table('stock_categories')->truncate();
-        $sectors = ['Hydropower','Banks','Microfinance','Production','Hotel','Other'];
+        $sectors = ['Hydropower','Banks','Hotels','Insurance - life','Insurance- Non life','Microfinance','Production','Hotel','Investment fund','Other'];
         foreach ($sectors as $value) {
             \DB::table('stock_categories')->insert([
                 'sector' => $value,

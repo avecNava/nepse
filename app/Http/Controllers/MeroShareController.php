@@ -22,13 +22,18 @@ class MeroShareController extends Controller
 
    public function importTransactionForm()
    {   
-          $user_id=5;
-          // $offer_type = StockOffer::all();
-          $shareholders = Shareholder::all(); //where('user_id',3)->get();
-          $transactions = Meroshare::where('shareholder_id', $user_id)
-                                   ->orderBy('transaction_date','DESC')
+          $shareholder_id = 8;
+          
+          //get all the shareholder names
+          $shareholders = Shareholder::all()
+                         ->sortBy(['first_name','last_name']);
+
+          //get transaction history and its related stock_id, security_name from related (stocks table)
+          $transactions = Meroshare::where('shareholder_id', $shareholder_id)
+                                   ->with('share')
+                                   // ->sortBy('transaction_date','DESC');
                                    ->get();
-                                   
+
           return view('meroshare.import-transaction', [
                          'transactions' => $transactions,
                          'shareholders' => $shareholders->sortBy('first_name'),
@@ -36,9 +41,13 @@ class MeroShareController extends Controller
                     ]);
    }
    
+   /**
+    * Read from uploaded excel file and save data to meroshare_transactions table
+    */
    public function importTransaction(Request $request)
    {
           $validator = $request->validate([
+               'shareholder' => 'required',
                'file' => 'required|mimes:csv,xlsx,ods'
           //   'file' => 'required'
           ]);
@@ -59,12 +68,14 @@ class MeroShareController extends Controller
           //    }
           
           
-          // $rows is an instance of Illuminate\Support\LazyCollection
-          $rows = SimpleExcelReader::create($pathToCSV)->getRows();
           $transactions = collect();
-          $shareholder_id = $request->input('shareholder_id');
+          $shareholder_id = $request->input('shareholder');
+          $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
+
           $rows->each(function(array $row) use ($transactions, $shareholder_id) {
+
                $remarks = $row['History Description'];
+               
                $transactions->push( 
                     array(
                          'symbol' => $row['Scrip'], 
@@ -77,7 +88,6 @@ class MeroShareController extends Controller
                          'shareholder_id' =>$shareholder_id
                     )
                );
-               // array_merge($trans, $temp);
           });
 
           //Sample output : $transactions
@@ -91,7 +101,13 @@ class MeroShareController extends Controller
           //           "remarks" => "INITIAL PUBLIC OFFERING   00000183      SGILIPO7778 CREDIT"
           //           "shareholder_id" => "100"
           //     ]
+          
+          //remove existing records with the given shareholder_id
+          MeroShare::where('shareholder_id', $shareholder_id)->delete();
+          
+          //add new records
           MeroShare::importTransactions($transactions);
+
           return redirect()->back()->with('success', 'The transactions has been imported successfully.');   
         
    }

@@ -17,8 +17,7 @@ class CreatePortfoliosTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable();
             $table->foreignId('shareholder_id')->nullable();
-            $table->foreignId('stock_id');
-            $table->string('symbol');
+            $table->foreignId('stock_id')->nullable();
             $table->integer('quantity');
             // $table->float('unit_cost',8,2)->nullable();
             // $table->float('total_amount',8,2)->nullable();
