@@ -110,14 +110,12 @@
             <main>
             <table>
                 <tr>
-                    <th>
-                        <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
-                        <label for="select_all" hidden>Select all</label>
+                    <th><label for="select_all">
+                        <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">&nbsp;Symbol</label>
                     </th>
-                    <th><label for="select_all">Symbol</label></th>
-                    <th title="Stock ID">ID</th>
-                    <th>Cr.</th>
-                    <th>Dr.</th>
+                    <!-- <th title="Stock ID">ID</th> -->
+                    <th class="c_digit">Cr.</th>
+                    <th class="c_digit">Dr.</th>
                     <th>Desc</th>
                     <th>Offer</th>
                     <th>Trans. date</th>
@@ -139,21 +137,20 @@
                 @endphp
 
                     <tr>
+                        
                         <td>
                             @if ( !empty($stock_id) )
                                 <input type="checkbox" name="t_id" id="{{ $trans->id }}">
                             @endif
-                        </td>
-                        
-                        <td>
+                            &nbsp;
                             <label for="{{ $trans->id }}" title="{{ $security_name }}">
                                 {{ $trans->symbol }}
                             </label>
                         </td>
 
-                        <td>{{ $stock_id }}</td>
-                        <td>{{ $trans->credit_quantity }}</td>
-                        <td>{{ $trans->debit_quantity }}</td>
+                        <!-- <td>{{ $stock_id }}</td> -->
+                        <td class="c_digit">{{ $trans->credit_quantity }}</td>
+                        <td class="c_digit">{{ $trans->debit_quantity }}</td>
                         <td>{{ $trans->transaction_mode }}</td>
                         <td>{{ $trans->offer_type }}</td>
                         <td>{{ $trans->transaction_date }}</td>
@@ -226,9 +223,7 @@
             });
 
             //call ajax 
-            let e = document.getElementById('shareholder_id');
             let _token = document.getElementsByName('_token')[0].value;
-            let shareholder_id =e.options[e.selectedIndex].value;
 
             let request = new XMLHttpRequest();
             request.open('POST', '/meroshare/import-transaction', true);
@@ -241,7 +236,7 @@
                     showImportMessage(5000*2);
                 }
             }
-            request.send(`_token=${_token}&trans_id=${selected.toString()}&shareholder_id=${shareholder_id}`);
+            request.send(`_token=${_token}&trans_id=${selected.toString()}`);
 
         }
     </script>

@@ -12,12 +12,10 @@ class PortfolioController extends Controller
     
     public function index()
     {
-        $user_id = 5;
-        $symbol="API";
+        $shareholder_id = 5;
         
-        $portfolios = Portfolio::find($symbol)->shares()->get();
+        $portfolios = Portfolio::with('shareholder','share')->get();
         // $portfolios = Portfolio::find($user_id)->shareholder()->select('first_name','last_name')->get();
-        $portfolios->dd();
         return view("portfolio", ['portfolios' => $portfolios]);
     }
     
@@ -48,11 +46,8 @@ class PortfolioController extends Controller
         //     $query->where('title', 'like', '%first%');
         // }])->get();
         
-        // $transactions = MeroShare::where('shareholder_id', $user_id)->with('share:id,symbol,security_name')->get();
-        $transactions = MeroShare::all(function($query){
-            $query-->where('shareholder_id', $user_id);  
-        })->with('share:id,symbol,security_name')
-            ->get();
+        $transactions = MeroShare::where('shareholder_id', $user_id)->with('share:id,symbol,security_name')->get();
+      
         
         $temp = $transactions->groupBy('symbol');
         $temp->map(function($item) use($collection, $total_cr, $total_dr){
@@ -109,21 +104,22 @@ class PortfolioController extends Controller
     {
         $total_dr = 0;
         $total_cr = 0;
-        $user_id = $request->shareholder_id;    //todo : get from session
-        $shareholder_id = $request->shareholder_id;
+        $user_id = 1;    //todo : get from session
         $collection = collect([]);
 
         if( !empty($request->trans_id) ){
 
            //convert trans_ids to array and query table for records
             $ids = Str::of($request->trans_id)->explode(',');
+            
             // Get data from meroshare_transactions along with related data from Shares table 
             //consturct an array object
-            $transactions = MeroShare::where('shareholder_id', $shareholder_id)
+            $transactions = MeroShare::whereIn('id', $ids->toArray())
                                         ->with('share:id,symbol,security_name')
                                         ->get();
                 
             $temp = $transactions->groupBy('symbol');
+
             $temp->map(function($item) use($collection, $total_cr, $total_dr){
             
                 foreach ($item as $value) {
@@ -133,13 +129,10 @@ class PortfolioController extends Controller
                     
                     //combine data from main and related table and bind add to collection
                     $portfolio = array(
-                        'id' => $value->id,
-                        'symbol' => $value->symbol,
-                        'stock_id' => $value->id,
                         'quantity' => $total_cr - $total_dr,
                         'user_id' => $value->shareholder_id,
                         'shareholder_id' => $value->shareholder_id,
-                        'security_name' => empty($value->share) ? null :  $value->share->security_name,
+                        // 'security_name' => empty($value->share) ? null :  $value->share->security_name,
                         'stock_id' =>  empty($value->share) ? null : $value->share->id,
                     );
     
@@ -157,9 +150,9 @@ class PortfolioController extends Controller
                         'shareholder_id' => $row['shareholder_id']
                     ],
                     [
-                        'symbol' => $row['symbol'], 
                         'quantity' => $row['quantity'], 
                         'user_id' => $row['shareholder_id'],
+                        'created_by' => $row['shareholder_id'],
                     ]
                 );
             }

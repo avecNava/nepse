@@ -7,6 +7,7 @@ use App\Models\StockPrice;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class StockPriceController extends Controller
@@ -18,8 +19,10 @@ class StockPriceController extends Controller
      */
     public function index()
     {
-        $date_string = '2020-11-12';
-
+        $time_start = Carbon::now();
+        $date_string =  "$time_start->year-$time_start->month-$time_start->day";
+        // $date_string =  "2020-11-19";
+        
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
         ]);
@@ -36,17 +39,37 @@ class StockPriceController extends Controller
         $content = $body->getContents();
 
         if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
-            $msg = 'Searched Date is not valid';
-            Log::warning('Could nto pull data from nepalstock',['date'=>$date_string,'message'=>$msg]);
-            return $msg;
+            $msg = "Scraping failed. No data available. $date_string";
+            Log::warning('Scraping failed. No data available.',['date'=>$date_string,'message'=>$msg]);
+            return response()->json(['message'=>$msg]);
         }
-
+        
         $data_array = json_decode($content, true);
+    
+        // $data = array(["id" => 1262446,"businessDate" => "2020-11-19",
+        //         "securityId" => 2893,"symbol" => "AIL",
+        //         "securityName" => "Ajod Insurance Limited",
+        //         "openPrice" => 530.0,"highPrice" => 574.0,
+        //         "lowPrice" => 527.0,"closePrice" => 563.0,
+        //         "totalTradedQuantity" => 75950,"totalTradedValue" => 41735965.0,
+        //         "previousDayClosePrice" => 526.0,"fiftyTwoWeekHigh" => 580.0,
+        //         "fiftyTwoWeekLow" => 291.0,"lastUpdatedTime" => "2020-11-19T14:59:59.711318",
+        //         "lastUpdatedPrice" => 563.0,"totalTrades" => 1153,"averageTradedPrice" => 549.52]);
+        // \App\Models\StockPrice::updateOrCreateStockPrice($data);        
+
+        Log::notice('Started scraping from nepalstock',['date'=>$date_string]);
+        \App\Models\StockPrice::updateOrCreateStockPrice($data_array['content']);        
+        \App\Models\StockPrice::updateStockIDs();
+        $time_finish = Carbon::now();
+        $time_elapsed = $time_start->diffInSeconds($time_finish);
+
+        Log::notice('Finished scraping from nepalstock',
+            [
+                'date'=>$date_string, 
+                'time'=>$time_elapsed.' seconds'
+            ]);
         
-        \App\Models\Stock::addOrUpdateStock($data_array['content']);
-        \App\Models\StockPrice::updateOrCreateStockPrice($data_array['content']);
-        
-        Log::notice('Pulled data from nepalstock',['date'=>$date_string]);
+        echo "Time taken : $time_elapsed seconds";
         return $data_array['content'];
     }
 

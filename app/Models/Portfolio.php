@@ -12,11 +12,11 @@ class Portfolio extends Model
 
     public function shareholder()
     {
-        return $this->hasMany('App\Models\Shareholder','user_id');
+        return $this->belongsTo('App\Models\Shareholder','shareholder_id');
     }
 
-    public function shares()
+    public function share()
     {
-        return $this->hasMany('App\Models\Stock','symbol','symbol');
+        return $this->belongsTo('App\Models\Stock','stock_id');
     }
 }

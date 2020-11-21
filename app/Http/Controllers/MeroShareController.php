@@ -22,7 +22,7 @@ class MeroShareController extends Controller
 
    public function importTransactionForm()
    {   
-          $shareholder_id = 8;
+          $shareholder_id = 4;
           
           //get all the shareholder names
           $shareholders = Shareholder::all()
@@ -31,13 +31,11 @@ class MeroShareController extends Controller
           //get transaction history and its related stock_id, security_name from related (stocks table)
           $transactions = Meroshare::where('shareholder_id', $shareholder_id)
                                    ->with('share')
-                                   // ->sortBy('transaction_date','DESC');
                                    ->get();
 
           return view('meroshare.import-transaction', [
                          'transactions' => $transactions,
                          'shareholders' => $shareholders->sortBy('first_name'),
-                         // 'stock_offers' => $offer_type->sortBy('offer_name')
                     ]);
    }
    
@@ -48,24 +46,26 @@ class MeroShareController extends Controller
    {
           $validator = $request->validate([
                'shareholder' => 'required',
-               'file' => 'required|mimes:csv,xlsx,ods'
+               'file' => 'required'
           //   'file' => 'required'
           ]);
 
           // $destinationPath = base_path('public/menu');
           $destinationPath = storage_path('app/meroshare');
           $file_name = $request->file('file')->getClientOriginalName();
+          $extension = $request->file('file')->extension();
+
           $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
           $request->file('file')->move($destinationPath, $new_name);
           $pathToCSV = $destinationPath .'/'. $new_name;
           
           // Valid File Extensions
-          //    $valid_extension = ["csv","xls","xlsx"];
+          $valid_extension = ["txt","csv","xls","xlsx"];
 
-          //    // Check file extension
-          //    if( false == in_array(strtolower($extension),$valid_extension)){
-          //      return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
-          //    }
+          // Check file extension
+          if( false == in_array(strtolower($extension),$valid_extension)){
+          return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
+          }
           
           
           $transactions = collect();
@@ -90,18 +90,6 @@ class MeroShareController extends Controller
                );
           });
 
-          //Sample output : $transactions
-          //      [
-          //           "symbol" => "SGI"
-          //           "transaction_date" => DateTime @1604016000 {#334 …1}
-          //           "credit_quantity" => 10
-          //           "debit_quantity" => null
-          //           "transaction_mode" => "CR"
-          //           "offering_type" => "IPO"
-          //           "remarks" => "INITIAL PUBLIC OFFERING   00000183      SGILIPO7778 CREDIT"
-          //           "shareholder_id" => "100"
-          //     ]
-          
           //remove existing records with the given shareholder_id
           MeroShare::where('shareholder_id', $shareholder_id)->delete();
           
@@ -151,13 +139,13 @@ class MeroShareController extends Controller
      $txt = Str::lower($str);
 
      if(Str::contains($txt,'on-dr td')){
-          return 'DR';
+          return 'Dr';
      }
      elseif(Str::contains($txt,['on-cr td','cr current balance','credit'])) {
-          return 'CR';
+          return 'Cr';
      }
      else {
-          return 'NA';
+          return 'na';
      }
      
    }

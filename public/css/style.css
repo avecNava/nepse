@@ -17,7 +17,7 @@ h1, h2, h3 {margin:0}
 h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
 ul.thin {margin:0; padding: 0;}
-table {border-spacing: 0px;}
+table {border-spacing: 0px; width:100%;}
 th {
     background: aliceblue;
     padding: 4px;
@@ -26,12 +26,14 @@ th {
     height: 30px;
 }
 tr:nth-child(even) {background: #FFF}
-tr:nth-child(odd) {background: #CCC}
+tr:nth-child(odd) {background: #EEE}
 /* first column a yellow background, and then every second column starting from column 3 a gray one:
 col:first-child {background: #FF0}
 col:nth-child(2n+3) {background: #CCC} 
 */
 td {padding-left: 2px;height: 30px;}
+.c_digit {text-align: right;}
+
 button {
     padding: 10px;
     min-width: 100px;
@@ -86,7 +88,20 @@ button {
     /* font-family: monospace; */
 }
 /* end of form validation css */
+
 /*meroshare*/
+.c_transaction_list 
+td:last-child {
+    max-width: 250px;
+    font-size: 12px;
+}
+
+.c_transaction_list 
+td:first-child {
+    background-color: #d1d6691a;
+    border-bottom: 1px solid  #d6dcde;;
+}
+td {border-bottom: 1px solid #d6dcde;}
 article {
     padding: 20px 0;
 }

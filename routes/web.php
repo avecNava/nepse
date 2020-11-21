@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StockPriceController;
 use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\PortfolioController;
-
+use App\Models\Stock;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +22,8 @@ Route::get('/', [PortfolioController::class, 'index']);
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction', [MeroShareController::class, 'importTransactionForm']);
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
-Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
 Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
+Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
 Route::get('portfolio', [PortfolioController::class, 'index'])->name('home');
 Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
 
@@ -53,6 +53,7 @@ Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolio
 
 Route::get('test',function(){
 
+    return Stock::select('id')->where('symbol', 'API')->first();
 
 });
 

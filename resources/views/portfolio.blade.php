@@ -30,9 +30,9 @@
                 <tr>
                     <th>
                         <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
-                        <label for="select_all" hidden>Select all</label>
+                        &nbsp;
+                        <label for="select_all">Symbol</label>
                     </th>
-                    <th><label for="select_all">Symbol</label></th>
                     <th>Quantity</th>
                     <th>LTP</th>
                     <th>Worth(LTP)</th>
@@ -43,27 +43,38 @@
                     <th>Shareholder</th>
                 </tr>
                 
-                @foreach ($portfolios as $trans)
+                @foreach ($portfolios as $record)
+
                     <tr>
-                        <td><input type="checkbox" name="t_id" id="{{ $trans->id }}"></td>
+                        
                         <td>
-                            <label for="{{ $trans->id }}">
-                                <a href="{{ url('portfolio/details', [ $trans->symbol ]) }}"
-                                title="{{ $trans->symbol }}" }}>
-                                    {{ $trans->symbol }}
-                                </a> 
-                            </label>
+                        @if( !empty($record->share))
+                            <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
+                            &nbsp;
+                            <label for="{{ $record->id }}"></label>
+                            <a href="{{ url('portfolio/details', [ $record->share->symbol ]) }}" title="{{ $record->share->symbol }}" }}>
+                                {{ $record->share->symbol }}
+                            </a> 
+                            
+                        @endif
                         </td>
-                        <td>{{ $trans->quantity }}</td>
+
+                        <td>{{ $record->quantity }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>{{ $trans->shareholder_id }}</td>
+                        <td>
+                        @if( !empty($record->shareholder))
+                            {{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}
+                        @endif
+                        </td>
                     </tr>
-                @endforeach            
+
+                @endforeach   
+
             </table>
         </main>
         
