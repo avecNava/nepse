@@ -10,79 +10,164 @@
 
 @section('content')
 
-    <div id="loading-message" style="display:none">Loading... Please wait...</div>
-    <section class="transaction-history">
+    <div class="c_portfolio_container">
+    
+        <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
-        <h1 class="c_title">My portfolio</h1>
+        <section class="c_score_cards">
+        
+        </section>
 
+        <section class="portfolio">
         @if( $portfolios->isNotEmpty() )
-        <article class="c_portfolio_list">
-        
-            <header>
-                <button id="delete" onClick="deletePortfolios()" hidden>Delete</button>
-                <div id="delete-message" style="display:none">
-                    The selected scripts have been deleted successfully.
+           
+            <article class="a_portfolio">
+            
+                <header>
+                <div class="a_portfolio_msg">
+                    <button id="delete" onClick="deletePortfolios()" hidden>Delete</button>
+                    <div id="delete-message" style="display:none">
+                        The selected scripts have been deleted successfully.
+                    </div>
+                    
                 </div>
-            </header>
 
-            <main>
-            <table>
-                <tr>
-                    <th>
-                        <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
-                        &nbsp;
-                        <label for="select_all">Symbol</label>
-                    </th>
-                    <th>Quantity</th>
-                    <th>LTP</th>
-                    <th>Worth(LTP)</th>
-                    <th>Trans. date</th>
-                    <th>Cost Price</th>
-                    <th>Net Worth</th>
-                    <th>Profit</th>
-                    <th>Shareholder</th>
-                </tr>
-                
-                @foreach ($portfolios as $record)
+                <div class="a_portfolio_main">
+                    <div>
+                        <h1 class="c_title">My portfolio</h1>
+                        <span class="c_info">{{ $last_transaction_date }}</span>
+                    </div>
+                    <div class="c_shareholder">
+                        @if( !empty($shareholders) )
+                            Shareholder 
+                            <select id="shareholder" onChange="loadShareholder()">
+                                <option value="0">All</option>
+                                @foreach ($shareholders as $shareholder)
+                                <option 
+                                @php                                
+                                
+                                if( $shareholder_id == $shareholder['id']){
+                                    echo "SELECTED";
+                                }                                
+                                
+                                @endphp
+                                value="{{ $shareholder['id'] }}">
+                                    {{ $shareholder['name'] }} {{ $shareholder['relation'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        @endif
+                    </div>
+                </div>
+                </header>
 
+                <main>
+                <table>
                     <tr>
-                        
-                        <td>
-                        @if( !empty($record->share))
-                            <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
+                        <th>
+                            <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
                             &nbsp;
-                            <label for="{{ $record->id }}"></label>
-                            <a href="{{ url('portfolio/details', [ $record->share->symbol ]) }}" title="{{ $record->share->symbol }}" }}>
-                                {{ $record->share->symbol }}
-                            </a> 
-                            
-                        @endif
-                        </td>
-
-                        <td>{{ $record->quantity }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                        @if( !empty($record->shareholder))
-                            {{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}
-                        @endif
-                        </td>
+                            <label for="select_all">Symbol</label>
+                        </th>
+                        <th>Quantity</th>
+                        <th>LTP</th>
+                        <th>Worth (LTP)</th>
+                        <th>Prev Price</th>
+                        <th>Worth(Prev)</th>
+                        <th>Change</th>
+                        <th>Cost Price</th>
+                        <th>Net Worth</th>
+                        <th>Profit</th>
+                        <!-- <th>Shareholder</th> -->
                     </tr>
+                    
+                    @foreach ($portfolios as $record)
+                        @php
+                            $qty = $record->quantity;
+                            $ltp = $record->stockPrice->close_price;
+                            $ltp_prev = $record->stockPrice->previous_day_close_price;
+                            $worth_ltp = round($qty * $ltp ,2);
+                            $worth_prev_ltp = round($qty * $ltp_prev ,2);
 
-                @endforeach   
+                            $change = $ltp_prev - $ltp;
+                            $change_per = round($change/$ltp_prev,2);
 
-            </table>
-        </main>
-        
-        <footer></footer>
-        
-    </article>
-    @endif
+                            //up or down
+                            if($change == 0){
+                                $upordown = 'no-change increase';
+                            }elseif($change>0){
+                                $upordown = 'increase';
+                            }else{
+                                $change = 'decrease';
+                            }
 
-    </section>
+                        @endphp
+                        <tr>
+                            
+                            <td>
+                            @if( !empty($record->share))
+                                <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
+                                &nbsp;
+                                <label for="{{ $record->id }}"></label>
+                                <a href="{{ url('portfolio/details', [ $record->share->symbol ]) }}" title="{{ $record->share->security_name }}" }}>
+                                    {{ $record->share->symbol }}
+                                </a> 
+                                
+                            @endif
+                            </td>
+
+                            <td>{{ $record->quantity }}</td>
+                            <td>{{ number_format($ltp) }}</td>
+                            <td>{{ number_format( $worth_ltp) }}</td>
+                            <td>{{ number_format($ltp_prev) }}</td>
+                            <td>{{ number_format( $worth_prev_ltp ) }}</td>
+                            <td>
+                                <div class="c_change {{ $upordown }}">
+                                    {{ $change }} 
+                                    <span class="c_change_per">
+                                        ({{$change_per}}%)
+                                    </span>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <!-- <td>
+                            @if( !empty($record->shareholder))
+                                {{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}
+                            @endif
+                            </td> -->
+                        </tr>
+
+                    @endforeach   
+
+                </table>
+            </main>
+            
+            <footer><span class="c_info">Last transaction date : {{ $last_transaction_date }}</span></footer>
+            
+        </article>
+        @endif
+
+        </section>
+
+    </div> <!-- end of portfolio_container -->
+    <script>
+
+        // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
+        function loadShareholder(){
+            
+            let url = "{{url('portfolio')}}";
+            let shareholder = document.getElementById('shareholder');
+            let options = shareholder.options[shareholder.selectedIndex];
+            
+            
+            //append shareholder_id to the url (ie, /portfolio/7)
+            if(shareholder.selectedIndex > 0)
+                url = url + "/"+ options.value;            
+            
+            window.location.replace(url);
+        }
+    </script>
 
 @endsection

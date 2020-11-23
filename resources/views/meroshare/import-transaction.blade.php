@@ -208,7 +208,6 @@
                 el.checked=flag;
             });
         }
-
         function importToMyPortfolio() {
             let selected = [];
             let elements = document.getElementsByName("t_id");

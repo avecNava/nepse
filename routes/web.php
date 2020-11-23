@@ -24,7 +24,7 @@ Route::get('meroshare/transaction', [MeroShareController::class, 'importTransact
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
 Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
 Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
-Route::get('portfolio', [PortfolioController::class, 'index'])->name('home');
+Route::get('portfolio/{shareholder_id?}', [PortfolioController::class, 'index']);
 Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
 
 
@@ -49,7 +49,7 @@ Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolio
 
 
 
-
+Route::get('last-date', [StockPriceController::class, 'getLastDate']);
 
 Route::get('test',function(){
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class StockPriceController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

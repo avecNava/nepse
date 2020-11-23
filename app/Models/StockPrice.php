@@ -85,6 +85,9 @@ class StockPrice extends Model
 
     // }
 
+    /**
+     * get stocks with null stock-id and update them
+     */
     public static function updateStockIDs()
     {
         
@@ -97,6 +100,15 @@ class StockPrice extends Model
                 $stock->save();
             }
 
+    }
+
+    /**
+     * gets the last transaction date from portfolios table
+     */
+    public static function getLastDate()
+    {
+        $date = StockPrice::select('transaction_date')->orderBy('transaction_date')->first();
+        return $date->transaction_date;
     }
 
 }

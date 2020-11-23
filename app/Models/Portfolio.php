@@ -19,4 +19,9 @@ class Portfolio extends Model
     {
         return $this->belongsTo('App\Models\Stock','stock_id');
     }
+
+    public function stockPrice()
+    {
+        return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id');
+    }
 }

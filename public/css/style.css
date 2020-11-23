@@ -12,7 +12,7 @@ img.c-logo__img {
     height: 130px;
     padding: 20px 0;
 }
-
+a {text-decoration: none;}
 h1, h2, h3 {margin:0}
 h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
@@ -134,3 +134,44 @@ article.c_transaction_list header {
     /* text-align: right; */
 }
 /*end of meroshare*/
+
+/*portfolio css*/
+.a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
+.a_portfolio td:first-child,.a_portfolio td:last-child,.a_portfolio th:first-child, .a_portfolio th:last-child{text-align: left;}
+.a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
+.a_portfolio_main h1, .c_shareholder{align-self: center;}
+.a_portfolio_main h1 {display: inline-block;}
+.c_shareholder {
+    background: #6b64a0;
+    padding: 3px;
+    border-radius: 5px;
+    color: #fff;
+    width: auto;
+}
+select#shareholder {
+    display: block;
+    height: 2em;
+    border-radius: 5px;
+    padding: 2px 4px;
+}
+.a_portfolio_main {
+    display: flex;
+    justify-content: space-between;
+    background: #e0f7e3;
+    padding: 5px 10px;
+}
+.c_change {
+    padding-right: 18px;
+    background-repeat: no-repeat;
+    background-position: top right;
+    display: inline-block;
+}
+.increase {
+    background-image: url(//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
+    color:#09bb1a;
+}
+.decrease {
+    background-image: url(//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
+    color:#ff0000;
+}
+/* end of portfolio */

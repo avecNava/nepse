@@ -3,26 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\MeroShare;
+use App\Models\Shareholder;
 use App\Models\Portfolio;
+use App\Models\StockPrice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
 {
     
-    public function index()
+    public function index($shareholder_id = null)
     {
-        $shareholder_id = 5;
-        
-        $portfolios = Portfolio::with('shareholder','share')->get();
-        // $portfolios = Portfolio::find($user_id)->shareholder()->select('first_name','last_name')->get();
-        return view("portfolio", ['portfolios' => $portfolios]);
+        //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
+        //else load the portfolio for the given shareholder_id
+        if(empty($shareholder_id)){
+            $shareholder_id = 4;
+        }
+        $user_id = 4;
+        $shareholders = Shareholder::getShareholderNames($user_id);
+
+        $last_transaction_date = StockPrice::getLastDate();
+        $portfolios = Portfolio::where('shareholder_id', $shareholder_id)
+                                ->with('shareholder','share','stockPrice')->get();
+        // $portfolios->dd();
+
+        return view("portfolio", 
+                    [
+                        'portfolios' => $portfolios,
+                        'shareholders' =>$shareholders,
+                        'shareholder_id' => $shareholder_id,
+                        'last_transaction_date' => $last_transaction_date,
+                    ]
+                );
     }
     
     public function portfolioDetails($symbol)
     {
         return response()->json(['script'=>$symbol]);
     }
+
     
     /**
      * reads data from MeroShare table (meroshare_transactions) along with related data from Shares table
