@@ -108,6 +108,10 @@ class StockPrice extends Model
     public static function getLastDate()
     {
         $date = StockPrice::select('transaction_date')->orderBy('transaction_date')->first();
+        
+        if(empty($date))
+            return null;
+
         return $date->transaction_date;
     }
 

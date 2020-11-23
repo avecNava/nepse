@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StockPriceController;
 use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\PortfolioController;
@@ -17,7 +18,7 @@ use App\Models\Stock;
 |
 */
 
-Route::get('/', [PortfolioController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction', [MeroShareController::class, 'importTransactionForm']);
