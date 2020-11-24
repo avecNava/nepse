@@ -12,19 +12,18 @@ use Illuminate\Support\Facades\Auth;
 class PortfolioController extends Controller
 {
     
-    
     public function __constructor()
     {
         
         // Auth::loginUsingId(1);        
-        // Login and "remember" the given user...
-        // Auth::loginUsingId(1, true);
+        // Auth::loginUsingId(1, true);         // Login and "remember" the given user...
         $this->middleware('auth');
         
     }
     
     public function index($shareholder_id = null)
     {
+        
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
         //else load the portfolio for the given shareholder_id
         $shareholder_id = empty($shareholder_id) ? Auth::id() : $shareholder_id;

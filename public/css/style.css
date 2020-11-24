@@ -141,6 +141,7 @@ article.c_transaction_list header {
 .a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
 .a_portfolio_main h1, .c_shareholder{align-self: center;}
 .a_portfolio_main h1 {display: inline-block;}
+.a_portfolio_header {align-self: center; }
 .c_shareholder {
     background: #6b64a0;
     padding: 3px;

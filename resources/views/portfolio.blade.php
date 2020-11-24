@@ -1,4 +1,4 @@
-@extends('default')
+@extends('layouts.default')
 
 @section('title')
     Your stock portfolio management application over the browser
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="a_portfolio_main">
-                    <div>
+                    <div class="a_portfolio_header">
                         <h1 class="c_title">My portfolio</h1>
                         <span class="c_info">{{ $last_transaction_date }}</span>
                     </div>

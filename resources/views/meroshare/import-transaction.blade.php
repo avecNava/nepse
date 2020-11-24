@@ -1,4 +1,4 @@
-@extends('default')
+@extends('layouts.default')
 
 @section('title')
     Your stock portfolio management application over the browser
