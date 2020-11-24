@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\MeroShare;
 use App\Models\StockOffer;
 use App\Models\Shareholder;
-// use App\Models\Stock;
+use Illuminate\Support\Facades\Auth;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 
@@ -22,11 +22,11 @@ class MeroShareController extends Controller
 
    public function importTransactionForm()
    {   
-          $shareholder_id = 4;
+          $shareholder_id = Auth::id();
           
           //get all the shareholder names
-          $shareholders = Shareholder::all()
-                         ->sortBy(['first_name','last_name']);
+          $shareholders = Shareholder::where('parent_id', $shareholder_id)
+                         ->get();
 
           //get transaction history and its related stock_id, security_name from related (stocks table)
           $transactions = Meroshare::where('shareholder_id', $shareholder_id)

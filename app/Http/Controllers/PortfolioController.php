@@ -16,10 +16,10 @@ class PortfolioController extends Controller
     public function __constructor()
     {
         
-        Auth::loginUsingId(1);
-        
+        // Auth::loginUsingId(1);        
         // Login and "remember" the given user...
-        Auth::loginUsingId(1, true);
+        // Auth::loginUsingId(1, true);
+        $this->middleware('auth');
         
     }
     
@@ -27,14 +27,9 @@ class PortfolioController extends Controller
     {
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
         //else load the portfolio for the given shareholder_id
-
-        if(empty($shareholder_id)){
-            $shareholder_id = Auth::id();
-        }
-        $user_id = Auth::id();
-        // dd($user_id);
-        $shareholders = Shareholder::getShareholderNames($user_id);
-
+        $shareholder_id = empty($shareholder_id) ? Auth::id() : $shareholder_id;
+        $user_id = Auth::id();          
+        $shareholders = Shareholder::getShareholderNames($user_id);       
         $last_transaction_date = StockPrice::getLastDate();
         $portfolios = Portfolio::where('shareholder_id', $shareholder_id)
                                 ->with('shareholder','share','stockPrice')->get();

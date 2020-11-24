@@ -94,7 +94,7 @@
 
                             //up or down
                             if($change == 0){
-                                $upordown = 'no-change increase';
+                                $upordown = 'no-change';
                             }elseif($change>0){
                                 $upordown = 'increase';
                             }else{

@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Shareholder extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'parent_id',
+        'relation',
+        'gender',
+        'email',
+        'date_of_birth',
+        'user_id'
+    ];
 
     public function shares()
     {
@@ -20,7 +30,7 @@ class Shareholder extends Model
         $shareholder = $shareholders->map(function($item, $key){
             return collect([
                 'name' => "$item->first_name $item->last_name",
-                'relation' => !empty($item->relation) ? "($item->relation)":'(You)',
+                'relation' => !empty($item->relation) ? "($item->relation)":'(Self)',
                 'id' => $item->id,
             ]);
 

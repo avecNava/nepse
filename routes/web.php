@@ -18,7 +18,13 @@ use App\Models\Stock;
 |
 */
 
+Auth::routes();
+Auth::routes(['register' => false]);        //disable user registration
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/welcome', function(){
+    return view('welcome');
+});
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction', [MeroShareController::class, 'importTransactionForm']);
@@ -27,19 +33,6 @@ Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfol
 Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
 Route::get('portfolio/{shareholder_id?}', [PortfolioController::class, 'index']);
 Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -66,3 +59,4 @@ Route::get('contact-us',function(){
             <br/><br/>Thank you
             </p>';
 });
+

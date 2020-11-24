@@ -24,7 +24,9 @@
                     <nav class="c-nav__list">
                     </nav>
                 </div>
-
+                @auth
+                    <div class="c-user">{{ Auth::user()->name }}</div>
+                @endauth
             </div>
         </header>
 
