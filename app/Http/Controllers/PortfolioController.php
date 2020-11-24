@@ -8,18 +8,31 @@ use App\Models\Portfolio;
 use App\Models\StockPrice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class PortfolioController extends Controller
 {
+    
+    
+    public function __constructor()
+    {
+        
+        Auth::loginUsingId(1);
+        
+        // Login and "remember" the given user...
+        Auth::loginUsingId(1, true);
+        
+    }
     
     public function index($shareholder_id = null)
     {
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
         //else load the portfolio for the given shareholder_id
+
         if(empty($shareholder_id)){
-            $shareholder_id = 4;
+            $shareholder_id = Auth::id();
         }
-        $user_id = 4;
+        $user_id = Auth::id();
+        // dd($user_id);
         $shareholders = Shareholder::getShareholderNames($user_id);
 
         $last_transaction_date = StockPrice::getLastDate();

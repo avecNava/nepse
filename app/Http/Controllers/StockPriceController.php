@@ -22,7 +22,7 @@ class StockPriceController extends Controller
     {
         $time_start = Carbon::now();
         $date_string =  "$time_start->year-$time_start->month-$time_start->day";
-        // $date_string =  "2020-11-19";
+        $date_string =  "2020-11-23";
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
@@ -56,11 +56,12 @@ class StockPriceController extends Controller
         //         "previousDayClosePrice" => 526.0,"fiftyTwoWeekHigh" => 580.0,
         //         "fiftyTwoWeekLow" => 291.0,"lastUpdatedTime" => "2020-11-19T14:59:59.711318",
         //         "lastUpdatedPrice" => 563.0,"totalTrades" => 1153,"averageTradedPrice" => 549.52]);
-        // \App\Models\StockPrice::updateOrCreateStockPrice($data);        
+        // StockPrice::updateOrCreateStockPrice($data);        
 
         Log::notice('Started scraping from nepalstock',['date'=>$date_string]);
-        \App\Models\StockPrice::updateOrCreateStockPrice($data_array['content']);        
-        \App\Models\StockPrice::updateStockIDs();
+        Stock::addOrUpdateStock($data_array['content']);
+        StockPrice::updateOrCreateStockPrice($data_array['content']);        
+        StockPrice::updateStockIDs();
         $time_finish = Carbon::now();
         $time_elapsed = $time_start->diffInSeconds($time_finish);
 
@@ -88,7 +89,7 @@ class StockPriceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\StockPrice  $stockPrice
+     * @param  StockPrice  $stockPrice
      * @return \Illuminate\Http\Response
      */
     public function show(StockPrice $stockPrice)
@@ -100,7 +101,7 @@ class StockPriceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\StockPrice  $stockPrice
+     * @param  StockPrice  $stockPrice
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, StockPrice $stockPrice)
@@ -111,7 +112,7 @@ class StockPriceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\StockPrice  $stockPrice
+     * @param  StockPrice  $stockPrice
      * @return \Illuminate\Http\Response
      */
     public function destroy(StockPrice $stockPrice)

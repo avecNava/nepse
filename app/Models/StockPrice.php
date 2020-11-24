@@ -96,7 +96,7 @@ class StockPrice extends Model
 
             foreach ($transactions as $record) {
                 $stock = StockPrice::find($record->id);
-                $stock->stock_id = $record->share->id;
+                $stock->stock_id = !empty($record->share->id) ? $record->share->id : null; 
                 $stock->save();
             }
 

@@ -25,6 +25,9 @@ class MeroShare extends Model
         return $this->belongsTo('App\Models\Shareholder','shareholder_id');
     }
 
+    /***
+     * saves transactions as portfolio
+     */
     public static function importTransactions($transactions)
     {
         $transactions->whenNotEmpty(function() use($transactions){

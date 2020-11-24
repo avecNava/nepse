@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StockOfferingTableSeeder::class,
             StockCategoriesTableSeeder::class,
-            ShareholderTableSeeder::class,
-            StockTableSeeder::class,
+            // ShareholderTableSeeder::class,
+            // StockTableSeeder::class,
         ]);
     }
 }

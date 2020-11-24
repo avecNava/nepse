@@ -36,26 +36,27 @@ class CreateStockPricesTable extends Migration
         
         Schema::create('stock_prices', function (Blueprint $table) {
             $table->id();
-            $table->string('stock_id')->nullable();
+            $table->foreignId('stock_id')->nullable();
             $table->string('symbol');
 
-            $table->string('open_price');
-            $table->string('high_price');
-            $table->string('low_price');
-            $table->string('close_price')->nullable();
-            $table->string('previous_day_close_price');
+            $table->unsignedMediumInteger('open_price')->nullable();
+            $table->unsignedMediumInteger('high_price')->nullable();
+            $table->unsignedMediumInteger('low_price')->nullable();
+            $table->unsignedMediumInteger('close_price')->nullable();
+            $table->unsignedMediumInteger('last_updated_price')->nullable();
+            $table->unsignedMediumInteger('previous_day_close_price');
 
-            $table->string('total_traded_qty');
-            $table->string('total_traded_value');
-            $table->string('total_trades');
+            $table->unsignedMediumInteger('total_traded_qty')->nullable();
+            $table->unsignedInteger('total_traded_value')->nullable();
+            $table->unsignedMediumInteger('total_trades')->nullable();
 
-            $table->string('avg_traded_price');
-            $table->string('fifty_two_week_high_price');
-            $table->string('fifty_two_week_low_price');
+            $table->double('avg_traded_price',8,2)->nullable();
+            $table->double('fifty_two_week_high_price',8,2)->nullable();
+            $table->double('fifty_two_week_low_price',8,2)->nullable();
 
             // $table->string('total_buy_qty');
             // $table->string('total_sell_qty');
-            $table->string('last_updated_price');
+
             //date
             $table->string('last_updated_time')->nullable();
             $table->date('transaction_date');
