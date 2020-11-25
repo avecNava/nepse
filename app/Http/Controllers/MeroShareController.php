@@ -30,13 +30,14 @@ class MeroShareController extends Controller
 
           //get transaction history and its related stock_id, security_name from related (stocks table)
           $transactions = Meroshare::where('shareholder_id', $shareholder_id)
-                                   ->with('share')
-                                   ->get();
+                         ->with('share')
+                         ->get();
 
-          return view('meroshare.import-transaction', [
-                         'transactions' => $transactions,
-                         'shareholders' => $shareholders->sortBy('first_name'),
-                    ]);
+          return view('meroshare.import-transaction', 
+          [
+               'transactions' => $transactions,
+               'shareholders' => $shareholders->sortBy('first_name'),
+          ]);
    }
    
    /**

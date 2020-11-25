@@ -31,12 +31,19 @@ class PortfolioController extends Controller
         $shareholders = Shareholder::getShareholderNames($user_id);       
         $last_transaction_date = StockPrice::getLastDate();
         $portfolios = Portfolio::where('shareholder_id', $shareholder_id)
-                                ->with('shareholder','share','stockPrice')->get();
-        // $portfolios->dd();
+                        ->with(['shareholder','stockPrice','share'])
+                        ->get();
+        $portfolios = $portfolios->sortBy('share.symbol');
 
+        // https://laravel.com/docs/8.x/eloquent-serialization#serializing-to-json
+        // $flat = $portfolios->attributesToArray();       //only main model is conveted to array
+        // $flat = $portfolios->toArray();              //convert models and relationship to array
+        // dd($portfolios->toJson());
+        // dd($portfolios->toJson(JSON_PRETTY_PRINT));        
+        
         return view("portfolio", 
                     [
-                        'portfolios' => $portfolios,
+                        'portfolios' => $portfolios->toJson(),
                         'shareholders' =>$shareholders,
                         'shareholder_id' => $shareholder_id,
                         'last_transaction_date' => $last_transaction_date,

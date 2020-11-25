@@ -19,7 +19,7 @@
         </section>
 
         <section class="portfolio">
-        @if( !empty($portfolios) )
+        @if( $portfolios->isNotEmpty() )
            
             <article class="a_portfolio">
             
@@ -81,12 +81,11 @@
                         <!-- <th>Shareholder</th> -->
                     </tr>
                     
-                    @foreach (json_decode($portfolios) as $record)
+                    @foreach ($portfolios as $record)
                         @php
-                            //dd($record->quantity);
                             $qty = $record->quantity;
-                            $ltp = $record->stock_price->close_price;
-                            $ltp_prev = $record->stock_price->previous_day_close_price;
+                            $ltp = $record->stockPrice->close_price;
+                            $ltp_prev = $record->stockPrice->previous_day_close_price;
                             $worth_ltp = round($qty * $ltp ,2);
                             $worth_prev_ltp = round($qty * $ltp_prev ,2);
 
