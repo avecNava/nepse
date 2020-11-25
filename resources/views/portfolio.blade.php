@@ -36,33 +36,35 @@
                 <div class="a_portfolio_main">
                     <div class="a_portfolio_header">
                         <h1 class="c_title">My portfolio</h1>
-                        <span class="c_info">{{ $last_transaction_date }}</span>
+                        <span class="c_info">{{ $transaction_date }}</span>
                     </div>
-                    <div class="c_shareholder">
-                        @if( !empty($shareholders) )
-                      
-                            Shareholder 
-                            <select id="shareholder" onChange="loadShareholder()">
-                                <option value="0">All</option>
-                                @foreach ($shareholders as $shareholder)
-                             
-                                <option 
-                                @php                                
+                    <div class="c_band">
+                        <div class="c_shareholder">
+                            @if( !empty($shareholders) )
+                        
+                                Shareholder 
+                                <select id="shareholder" onChange="loadShareholder()">
+                                    <option value="0">All</option>
+                                    @foreach ($shareholders as $shareholder)
                                 
-                                if( $shareholder_id == $shareholder->id){
-                                    echo "SELECTED";
-                                }                                
-                                
-                                @endphp
-                                value="{{ $shareholder->id }}">
-                                    {{ $shareholder->first_name }} {{ $shareholder->last_name }}
-                                    @if (!empty($shareholder->relation))
-                                        ({{ $shareholder->relation }})
-                                    @endif
-                                </option>
-                                @endforeach
-                            </select>
-                        @endif
+                                    <option 
+                                    @php                                
+                                    
+                                    if( $shareholder_id == $shareholder->id){
+                                        echo "SELECTED";
+                                    }                                
+                                    
+                                    @endphp
+                                    value="{{ $shareholder->id }}">
+                                        {{ $shareholder->first_name }} {{ $shareholder->last_name }}
+                                        @if (!empty($shareholder->relation))
+                                            ({{ $shareholder->relation }})
+                                        @endif
+                                    </option>
+                                    @endforeach
+                                </select>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 </header>
@@ -91,13 +93,15 @@
                         @php
                             //dd($record->quantity);
                             $qty = $record->quantity;
-                            $ltp = $record->stock_price->close_price;
-                            $ltp_prev = $record->stock_price->previous_day_close_price;
+                            //$ltp = $record->stock_price->close_price;
+                            //$ltp_prev = $record->stock_price->previous_day_close_price;
+                            $ltp = $record->stock_price_latest->close_price;
+                            $ltp_prev = $record->stock_price_latest->previous_day_close_price;
                             $worth_ltp = round($qty * $ltp ,2);
                             $worth_prev_ltp = round($qty * $ltp_prev ,2);
 
-                            $change = $ltp_prev - $ltp;
-                            $change_per = round($change/$ltp_prev,2);
+                            $change = $ltp - $ltp_prev;
+                            $change_per = round(($change/$ltp_prev)*100,2);
 
                             //up or down
                             if($change == 0){
@@ -105,7 +109,7 @@
                             }elseif($change>0){
                                 $upordown = 'increase';
                             }else{
-                                $change = 'decrease';
+                                $upordown = 'decrease';
                             }
 
                         @endphp
@@ -151,7 +155,7 @@
                 </table>
             </main>
             
-            <footer><span class="c_info">Last transaction date : {{ $last_transaction_date }}</span></footer>
+            <footer><span class="c_info">Last transaction date : {{ $transaction_date }}</span></footer>
             
         </article>
         @endif

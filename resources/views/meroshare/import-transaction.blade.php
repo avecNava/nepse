@@ -105,9 +105,23 @@
         <article class="c_transaction_list">
         
             <header>
-                <button id="import_all" onClick="importToMyPortfolio()">Import to <strong>My Portfolio</strong></button>
-                <div id="import-message" style="display:none">
-                    The selected transactions have been successfully imported to your <a href="{{url('portfolio')}}"> Portfolio</a>.
+                <div class="c_band">
+                    <button id="import_all" onClick="importToMyPortfolio()">Import to <strong>My Portfolio</strong></button>
+                    <div class="c_shareholder">
+                        <label for="shareholder">Shareholder name</label>   
+                        <select name="shareholder">
+                            <option value="">Shareholder name</option>
+                            @if (!empty($shareholders))
+                                @foreach($shareholders as $member)
+                                    <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
+                                        @if (!empty($member->relation))
+                                            ({{ $member->relation }})
+                                        @endif
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
                 </div>
             </header>
 

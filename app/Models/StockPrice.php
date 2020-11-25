@@ -37,7 +37,9 @@ class StockPrice extends Model
                         'open_price' => $record['openPrice'],
                         'high_price' => $record['highPrice'],
                         'low_price' => $record['lowPrice'],
+                        'close_price' => empty($record['closePrice']) ? null : $record['closePrice'],
                         'previous_day_close_price' => $record['previousDayClosePrice'],
+                        'last_updated_price' => $record['lastUpdatedPrice'],
                         
                         'total_traded_qty' => $record['totalTradedQuantity'],
                         'total_traded_value' => $record['totalTradedValue'],
@@ -46,10 +48,6 @@ class StockPrice extends Model
                         'avg_traded_price' => $record['averageTradedPrice'],
                         'fifty_two_week_high_price' => $record['fiftyTwoWeekHigh'],
                         'fifty_two_week_low_price' => $record['fiftyTwoWeekLow'],
-                        
-                        'last_updated_price' => $record['lastUpdatedPrice'],
-                        
-                        'close_price' => empty($record['previousDayClosePrice']) ? null : $record['previousDayClosePrice'],
                         'last_updated_time' => empty($record['lastUpdatedTime']) ? null : $record['lastUpdatedTime']
                     ]
                 );

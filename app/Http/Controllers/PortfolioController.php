@@ -23,15 +23,22 @@ class PortfolioController extends Controller
     
     public function index($shareholder_id = null)
     {
-        
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
         //else load the portfolio for the given shareholder_id
-        $shareholder_id = empty($shareholder_id) ? Auth::id() : $shareholder_id;
-        $user_id = Auth::id();          
+        $user_id = Auth::id();
+        $shareholder = $shareholder_id;
+        if(empty($shareholder_id)){
+            $shareholder = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
+        }
+
         $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       
-        $last_transaction_date = StockPrice::getLastDate();
-        $portfolios = Portfolio::where('shareholder_id', $shareholder_id)
-                        ->with(['shareholder','stockPrice','share'])
+        $transaction_date = StockPrice::getLastDate();
+        // $portfolios = Portfolio::where('shareholder_id', $shareholder)
+        //                 ->with(['shareholder','share','stockPrice'=>function($q) use($transaction_date) {
+        //                     $q->where('transaction_date', '>=', $transaction_date);
+        //                   }])->get();
+        $portfolios = Portfolio::where('shareholder_id', $shareholder)
+                        ->with(['shareholder','stockPriceLatest','share'])
                         ->get();
         $portfolios = $portfolios->sortBy('share.symbol');
 
@@ -44,9 +51,9 @@ class PortfolioController extends Controller
         return view("portfolio", 
                     [
                         'portfolios' => $portfolios->toJson(),
-                        'shareholders' =>$shareholders,
-                        'shareholder_id' => $shareholder_id,
-                        'last_transaction_date' => $last_transaction_date,
+                        'shareholders' => $shareholders,
+                        'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
+                        'transaction_date' => $transaction_date,
                     ]
                 );
     }

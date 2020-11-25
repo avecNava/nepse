@@ -24,4 +24,11 @@ class Portfolio extends Model
     {
         return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id');
     }
+
+    public function stockPriceLatest()
+    {
+        $transaction_date = StockPrice::getLastDate();
+        return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id')->where('transaction_date','>=',$transaction_date);
+    }   
+    
 }

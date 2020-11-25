@@ -115,13 +115,12 @@
     <article class="c_shareholder_list">
     
         <header>
+        <div class="c_band">
             <div class="action">
                 <button id="edit" onClick="editShareholder()">Edit</button>
                 <button id="delete" onClick="deleteShareholder()">Delete</button>
             </div>
-            <div id="form-message" style="display:none">
-                The selected transactions have been deleted.
-            </div>
+        </div>            
         </header>
 
         <main>

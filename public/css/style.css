@@ -14,7 +14,7 @@ img.c-logo__img {
 }
 a {text-decoration: none;}
 h1, h2, h3 {margin:0}
-h1 {font-family: 'Cutive', serif;font-size:1.5em; margin: 15px 0;}
+h1 {font-family: 'Cutive', serif;font-size:1.5em; margin: 10px;}
 h2 {font-size: 1.2em;}
 ul.thin {margin:0; padding: 0;}
 table {border-spacing: 0px; width:100%;}
@@ -33,7 +33,13 @@ col:nth-child(2n+3) {background: #CCC}
 */
 td {padding-left: 2px;height: 30px;}
 .c_digit {text-align: right;}
-
+select#shareholder {
+    /* display: block; */
+    height: 2em;
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: 200px;
+}
 button {
     padding: 10px;
     min-width: 100px;
@@ -50,6 +56,14 @@ select#relation {
     padding: 7px;
 }
 input[type="checkbox"],input[type="radio"] { width: 20px; }
+.c_band {
+    background: #6b64a0;
+    padding: 5px;
+    color: #fff;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
 /* form validation css */
 .success {
     padding: 10px 60px;
@@ -111,7 +125,6 @@ td:last-child {
 .c_transaction_list td {border-bottom: 1px solid #d6dcde;}
 .c_transaction_list article { padding: 10px 0;}
 main.c_trans_form {
-    margin: 20px 0;
     border: 1px solid #f7f7f7;
     border-radius: 10px;
     padding: 20px;
@@ -143,25 +156,10 @@ article.c_transaction_list header {
 .a_portfolio_main h1, .c_shareholder{align-self: center;}
 .a_portfolio_main h1 {display: inline-block;}
 .a_portfolio_header {align-self: center; }
-.c_shareholder {
-    background: #6b64a0;
-    padding: 3px;
-    border-radius: 5px;
-    color: #fff;
-    width: auto;
-}
-select#shareholder {
-    display: block;
-    height: 2em;
-    border-radius: 5px;
-    padding: 2px 4px;
-    min-width:230px;
-}
+
 .a_portfolio_main {
-    display: flex;
-    justify-content: space-between;
     background: #e0f7e3;
-    padding: 5px 10px;
+    padding: 5px 0;
 }
 .c_change {
     padding-right: 18px;
@@ -188,14 +186,11 @@ select#shareholder {
 .c_shareholder_list .action {
     display: flex;
     justify-content: flex-end;
-    margin: 5px 0;
 }
 .c_shareholder_list .action button {
-    margin: 5px;
+    margin: 0 5px;
 }
-.c_shareholder_list main {
-    margin: 10px 0;
-}
+
 /* end of portfolio */
 
 /* shareholders */
