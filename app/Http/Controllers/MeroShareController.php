@@ -22,17 +22,18 @@ class MeroShareController extends Controller
 
    public function importTransactionForm()
    {   
-          $shareholder_id = Auth::id();
-          
+          $user_id = Auth::id();
+          $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->first();
+
           //get all the shareholder names
-          $shareholders = Shareholder::where('parent_id', $shareholder_id)
+          $shareholders = Shareholder::where('parent_id', $user_id)
                          ->get();
 
           //get transaction history and its related stock_id, security_name from related (stocks table)
           $transactions = Meroshare::where('shareholder_id', $shareholder_id)
                          ->with('share')
                          ->get();
-
+          
           return view('meroshare.import-transaction', 
           [
                'transactions' => $transactions,

@@ -25,6 +25,7 @@
             
                 <header>
                 <div class="a_portfolio_msg">
+                    <button id="edit" onClick="editPortfolios()" hidden>Edit</button>
                     <button id="delete" onClick="deletePortfolios()" hidden>Delete</button>
                     <div id="delete-message" style="display:none">
                         The selected scripts have been deleted successfully.
@@ -39,20 +40,25 @@
                     </div>
                     <div class="c_shareholder">
                         @if( !empty($shareholders) )
+                      
                             Shareholder 
                             <select id="shareholder" onChange="loadShareholder()">
                                 <option value="0">All</option>
                                 @foreach ($shareholders as $shareholder)
+                             
                                 <option 
                                 @php                                
                                 
-                                if( $shareholder_id == $shareholder['id']){
+                                if( $shareholder_id == $shareholder->id){
                                     echo "SELECTED";
                                 }                                
                                 
                                 @endphp
-                                value="{{ $shareholder['id'] }}">
-                                    {{ $shareholder['name'] }} {{ $shareholder['relation'] }}
+                                value="{{ $shareholder->id }}">
+                                    {{ $shareholder->first_name }} {{ $shareholder->last_name }}
+                                    @if (!empty($shareholder->relation))
+                                        ({{ $shareholder->relation }})
+                                    @endif
                                 </option>
                                 @endforeach
                             </select>

@@ -73,7 +73,11 @@
                             <option value="">Shareholder name</option>
                             @if (!empty($shareholders))
                                 @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} ({{$member->relation}})</option>
+                                    <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
+                                        @if (!empty($member->relation))
+                                            ({{ $member->relation }})
+                                        @endif
+                                    </option>
                                 @endforeach
                             @endif
                         </select> 

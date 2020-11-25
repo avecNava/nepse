@@ -16,19 +16,30 @@ class ShareholderController extends Controller
     
     public function index()
     {
-        $shareholder_id = Auth::id();
+        $user_id = Auth::id();
         $relationships = Relation::orderBy('relation','asc')->get();
         //get all the shareholder names
-        $shareholders = Shareholder::where('parent_id', $shareholder_id)
-                        ->get();
+        // $shareholders = Shareholder::where('parent_id', $user_id)->get();
+        $shareholders = Shareholder::where('parent_id', $user_id)->get();
+        // $shareholders->dd();
         return view('shareholder',[
             'shareholders' => $shareholders,
             'relationships' => $relationships,
         ]);
     }
     
-    public function create()
+    public function create(Request $request)
     {
+        $request->validate([
+            'first_name' => 'required|max:25|min:5',
+            'last_name' => 'required|max:25',
+            'date_of_birth' => 'nullable|date',
+            'email' => 'required|email',
+            'gender' => 'nullable|in:male,female,other',
+            'relation' => 'required',
+        ]);
+        
+        Shareholder::createShareholder($request);
         
     }
 }

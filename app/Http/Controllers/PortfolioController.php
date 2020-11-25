@@ -28,7 +28,7 @@ class PortfolioController extends Controller
         //else load the portfolio for the given shareholder_id
         $shareholder_id = empty($shareholder_id) ? Auth::id() : $shareholder_id;
         $user_id = Auth::id();          
-        $shareholders = Shareholder::getShareholderNames($user_id);       
+        $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       
         $last_transaction_date = StockPrice::getLastDate();
         $portfolios = Portfolio::where('shareholder_id', $shareholder_id)
                         ->with(['shareholder','stockPrice','share'])
