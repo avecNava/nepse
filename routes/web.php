@@ -28,6 +28,7 @@ Route::get('/welcome', function(){
     return view('welcome');
 });
 
+Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 

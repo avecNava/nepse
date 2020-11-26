@@ -33,29 +33,17 @@ col:nth-child(2n+3) {background: #CCC}
 */
 td {padding-left: 2px;height: 30px;}
 .c_digit {text-align: right;}
-select#shareholder {
-    /* display: block; */
-    height: 2em;
-    border-radius: 5px;
-    padding: 2px 4px;
-    width: 200px;
-}
-button {
-    padding: 10px;
-    min-width: 100px;
-    border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #214b252e;
-}
 input {
     padding: 5px;
     width: 200px;
+    height: 2.5em;
+    margin: 5px 0;
 }
-select#relation {
-    width: 215px;
-    padding: 7px;
+input[type="checkbox"], input[type="radio"] {
+    width: 20px;
+    vertical-align: middle;
+    margin: 5px;
 }
-input[type="checkbox"],input[type="radio"] { width: 20px; }
 .c_band {
     background: #6b64a0;
     padding: 5px;
@@ -63,6 +51,28 @@ input[type="checkbox"],input[type="radio"] { width: 20px; }
     display: flex;
     justify-content: flex-end;
     margin-top: 5px;
+}
+select {
+    height: 2.5em;  
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: 200px;
+}
+
+button {
+    padding: 10px;
+    min-width: 100px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #214b252e;
+    height: 2.5em;
+    align-self: flex-end;
+}
+.c_shareholder {
+    margin: 0 5px;
+}
+.c_shareholder label {
+    display: block;
 }
 /* form validation css */
 .success {
@@ -153,7 +163,6 @@ article.c_transaction_list header {
 .a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
 .a_portfolio td:first-child,.a_portfolio td:last-child,.a_portfolio th:first-child, .a_portfolio th:last-child{text-align: left;}
 .a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
-.a_portfolio_main h1, .c_shareholder{align-self: center;}
 .a_portfolio_main h1 {display: inline-block;}
 .a_portfolio_header {align-self: center; }
 
@@ -162,7 +171,7 @@ article.c_transaction_list header {
     padding: 5px 0;
 }
 .c_change {
-    padding-right: 18px;
+    width:100px;
     background-repeat: no-repeat;
     background-position: top right;
     display: inline-block;

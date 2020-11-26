@@ -25,14 +25,29 @@ class ShareholderController extends Controller
         return view('shareholder',[
             'shareholders' => $shareholders,
             'relationships' => $relationships,
+            'parent_id' => $user_id,
         ]);
     }
     
+    /*** AJAX GET request for Shareholder
+     *  input Shareholder_id
+     *  returns JSON 
+     * */
+    public function getShareholder(Request $request, $id=null)
+    {
+        if(empty($id)){
+            $id = $request->id;
+        }
+        
+        $shareholder = Shareholder::where('id', $id)->first();
+        return response()->json(['data'=>$shareholder]);
+    }
+
     public function create(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|max:25|min:5',
-            'last_name' => 'required|max:25',
+            'first_name' => 'required|max:25|min:3',
+            'last_name' => 'required|max:25|min:3',
             'date_of_birth' => 'nullable|date',
             'email' => 'required|email',
             'gender' => 'nullable|in:male,female,other',
@@ -41,5 +56,7 @@ class ShareholderController extends Controller
         
         Shareholder::createShareholder($request);
         
+        return redirect()->back()->with('message', 'Record updated succesfully.');
+
     }
 }

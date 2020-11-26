@@ -170,10 +170,8 @@
             </div>
         </footer>
 
-
-    <script>
         @yield('js')
-    </script>
+    
 
 </body>
 </html>

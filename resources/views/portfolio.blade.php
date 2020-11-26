@@ -42,8 +42,8 @@
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )
                         
-                                Shareholder 
-                                <select id="shareholder" onChange="loadShareholder()">
+                                <label for="shareholder">Shareholder</label>
+                                <select id="shareholder" name="shareholder" onChange="loadShareholder()">
                                     <option value="0">All</option>
                                     @foreach ($shareholders as $shareholder)
                                 
@@ -86,17 +86,22 @@
                         <th>Cost Price</th>
                         <th>Net Worth</th>
                         <th>Profit</th>
-                        <!-- <th>Shareholder</th> -->
+                        @if($shareholder_id==0)
+                            <th style="text-align:center" title="Shareholder">Initial</th>
+                        @endif
                     </tr>
-                    
-                    @foreach (json_decode($portfolios) as $record)
+                    @php 
+                    $objPortfolios = json_decode($portfolios);
+                    //dd($objPortfolios)
+                    @endphp
+                    @foreach ($objPortfolios as $record)
                         @php
-                            //dd($record->quantity);
+                            //dd($record);
                             $qty = $record->quantity;
-                            //$ltp = $record->stock_price->close_price;
-                            //$ltp_prev = $record->stock_price->previous_day_close_price;
-                            $ltp = $record->stock_price_latest->close_price;
-                            $ltp_prev = $record->stock_price_latest->previous_day_close_price;
+                            $ltp = empty($record->price->close_price) ? $record->price->last_updated_price : $record->price->close_price;
+                            $ltp_prev = $record->price->previous_day_close_price;
+                            //$ltp_prev = empty($record->price->previous_day_close_price)? 0 : $record->price->previous_day_close_price;
+                            
                             $worth_ltp = round($qty * $ltp ,2);
                             $worth_prev_ltp = round($qty * $ltp_prev ,2);
 
@@ -128,7 +133,7 @@
                             </td>
 
                             <td>{{ $record->quantity }}</td>
-                            <td>{{ number_format($ltp) }}</td>
+                            <td title="Last updated at : {{$record->price->last_updated_time}}">{{ number_format($ltp) }}</td>
                             <td>{{ number_format( $worth_ltp) }}</td>
                             <td>{{ number_format($ltp_prev) }}</td>
                             <td>{{ number_format( $worth_prev_ltp ) }}</td>
@@ -143,11 +148,14 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <!-- <td>
-                            @if( !empty($record->shareholder))
-                                {{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}
+                            @if($shareholder_id==0)                                
+                                <td style="text-align:center" title="{{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}">                            
+                                    {{Str::substr($record->shareholder->first_name,0,1)}}{{Str::substr($record->shareholder->last_name,0,1)}}                                
+                                    @if(!empty($record->shareholder->relation) )
+                                        {{$record->shareholder->relation}}
+                                    @endif
+                                </td>
                             @endif
-                            </td> -->
                         </tr>
 
                     @endforeach   

@@ -38,9 +38,9 @@ class PortfolioController extends Controller
         //                     $q->where('transaction_date', '>=', $transaction_date);
         //                   }])->get();
         $portfolios = Portfolio::where('shareholder_id', $shareholder)
-                        ->with(['shareholder','stockPriceLatest','share'])
+                        ->with(['shareholder','price','share'])
                         ->get();
-        $portfolios = $portfolios->sortBy('share.symbol');
+        $portfolios = $portfolios->sortByDesc('quantity');
 
         // https://laravel.com/docs/8.x/eloquent-serialization#serializing-to-json
         // $flat = $portfolios->attributesToArray();       //only main model is conveted to array

@@ -5,7 +5,7 @@
 @endsection
 
 @section('js')
-    
+    <script src="{{asset('assets/js/shareholder.js')}}"></script>
 @endsection
 
 @section('content')
@@ -15,6 +15,11 @@
 
         <header>
             <h1 class="c_title">Shareholders</h1>
+            @if(session()->has('message'))
+                <div class="success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
         </header>
 
         <main class="c_shareholder_form">            
@@ -28,9 +33,10 @@
                     @csrf()
                     
                     <div class="form-field">
-                        <input type="hidden" value="{{old('id')}}" name="id"> 
+                        <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
+                        <input type="hidden" name="parent_id" id="parent_id" value="{{ $parent_id }}"> 
                         <label for="first_name">First name</label>
-                        <input type="text" value="{{old('first_name')}}" name="first_name" required 
+                        <input type="text" value="{{old('first_name')}}" name="first_name" id="first_name" required 
                         class="@error('first_name') is-invalid @enderror" />
                         @error('first_name')
                             <div class="is-invalid">{{ $message }}</div>
@@ -39,7 +45,7 @@
 
                     <div class="form-field">
                         <label for="last_name">Last name</label>
-                        <input type="text" value="{{old('last_name')}}" name="last_name" required 
+                        <input type="text" value="{{old('last_name')}}" name="last_name" id="last_name" required 
                         class="@error('last_name') is-invalid @enderror" />
                         @error('last_name')
                             <div class="is-invalid">{{ $message }}</div>
@@ -48,7 +54,7 @@
 
                     <div class="form-field">
                         <label for="email">Email</label>
-                        <input type="email" value="{{old('email')}}" name="email" required 
+                        <input type="email" value="{{old('email')}}" name="email" id="email" required 
                         class="@error('email') is-invalid @enderror" />
                         @error('email')
                             <div class="is-invalid">{{ $message }}</div>
@@ -57,7 +63,7 @@
 
                     <div class="form-field">
                         <label for="date_of_birth">Date of birth</label>
-                        <input type="date" value="{{old('date_of_birth')}}" name="date_of_birth" 
+                        <input type="date" value="{{old('date_of_birth')}}" name="date_of_birth" id="date_of_birth"
                         class="@error('date_of_birth') is-invalid @enderror" />
                         @error('date_of_birth')
                             <div class="is-invalid">{{ $message }}</div>
@@ -66,29 +72,24 @@
 
                     <div class="form-field">
                         <label>Gender</label>
-                        <label for="male">
-                            <input type="radio" name="gender" value="male" id="male" 
-                            {{ old('gender') == "male" ? 'checked' : '' }}
-                            >Male
-                        </label>
-                        <label for="female">
-                            <input type="radio" name="gender" value="female" id="female"
-                            {{ old('gender') == "female" ? 'checked' : '' }}
-                            >Female
-                        </label>
-                        <label for="other"> 
-                            <input type="radio" name="gender" value="other" id="other"
-                            {{ old('gender') == "other" ? 'checked' : '' }}
-                            >Other
-                        </label>
+
+                        <input type="radio" name="gender" value="male" id="male" {{ old('gender') == "male" ? 'checked' : '' }}>
+                        <label for="male">Male</label>
+
+                        <input type="radio" name="gender" value="female" id="female" {{ old('gender') == "female" ? 'checked' : '' }}
+                        <label for="female">Female</label>
+
+                        <input type="radio" name="gender" value="other" id="other" {{ old('gender') == "other" ? 'checked' : '' }}
+                        <label for="other">Other</label>
+
                         @error('gender')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
                     </div>
-                    
-                    <div class="form-field">
+                   
+                    <div class="form-field c_relation">
                         <label for="relation">Relation</label>
-                        <select name="relation">
+                        <select name="relation" id="relation">
                             @if (!empty($relationships))
                                 @foreach($relationships as $record)
                                     <option value="{{ $record->relation }}"
@@ -117,8 +118,8 @@
         <header>
         <div class="c_band">
             <div class="action">
-                <button id="edit" onClick="editShareholder()">Edit</button>
-                <button id="delete" onClick="deleteShareholder()">Delete</button>
+                <button id="edit">Edit</button>
+                <button id="delete">Delete</button>
             </div>
         </div>            
         </header>
@@ -137,10 +138,10 @@
                 @foreach ($shareholders as $record)                
                 <tr>
                     <td>
-                        <input type="checkbox" name="t_id" id="{{ $record->id }}">
+                        <input type="checkbox" name="s_id" id="{{ $record->id }}">
                     </td>
                     <td>
-                        <label for="{{ $record->id }}">{{ $record->first_name }}{{ $record->last_name }}</label>
+                        <label for="{{ $record->id }}">{{ $record->first_name }} {{ $record->last_name }}</label>
                     </td>
                     <td><label for="{{ $record->id }}">{{ $record->email }}</label</td>
                     <td>{{ $record->date_of_birth }}</td>

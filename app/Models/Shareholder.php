@@ -53,7 +53,7 @@ class Shareholder extends Model
             return collect([
                 'name' => "$item->first_name $item->last_name",
                 'relationF' => !empty($item->relation) ? "($item->relation)":'(Self)',
-                'relation' => $item->relation,
+                'relation' => (Auth::id() == $item->relation) ? null : $item->relation, //relation is null for main a/c holders
                 'date_of_birth' => $item->date_of_birth,
                 'gender' => $item->gender,
                 'email' => $item->email,
