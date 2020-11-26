@@ -36,8 +36,10 @@ td {padding-left: 2px;height: 30px;}
 input {
     padding: 5px;
     width: 200px;
-    height: 2.5em;
+    height: 1.5em;
     margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #8fa391;
 }
 input[type="checkbox"], input[type="radio"] {
     width: 20px;
@@ -56,7 +58,7 @@ select {
     height: 2.5em;  
     border-radius: 5px;
     padding: 2px 4px;
-    width: 200px;
+    width: 210px;
 }
 
 button {
@@ -86,7 +88,8 @@ button {
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
-    font-weight: bold;
+    margin: 10px 0;
+    border-radius: 5px;
 }
 .error {
     padding: 10px 60px;
@@ -98,7 +101,8 @@ button {
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
-    font-weight: bold;
+    margin: 10px 0;
+    border-radius: 5px;
 }
 .loading {
     padding: 10px 60px;

@@ -15,7 +15,7 @@ class RelationsTableSeeder extends Seeder
     public function run()
     {
         \DB::table('relations')->truncate();
-        $relations = ['Father','Mother','Son','Daughter','Brother','Cousin','Nephew','Aunt','Uncle','Friend'];
+        $relations = ['Father','Mother','Son','Daughter','Brother','Husband','Wife','Cousin','Nephew','Aunt','Uncle','Friend','Partnership','Other'];
         foreach ($relations as $value) {
             \DB::table('relations')->insert([
                 'relation' => $value,
