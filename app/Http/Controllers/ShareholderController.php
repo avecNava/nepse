@@ -56,7 +56,16 @@ class ShareholderController extends Controller
         
         Shareholder::createShareholder($request);
         
-        return redirect()->back()->with('message', 'Record updated succesfully.');
+        return redirect()->back()->with('message', 'Record created or updated succesfully.');
 
+    }
+    public function delete(Request $request, $id=null)
+    {
+        if(empty($id)){
+            $id = $request->id;             //get id from POST request
+        }
+
+        $deleted = Shareholder::destroy($id);
+        return response()->json(['message'=>'deleted', 'count'=>$deleted]);
     }
 }

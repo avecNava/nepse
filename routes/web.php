@@ -29,6 +29,7 @@ Route::get('/welcome', function(){
 });
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
+Route::post('shareholder/delete/{id?}',[ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 

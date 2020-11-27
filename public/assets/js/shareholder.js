@@ -28,18 +28,21 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
 //handle Edit button clicked
 let btn = document.getElementById("edit");
 btn.addEventListener("click", function() {
-  showLoadingMessage();
+
   //retrieve the data-id attribute from the edit button
-  let  el = document.getElementById('edit');
+  let el = document.getElementById('edit');
   let id = el.getAttribute('data-id');
 
-  //call ajax 
-  let _token = document.getElementsByName('_token')[0].value;
+  if(!id){
+    alert('Please select a record to edit');
+    return;
+  }
+
+  showLoadingMessage();  
 
   let request = new XMLHttpRequest();
   request.open('GET', '/shareholder/'+id, true);
 
-  // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
   request.onload = function(ele_success, ele_loading) {
       if (this.status >= 200 && this.status < 400) {
           $data = JSON.parse(this.response);
@@ -51,9 +54,47 @@ btn.addEventListener("click", function() {
     // There was a connection error of some sort
     hideLoadingMessage();
   };
-  request.send(`_token=${_token}&id=${id}`);
+  request.send();
+  // request.send(`_token=${_token}&id=${id}`);
 
 });
+
+//handle Delete button clicked
+let btn_delete = document.getElementById("delete");
+btn_delete.addEventListener("click", function() {
+  
+  //retrieve the data-id attribute from the delete button
+  let  el = document.getElementById('delete');
+  let id = el.getAttribute('data-id');
+
+  if(!id){
+    alert('Please select a record to delete');
+    return;
+  }
+
+  if(confirm('Please confirm the delete operation')) {
+    let _token = document.getElementsByName('_token')[0].value;
+    let request = new XMLHttpRequest();
+    request.open('POST', '/shareholder/delete', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+    request.onload = function(ele_success, ele_loading) {
+        if (this.status >= 200 && this.status < 400) {
+            $data = JSON.parse(this.response);
+
+            if($data.message=='deleted'){
+              hideSelectedRow(id);
+            }
+        }
+    }  
+    request.send(`_token=${_token}&id=${id}`);
+  }
+});
+
+function hideSelectedRow(id){
+  let rowid = 'row' + id;
+  document.getElementById(rowid).setAttribute('style','display:none');
+}
 
 function updateFormFields($data) {
   $record = $data['data'];

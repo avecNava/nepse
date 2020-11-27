@@ -52,7 +52,6 @@ input[type="checkbox"], input[type="radio"] {
     color: #fff;
     display: flex;
     justify-content: flex-end;
-    margin-top: 5px;
 }
 select {
     height: 2.5em;  
@@ -62,13 +61,11 @@ select {
 }
 
 button {
-    padding: 10px;
     min-width: 100px;
     border: 1px solid #97c7ce;
     border-radius: 5px;
     box-shadow: 2px 2px 5px #214b252e;
     height: 2.5em;
-    align-self: flex-end;
 }
 .c_shareholder {
     margin: 0 5px;
@@ -78,31 +75,28 @@ button {
 }
 /* form validation css */
 .success {
-    padding: 10px 60px;
-    background-image: url(//s.svgbox.net/social.svg?fill=805ad5#angellist);
-    /* background-image: url(//s.svgbox.net/hero-solid.svg?fill=805ad5#thumb-up); */
+    padding: 5px 50px;
+    background-image: url(//s.svgbox.net/hero-solid.svg?fill=805ad5#thumb-up);
     background-repeat: no-repeat;
     background-size: 30px;
-    background-color: #c1dcca;
     display: inline-block !important;
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
+    color: #000000;
+    font-weight: bold;
 }
 .error {
-    padding: 10px 60px;
+    padding: 5px 50px;
     background-image: url(//s.svgbox.net/hero-solid.svg?fill=e20f67#thumb-down);
     background-repeat: no-repeat;
     background-size: 30px;
-    background-color: #eac9bf;
     display: inline-block !important;
     vertical-align: middle;
     background-position: left center;
     background-position-x: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
+    color: #FF0000;
+    font-weight: bold;
 }
 .loading {
     padding: 10px 60px;
@@ -209,14 +203,20 @@ article.c_transaction_list header {
 /* shareholders */
 main.c_shareholder_form {
     background: #fafafa;
-    padding: 20px 10px;
+    margin: 20px 0;
+    border: 1px solid #6b64a0;
+    border-top-width: 0;
 }
-main.c_shareholder_form form {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+.c_shareholder_form .c_band {
+    background:#9db79f;
+    margin-bottom: 20px;
+    /* background:url(//s.svgbox.net/heropatterns.svg?fill=9db79f#death-star) #FFF; */
+    background-size:32px;"
 }
-main.c_shareholder_form .form-field.button {
-    margin: 0 20px;
+.c_shareholder_form form {
+    margin-bottom: 20px;
+}
+.c_shareholder_form .fields {
+    margin-left: 50px;
 }
 /* end of shareholders */

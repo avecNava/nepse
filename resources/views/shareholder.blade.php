@@ -10,27 +10,32 @@
 
 @section('content')
 
-    <div id="loading-message" style="display:none">Importing... Please wait...</div>
+    <div id="loading-message" style="display:none">Loading... Please wait...</div>
     <section class="c_shareholders">
 
         <header>
-            <h1 class="c_title">Shareholders</h1>
-            @if(session()->has('message'))
-                <div class="success">
-                    {{ session()->get('message') }}
-                </div>
-            @endif
+            <h1 class="c_title">Shareholders</h1>            
         </header>
 
-        <main class="c_shareholder_form">            
+        <main class="c_shareholder_form">  
             <form method="POST" action="/shareholders">                
-                <div class="form-field button">
-                    <button type="submit">Save</button>
-                </div>
+                <div class="c_band">                    
+                    <div>
+                    @if(session()->has('message'))
+                    <div class="success">
+                        {{ session()->get('message') }}
+                    </div>
+                    @endif
+                    </div>
+                    <div class="form-field button">
+                        <button type="submit">Save</button>
+                    </div>
+                </div>          
                 
                 <div class="fields">
                     
                     @csrf()
+                    <!-- @method('DELETE'); -->
                     
                     <div class="form-field">
                         <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
@@ -136,7 +141,7 @@
                 </tr>
                 
                 @foreach ($shareholders as $record)                
-                <tr>
+                <tr id="row{{$record->id}}">
                     <td>
                         <input type="checkbox" name="s_id" id="{{ $record->id }}">
                     </td>
