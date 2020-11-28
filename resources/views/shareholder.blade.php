@@ -39,7 +39,7 @@
                     
                     <div class="form-field">
                         <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
-                        <input type="hidden" name="parent_id" id="parent_id" value="{{ $parent_id }}"> 
+                        <input type="hidden" name="parent_id" id="parent_id"> 
                         <label for="first_name">First name</label>
                         <input type="text" value="{{old('first_name')}}" name="first_name" id="first_name" required 
                         class="@error('first_name') is-invalid @enderror" />

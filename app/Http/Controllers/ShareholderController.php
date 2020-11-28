@@ -25,7 +25,6 @@ class ShareholderController extends Controller
         return view('shareholder',[
             'shareholders' => $shareholders,
             'relationships' => $relationships,
-            'parent_id' => $user_id,
         ]);
     }
     
@@ -40,7 +39,8 @@ class ShareholderController extends Controller
         }
         
         $shareholder = Shareholder::where('id', $id)->first();
-        return response()->json(['data'=>$shareholder]);
+        // dd($shareholder->toJson(JSON_PRETTY_PRINT));
+        return $shareholder->toJson();
     }
 
     public function create(Request $request)

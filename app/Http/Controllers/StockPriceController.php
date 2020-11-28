@@ -22,7 +22,7 @@ class StockPriceController extends Controller
     {
         $time_start = Carbon::now();
         $date_string =  "$time_start->year-$time_start->month-$time_start->day";
-        // $date_string =  "2020-11-18";
+        $date_string =  "2020-11-26";
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'

@@ -79,10 +79,11 @@ class RegisterController extends Controller
         //insert the user as shareholder
         Shareholder::create([
             'parent_id' => $user->id,
-            'user_id' => $user->id,
+            'parent' => true,                   //all registered users will be the parent by default
             'first_name' => $first_name,
             'last_name' => $last_name,
             'email' => $data['email'],
+            'last_modified_by' => $user->id,
         ]);
         
         return $user;

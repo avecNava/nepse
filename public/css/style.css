@@ -190,6 +190,10 @@ article.c_transaction_list header {
     padding: 5px 10px;
     background: #fafafa;
 }
+
+/* end of portfolio */
+
+/* shareholders */
 .c_shareholder_list .action {
     display: flex;
     justify-content: flex-end;
@@ -197,10 +201,9 @@ article.c_transaction_list header {
 .c_shareholder_list .action button {
     margin: 0 5px;
 }
-
-/* end of portfolio */
-
-/* shareholders */
+article.c_shareholder_list {
+    margin-top: 50px;
+}
 main.c_shareholder_form {
     background: #fafafa;
     margin: 20px 0;

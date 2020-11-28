@@ -22,7 +22,11 @@ class CreateShareholderTable extends Migration
             $table->string('email')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('relation')->nullable();
-            $table->foreignId('user_id');
+            $table->boolean('parent')->default(false);
+            // $table->foreignId('user_id');
+            // $table->foreignIdFor(model: \App\Models\User::class);
+            //https://laravel.com/docs/8.x/migrations#foreign-key-constraints
+            $table->foreignId('last_modified_by')->constrained('users');    //references id on users
             $table->timestamps();
         });
     }

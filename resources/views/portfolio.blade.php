@@ -91,19 +91,22 @@
                         @endif
                     </tr>
                     @php 
-                    $objPortfolios = json_decode($portfolios);
-                    //dd($objPortfolios)
+                    //$objPortfolios = json_decode($portfolios);
+                    $objPortfolios = $portfolios;
+                    
                     @endphp
                     @foreach ($objPortfolios as $record)
                         @php
-                            //dd($record);
-                            $qty = $record->quantity;
-                            $ltp = empty($record->price->close_price) ? $record->price->last_updated_price : $record->price->close_price;
-                            $ltp_prev = $record->price->previous_day_close_price;
-                            //$ltp_prev = empty($record->price->previous_day_close_price)? 0 : $record->price->previous_day_close_price;
                             
-                            $worth_ltp = round($qty * $ltp ,2);
-                            $worth_prev_ltp = round($qty * $ltp_prev ,2);
+                            $ltp = $record->close_price;
+                            if(empty($record->close_price)){
+                                $ltp = $record->last_updated_price;
+                            }
+                            $quantity = $record->quantity;
+                            $ltp_prev = $record->previous_day_close_price;
+                            
+                            $worth_ltp = round($quantity * $ltp ,2);
+                            $worth_prev_ltp = round($quantity * $ltp_prev ,2);
 
                             $change = $ltp - $ltp_prev;
                             $change_per = round(($change/$ltp_prev)*100,2);
@@ -121,19 +124,19 @@
                         <tr>
                             
                             <td>
-                            @if( !empty($record->share))
+                            @if( !empty($record))
                                 <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
                                 &nbsp;
                                 <label for="{{ $record->id }}"></label>
-                                <a href="{{ url('portfolio/details', [ $record->share->symbol ]) }}" title="{{ $record->share->security_name }}" }}>
-                                    {{ $record->share->symbol }}
+                                <a href="{{ url('portfolio/details', [ $record->symbol ]) }}" title="{{ $record->security_name }}" }}>
+                                    {{ $record->symbol }}
                                 </a> 
                                 
                             @endif
                             </td>
 
                             <td>{{ $record->quantity }}</td>
-                            <td title="Last updated at : {{$record->price->last_updated_time}}">{{ number_format($ltp) }}</td>
+                            <td title="Last updated at : {{$record->last_updated_time}}">{{ number_format($ltp) }}</td>
                             <td>{{ number_format( $worth_ltp) }}</td>
                             <td>{{ number_format($ltp_prev) }}</td>
                             <td>{{ number_format( $worth_prev_ltp ) }}</td>
@@ -149,10 +152,10 @@
                             <td></td>
                             <td></td>
                             @if($shareholder_id==0)                                
-                                <td style="text-align:center" title="{{ $record->shareholder->first_name }} {{ $record->shareholder->last_name }}">                            
-                                    {{Str::substr($record->shareholder->first_name,0,1)}}{{Str::substr($record->shareholder->last_name,0,1)}}                                
-                                    @if(!empty($record->shareholder->relation) )
-                                        {{$record->shareholder->relation}}
+                                <td style="text-align:center" title="{{ $record->first_name }} {{ $record->last_name }}">                            
+                                    {{Str::substr($record->first_name,0,1)}}{{Str::substr($record->last_name,0,1)}}                                
+                                    @if(!empty($record->relation) )
+                                        {{$record->relation}}
                                     @endif
                                 </td>
                             @endif

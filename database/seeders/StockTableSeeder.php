@@ -14,7 +14,7 @@ class StockTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('stocks')->truncate();
+        // \DB::table('stocks')->truncate();
         $stocks = [
             array(
                 'symbol' => 'CHCL',

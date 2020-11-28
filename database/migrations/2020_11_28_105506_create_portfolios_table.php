@@ -15,10 +15,15 @@ class CreatePortfoliosTable extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('shareholder_id')->nullable();
-            $table->foreignId('stock_id')->nullable();
+            // $table->foreignId('user_id')->constrained('shareholders');
+            $table->foreignId('shareholder_id')->constrained('shareholders');
+            $table->foreignId('stock_id')->constrained('stocks');
             $table->integer('quantity');
+            $table->foreignId('stock_offer_id')->constrained('stock_offers')->nullable();
+            $table->date('purchase_date')->nullable();
+            $table->foreignId('created_by')->nullable();
+            $table->foreignId('last_updated_by')->nullable();
+            $table->timestamps();
             // $table->float('unit_cost',8,2)->nullable();
             // $table->float('total_amount',8,2)->nullable();
             // $table->float('rate',8,2)->nullable();
@@ -29,14 +34,8 @@ class CreatePortfoliosTable extends Migration
             // $table->float('dp_amount',8,2);
             // $table->float('name_transfer',8,2);
             // $table->foreignId('stock_category_id')->nullable();
-            $table->foreignId('stock_offer_id')->nullable();
-            $table->foreignId('group_id')->nullable();
-            $table->date('purchase_date')->nullable();
             // $table->string('purchase_number');
             // $table->integer('broker_no');
-            $table->foreignId('created_by')->nullable();
-            $table->foreignId('last_updated_by')->nullable();
-            $table->timestamps();
         });
     }
 

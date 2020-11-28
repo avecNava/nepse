@@ -18,6 +18,7 @@ use App\Models\Stock;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Auth::loginUsingId(1); 
 
 Auth::routes();

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-class StockOfferingTableSeeder extends Seeder
+class StockOffersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,8 @@ class StockOfferingTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('stock_offers')->truncate();
+        //\DB::table('stock_offers')->truncate();
+
         $offers = [
             'IPO' => 'Initial Public offering',
             'FPO' => 'Fixed Premium offering',
@@ -22,6 +23,7 @@ class StockOfferingTableSeeder extends Seeder
             'IPO-PREMIUM' => 'IPO premium',
             'Bonds' => 'Bonds',
         ];
+
         foreach ($offers as $key => $value) {
             \DB::table('stock_offers')->insert([
                 'offer_name' => $key,

@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            StockOfferingTableSeeder::class,
+            StockOffersTableSeeder::class,
             StockCategoriesTableSeeder::class,
             RelationsTableSeeder::class,
             // ShareholderTableSeeder::class,

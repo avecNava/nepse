@@ -25,7 +25,9 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
   })
 });
 
-//handle Edit button clicked
+//-------------------------------------
+// handle Edit button clicked
+//-------------------------------------
 let btn = document.getElementById("edit");
 btn.addEventListener("click", function() {
 
@@ -59,7 +61,10 @@ btn.addEventListener("click", function() {
 
 });
 
-//handle Delete button clicked
+
+//-------------------------------------
+// handle Delete button clicked
+//-------------------------------------
 let btn_delete = document.getElementById("delete");
 btn_delete.addEventListener("click", function() {
   
@@ -95,14 +100,17 @@ function hideSelectedRow(id){
   let rowid = 'row' + id;
   document.getElementById(rowid).setAttribute('style','display:none');
 }
+//--------------------------------------------------------------------------------------
+// data contains the record being created (first_name, last_name, parent_id, gender etc)
+//--------------------------------------------------------------------------------------
 
-function updateFormFields($data) {
-  $record = $data['data'];
-  // console.log($record);
+function updateFormFields($record) {
+  
   document.getElementById('id').value = $record['id'];
   document.getElementById('first_name').value = $record['first_name'];
   document.getElementById('last_name').value = $record['last_name'];
   document.getElementById('email').value = $record['email'];
+
   if($record['date_of_birth']){
     document.getElementById('date_of_birth').value=$record['date_of_birth'];
   }
@@ -120,13 +128,11 @@ function updateFormFields($data) {
     document.getElementById("other").checked = true;
   }
 
-  //hide relation select box if parent_id = shareholder_id
-  let parent_id = document.getElementById('parent_id').value;
   let relation = document.getElementsByClassName('c_relation');
-
-  // console.log(parent_id, $record['parent_id']);
-
-  if(parent_id == $record['id']){
+  
+  //hide relation select box if parent_id = shareholder_id
+  
+  if($record['parent'] == true){
     relation[0].setAttribute('style','display:none');
   }
   else{

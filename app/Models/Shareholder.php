@@ -15,16 +15,22 @@ class Shareholder extends Model
         'first_name',
         'last_name',
         'parent_id',
+        'parent',
         'relation',
         'gender',
         'email',
         'date_of_birth',
-        'user_id'
+        'last_modified_by'
     ];
 
     public function shares()
     {
         return $this->belongsTo('App\Models\Portfolio');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');        //join Shareholder and user by parent_id and  ids
     }
 
     public static function createShareholder(Request $request)
@@ -34,7 +40,7 @@ class Shareholder extends Model
                 'id' => $request->id
             ],
             [
-                'user_id' => Auth::id(),
+                'last_modified_by' => Auth::id(),
                 'parent_id' => Auth::id(),
                 'first_name' => Str::title($request->first_name),
                 'last_name' => Str::title($request->last_name),

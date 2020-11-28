@@ -9,6 +9,8 @@ use App\Models\StockPrice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class PortfolioController extends Controller
 {
     
@@ -37,20 +39,23 @@ class PortfolioController extends Controller
         //                 ->with(['shareholder','share','stockPrice'=>function($q) use($transaction_date) {
         //                     $q->where('transaction_date', '>=', $transaction_date);
         //                   }])->get();
-        $portfolios = Portfolio::where('shareholder_id', $shareholder)
-                        ->with(['shareholder','price','share'])
-                        ->get();
-        $portfolios = $portfolios->sortByDesc('quantity');
+        // $portfolios = Portfolio::where('shareholder_id', $shareholder)
+        //                 ->with(['shareholder','price','share'])
+        //                 ->get();
 
-        // https://laravel.com/docs/8.x/eloquent-serialization#serializing-to-json
-        // $flat = $portfolios->attributesToArray();       //only main model is conveted to array
-        // $flat = $portfolios->toArray();              //convert models and relationship to array
-        // dd($portfolios->toJson());
-        // dd($portfolios->toJson(JSON_PRETTY_PRINT));        
+        $portfolios = DB::table('portfolios')
+        ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
+        ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
+        ->join('stock_prices', 'stock_prices.stock_id', '=', 'portfolios.stock_id')
+        ->select('portfolios.*','stocks.*', 'shareholders.*','stock_prices.*')
+        ->where('stock_prices.transaction_date','=',$transaction_date)
+        ->get();
+        $portfolios = $portfolios->sortByDesc('quantity');
+    
         
         return view("portfolio", 
                     [
-                        'portfolios' => $portfolios->toJson(),
+                        'portfolios' => $portfolios,
                         'shareholders' => $shareholders,
                         'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
                         'transaction_date' => $transaction_date,
@@ -191,8 +196,7 @@ class PortfolioController extends Controller
                     ],
                     [
                         'quantity' => $row['quantity'], 
-                        'user_id' => $row['shareholder_id'],
-                        'created_by' => $row['shareholder_id'],
+                        'last_updated_by' => $row['shareholder_id'],
                     ]
                 );
             }

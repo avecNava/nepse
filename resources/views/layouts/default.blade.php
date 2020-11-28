@@ -25,7 +25,11 @@
                     </nav>
                 </div>
                 @auth
-                    <div class="c-user">{{ Auth::user()->name }}</div>
+                    <div class="c-user">
+                        @if (!empty( Auth::user()->name ))
+                            {{ Auth::user()->name }} 
+                        @endif
+                    </div>
                 @endauth
             </div>
         </header>
@@ -44,8 +48,16 @@
                     <img src="images/background.jpg">
                     </div>
                     <a href="#!user"><img class="circle" src="images/default-avatar.png"></a>
-                    <a href="#!name"><span class="name">{{ Auth::user()->name }}</span></a>
-                    <a href="#!email"><span class="email">{{ Auth::user()->email }}</span></a>
+                    <a href="#!name"><span class="name">
+                        @if (!empty( Auth::user()->name ))
+                            {{ Auth::user()->name }} 
+                        @endif
+                    </span></a>
+                    <a href="#!email"><span class="email">
+                    @if (!empty( Auth::user()->email ))
+                            {{ Auth::user()->email }} 
+                        @endif
+                    </span></a>
                     </div></li>
                     <li>
                     <a href="portfolio" title="Home">
