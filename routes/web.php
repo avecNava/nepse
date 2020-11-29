@@ -35,10 +35,11 @@ Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
-Route::get('meroshare/transaction', [MeroShareController::class, 'importTransactionForm']);
+Route::get('meroshare/transaction/{shareholder_id?}', [MeroShareController::class, 'importTransactionForm']);
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
 Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
 Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
+Route::get('portfolio/new', [PortfolioController::class, 'create']);
 Route::get('portfolio/{shareholder_id?}', [PortfolioController::class, 'index']);
 Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
 

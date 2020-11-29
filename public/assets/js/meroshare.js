@@ -25,6 +25,10 @@ function checkAll() {
         el.checked=flag;
     });
 }
+
+/**
+ * imports the selected transactions to the portfolio table
+ */
 function importToMyPortfolio() {
     let selected = [];
     let elements = document.getElementsByName("t_id");
@@ -40,7 +44,6 @@ function importToMyPortfolio() {
 
     //call ajax 
     let _token = document.getElementsByName('_token')[0].value;
-
     let request = new XMLHttpRequest();
     request.open('POST', '/meroshare/import-transaction', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -55,3 +58,20 @@ function importToMyPortfolio() {
     request.send(`_token=${_token}&trans_id=${selected.toString()}`);
 
 }
+
+let select = document.getElementById("shareholder_filter");
+select.addEventListener("change", function() {
+
+    let url = window.location.origin + "/meroshare/transaction/";
+
+    
+    //get the value from selectedIndex
+    let options = this.options[this.selectedIndex];
+
+    //append shareholder_id to the url (ie, /meroshare/import-transaction/1)
+    if(this.selectedIndex > 0)
+        url = url + options.value;            
+    
+    window.location.replace(url);
+
+});

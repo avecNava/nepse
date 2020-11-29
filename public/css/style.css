@@ -13,8 +13,8 @@ img.c-logo__img {
     padding: 20px 0;
 }
 a {text-decoration: none;}
-h1, h2, h3 {margin:0}
-h1 {font-family: 'Cutive', serif;font-size:1.5em; margin: 10px;}
+h1, h2, h3 {margin:0; margin-left:0;}
+h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
 ul.thin {margin:0; padding: 0;}
 table {border-spacing: 0px; width:100%;}
@@ -59,7 +59,6 @@ select {
     padding: 2px 4px;
     width: 210px;
 }
-
 button {
     min-width: 100px;
     border: 1px solid #97c7ce;
@@ -73,6 +72,32 @@ button {
 .c_shareholder label {
     display: block;
 }
+/* layout */
+.c-header__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.c-logo {
+    align-self: flex-end;
+}
+.c-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+nav.c-nav__list ul {
+    padding: 0;
+}
+nav.c-nav__list li {
+    display: inline;
+    padding: 10px 15px;
+    background: aliceblue;
+    border-radius: 5px;
+}
+.a_page_header {
+    text-align: right;
+}
+/* end of layout */
 /* form validation css */
 .success {
     padding: 5px 50px;
@@ -121,6 +146,9 @@ button {
 /* end of form validation css */
 
 /*meroshare*/
+button#import_all {
+    align-self: flex-end;
+}
 .c_transaction_list 
 td:last-child {
     max-width: 250px;
@@ -145,6 +173,7 @@ main.c_trans_form {
     padding: 20px;
     box-sizing: border-box;
     margin: 5px 0;
+    height:65px;
 }
 .c_trans_form  select#category {
     min-width: 200px;
@@ -158,6 +187,20 @@ article.c_transaction_list header {
 /*end of meroshare*/
 
 /*portfolio css*/
+
+/* scorecard */
+section.c_score_cards {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0 20px 0;
+}
+section.c_score_cards article {
+    width: 200px;
+    background: aliceblue;
+    padding: 10px;
+    margin: 5px;
+}
+
 .a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
 .a_portfolio td:first-child,.a_portfolio td:last-child,.a_portfolio th:first-child, .a_portfolio th:last-child{text-align: left;}
 .a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
@@ -165,8 +208,9 @@ article.c_transaction_list header {
 .a_portfolio_header {align-self: center; }
 
 .a_portfolio_main {
-    background: #e0f7e3;
-    padding: 5px 0;
+    background: #b9b300;
+    padding-top: 6px;
+    border-radius: 5px;
 }
 .c_change {
     width:100px;

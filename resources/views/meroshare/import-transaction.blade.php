@@ -101,18 +101,23 @@
         
         </article>
 
-        @if( $transactions->isNotEmpty() )
         <article class="c_transaction_list">
         
             <header>
+                <div>
+                    Following are the data from  MeroShare account from your last import. You can import again to refresh the list. 
+                    <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong"
+                </div>
                 <div class="c_band">
                     <div class="c_shareholder">
-                        <label for="shareholder">Shareholder name</label>   
-                        <select name="shareholder">
+                        <!-- <label for="shareholder">Shareholder name</label>    -->
+                        <select id="shareholder_filter">
                             <option value="">Shareholder name</option>
                             @if (!empty($shareholders))
                                 @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
+                                    <option value="{{ $member->id }}"
+                                    @if($shareholder_id == $member->id) SELECTED @endif>
+                                    {{ $member->first_name }} {{ $member->last_name }} 
                                         @if (!empty($member->relation))
                                             ({{ $member->relation }})
                                         @endif
@@ -194,7 +199,7 @@
         </footer>
         
     </article>
-    @endif
+
     
     </section>
     

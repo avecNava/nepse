@@ -4,6 +4,11 @@
     Your stock portfolio management application over the browser
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">My portfolio</h1>
+    <span class="c_info"><label>as of</label> {{ $transaction_date }}</span>
+@endsection
+
 @section('js')
     
 @endsection
@@ -15,7 +20,61 @@
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
         <section class="c_score_cards">
-        
+            <article>
+                <header>
+                    Investment
+                </header>
+                <main>
+                    6900
+                </main>
+                <footer>
+                    NPR
+                </footer>
+            </article>
+            <article>
+                <header>
+                    Investment
+                </header>
+                <main>
+                    6900
+                </main>
+                <footer>
+                    NPR
+                </footer>
+            </article>
+            <article>
+                <header>
+                    Investment
+                </header>
+                <main>
+                    6900
+                </main>
+                <footer>
+                    NPR
+                </footer>
+            </article>
+            <article>
+                <header>
+                    Investment
+                </header>
+                <main>
+                    6900
+                </main>
+                <footer>
+                    NPR
+                </footer>
+            </article>
+            <article>
+                <header>
+                    Investment
+                </header>
+                <main>
+                    6900
+                </main>
+                <footer>
+                    NPR
+                </footer>
+            </article>
         </section>
 
         <section class="portfolio">
@@ -34,10 +93,10 @@
                 </div>
 
                 <div class="a_portfolio_main">
-                    <div class="a_portfolio_header">
+                    <!-- <div class="a_portfolio_header">
                         <h1 class="c_title">My portfolio</h1>
                         <span class="c_info">{{ $transaction_date }}</span>
-                    </div>
+                    </div> -->
                     <div class="c_band">
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )

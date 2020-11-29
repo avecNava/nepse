@@ -16,21 +16,33 @@
         <header class="c-header">
             <div class="c-header__wrapper">
 
-                <a href="/" class="c-logo">
-                    <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
-                </a>
+                <div class="c-logo">
+                    <a href="/">
+                        <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
+                    </a>
+                </div>                
 
                 <div class="c-nav">
+                    <div class="a_page_header">
+                        @yield('header_title')
+                    </div>
                     <nav class="c-nav__list">
+                        <ul>
+                            <li><a href="{{ url('/') }}">Home</a></li>
+                            <li><a href="{{ url('/portfolio/new') }}">New</a></li>
+                            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                            <li><a href="{{ url('meroshare/transaction') }}">Import Share</a></li>
+                            <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
+                        </ul>
                     </nav>
                 </div>
-                @auth
+                <!-- @auth
                     <div class="c-user">
                         @if (!empty( Auth::user()->name ))
-                            {{ Auth::user()->name }} 
+                            {{ Auth::user()->name }}  
                         @endif
                     </div>
-                @endauth
+                @endauth -->
             </div>
         </header>
 

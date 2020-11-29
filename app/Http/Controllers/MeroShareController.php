@@ -20,15 +20,21 @@ class MeroShareController extends Controller
         
    }
 
-   public function importTransactionForm()
+   /**
+    * displays the share import form and meroshare transaction listing for various shareholders
+    * parameter : $shareholder_id 
+    */
+   public function importTransactionForm($shareholder_id = null)
    {   
           $user_id = Auth::id();
-          $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->first();
-
-          //get all the shareholder names
-          $shareholders = Shareholder::where('parent_id', $user_id)
-                         ->get();
-
+          //if no shareholder-id was supplied, choose parent account as default
+          if(empty($shareholder_id)){
+               $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->first();
+          }
+          
+          //get all the shareholder names to display in the select input
+          $shareholders = Shareholder::where('parent_id', $user_id)->get();
+          
           //get transaction history and its related stock_id, security_name from related (stocks table)
           $transactions = Meroshare::where('shareholder_id', $shareholder_id)
                          ->with('share')
@@ -38,6 +44,7 @@ class MeroShareController extends Controller
           [
                'transactions' => $transactions,
                'shareholders' => $shareholders->sortBy('first_name'),
+               'shareholder_id' => $shareholder_id,
           ]);
    }
    

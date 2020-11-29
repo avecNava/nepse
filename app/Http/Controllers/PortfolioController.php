@@ -23,6 +23,12 @@ class PortfolioController extends Controller
         
     }
     
+    public function create()
+    {
+        return 'new';
+    }
+
+
     public function index($shareholder_id = null)
     {
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
