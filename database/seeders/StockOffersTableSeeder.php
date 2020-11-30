@@ -14,6 +14,7 @@ class StockOffersTableSeeder extends Seeder
     public function run()
     {
         //\DB::table('stock_offers')->truncate();
+        \DB::table('stock_offers')->delete();
 
         $offers = [
             'IPO' => 'Initial Public offering',
@@ -22,12 +23,13 @@ class StockOffersTableSeeder extends Seeder
             'RIGHTS' => 'Rights share',
             'IPO-PREMIUM' => 'IPO premium',
             'Bonds' => 'Bonds',
+            'Others' => 'Others',
         ];
 
         foreach ($offers as $key => $value) {
             \DB::table('stock_offers')->insert([
-                'offer_name' => $key,
-                'offer_description' => $value,
+                'offer_code' => $key,
+                'offer_name' => $value,
                 'created_at' => Carbon::now()->toDateTimeString()
                 ]);
         }     

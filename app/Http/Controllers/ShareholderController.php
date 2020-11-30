@@ -59,6 +59,11 @@ class ShareholderController extends Controller
         return redirect()->back()->with('message', 'Record created or updated succesfully.');
 
     }
+    /**
+     * delete the Shareholder
+     * DONOT DELETE THE primary shareholder
+     * $id is supplied via POST via AJAX request
+     */
     public function delete(Request $request, $id=null)
     {
         $flag = false;
@@ -72,8 +77,8 @@ class ShareholderController extends Controller
             $message = 'Can not delete a parent Shareholder';
         }
         else {
-            // $deleted = Shareholder::destroy($id);
-            $deleted = 1;
+            $deleted = Shareholder::destroy($id);
+            // $deleted = 1;
             if($deleted > 0){
                 $message = "Shareholder $shareholder->first_name deleted.";
                 $flag = true;

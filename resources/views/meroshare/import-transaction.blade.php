@@ -31,15 +31,15 @@
                     </ul>  
                 </div>
             
-                <div class="message">
+                <div class="c_band c_band_left">
                     @if (\Session::has('success'))
-                    <div class="success">
+                    <div class="message message_success">
                         {!! \Session::get('success') !!}. <a href="{{ url('meroshare/transaction') }}">Refresh</a> the page to see them.
                     </div>
                     @endif
 
                     @if (\Session::has('error'))
-                    <div class="error">
+                    <div class="message message_error">
                         {!! \Session::get('error') !!}</li>
                     </div>
                     @endif
@@ -109,6 +109,8 @@
                     <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong"
                 </div>
                 <div class="c_band">
+                    <div id="message" class="message">
+                    </div>
                     <div class="c_shareholder">
                         <!-- <label for="shareholder">Shareholder name</label>    -->
                         <select id="shareholder_filter">

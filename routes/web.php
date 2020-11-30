@@ -6,6 +6,7 @@ use App\Http\Controllers\StockPriceController;
 use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\PortfolioSummaryController;
 use App\Models\Stock;
 
 /*
@@ -37,22 +38,19 @@ Route::post('shareholders',[ShareholderController::class, 'create']);
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction/{shareholder_id?}', [MeroShareController::class, 'importTransactionForm']);
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
-Route::get('meroshare/import-transaction', [PortfolioController::class, 'portfolio']);
-Route::post('meroshare/import-transaction', [PortfolioController::class, 'storeToPortfolio']);
-Route::get('portfolio/new', [PortfolioController::class, 'create']);
-Route::get('portfolio/{shareholder_id?}', [PortfolioController::class, 'index']);
-Route::get('portfolio/details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
+
+// Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
+Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
+
+
+Route::get('portfolio-details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
+Route::post('portfolio-details/new', [PortfolioController::class, 'store']);
+Route::post('portfolio-details/delete', [PortfolioController::class, 'delete']);
+
+Route::get('portfolio/{shareholder_id?}', [PortfolioSummaryController::class, 'index']);
 
 
 
-
-
-
-
-
-
-
-Route::get('last-date', [StockPriceController::class, 'getLastDate']);
 
 Route::get('test',function(){
 

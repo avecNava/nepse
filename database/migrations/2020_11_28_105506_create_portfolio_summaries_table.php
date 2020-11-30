@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePortfoliosTable extends Migration
+class CreatePortfolioSummariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,13 @@ class CreatePortfoliosTable extends Migration
      */
     public function up()
     {
-        Schema::create('portfolios', function (Blueprint $table) {
+        Schema::create('portfolio_summaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shareholder_id')->constrained('shareholders');
             $table->foreignId('stock_id')->constrained('stocks');
-            $table->float('unit_cost',8,2)->nullable();
             $table->integer('quantity');
-            $table->float('total_amount',8,2)->nullable();
-            $table->float('effective_rate',8,2)->nullable();
             $table->date('purchase_date')->nullable();
-            $table->date('sales_date')->nullable();
-            $table->foreignId('offer_code')->constrained('stock_offers')->nullable();
-            // $table->string('offer_code')->nullable();
-            $table->foreignId('category_id')->default(1);
-            // $table->foreignId('category_id')->constrained('stock_categories')->nullable();
-            $table->text('remarks')->nullable();
+            $table->foreignId('created_by')->nullable();
             $table->foreignId('last_updated_by')->nullable();
             $table->timestamps();
         });
@@ -40,6 +32,6 @@ class CreatePortfoliosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portfolios');
+        Schema::dropIfExists('portfolio_summaries');
     }
 }

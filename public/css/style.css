@@ -61,18 +61,24 @@ input[type="checkbox"], input[type="radio"] {
     top: 0;
     right: 0;
 }
-
-.success {
+.message {
+    align-self: center;
+    margin-right: 10px;
+    font-weight: bold;
+    background-size: 30px;
+    background-repeat: no-repeat;    
+    background-position: left center;
+}
+.message_success, .success {
     background-position-x: 10px;
     color: #ffffff;
     background: #09bb1a;
 }
-.error {
+.message_error, .error {
     background-position-x: 10px;
     color: #ffffff;
     font-weight: bold;
 }
-
 
 .c_band {
     background: #6b64a0;
@@ -81,21 +87,15 @@ input[type="checkbox"], input[type="radio"] {
     display: flex;
     justify-content: flex-end;
 }
+.c_band_left {
+    justify-content: flex-start;
+}
 
 .c_band__success {
     background: #09bb1a;
 }
 .c_band__error {
     background: #ff0000;
-}
-
-.message {
-    align-self: center;
-    margin-right: 10px;
-    font-weight: bold;
-    background-size: 30px;
-    background-repeat: no-repeat;    
-    background-position: left center;
 }
 /* #message .error {
     background-image: url(//s.svgbox.net/hero-solid.svg?fill=ffffff#thumb-down);

@@ -26,4 +26,28 @@ class UtilityService
     {
         return Str::of( $name )->replaceMatches('/[ :-]+/','');    
     }
+
+    /**
+     * checks if the given day is working day or not
+     */
+    public static function tradingDay($date)
+    {
+        //todo: read working days from ENV
+        $day = Str::lower( Carbon::parse($date)->format("l") );
+        
+        $trading_days = ['sunday','monday','tuesday','wednesday','thursday'];
+        if(in_array($day, $trading_days)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * checks if the given day is working day or not
+     */
+    public static function governmentHoliday()
+    {
+        //todo: check if given date is government holiday
+        return false;
+    }
 }

@@ -25,6 +25,11 @@ class MeroShare extends Model
         return $this->belongsTo('App\Models\Shareholder','shareholder_id');
     }
 
+    public function offer()
+    {
+        return $this->belongsTo('App\Models\StockOffer', 'offer_code', 'offer_code');
+    }
+    
     /***
      * saves transactions as portfolio
      */
@@ -38,7 +43,7 @@ class MeroShare extends Model
                     'shareholder_id' => $trans['shareholder_id'],
                     'transaction_date' => $trans['transaction_date'],
                     'remarks' => $trans['remarks'],
-                    'offer_type' => $trans['offer_type'],
+                    'offer_code' => $trans['offer_type'],
                     'transaction_mode' => $trans['transaction_mode'],
                     'credit_quantity' => $trans['credit_quantity'],
                     'debit_quantity' => $trans['debit_quantity'],

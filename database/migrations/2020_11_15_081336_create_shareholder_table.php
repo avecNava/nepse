@@ -26,7 +26,7 @@ class CreateShareholderTable extends Migration
             // $table->foreignId('user_id');
             // $table->foreignIdFor(model: \App\Models\User::class);
             //https://laravel.com/docs/8.x/migrations#foreign-key-constraints
-            $table->foreignId('last_modified_by')->constrained('users');    //references id on users
+            $table->foreignId('last_modified_by')->constrained('users')->nullable();    //references id on users
             $table->timestamps();
         });
     }

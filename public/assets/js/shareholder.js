@@ -137,11 +137,11 @@ btn_delete.addEventListener("click", function() {
   const record = document.querySelector(selector);
   console.log(record, record.dataset.parent);
 
-  // if(record.dataset.parent==true)
-  // {
-  //   alert('The selected record is a parent Shareholder. Can not delete parent record.');
-  //   return;
-  // }
+  if(record.dataset.parent==true)
+  {
+    alert('The selected record is a parent Shareholder. Can not delete parent record.');
+    return;
+  }
 
   if(confirm('Please confirm the delete operation')) {
     let _token = document.getElementsByName('_token')[0].value;

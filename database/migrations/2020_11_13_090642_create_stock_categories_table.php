@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShareOfferingTable extends Migration
+class CreateStockCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateShareOfferingTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_offers', function (Blueprint $table) {
+        Schema::create('stock_categories', function (Blueprint $table) {
+            // $table->autoIncrement('category_id');
             $table->id();
-            $table->string('offer_name');
-            $table->string('offer_description')->nullable();
+            $table->string('sector');
+            $table->string('sub_sector')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateShareOfferingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_offers');
+        Schema::dropIfExists('stock_categories');
     }
 }

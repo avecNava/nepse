@@ -13,27 +13,6 @@ class CreateStockPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_categories', function (Blueprint $table) {
-            // $table->autoIncrement('category_id');
-            $table->id();
-            $table->string('sector');
-            $table->string('sub_sector')->nullable();
-            $table->timestamps();
-        });
-        
-        //events (IPO/FPO/BONUS etc)
-        //news
-       
-       Schema::create('stocks', function (Blueprint $table) {
-            $table->id()->from(100);
-            $table->string('symbol');
-            $table->string('security_name');
-            $table->boolean('active')->default(true);
-            $table->foreignId('category_id')->nullable();
-            $table->foreignId('last_updated_by')->nullable();           //userid
-            $table->timestamps();
-        });
-        
         Schema::create('stock_prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('stock_id')->nullable();
@@ -73,8 +52,6 @@ class CreateStockPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_categories');
-        Schema::dropIfExists('stocks');
         Schema::dropIfExists('stock_prices');
     }
 }

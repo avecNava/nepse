@@ -6,16 +6,16 @@ function hideLoadingMessage() {
     let ele_loading = document.getElementById('loading-message');
     ele_loading.classList.remove('loading');
 }
-function showImportMessage($t=5000) {
-    let ele_loading = document.getElementById('import-message');
-    ele_loading.classList.add('success');
+function showImportMessage($msg, $t=5000) {
+    let ele = document.getElementById('message');
+    ele.innerHTML = $msg;
     setTimeout(function(){ 
-        ele_loading.classList.remove('success');
+        ele.innerHTML = ' ';
      }, $t);
 }
 function hideImportMessage() {
-    let ele_loading = document.getElementById('import-message');
-    ele_loading.classList.remove('success');
+    let ele = document.getElementById('import-message');
+    ele.classList.remove('success');
 }
 function checkAll() {
     var select_all = document.getElementById('select_all');
@@ -45,14 +45,13 @@ function importToMyPortfolio() {
     //call ajax 
     let _token = document.getElementsByName('_token')[0].value;
     let request = new XMLHttpRequest();
-    request.open('POST', '/meroshare/import-transaction', true);
+    request.open('POST', '/meroshare/import-portfolio', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onload = function(ele_success, ele_loading) {
         if (this.status >= 200 && this.status < 400) {
-            $msg = JSON.parse(this.response);
-            // console.log($msg);
+            $data = JSON.parse(this.response);
             hideLoadingMessage();
-            showImportMessage(5000*2);
+            showImportMessage($data.message);
         }
     }
     request.send(`_token=${_token}&trans_id=${selected.toString()}`);

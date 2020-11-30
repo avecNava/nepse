@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stock;
 use App\Models\StockPrice;
+use App\Services\UtilityService;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
@@ -20,9 +21,21 @@ class StockPriceController extends Controller
      */
     public function index()
     {
+        //todo: check holidays - check saturdays and fridays
+
         $time_start = Carbon::now();
+        // $time_start = $time_start->sub('3 days');
+     
+        //stop request during non working days
+        if(!UtilityService::tradingDay($time_start)){
+            return response()->json([
+                'message' => 'NEPSE is closed during Saturdays and Fridays',
+                'date' => $time_start->toDayDateTimeString(),
+            ]);
+        }
+
         $date_string =  "$time_start->year-$time_start->month-$time_start->day";
-        // $date_string =  "2020-11-26";
+        // $date_string =  "2020-11-29";
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
