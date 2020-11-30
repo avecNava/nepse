@@ -19,14 +19,14 @@
 
         <main class="c_shareholder_form">  
             <form method="POST" action="/shareholders">                
-                <div class="c_band">                    
-                    <div>
+                <div class="c_band @if(session()->has('message')) c_band_success @endif">                    
+
                     @if(session()->has('message'))
-                    <div class="success">
+                    <div class="message">
                         {{ session()->get('message') }}
                     </div>
                     @endif
-                    </div>
+
                     <div class="form-field button">
                         <button type="submit">Save</button>
                     </div>
@@ -121,7 +121,10 @@
     <article class="c_shareholder_list">
     
         <header>
-        <div class="c_band">
+        <div class="c_band" id="c_band01">
+            <div id="message" class="message">
+            
+            </div>
             <div class="action">
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
@@ -141,7 +144,7 @@
                 </tr>
                 
                 @foreach ($shareholders as $record)                
-                <tr id="row{{$record->id}}">
+                <tr id="row{{$record->id}}" data-parent="{{$record->parent}}">
                     <td>
                         <input type="checkbox" name="s_id" id="{{ $record->id }}">
                     </td>

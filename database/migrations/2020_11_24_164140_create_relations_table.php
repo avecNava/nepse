@@ -15,7 +15,7 @@ class CreateRelationsTable extends Migration
     {
         Schema::create('relations', function (Blueprint $table) {
             $table->id();
-            $table->string('relation');
+            $table->string('relation')->default('Other');
             $table->timestamps();
         });
     }

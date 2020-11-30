@@ -46,6 +46,34 @@ input[type="checkbox"], input[type="radio"] {
     vertical-align: middle;
     margin: 5px;
 }
+.loading {
+    padding: 10px 60px;
+    background-image: url(//s.svgbox.net/loaders.svg?fill=805ad5#three-dots);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-color: #d2fbab;
+    display: inline-block !important;
+    vertical-align: middle;
+    background-position: left center;
+    background-position-x: 10px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.success {
+    background-position-x: 10px;
+    color: #ffffff;
+    background: #09bb1a;
+}
+.error {
+    background-position-x: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+
 .c_band {
     background: #6b64a0;
     padding: 5px;
@@ -53,6 +81,28 @@ input[type="checkbox"], input[type="radio"] {
     display: flex;
     justify-content: flex-end;
 }
+
+.c_band__success {
+    background: #09bb1a;
+}
+.c_band__error {
+    background: #ff0000;
+}
+
+.message {
+    align-self: center;
+    margin-right: 10px;
+    font-weight: bold;
+    background-size: 30px;
+    background-repeat: no-repeat;    
+    background-position: left center;
+}
+/* #message .error {
+    background-image: url(//s.svgbox.net/hero-solid.svg?fill=ffffff#thumb-down);
+}
+#message .success {
+    background-image: url(//s.svgbox.net/hero-solid.svg?fill=ffffff#thumb-up);
+} */
 select {
     height: 2.5em;  
     border-radius: 5px;
@@ -99,45 +149,8 @@ nav.c-nav__list li {
 }
 /* end of layout */
 /* form validation css */
-.success {
-    padding: 5px 50px;
-    background-image: url(//s.svgbox.net/hero-solid.svg?fill=805ad5#thumb-up);
-    background-repeat: no-repeat;
-    background-size: 30px;
-    display: inline-block !important;
-    vertical-align: middle;
-    background-position: left center;
-    background-position-x: 10px;
-    color: #000000;
-    font-weight: bold;
-}
-.error {
-    padding: 5px 50px;
-    background-image: url(//s.svgbox.net/hero-solid.svg?fill=e20f67#thumb-down);
-    background-repeat: no-repeat;
-    background-size: 30px;
-    display: inline-block !important;
-    vertical-align: middle;
-    background-position: left center;
-    background-position-x: 10px;
-    color: #FF0000;
-    font-weight: bold;
-}
-.loading {
-    padding: 10px 60px;
-    background-image: url(//s.svgbox.net/loaders.svg?fill=805ad5#three-dots);
-    background-repeat: no-repeat;
-    background-size: 30px;
-    background-color: #d2fbab;
-    display: inline-block !important;
-    vertical-align: middle;
-    background-position: left center;
-    background-position-x: 10px;
-    font-weight: bold;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
+
+
 .is-invalid {
     color: #fb0000;
     font-weight: bold;

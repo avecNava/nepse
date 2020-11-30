@@ -61,11 +61,25 @@ class ShareholderController extends Controller
     }
     public function delete(Request $request, $id=null)
     {
+        $flag = false;
+        $message = 'Shareholder id can not be null';
         if(empty($id)){
             $id = $request->id;             //get id from POST request
         }
+        
+        $shareholder = Shareholder::where('id', $id)->select('first_name','parent')->first();
+        if($shareholder->parent==true){
+            $message = 'Can not delete a parent Shareholder';
+        }
+        else {
+            // $deleted = Shareholder::destroy($id);
+            $deleted = 1;
+            if($deleted > 0){
+                $message = "Shareholder $shareholder->first_name deleted.";
+                $flag = true;
+            }
+        }
 
-        $deleted = Shareholder::destroy($id);
-        return response()->json(['message'=>'deleted', 'count'=>$deleted]);
+        return response()->json(['action'=>'delete', 'message'=> $message, 'status'=>$flag]);
     }
 }
