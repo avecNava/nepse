@@ -8,7 +8,7 @@ function hideLoadingMessage() {
 }
 function showImportMessage($msg, $t=5000) {
     let ele = document.getElementById('message');
-    ele.innerHTML = $msg;
+    ele.innerHTML = `👌 ${$msg}`;
     setTimeout(function(){ 
         ele.innerHTML = ' ';
      }, $t);

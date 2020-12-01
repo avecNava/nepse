@@ -106,7 +106,7 @@
             <header>
                 <div>
                     Following are the data from  MeroShare account from your last import. You can import again to refresh the list. 
-                    <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong"
+                    <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong>"
                 </div>
                 <div class="c_band">
                     <div id="message" class="message">
@@ -177,7 +177,7 @@
                         <td class="c_digit">{{ $trans->credit_quantity }}</td>
                         <td class="c_digit">{{ $trans->debit_quantity }}</td>
                         <td>{{ $trans->transaction_mode }}</td>
-                        <td>{{ $trans->offer_type }}</td>
+                        <td>{{ $trans->offer_code }}</td>
                         <td>{{ $trans->transaction_date }}</td>
                         <td>
                             @if( !empty($trans->shareholder) )

@@ -129,7 +129,7 @@ class PortfolioController extends Controller
     //     $user_id = 2;
     //     $total_dr = 0;
     //     $total_cr = 0;
-    //     $collection = collect([]);
+    //     $portfolios = collect([]);
 
     //     // $transactions = MeroShare::join('stocks', 'stocks.symbol', '=', 'meroshare_transactions.symbol')
     //     //     ->get(['meroshare_transactions.*','stocks.id']);
@@ -143,7 +143,7 @@ class PortfolioController extends Controller
       
         
     //     $temp = $transactions->groupBy('symbol');
-    //     $temp->map(function($item) use($collection, $total_cr, $total_dr){
+    //     $temp->map(function($item) use($portfolios, $total_cr, $total_dr){
             
     //         foreach ($item as $value) {
                 
@@ -162,16 +162,16 @@ class PortfolioController extends Controller
     //                 'stock_id' =>  empty($value->share) ? null : $value->share->id,
     //             );
 
-    //             $collection->push( $portfolio );
+    //             $portfolios->push( $portfolio );
                 
     //         };
     //     });
 
-    //     // $collection->dd();
+    //     // $portfolios->dd();
         
     //     //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
     //     //one shareholder = one unique stock
-    //     foreach ($collection as $row) {
+    //     foreach ($portfolios as $row) {
     //         Portfolio::updateOrCreate(
     //             [
     //                 'stock_id' => $row['stock_id'], 
@@ -195,68 +195,71 @@ class PortfolioController extends Controller
      */
     public function storeToPortfolio(Request $request)
     {
-        $total_dr = 0;
-        $total_cr = 0;
-        $user_id = 1;    //todo : get from session
+        $user_id = Auth::id();
         
-        $collection0  = collect([]);                         //data for portfolio_summary table
-        $collection = collect([]);                          //data for portfolio table
+        $portfolios_sum  = collect([]);                         //data for portfolio_summary table
+        $portfolios = collect([]);                               //data for portfolio table
 
         if( !empty($request->trans_id) ){
 
-           //convert trans_ids to array and query table for records
+           //trans_id is comma separated (eg, 1,2,3,4,5), explode into array 
             $ids = Str::of($request->trans_id)->explode(',');
             
-            // Get data from meroshare_transactions along with related data from Shares table 
-            //consturct an array object
-
-            //todo: relationship with stock_offer and get id for offer_code
-
-            $transactions = MeroShare::whereIn('id', $ids->toArray())
-                                        ->with(['share:id,symbol,security_name','offer:id,offer_code'])
-                                        ->get();
-                
-            $temp = $transactions->groupBy('symbol');
-
-            //map each group of symbols and process the record
-            $temp->map(function($item) use($collection, $collection0 , $total_cr, $total_dr){
+            // Get portfolio from meroshare_transactions table, related data from Shares and Offers table 
+            //consturct collections to store data
+            $transactions = 
+            MeroShare::whereIn('id', $ids->toArray())
+                    ->with(['share:id,symbol','offer:id,offer_code'])         //relationships (share, offer)
+                    ->get();
             
+            //group by data by symbol; loop each symbol group; aggregate the debit and credit quantities
+            $transactions = $transactions->groupBy('symbol');
+            $transactions->map(function($item) use($portfolios, $portfolios_sum){
+
+                $total_dr = 0;
+                $total_cr = 0;
+
                 foreach ($item as $value) {
                     
+                    //add up the total debit and credit for each symbols within a group
                     $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
                     $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
                     
-                    $row1 = array(
+                    $row = array(
                         'quantity' => empty($value->credit_quantity) ? $value->debit_quantity : $value->credit_quantity,
                         'shareholder_id' => $value->shareholder_id,
                         'symbol' =>  empty($value->share) ? null : $value->share->symbol,
                         'stock_id' =>  empty($value->share) ? null : $value->share->id,
-                        'offer_id' =>  empty($value->offer->id) ? null : $value->offer->id,            //get from related table
+                        'offer_id' =>  empty($value->offer) ? null : $value->offer->id,            //get from related table
+                        'offer_code' =>  empty($value->offer) ? null : $value->offer->offer_code,            //get from related table
                         'purchase_date' => empty($value->credit_quantity) ? null : $value->transaction_date,
                         'sales_date'    => empty($value->debit_quantity) ? null :  $value->transaction_date,
                         'remarks' => $value->remarks,
                     );    
-                    $collection->push( $row1 );
+                    $portfolios->push( $row );
                     
                 };
 
-                //combine data from main and related table and bind add to collection
+                //aggregated (summarized) portfolio
                 $row = array(
                     'quantity' => $total_cr - $total_dr,
                     'shareholder_id' => $value->shareholder_id,
                     'stock_id' =>  empty($value->share) ? null : $value->share->id,
                     'symbol' =>  empty($value->share) ? null : $value->share->symbol,
                 );
-                $collection0 ->push( $row );
+                $portfolios_sum->push( $row );
+                
+            }); //end of map
 
-            }); //map
+            // $portfolios->dd();
+            // $portfolios_sum->dd();
 
-            //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
-            //portfolio (all transactions)
-            
-            // $collection->dd();
-            foreach ($collection as $row) {
-                Portfolio::updateOrCreate(
+            try {                
+           
+                //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
+                //portfolio (all transactions)
+                foreach ($portfolios as $row) {
+                    Portfolio::updateOrCreate(
                     [
                         'stock_id' => $row['stock_id'], 
                         'shareholder_id' => $row['shareholder_id'],
@@ -265,36 +268,43 @@ class PortfolioController extends Controller
                         'purchase_date' => $row['purchase_date'],
                     ],
                     [
+                        'offer_id' => $row['offer_id'],
                         'last_updated_by' => $row['shareholder_id'],
                         'sales_date' => $row['sales_date'],
                         'remarks' => $row['remarks'],
-                    ]
-                );
-            }
-            
-            //portfolio_summary
-            foreach ($collection0 as $row) {
-                PortfolioSummary::updateOrCreate(
-                    [
-                        'stock_id' => $row['stock_id'], 
-                        'shareholder_id' => $row['shareholder_id'],
-                    ],
-                    [
-                        'quantity' => $row['quantity'], 
-                        'last_updated_by' => $row['shareholder_id'],
-                    ]
-                );
-            }
+                    ]);
+                }
+                    
+                //portfolio_summary
+                foreach ($portfolios_sum as $row) {
+                    PortfolioSummary::updateOrCreate(
+                        [
+                            'stock_id' => $row['stock_id'], 
+                            'shareholder_id' => $row['shareholder_id'],
+                        ],
+                        [
+                            'quantity' => $row['quantity'], 
+                            'last_updated_by' => $row['shareholder_id'],
+                        ]
+                    );
+                }
 
+            } catch (QueryException $exception) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $exception->getMessage(),
+                ]);
+            }
             return response()->json([
-                'message' => 'success',
-                'transaction_id' => $collection,
+                'status' => 'success',
+                'transaction_id' => $portfolios,
             ]);
- 
+
         } //end if
 
         return response()->json([
-            'message' => 'No data received. Please select the transactions and try again.'
+            'status' => 'error',
+            'message' => '😉 No data received. Did you select any record?',
         ]);
 
     }   
