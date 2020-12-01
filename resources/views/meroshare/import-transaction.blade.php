@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="file">Select or drag and drop a transaction file (<mark>CSV or Excel files only</mark>) <br></label>
+                        <label for="file">Select or drag and drop a transaction file <mark>CSV or Excel files only</mark> <br></label>
                         <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                         @error('file')
                             <div class="is-invalid">{{ $message }}</div>
@@ -104,12 +104,21 @@
         <article class="c_transaction_list">
         
             <header>
+
+                @if( $transactions->count() > 0 )                
                 <div>
                     Following are the data from  MeroShare account from your last import. You can import again to refresh the list. 
                     <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong>"
                 </div>
+                @endif
+
                 <div class="c_band">
                     <div id="message" class="message">
+                    @if(count($transactions)>0)
+                        {{count($transactions)}} records
+                    @else
+                        No records found for the selected Shareholder. Use the form above to import.
+                    @endif
                     </div>
                     <div class="c_shareholder">
                         <!-- <label for="shareholder">Shareholder name</label>    -->

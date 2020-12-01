@@ -26,6 +26,44 @@ function checkAll() {
     });
 }
 
+    //display selected count (select all)
+    
+    const container = document.getElementById('message');
+    document.querySelector('input[name=select_all]').addEventListener("change", function() {
+        
+        let selected = document.querySelectorAll('input[name=t_id]:checked').length;
+        let total = document.querySelectorAll('input[name=t_id]').length;
+        if(this.checked){
+            container.innerHTML = `${selected} records selected`;
+        }
+        else{
+            container.innerHTML = `${total} records`;
+        }
+        
+    });
+  
+    //display selected count
+    let count = 0;
+    // const container = document.getElementById('message');
+    const checkboxes = document.querySelectorAll('input[name=t_id]');
+    checkboxes.forEach(checkbox=>{
+        checkbox.addEventListener("change", function() {
+            if(this.checked){
+                count = count + 1;
+            }else{
+                count = count - 1;
+            }
+            // let count = document.querySelectorAll("input[name=t_id]:checked").length;
+            if(count > 0){
+                container.innerHTML = `${count} records selected`;
+            }
+            else{
+                container.innerHTML = `${checkboxes.length} records`;
+            }
+            
+        });
+    });
+
 /**
  * imports the selected transactions to the portfolio table
  */

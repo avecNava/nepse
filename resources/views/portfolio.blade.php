@@ -201,7 +201,9 @@
                             <td>{{ number_format( $worth_prev_ltp ) }}</td>
                             <td>
                                 <div class="c_change {{ $upordown }}">
+                                    <span class="c_change_val">
                                     {{ $change }} 
+                                    </span>
                                     <span class="c_change_per">
                                         ({{$change_per}}%)
                                     </span>
