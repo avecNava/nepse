@@ -24,6 +24,7 @@ class StockPriceController extends Controller
         //todo: check holidays - check saturdays and fridays
 
         $time_start = Carbon::now();
+        
         // $time_start = $time_start->sub('3 days');
      
         //stop request during non working days
@@ -34,7 +35,8 @@ class StockPriceController extends Controller
             ]);
         }
 
-        $date_string =  "$time_start->year-$time_start->month-$time_start->day";
+        // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
+        $date_string =  $time_start->toDateString();
         // $date_string =  "2020-11-29";
         
         $client = new client([

@@ -187,7 +187,7 @@
                                 <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
                                 &nbsp;
                                 <label for="{{ $record->id }}"></label>
-                                <a href="{{ url('portfolio-details', [ $record->symbol ]) }}" title="{{ $record->security_name }}" }}>
+                                <a href="{{ url('portfolio', [ $record->symbol ]) }}" title="{{ $record->security_name }}" }}>
                                     {{ $record->symbol }}
                                 </a> 
                                 

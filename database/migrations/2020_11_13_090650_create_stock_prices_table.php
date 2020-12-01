@@ -14,6 +14,7 @@ class CreateStockPricesTable extends Migration
     public function up()
     {
         Schema::create('stock_prices', function (Blueprint $table) {
+
             $table->id();
             $table->foreignId('stock_id')->nullable();
             $table->string('symbol');
@@ -33,11 +34,8 @@ class CreateStockPricesTable extends Migration
             $table->double('fifty_two_week_high_price',8,2)->nullable();
             $table->double('fifty_two_week_low_price',8,2)->nullable();
 
-            // $table->string('total_buy_qty');
-            // $table->string('total_sell_qty');
-
-            //date
-            $table->string('last_updated_time')->nullable();
+            // $table->string('last_updated_time')->nullable();
+            $table->datetime('last_updated_time')->nullable();
             $table->date('transaction_date');
 
             $table->string('source')->default('nepalstock');

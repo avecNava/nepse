@@ -15,6 +15,12 @@ class Stock extends Model
         return $this->hasMany('App\Models\StockNews');
     }
 
+    public function sector()
+    {
+        //todo: get stock category 
+        //use the result in portfolio-details
+    }
+
     public static function addOrUpdateStock(Array $stocks)
     {
         if( empty($stocks) ) return false;

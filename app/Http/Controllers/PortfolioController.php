@@ -51,140 +51,29 @@ class PortfolioController extends Controller
         $offers = StockOffer::all()->sortBy('offer_code');
         $stocks = Stock::all()->sortBy('symbol');
         $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
-        // $transaction_date = StockPrice::getLastDate();
+        
+        //todo: add stock_category via relation
         $portfolios = DB::table('portfolios')
         ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
         ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
-        ->join('stock_categories', 'stock_categories.id', '=', 'portfolios.category_id')
-        ->join('stock_offers', 'stock_offers.id', '=', 'portfolios.offer_id')
-        ->select('portfolios.*','stocks.security_name', 'shareholders.first_name','shareholders.last_name','stock_categories.sector','stock_offers.offer_code')            ->get();
+        ->leftJoin('stock_categories', 'stock_categories.id', '=', 'portfolios.category_id')
+        ->leftJoin('stock_offers', 'stock_offers.id', '=', 'portfolios.offer_id')
+        ->select('portfolios.*','stocks.symbol', 'stocks.security_name', 'shareholders.first_name', 'shareholders.last_name','stock_offers.offer_code','stock_offers.offer_name')
+        ->get();
         $portfolios = $portfolios->sortByDesc('purchase_date');
-        $portfolios->dd();
-        
+    //    $portfolios->dd();
         return view("portfolio-details", 
-        [
-            'portfolios' => $portfolios,
-            'shareholders' => $shareholders,
-            'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
-            'categories' => $categories,
-            'offers' => $offers,
-            'stocks' => $stocks,
-            'transaction_date' => $transaction_date,
-        ]);
+            [
+                'portfolios' => $portfolios,
+                'shareholders' => $shareholders,
+                'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
+                'categories' => $categories,
+                'offers' => $offers,
+                'stocks' => $stocks,
+            ]);
 
     }
 
-   
-    // public function index($shareholder_id = null)
-    // {
-    //     //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
-    //     //else load the portfolio for the given shareholder_id
-    //     $user_id = Auth::id();
-    //     $shareholder = $shareholder_id;
-    //     if(empty($shareholder_id)){
-    //         $shareholder = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
-    //     }
-
-    //     $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       
-    //     $transaction_date = StockPrice::getLastDate();
-    //     // $portfolios = Portfolio::where('shareholder_id', $shareholder)
-    //     //                 ->with(['shareholder','share','stockPrice'=>function($q) use($transaction_date) {
-    //     //                     $q->where('transaction_date', '>=', $transaction_date);
-    //     //                   }])->get();
-    //     // $portfolios = Portfolio::where('shareholder_id', $shareholder)
-    //     //                 ->with(['shareholder','price','share'])
-    //     //                 ->get();
-
-    //     $portfolios = DB::table('portfolios')
-    //     ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
-    //     ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
-    //     ->join('stock_prices', 'stock_prices.stock_id', '=', 'portfolios.stock_id')
-    //     ->select('portfolios.*','stocks.*', 'shareholders.*','stock_prices.*')
-    //     ->where('stock_prices.transaction_date','=',$transaction_date)
-    //     ->get();
-    //     $portfolios = $portfolios->sortByDesc('quantity');
-    
-        
-    //     return view("portfolio", 
-    //         [
-    //             'portfolios' => $portfolios,
-    //             'shareholders' => $shareholders,
-    //             'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
-    //             'transaction_date' => $transaction_date,
-    //         ]
-    //     );
-        
-    // }
-    
-    
-    // /**
-    //  * reads data from MeroShare table (meroshare_transactions) along with related data from Shares table
-    //  * and forms array object
-    //  * http://dev.nepse/meroshare/import-transaction
-    //  * NOTE: this function is for testing purpose only and not used in PRODUCTION
-    //  * The same logic is applied in storeToPortfolio() function and used in PRODUCTION
-    //  */
-    // public function portfolio()
-    // {   
-    //     $user_id = 2;
-    //     $total_dr = 0;
-    //     $total_cr = 0;
-    //     $portfolios = collect([]);
-
-    //     // $transactions = MeroShare::join('stocks', 'stocks.symbol', '=', 'meroshare_transactions.symbol')
-    //     //     ->get(['meroshare_transactions.*','stocks.id']);
-
-    //     //https://laravel.com/docs/8.x/eloquent-relationships#constraining-eager-loads
-    //     // $transactions = MeroShare::with(['share' => function ($query) {
-    //     //     $query->where('title', 'like', '%first%');
-    //     // }])->get();
-        
-    //     $transactions = MeroShare::where('shareholder_id', $user_id)->with('share:id,symbol,security_name')->get();
-      
-        
-    //     $temp = $transactions->groupBy('symbol');
-    //     $temp->map(function($item) use($portfolios, $total_cr, $total_dr){
-            
-    //         foreach ($item as $value) {
-                
-    //             $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
-    //             $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
-                
-    //             //combine data from main and related table and bind add to collection
-    //             $portfolio = array(
-    //                 'id' => $value->id,
-    //                 'symbol' => $value->symbol,
-    //                 'stock_id' => $value->id,
-    //                 'quantity' => $total_cr - $total_dr,
-    //                 'user_id' => $value->shareholder_id,
-    //                 'shareholder_id' => $value->shareholder_id,
-    //                 'security_name' => empty($value->share) ? null :  $value->share->security_name,
-    //                 'stock_id' =>  empty($value->share) ? null : $value->share->id,
-    //             );
-
-    //             $portfolios->push( $portfolio );
-                
-    //         };
-    //     });
-
-    //     // $portfolios->dd();
-        
-    //     //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
-    //     //one shareholder = one unique stock
-    //     foreach ($portfolios as $row) {
-    //         Portfolio::updateOrCreate(
-    //             [
-    //                 'stock_id' => $row['stock_id'], 
-    //                 'shareholder_id' => $row['shareholder_id']
-    //             ],
-    //             [
-    //                 'symbol' => $row['symbol'], 
-    //                 'quantity' => $row['quantity'], 
-    //                 'user_id' => $row['shareholder_id'],
-    //             ]
-    //         );
-    //     }
-    // }
 
     /**
      * This function is called via AJAX POST method 
@@ -241,13 +130,18 @@ class PortfolioController extends Controller
                 };
 
                 //aggregated (summarized) portfolio
+                $net_quantity = $total_cr - $total_dr;
                 $row = array(
-                    'quantity' => $total_cr - $total_dr,
+                    'quantity' => $net_quantity,
                     'shareholder_id' => $value->shareholder_id,
                     'stock_id' =>  empty($value->share) ? null : $value->share->id,
                     'symbol' =>  empty($value->share) ? null : $value->share->symbol,
                 );
-                $portfolios_sum->push( $row );
+                
+                //only store stocks whose quantity > 0
+                if($net_quantity > 0){
+                    $portfolios_sum->push( $row );
+                }
                 
             }); //end of map
 

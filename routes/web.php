@@ -43,7 +43,7 @@ Route::post('meroshare/transaction', [MeroShareController::class, 'importTransac
 Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
 
 
-Route::get('portfolio-details/{symbol}', [PortfolioController::class, 'portfolioDetails']);
+Route::get('portfolio/{symbol}', [PortfolioController::class, 'portfolioDetails']);
 Route::post('portfolio-details/new', [PortfolioController::class, 'store']);
 Route::post('portfolio-details/delete', [PortfolioController::class, 'delete']);
 

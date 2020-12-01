@@ -5,8 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">My portfolio</h1>
-    <span class="c_info"><label>as of</label> {{ $transaction_date }}</span>
+    <h1 class="c_title">Portfolio details</h1>
 @endsection
 
 @section('js')
@@ -20,61 +19,7 @@
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
         <section class="c_score_cards">
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
+            
         </section>
 
         <section class="portfolio">
@@ -93,10 +38,7 @@
                 </div>
 
                 <div class="a_portfolio_main">
-                    <!-- <div class="a_portfolio_header">
-                        <h1 class="c_title">My portfolio</h1>
-                        <span class="c_info">{{ $transaction_date }}</span>
-                    </div> -->
+  
                     <div class="c_band">
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )
@@ -137,87 +79,34 @@
                             <label for="select_all">Symbol</label>
                         </th>
                         <th>Quantity</th>
-                        <th>LTP</th>
-                        <th>Worth (LTP)</th>
-                        <th>Prev Price</th>
-                        <th>Worth(Prev)</th>
-                        <th>Change</th>
-                        <th>Cost Price</th>
-                        <th>Net Worth</th>
-                        <th>Profit</th>
-                        @if($shareholder_id==0)
-                            <th style="text-align:center" title="Shareholder">Initial</th>
-                        @endif
+                        <th>Unit cost</th>
+                        <th>Total</th>
+                        <th>Effective rate</th>
+                        <th>Purchase date</th>
+                        <th>Offer</th>
+                        <th>Sector</th>
+                        <th>Shareholder</th>
                     </tr>
-                    @php 
-                    //$objPortfolios = json_decode($portfolios);
-                    $objPortfolios = $portfolios;
                     
-                    @endphp
-                    @foreach ($objPortfolios as $record)
-                        @php
-                            
-                            $ltp = $record->close_price;
-                            if(empty($record->close_price)){
-                                $ltp = $record->last_updated_price;
-                            }
-                            $quantity = $record->quantity;
-                            $ltp_prev = $record->previous_day_close_price;
-                            
-                            $worth_ltp = round($quantity * $ltp ,2);
-                            $worth_prev_ltp = round($quantity * $ltp_prev ,2);
-
-                            $change = $ltp - $ltp_prev;
-                            $change_per = round(($change/$ltp_prev)*100,2);
-
-                            //up or down
-                            if($change == 0){
-                                $upordown = 'no-change';
-                            }elseif($change>0){
-                                $upordown = 'increase';
-                            }else{
-                                $upordown = 'decrease';
-                            }
-
-                        @endphp
+                    @foreach ($portfolios as $record)
+                        
                         <tr>
                             
-                            <td>
-                            @if( !empty($record))
-                                <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
-                                &nbsp;
-                                <label for="{{ $record->id }}"></label>
-                                <a href="{{ url('portfolio-details', [ $record->symbol ]) }}" title="{{ $record->security_name }}" }}>
+                            <td title="{{ $record->security_name }}">
+                                @if( !empty($record))
+                                    <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
+                                    &nbsp;
                                     {{ $record->symbol }}
-                                </a> 
-                                
-                            @endif
+                                @endif
                             </td>
-
                             <td>{{ $record->quantity }}</td>
-                            <td title="Last updated at : {{$record->last_updated_time}}">{{ number_format($ltp) }}</td>
-                            <td>{{ number_format( $worth_ltp) }}</td>
-                            <td>{{ number_format($ltp_prev) }}</td>
-                            <td>{{ number_format( $worth_prev_ltp ) }}</td>
-                            <td>
-                                <div class="c_change {{ $upordown }}">
-                                    {{ $change }} 
-                                    <span class="c_change_per">
-                                        ({{$change_per}}%)
-                                    </span>
-                                </div>
-                            </td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            @if($shareholder_id==0)                                
-                                <td style="text-align:center" title="{{ $record->first_name }} {{ $record->last_name }}">                            
-                                    {{Str::substr($record->first_name,0,1)}}{{Str::substr($record->last_name,0,1)}}                                
-                                    @if(!empty($record->relation) )
-                                        {{$record->relation}}
-                                    @endif
-                                </td>
-                            @endif
+                            <td></td>
+                            <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
+                            <td>{{$record->sector}}</td>
+                            <td>{{$record->first_name}} {{$record->last_name}}</td>
                         </tr>
 
                     @endforeach   
@@ -225,7 +114,7 @@
                 </table>
             </main>
             
-            <footer><span class="c_info">Last transaction date : {{ $transaction_date }}</span></footer>
+            <footer></footer>
             
         </article>
         @endif

@@ -24,9 +24,6 @@ class CreatePortfoliosTable extends Migration
             $table->date('purchase_date')->nullable();
             $table->date('sales_date')->nullable();
             $table->foreignId('offer_id')->constrained('stock_offers')->nullable()->onDelete('cascade');
-            // $table->string('offer_code')->nullable();
-            $table->foreignId('category_id')->default(1);
-            // $table->foreignId('category_id')->constrained('stock_categories')->nullable();
             $table->text('remarks')->nullable();
             $table->foreignId('last_updated_by')->nullable();
             $table->timestamps();
