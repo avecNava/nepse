@@ -34,7 +34,7 @@
                 <div class="c_band c_band_left">
                     @if (\Session::has('success'))
                     <div class="message message_success">
-                        {!! \Session::get('success') !!}. <a href="{{ url('meroshare/transaction') }}">Refresh</a> the page to see them.
+                        {!! \Session::get('success') !!}
                     </div>
                     @endif
 

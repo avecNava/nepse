@@ -187,7 +187,14 @@
                                 <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
                                 &nbsp;
                                 <label for="{{ $record->id }}"></label>
-                                <a href="{{ url('portfolio', [ $record->symbol ]) }}" title="{{ $record->security_name }}" }}>
+                                <a href="{{ url('portfolio', 
+                                            [
+                                                Str::lower($record->first_name), 
+                                                Str::lower($record->symbol), 
+                                                $record->shareholder_id 
+                                            ]) 
+                                        }}" 
+                                    title="{{ $record->security_name }}">
                                     {{ $record->symbol }}
                                 </a> 
                                 
@@ -214,10 +221,7 @@
                             <td></td>
                             @if($shareholder_id==0)                                
                                 <td style="text-align:center" title="{{ $record->first_name }} {{ $record->last_name }}">                            
-                                    {{Str::substr($record->first_name,0,1)}}{{Str::substr($record->last_name,0,1)}}                                
-                                    @if(!empty($record->relation) )
-                                        {{$record->relation}}
-                                    @endif
+                                    {{Str::substr($record->first_name,0,1)}}{{Str::substr($record->last_name,0,1)}}                                    
                                 </td>
                             @endif
                         </tr>
@@ -241,13 +245,13 @@
         function loadShareholder(){
             
             let url = "{{url('portfolio')}}";
-            let shareholder = document.getElementById('shareholder');
-            let options = shareholder.options[shareholder.selectedIndex];
-            
-            
-            //append shareholder_id to the url (ie, /portfolio/7)
+            const shareholder = document.getElementById('shareholder');
+            const options = shareholder.options[shareholder.selectedIndex];
+            let username = options.text.split(" ")[0];
+            username = username.toLowerCase();
+            //append shareholder_id to the url (ie, /portfolio/username/7)
             if(shareholder.selectedIndex > 0)
-                url = url + "/"+ options.value;            
+                url = `${url}/${username}/${options.value}`;
             
             window.location.replace(url);
         }

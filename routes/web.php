@@ -42,13 +42,17 @@ Route::post('meroshare/transaction', [MeroShareController::class, 'importTransac
 // Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
 Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
 
+Route::pattern('username','[a-zA-Z0-9]+');
+Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
+// Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
+//add, edit portfolio
+Route::get('portfolio/create', [PortfolioController::class, 'new']);
+Route::post('portfolio/create', [PortfolioController::class, 'store']);
+Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
+Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 
-Route::get('portfolio/{symbol}', [PortfolioController::class, 'portfolioDetails']);
-Route::post('portfolio-details/new', [PortfolioController::class, 'store']);
-Route::post('portfolio-details/delete', [PortfolioController::class, 'delete']);
-
-Route::get('portfolio/{shareholder_id?}', [PortfolioSummaryController::class, 'index']);
-
+Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
+Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 
 
@@ -57,7 +61,6 @@ Route::get('test',function(){
     return Stock::select('id')->where('symbol', 'API')->first();
 
 });
-
 
 
 Route::get('contact-us',function(){

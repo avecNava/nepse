@@ -27,26 +27,31 @@ class PortfolioController extends Controller
         
     }
 
-    public function new()
-    {
-        return "new";
+    public function edit($id)
+    {   
+        $record = Portfolio::find($id)->all();
+        $record->dd();
     }
 
     /**
-     * display the portfolio summary
+     * Function: showPortfolioDetails
+     * display the details (history) of the given portfolio
+     * $username is just a label kept for clarity via Route::pattern
+     * $symbol is the stock symbol eg, CHCL
+     * $member is the shareholder_id
      */
 
-    public function portfolioDetails($symbol = null, $shareholder = null)
+    public function showPortfolioDetails($username, $symbol = null, $member = null)
     {
         //todo: check authorizations
-
+        
         //find shareholder info when null
-        $user_id = Auth::id();
-
-        $shareholder_id = $shareholder;
-        if(empty($shareholder_id)){
-            $shareholder = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
+        $user_id = Auth::id();        
+        $shareholder_id = $member;
+        if(empty($member)){
+            $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
         }
+
         $categories = StockCategory::all()->sortBy('sector');
         $offers = StockOffer::all()->sortBy('offer_code');
         $stocks = Stock::all()->sortBy('symbol');
@@ -54,19 +59,25 @@ class PortfolioController extends Controller
         
         //todo: add stock_category via relation
         $portfolios = DB::table('portfolios')
-        ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
         ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
         ->leftJoin('stock_categories', 'stock_categories.id', '=', 'portfolios.category_id')
         ->leftJoin('stock_offers', 'stock_offers.id', '=', 'portfolios.offer_id')
+        ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
         ->select('portfolios.*','stocks.symbol', 'stocks.security_name', 'shareholders.first_name', 'shareholders.last_name','stock_offers.offer_code','stock_offers.offer_name')
-        ->get();
+        ->where(function($query) use($shareholder_id, $symbol){
+            $query->where('portfolios.shareholder_id', $shareholder_id);
+            if(!empty($symbol)){
+                $query->where('stocks.symbol','=', $symbol);
+            }
+        })->get();
+
         $portfolios = $portfolios->sortByDesc('purchase_date');
-    //    $portfolios->dd();
+    
         return view("portfolio-details", 
             [
                 'portfolios' => $portfolios,
                 'shareholders' => $shareholders,
-                'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
+                'shareholder_id' => empty($member) ? 0 : $member,
                 'categories' => $categories,
                 'offers' => $offers,
                 'stocks' => $stocks,
@@ -153,6 +164,8 @@ class PortfolioController extends Controller
                 //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
                 //portfolio (all transactions)
                 foreach ($portfolios as $row) {
+                    //update record if the following five attributes are met,
+                    //else not create a new record with the following attributes
                     Portfolio::updateOrCreate(
                     [
                         'stock_id' => $row['stock_id'], 
@@ -190,8 +203,8 @@ class PortfolioController extends Controller
                 ]);
             }
             return response()->json([
-                'status' => 'success',
-                'transaction_id' => $portfolios,
+                'message' => "Records imported successfully",
+                'count' => count($portfolios),
             ]);
 
         } //end if

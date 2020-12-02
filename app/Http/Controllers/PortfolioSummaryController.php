@@ -25,41 +25,44 @@ class PortfolioSummaryController extends Controller
 
     /**
      * display the portfolio summary
+     * if shareholder_id is null, show portfolio for the parent 
+     * otherwise show portfolio for the selected user
      */
-    public function index($shareholder_id = null)
+    public function index($username, $member = null)
     {
         //if shareholder_id is null, get "ALL Portfolio" [current user and all shareholders under the current user]
         //else load the portfolio for the given shareholder_id
         $user_id = Auth::id();
-        $shareholder = $shareholder_id;
-        if(empty($shareholder_id)){
-            $shareholder = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
+        $shareholder_id = [$member];       //make the varible array
+        if(empty($member)){
+            $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();        //return Array            
         }
+        
+        //lookup data
         $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       
         $transaction_date = StockPrice::getLastDate();
         // $portfolios = Portfolio::where('shareholder_id', $shareholder)
         //                 ->with(['shareholder','share','stockPrice'=>function($q) use($transaction_date) {
         //                     $q->where('transaction_date', '>=', $transaction_date);
         //                   }])->get();
-        // $portfolios = Portfolio::where('shareholder_id', $shareholder)
-        //                 ->with(['shareholder','price','share'])
-        //                 ->get();
-
+        
         $portfolios = DB::table('portfolio_summaries')
             ->join('stocks', 'stocks.id', '=', 'portfolio_summaries.stock_id')
-            ->join('shareholders', 'shareholders.id', '=', 'portfolio_summaries.shareholder_id')
+            ->join('shareholders', function($join) use($shareholder_id){
+                $join->on('shareholders.id', '=', 'portfolio_summaries.shareholder_id')
+                    ->whereIn('shareholders.id', $shareholder_id);
+            })
             ->join('stock_prices', 'stock_prices.stock_id', '=', 'portfolio_summaries.stock_id')
             ->select('portfolio_summaries.*','stocks.*', 'shareholders.*','stock_prices.*')
-            ->where('stock_prices.transaction_date','=',$transaction_date)
+            ->where('stock_prices.transaction_date','=', $transaction_date)            
+            ->orderBy('stocks.symbol')
             ->get();
 
-        $portfolios = $portfolios->sortByDesc('quantity');
-        
         return view("portfolio", 
             [
                 'portfolios' => $portfolios,
                 'shareholders' => $shareholders,
-                'shareholder_id' => empty($shareholder_id) ? 0 : $shareholder_id,
+                'shareholder_id' => empty($member) ? 0 : $member,
                 'transaction_date' => $transaction_date,
             ]
         );
@@ -135,80 +138,4 @@ class PortfolioSummaryController extends Controller
             );
         }
     }
-
-    /**
-     * This function is called via AJAX POST method 
-     * when "Import to Poftfolio" is clicked on http://dev.nepse/meroshare/transaction route
-     * Input parameters (Request object with trans_ids and shareholder_id)
-     * The trans_ids and related data are stored into the Portfolio table for the given shareholder_id
-     * 
-     */
-    // public function storeToPortfolio(Request $request)
-    // {
-    //     $total_dr = 0;
-    //     $total_cr = 0;
-    //     $user_id = 1;    //todo : get from session
-    //     $collection = collect([]);
-
-    //     if( !empty($request->trans_id) ){
-
-    //        //convert trans_ids to array and query table for records
-    //         $ids = Str::of($request->trans_id)->explode(',');
-            
-    //         // Get data from meroshare_transactions along with related data from Shares table 
-    //         //consturct an array object
-    //         $transactions = MeroShare::whereIn('id', $ids->toArray())
-    //                                     ->with('share:id,symbol,security_name')
-    //                                     ->get();
-                
-    //         $temp = $transactions->groupBy('symbol');
-
-    //         $temp->map(function($item) use($collection, $total_cr, $total_dr){
-            
-    //             foreach ($item as $value) {
-                    
-    //                 $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
-    //                 $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
-                    
-    //                 //combine data from main and related table and bind add to collection
-    //                 $portfolio = array(
-    //                     'quantity' => $total_cr - $total_dr,
-    //                     'user_id' => $value->shareholder_id,
-    //                     'shareholder_id' => $value->shareholder_id,
-    //                     // 'security_name' => empty($value->share) ? null :  $value->share->security_name,
-    //                     'stock_id' =>  empty($value->share) ? null : $value->share->id,
-    //                 );
-    
-    //                 $collection->push( $portfolio );
-                    
-    //             };
-    //         }); //map
-
-    //         //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
-    //         //one shareholder = one unique stock
-    //         foreach ($collection as $row) {
-    //             Portfolio::updateOrCreate(
-    //                 [
-    //                     'stock_id' => $row['stock_id'], 
-    //                     'shareholder_id' => $row['shareholder_id']
-    //                 ],
-    //                 [
-    //                     'quantity' => $row['quantity'], 
-    //                     'last_updated_by' => $row['shareholder_id'],
-    //                 ]
-    //             );
-    //         }
-
-    //         return response()->json([
-    //             'message' => 'success',
-    //             'transaction_id' => $collection,
-    //         ]);
- 
-    //     } //end if
-
-    //     return response()->json([
-    //         'message' => 'No data received.<br/>Please select the transactions that you would like to import.'
-    //     ]);
-
-    // }   
 }

@@ -25,21 +25,22 @@
         <section class="portfolio">
         @if( !empty($portfolios) )
            
-            <article class="a_portfolio">
+            <article class="a_portfolio_details">
             
                 <header>
-                <div class="a_portfolio_msg">
-                    <button id="edit" onClick="editPortfolios()" hidden>Edit</button>
-                    <button id="delete" onClick="deletePortfolios()" hidden>Delete</button>
-                    <div id="delete-message" style="display:none">
-                        The selected scripts have been deleted successfully.
-                    </div>
-                    
-                </div>
 
                 <div class="a_portfolio_main">
   
                     <div class="c_band">
+
+                        <div id="message" class="message">
+                            @if(count($portfolios)>0)
+                                {{count($portfolios)}} records
+                            @else
+                                No records found for the selected Shareholder. Use the form above to import.
+                            @endif
+                        </div>
+
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )
                         
@@ -66,26 +67,28 @@
                                 </select>
                             @endif
                         </div>
+
+                        <div class="buttons">
+                            <button id="delete" onClick="deletePortfolios()">Delete</button>
+                        </div>
+
                     </div>
+
                 </div>
                 </header>
 
                 <main>
                 <table>
                     <tr>
-                        <th>
-                            <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
-                            &nbsp;
-                            <label for="select_all">Symbol</label>
-                        </th>
+                        <th>Symbol</th>
                         <th>Quantity</th>
                         <th>Unit cost</th>
                         <th>Total</th>
                         <th>Effective rate</th>
-                        <th>Purchase date</th>
                         <th>Offer</th>
                         <th>Sector</th>
                         <th>Shareholder</th>
+                        <th>Purchase date</th>
                     </tr>
                     
                     @foreach ($portfolios as $record)
@@ -94,19 +97,18 @@
                             
                             <td title="{{ $record->security_name }}">
                                 @if( !empty($record))
-                                    <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
-                                    &nbsp;
-                                    {{ $record->symbol }}
+                                    <input type="checkbox" name="chk_{{ $record->id }}" id="chk-{{ $record->id }}">&nbsp;
+                                    <a href="{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
                                 @endif
                             </td>
                             <td>{{ $record->quantity }}</td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
                             <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
-                            <td>{{$record->sector}}</td>
+                            <td></td>
                             <td>{{$record->first_name}} {{$record->last_name}}</td>
+                            <td>{{$record->purchase_date}}</td>
                         </tr>
 
                     @endforeach   
@@ -130,7 +132,6 @@
             let url = "{{url('portfolio')}}";
             let shareholder = document.getElementById('shareholder');
             let options = shareholder.options[shareholder.selectedIndex];
-            
             
             //append shareholder_id to the url (ie, /portfolio/7)
             if(shareholder.selectedIndex > 0)

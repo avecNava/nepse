@@ -73,17 +73,10 @@ input[type="checkbox"], input[type="radio"] {
     background-repeat: no-repeat;    
     background-position: left center;
 }
-.message_success, .success {
-    background-position-x: 10px;
-    color: #ffffff;
-    background: #09bb1a;
-}
-.message_error, .error {
-    background-position-x: 10px;
-    color: #ffffff;
-    font-weight: bold;
-}
 
+.buttons {
+    align-self: flex-end;
+}
 .c_band {
     background: #6b64a0;
     padding: 5px;
@@ -91,10 +84,8 @@ input[type="checkbox"], input[type="radio"] {
     display: flex;
     justify-content: flex-end;
 }
-.c_band_left {
-    justify-content: flex-start;
-}
-
+.c_band_left {justify-content: flex-start;}
+.c_band a {color: #eef0f7;}
 .c_band__success {
     background: #09bb1a;
 }
