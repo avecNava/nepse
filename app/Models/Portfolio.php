@@ -31,9 +31,19 @@ class Portfolio extends Model
         return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id')->where('transaction_date','=',$transaction_date);
     }   
 
+    /**
+     * get sector name via stocks table -> hasOneThrough
+     * //https://laravel.com/docs/8.x/eloquent-relationships#has-one-through
+     * 
+     *  first argument : name of final model we wish to access (ie, Sectors)
+     *  second argument : name of intermediate model
+     *  third argument : name of foreign key on intermediate model
+     *  fourth argument : name of foreign key on final model
+     * 
+     */
     public function sector()
     {
-        return $this->belongsTo('App\Models\Sectors','sector_id');
+       return $this->hasOneThrough('App\Models\StockSector','App\Models\Stock','id','id');
     }   
     
 }

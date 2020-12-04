@@ -138,7 +138,7 @@ class MeroShareController extends Controller
           return 'SECONDARY';
      }
      else {
-          return 'UNKNOWN';
+          return 'OTHERS';
      }
      
    }
@@ -154,7 +154,7 @@ class MeroShareController extends Controller
           return 'Cr';
      }
      else {
-          return 'na';
+          return '-';
      }
      
    }

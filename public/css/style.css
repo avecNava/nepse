@@ -255,8 +255,53 @@ section.c_score_cards article {
     width: 200px;
     /* border: 1px solid; */
     margin: 5px 0;
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
     background: #fafafa;
+}
+section.c_info_band {
+    
+    background: beige;
+    
+}
+.c_layout_portfolio_form {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    margin: 20px 50px;
+    line-height: 35px;
+}
+section.c_info_band {
+    margin: 20px 0;
+}
+.info_band_top {
+    display: flex;
+    justify-content: space-evenly;
+    line-height: 35px;
+    padding: 20px 0;
+}
+.info_band_bottom input {
+    width: 120px;
+    margin:10px 0;
+}
+.info_band_bottom select {
+    width: 120px;
+    margin:10px 0;
+}
+.info_band_bottom form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.info_band_bottom .form-field {
+    margin: 0 2px;
+}   
+.info_band_bottom label {
+    display: block;
+}
+.info_band_bottom {
+    margin: 20px 0;
+    background: cadetblue;
+    padding: 10px 0;
 }
 
 /* end of portfolio */
@@ -291,3 +336,4 @@ main.c_shareholder_form {
     margin-left: 50px;
 }
 /* end of shareholders */
+

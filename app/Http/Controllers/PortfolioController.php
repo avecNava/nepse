@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class PortfolioController extends Controller
 {
@@ -39,13 +40,14 @@ class PortfolioController extends Controller
 
         $shareholders = Shareholder::where('parent_id', $user_id)->get();
 
-        $record = Portfolio::where('id', $id)->with(['share:id,symbol'])->first();
+        $record = Portfolio::where('id', $id)->with(['share:id,symbol,security_name','sector:sector'])->first();
 
         return  view('portfolio.portfolio-edit',
         [
             'portfolio' => $record,
             'sectors' => $sectors,
             'offers' => $offers,
+            'brokers' => [],
             'stocks' => $stocks,
         ]);
         
@@ -59,46 +61,65 @@ class PortfolioController extends Controller
      * $member is the shareholder_id
      */
 
-    public function showPortfolioDetails($username, $symbol = null, $member = null)
+    public function showPortfolioDetails($username, $symbol, $member)
     {
         //todo: check authorizations
         
         //find shareholder info when null
         $user_id = Auth::id();
-        $shareholder_id = $member;
-        if(empty($member)){
-            $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
-        }
 
         // $sectors = StockCategory::all()->sortBy('sector');
         // $offers = StockOffer::all()->sortBy('offer_code');
         // $stocks = Stock::all()->sortBy('symbol');
-        $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
+        // $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
         
         //todo: add stock_category via relation
+
         $portfolios = DB::table('portfolios')
         ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
-        ->leftJoin('stock_categories', 'stock_categories.id', '=', 'portfolios.category_id')
         ->leftJoin('stock_offers', 'stock_offers.id', '=', 'portfolios.offer_id')
         ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
-        ->select('portfolios.*','stocks.symbol', 'stocks.security_name', 'shareholders.first_name', 'shareholders.last_name','stock_offers.offer_code','stock_offers.offer_name')
-        ->where(function($query) use($shareholder_id, $symbol){
-            $query->where('portfolios.shareholder_id', $shareholder_id);
-            if(!empty($symbol)){
-                $query->where('stocks.symbol','=', $symbol);
-            }
-        })->get();
+        ->leftJoin('stock_sectors','stock_sectors.id', '=', 'stocks.sector_id')
+        ->select('portfolios.*',
+                'stock_sectors.sector',
+                'stocks.symbol', 'stocks.security_name', 
+                'shareholders.first_name', 'shareholders.last_name','shareholders.relation',
+                'stock_offers.offer_code','stock_offers.offer_name'
+                )
+        ->where(function($query) use($member, $symbol){
+            $query->where('portfolios.shareholder_id', $member)
+            ->where('stocks.symbol','=', $symbol);
+        })->orderBy('purchase_date', 'DESC')->get();
 
-        $portfolios = $portfolios->sortByDesc('purchase_date');
-    
+        $metadata = collect([]);
+        $temp = $portfolios->each(function($item, $key) use($metadata){
+            $metadata->push([
+                'quantity' => $item->quantity,
+                'symbol' => "$item->security_name ($item->symbol)",
+                'member' => $item->first_name . ' '. $item->last_name,
+                'relation' => !empty($item->relation) ? " ($item->relation)" : '',
+            ]);
+        });
+
+        $obj = $metadata->first();
+        $symbol = $obj['symbol'];
+        $member = $obj['member'] . $obj['relation'];
+        $quantity = $metadata->sum('quantity');
+
+        // dd($member);
+
         return view("portfolio.portfolio-details", 
             [
+                'total_stocks'  => $quantity,
+                'last_price'  => 0,
+                'stock_name' => $symbol,
+                'shareholder_name' => $member,
+                'total_investment'  => 0,
+                'net_gain' => 0,
+                'net_worth' => 0,
                 'portfolios' => $portfolios,
-                'shareholders' => $shareholders,
-                'shareholder_id' => empty($member) ? 0 : $member,
-                // 'sectors' => $sectors,
-                // 'offers' => $offers,
-                // 'stocks' => $stocks,
+                'offers' => [],
+                'brokers' => [],
             ]);
 
     }
@@ -194,7 +215,7 @@ class PortfolioController extends Controller
                     ],
                     [
                         'offer_id' => $row['offer_id'],
-                        'last_updated_by' => $row['shareholder_id'],
+                        'last_updated_by' => Auth::id(),
                         'sales_date' => $row['sales_date'],
                         'remarks' => $row['remarks'],
                     ]);

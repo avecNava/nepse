@@ -32,31 +32,34 @@
                     </div>
 
                 </div>          
-                {{dd($portfolio)}}
-                <div class="fields">
+                                                                                                                                                        
+                <div class="c_layout_portfolio_form">
                     
                     @csrf()
-                    
-                    <div class="form-field">
-                        <input type="hidden" value="{{$portfolio->id}}" name="id"> 
-                        <label for="shareholder">Symbol</label>
-                        <div data-id="{{$portfolio->id}}">
-                            {{$portfolio->share->symbol}}
-                        </div>
-                    </div>
-                    
-                    <div class="form-field">
-                        <label for="shareholder">Shareholder</label>
-                        <div data-id="{{$portfolio->shareholder_id}}">
-                            {{$portfolio->shareholder->first_name}} {{$portfolio->shareholder->last_name}}
-                            if(!empty($portfolio->shareholder->relation)){
-                                ({{$portfolio->shareholder->relation}})
-                            }
-                        </div>
-                    </div>
 
-                    <div class="form-field">
+                        <div class="block_right">
+
+                            <div data-id="{{$portfolio->shareholder_id}}">
+                                <h2>
+                                    {{$portfolio->shareholder->first_name}} {{$portfolio->shareholder->last_name}}
+
+                                    @if(!empty($portfolio->shareholder->relation))
+                                        ({{$portfolio->shareholder->relation}})
+                                    @endif
+                                </h2>
+                            </div>
+
+                        </div>
+
+                        <div class="block-left">
+                            <h2>{{$portfolio->share->security_name}} ({{$portfolio->share->symbol}})</h2>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="fields form-field">
                         <label for="quantity">Quantity</label>
+                        <input type="hidden" value="{{$portfolio->id}}" name="id"> 
                         <input type="number"l 
                         value="{{ old('quantity', $portfolio->quantity) }}" 
                         name="quantity" required 
@@ -66,40 +69,31 @@
                         @enderror
                     </div>
 
-                    <div class="form-field">
+                    <div class="fields form-field">
                         <label for="unit_cost">Unit cost</label>
-                        <input type="date" value="{{old('unit_cost', $record->unit_cost)}}" name="unit_cost" required
+                        <input type="text" value="{{old('unit_cost', $portfolio->unit_cost)}}" name="unit_cost" required
                         class="@error('unit_cost') is-invalid @enderror" />
                         @error('unit_cost')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
                     </div> 
 
-                    <div class="form-field">
-                        <label for="total_amount" title="bill amount">total_amount</label>
-                        <input type="date" value="{{old('total_amount', $record->total_amount)}}" name="total_amount" 
+                    <div class="fields form-field">
+                        <label for="total_amount" title="bill amount">Total amount</label>
+                        <input type="text" value="{{old('total_amount', $portfolio->total_amount)}}" name="total_amount" 
                         class="@error('total_amount') is-invalid @enderror" />
                         @error('total_amount')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
                     </div> 
-                    
-                    <div class="form-field">
-                        <label for="receipt_number" title="bill amount">receipt_number</label>
-                        <input type="date" value="{{old('receipt_number', $record->receipt_number)}}" name="receipt_number" 
-                        class="@error('receipt_number') is-invalid @enderror" />
-                        @error('receipt_number')
-                            <div class="is-invalid">{{ $message }}</div>
-                        @enderror
-                    </div> 
 
-                    <div class="form-field">
+                    <div class="fields form-field">
                         <label for="offer">Offer type</label>
                         <select name="offer">
                             @foreach($offers as $offer)
-                                <option value="{{ $record->id }}"
+                                <option value="{{ $portfolio->id }}"
 
-                                @if($record->offer_id == $offer->id )
+                                @if($portfolio->offer_id == $offer->id )
                                     SELECTED
                                 @endif
                                 >{{$offer->offer_name}}</option>
@@ -110,63 +104,31 @@
                         @enderror
                     </div>
 
-                    <div class="form-field">
-                        <label for="sector">Sector</label>
-                        <select name="sector">
-                            @foreach($sectors as $sector)
-                                <option value="{{ $record->id }}"
+                    <div class="fields form-field">
+                        <label for="broker">Broker</label>
+                        <select name="broker">
+                            @foreach($brokers as $broker)
+                                <option value="{{ $portfolio->id }}"
 
-                                @if($record->sector->sector_id == $sector->id )
+                                @if($portfolio->broker_number == $broker->number )
                                     SELECTED
                                 @endif
-                                >{{$sector->name}}</option>
+                                >{{$broker->broker_name}}</option>
                             @endforeach
                         </select> 
-                        @error('offer')
+                        @error('broker')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
                     </div>
-
-                          
-
-                    <div class="form-field">
-
-                        <label>Gender</label>
-
-                        <input type="radio" name="gender" value="male" id="male" {{ old('gender') == "male" ? 'checked' : '' }}>
-                        <label for="male">Male</label>
-
-                        <input type="radio" name="gender" value="female" id="female" {{ old('gender') == "female" ? 'checked' : '' }}
-                        <label for="female">Female</label>
-
-                        <input type="radio" name="gender" value="other" id="other" {{ old('gender') == "other" ? 'checked' : '' }}
-                        <label for="other">Other</label>
-
-                        @error('gender')
+                    
+                    <div class="fields form-field">
+                        <label for="receipt_number" title="bill amount">Receipt number</label>
+                        <input type="text" value="{{old('receipt_number', $portfolio->receipt_number)}}" name="receipt_number" 
+                        class="@error('receipt_number') is-invalid @enderror" />
+                        @error('receipt_number')
                             <div class="is-invalid">{{ $message }}</div>
                         @enderror
-
-                    </div>
-                   
-                    <div class="form-field c_relation">
-
-                        <label for="relation">Relation</label>
-                        <select name="relation" id="relation">
-                            @if (!empty($relationships))
-                                @foreach($relationships as $record)
-                                    <option value="{{ $record->relation }}"
-                                    @if(strcasecmp( old('relation'), $record->relation ) == 0)
-                                        SELECTED
-                                    @endif
-                                    >{{$record->relation}}</option>
-                                @endforeach
-                            @endif
-                        </select> 
-                        @error('relation')
-                            <div class="is-invalid">{{ $message }}</div>
-                        @enderror
-
-                    </div>
+                    </div> 
 
                 </div>  
 

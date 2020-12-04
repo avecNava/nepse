@@ -20,15 +20,16 @@ use App\Models\Stock;
 |
 */
 
-// Auth::loginUsingId(1); 
-
+Auth::loginUsingId(1); 
 Auth::routes();
-Auth::routes(['register' => false]);        //disable user registration
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Auth::routes(['register' => true]);        //disable user registration
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [PortfolioSummaryController::class, 'index']);
 
 Route::get('/welcome', function(){
     return view('welcome');
 });
+
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::post('shareholder/delete/{id?}',[ShareholderController::class, 'delete']);
@@ -39,7 +40,7 @@ Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction/{shareholder_id?}', [MeroShareController::class, 'importTransactionForm']);
 Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
 
-// Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
+Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
 Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
 
 Route::pattern('username','[a-zA-Z0-9]+');
@@ -51,7 +52,7 @@ Route::post('portfolio/create', [PortfolioController::class, 'store']);
 Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
 Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 
-Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
+Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('home');
 Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 

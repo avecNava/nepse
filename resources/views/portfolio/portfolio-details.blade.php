@@ -18,8 +18,102 @@
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
-        <section class="c_score_cards">
-            
+        <div class="c_band @if(session()->has('message')) c_band_success @endif">                    
+
+            @if(session()->has('message'))
+            <div class="message">
+                {{ session()->get('message') }}
+            </div>
+            @endif
+
+        </div>   
+
+        <section class="c_info_band">
+
+            <div class="info_band_top">
+                <div class="block-left">
+
+                    <h2 class="name">{{$shareholder_name}}</h2>
+                    <div class="stock">
+                        <h3>Symbol : {{$stock_name}}</h3>
+                        <h3>Total quantity : {{$total_stocks}}</h3>
+                        <h3>Last price (LTP) : NPR {{$last_price}}</h3>
+                    </div>
+
+                </div>
+
+                <div class="block-right">
+
+                    <div class="stock">
+                        <h3>Total investment : NPR {{$total_investment}}</h3>
+                        <h3>Current worth : NPR {{$net_worth}}</h3>
+                        <h3>Net Gains : {{$net_gain}}</h3>  
+                        <h3>Net Gains per : {{$net_gain}}%</h3>  
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="info_band_bottom" hidden>
+
+                <form method="POST" action="/portfolio/edit">
+                    
+                    @csrf()
+
+                    <div class="form-field">
+                        <input type="hidden" name="id"> 
+                        <label for="quantity">Quantity</label>
+                        <input type="number" name="quantity" required 
+                        class="@error('quantity') is-invalid @enderror" />
+                    </div>
+
+                    <div class="fields form-field">
+                        <label for="unit_cost">Unit cost</label>
+                        <input type="text" name="unit_cost" required
+                        class="@error('unit_cost') is-invalid @enderror" />
+                    </div> 
+
+                    <div class="fields form-field">
+                        <label for="total_amount" title="bill amount">Total amount</label>
+                        <input type="text" name="total_amount" 
+                        class="@error('total_amount') is-invalid @enderror" />
+                    </div> 
+
+                    <div class="fields form-field" class="@error('offer') is-invalid @enderror">
+                        <label for="offer">Offer type</label>
+                        <select name="offer">
+                            @if(!empty(@offers))
+                            @foreach($offers as $offer)
+                                <option value="{{ $portfolio->id }}">{{$offer->offer_name}}</option>
+                            @endforeach
+                            @endif
+                        </select> 
+                    </div>
+
+                    <div class="fields form-field" class="@error('broker') is-invalid @enderror">
+                        <label for="broker">Broker</label>
+                        <select name="broker">
+                            @if(!empty(@brokers))
+                            @foreach($brokers as $broker)
+                                <option value="{{ $portfolio->id }}">{{$broker->broker_name}}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    
+                    <div class="fields form-field">
+                        <label for="receipt_number" title="bill amount">Receipt number</label>
+                        <input type="text" name="receipt_number" 
+                        class="@error('receipt_number') is-invalid @enderror" />
+                    </div> 
+
+                    <div class="button">
+                        <button type="submit">Save</button>
+                    </div>
+                </form> 
+
+            </div>
+
         </section>
 
         <section class="portfolio">
@@ -38,33 +132,6 @@
                                 {{count($portfolios)}} records
                             @else
                                 You will need to import before we can display something. See instructions above.
-                            @endif
-                        </div>
-
-                        <div class="c_shareholder">
-                            @if( !empty($shareholders) )
-                        
-                                <label for="shareholder">Shareholder</label>
-                                <select id="shareholder" name="shareholder" onChange="loadShareholder()">
-                                    <option value="0">All</option>
-                                    @foreach ($shareholders as $shareholder)
-                                
-                                    <option 
-                                    @php                                
-                                    
-                                    if( $shareholder_id == $shareholder->id){
-                                        echo "SELECTED";
-                                    }                                
-                                    
-                                    @endphp
-                                    value="{{ $shareholder->id }}">
-                                        {{ $shareholder->first_name }} {{ $shareholder->last_name }}
-                                        @if (!empty($shareholder->relation))
-                                            ({{ $shareholder->relation }})
-                                        @endif
-                                    </option>
-                                    @endforeach
-                                </select>
                             @endif
                         </div>
 
@@ -126,22 +193,7 @@
     </div> <!-- end of portfolio_container -->
     <script>
 
-        // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
-        function loadShareholder(){
-            
-            let url = "{{url('portfolio')}}";
-            const shareholder = document.getElementById('shareholder');
-            const options = shareholder.options[shareholder.selectedIndex];
-            let username = options.text.split(" ")[0];
-            username = username.toLowerCase();
-
-            //append shareholder_id to the url (ie, portfolio/nava/chcl/13)
-            if(shareholder.selectedIndex > 0)
-                url = `${url}/${username}/${options.value}`;
-            
-            window.location.replace(url);
-
-        }
+     
     </script>
 
 @endsection

@@ -98,6 +98,9 @@
                         <span class="c_info">{{ $transaction_date }}</span>
                     </div> -->
                     <div class="c_band">
+                        <div id="message" class="message">
+                            {{count($portfolios)}} records
+                        </div>
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )
                         

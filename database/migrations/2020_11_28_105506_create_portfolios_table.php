@@ -21,12 +21,13 @@ class CreatePortfoliosTable extends Migration
             $table->integer('quantity');
             $table->float('total_amount',8,2)->nullable();
             $table->float('effective_rate',8,2)->nullable();
+            $table->foreignId('offer_id')->constrained('stock_offers')->nullable();
+            // $table->foreignId('offer_id')->constrained('stock_offers')->nullable()->onDelete('cascade');
             $table->date('purchase_date')->nullable();
-            $table->date('sales_date')->nullable();
+            $table->smallint('broker_numer')->nullable();
             $table->string('receipt_number')->nullable();
-            $table->foreignId('offer_id')->constrained('stock_offers')->nullable()->onDelete('cascade');
             $table->text('remarks')->nullable();
-            $table->foreignId('last_updated_by')->nullable();
+            $table->foreignId('last_updated_by')->constrained('user')->nullable();
             $table->timestamps();
         });
     }

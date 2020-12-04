@@ -15,8 +15,8 @@ class CreateStockSectorsTable extends Migration
     {
         Schema::create('stock_sectors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('name1')->nullable();
+            $table->string('sector');
+            $table->string('sub_sector')->nullable();
             $table->timestamps();
         });
     }
