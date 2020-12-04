@@ -8,7 +8,7 @@ function hideLoadingMessage() {
 }
 function showImportMessage($msg, $t=5000) {
     let ele = document.getElementById('message');
-    ele.innerHTML = `👌 ${$msg}`;
+    ele.innerHTML = `${$msg}`;
     setTimeout(function(){ 
         ele.innerHTML = ' ';
      }, $t);
@@ -100,7 +100,6 @@ let select = document.getElementById("shareholder_filter");
 select.addEventListener("change", function() {
 
     let url = window.location.origin + "/meroshare/transaction/";
-
     
     //get the value from selectedIndex
     let options = this.options[this.selectedIndex];

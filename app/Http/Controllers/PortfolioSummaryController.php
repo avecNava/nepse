@@ -58,7 +58,7 @@ class PortfolioSummaryController extends Controller
             ->orderBy('stocks.symbol')
             ->get();
 
-        return view("portfolio", 
+        return view("portfolio.portfolio-summary", 
             [
                 'portfolios' => $portfolios,
                 'shareholders' => $shareholders,

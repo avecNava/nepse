@@ -23,6 +23,7 @@ class CreatePortfoliosTable extends Migration
             $table->float('effective_rate',8,2)->nullable();
             $table->date('purchase_date')->nullable();
             $table->date('sales_date')->nullable();
+            $table->string('receipt_number')->nullable();
             $table->foreignId('offer_id')->constrained('stock_offers')->nullable()->onDelete('cascade');
             $table->text('remarks')->nullable();
             $table->foreignId('last_updated_by')->nullable();

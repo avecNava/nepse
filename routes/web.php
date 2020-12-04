@@ -20,7 +20,7 @@ use App\Models\Stock;
 |
 */
 
-Auth::loginUsingId(1); 
+// Auth::loginUsingId(1); 
 
 Auth::routes();
 Auth::routes(['register' => false]);        //disable user registration

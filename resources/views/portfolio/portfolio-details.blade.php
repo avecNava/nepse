@@ -37,7 +37,7 @@
                             @if(count($portfolios)>0)
                                 {{count($portfolios)}} records
                             @else
-                                No records found for the selected Shareholder. Use the form above to import.
+                                You will need to import before we can display something. See instructions above.
                             @endif
                         </div>
 
@@ -130,14 +130,17 @@
         function loadShareholder(){
             
             let url = "{{url('portfolio')}}";
-            let shareholder = document.getElementById('shareholder');
-            let options = shareholder.options[shareholder.selectedIndex];
-            
-            //append shareholder_id to the url (ie, /portfolio/7)
+            const shareholder = document.getElementById('shareholder');
+            const options = shareholder.options[shareholder.selectedIndex];
+            let username = options.text.split(" ")[0];
+            username = username.toLowerCase();
+
+            //append shareholder_id to the url (ie, portfolio/nava/chcl/13)
             if(shareholder.selectedIndex > 0)
-                url = url + "/"+ options.value;            
+                url = `${url}/${username}/${options.value}`;
             
             window.location.replace(url);
+
         }
     </script>
 

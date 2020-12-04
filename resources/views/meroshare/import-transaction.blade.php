@@ -30,8 +30,12 @@
                         <li>Click on <strong>Import</strong>.</li>
                     </ul>  
                 </div>
-            
-                <div class="c_band c_band_left">
+
+            </header>
+
+            <main class="c_trans_form">
+                
+                <div class="c_band">
                     @if (\Session::has('success'))
                     <div class="message message_success">
                         {!! \Session::get('success') !!}
@@ -53,45 +57,62 @@
                         </ul>
                     </div>
                     @endif -->
+                    
                 </div>
 
-            </header>
-
-            <main class="c_trans_form">
-                
                 <form method="POST" action="/meroshare/transaction" enctype="multipart/form-data">
-                    
-                    <div class="form-field">
-                        <button type="submit">Import</button>
-                    </div>
-                    
-                    @csrf()
 
-                    <div class="form-field">
-                        <label for="shareholder">Shareholder name</label>   
-                        <select name="shareholder" id="shareholder">
-                            <option value="">Shareholder name</option>
-                            @if (!empty($shareholders))
-                                @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
-                                        @if (!empty($member->relation))
-                                            ({{ $member->relation }})
-                                        @endif
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select> 
-                        @error('shareholder')
-                            <div class="is-invalid">{{ $message }}</div>
-                        @enderror
+                    <div class="block-left">
+
+                        <div class="form-field">
+                            <button type="submit">Import</button>
+                        </div>
+
+                        <div class="context-link">
+                            <a href="{{url('shareholders')}}">+ Add a new shareholder</a>
+                        </div>
+                        
                     </div>
 
-                    <div class="form-field">
-                        <label for="file">Select or drag and drop a transaction file <mark>CSV or Excel files only</mark> <br></label>
-                        <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
-                        @error('file')
-                            <div class="is-invalid">{{ $message }}</div>
-                        @enderror
+                    <div class="block-right">
+
+                        <h2>Import transaction from Meroshare account.</h2>                    
+
+                        @csrf()
+
+                        <div class="form-field">
+                            <label for="file">Select a transaction file to import. <br>
+                                Click on <strong>Choose file</strong> or 
+                                <strong> drag and drop</strong> a transaction file inside the box below.
+                                <br><mark>CSV or Excel files only.</mark> <br>
+                            </label>
+                            <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
+                            @error('file')
+                                <div class="is-invalid">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
+                            <label for="shareholder">Shareholder name</label>   
+                            <select name="shareholder" id="shareholder">
+                                <option value="">Shareholder name</option>
+                                @if (!empty($shareholders))
+                                    @foreach($shareholders as $member)
+                                        <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
+                                            @if (!empty($member->relation))
+                                                ({{ $member->relation }})
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select> 
+
+                            @error('shareholder')
+                                <div class="is-invalid">{{ $message }}</div>
+                            @enderror
+
+                        </div>
+
                     </div>
 
                 </form>

@@ -14,10 +14,9 @@ class CreateStockSectorsTable extends Migration
     public function up()
     {
         Schema::create('stock_sectors', function (Blueprint $table) {
-            // $table->autoIncrement('category_id');
             $table->id();
-            $table->string('sector');
-            $table->string('sub_sector')->nullable();
+            $table->string('name');
+            $table->string('name1')->nullable();
             $table->timestamps();
         });
     }

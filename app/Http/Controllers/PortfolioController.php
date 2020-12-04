@@ -9,7 +9,6 @@ use App\Models\StockCategory;
 use App\Models\StockOffer;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
-// use App\Models\StockPrice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,14 +22,33 @@ class PortfolioController extends Controller
         
         // Auth::loginUsingId(1);        
         // Auth::loginUsingId(1, true);         // Login and "remember" the given user...
+
         $this->middleware('auth');
         
     }
 
     public function edit($id)
     {   
-        $record = Portfolio::find($id)->all();
-        $record->dd();
+        $user_id = Auth::id();
+
+        $sectors = StockCategory::all()->sortBy('sector');
+
+        $offers = StockOffer::all()->sortBy('offer_code');
+
+        $stocks = Stock::all()->sortBy('symbol');
+
+        $shareholders = Shareholder::where('parent_id', $user_id)->get();
+
+        $record = Portfolio::where('id', $id)->with(['share:id,symbol'])->first();
+
+        return  view('portfolio.portfolio-edit',
+        [
+            'portfolio' => $record,
+            'sectors' => $sectors,
+            'offers' => $offers,
+            'stocks' => $stocks,
+        ]);
+        
     }
 
     /**
@@ -46,15 +64,15 @@ class PortfolioController extends Controller
         //todo: check authorizations
         
         //find shareholder info when null
-        $user_id = Auth::id();        
+        $user_id = Auth::id();
         $shareholder_id = $member;
         if(empty($member)){
             $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();
         }
 
-        $categories = StockCategory::all()->sortBy('sector');
-        $offers = StockOffer::all()->sortBy('offer_code');
-        $stocks = Stock::all()->sortBy('symbol');
+        // $sectors = StockCategory::all()->sortBy('sector');
+        // $offers = StockOffer::all()->sortBy('offer_code');
+        // $stocks = Stock::all()->sortBy('symbol');
         $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
         
         //todo: add stock_category via relation
@@ -73,14 +91,14 @@ class PortfolioController extends Controller
 
         $portfolios = $portfolios->sortByDesc('purchase_date');
     
-        return view("portfolio-details", 
+        return view("portfolio.portfolio-details", 
             [
                 'portfolios' => $portfolios,
                 'shareholders' => $shareholders,
                 'shareholder_id' => empty($member) ? 0 : $member,
-                'categories' => $categories,
-                'offers' => $offers,
-                'stocks' => $stocks,
+                // 'sectors' => $sectors,
+                // 'offers' => $offers,
+                // 'stocks' => $stocks,
             ]);
 
     }
@@ -203,7 +221,7 @@ class PortfolioController extends Controller
                 ]);
             }
             return response()->json([
-                'message' => "Records imported successfully",
+                'message' => count($portfolios) . " records have been imported to your poftfolio 👌",
                 'count' => count($portfolios),
             ]);
 
@@ -211,7 +229,7 @@ class PortfolioController extends Controller
 
         return response()->json([
             'status' => 'error',
-            'message' => '😉 No data received. Did you select any record?',
+            'message' => 'Confused 👀.Did you select any record at all?',
         ]);
 
     }   
