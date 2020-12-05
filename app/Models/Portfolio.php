@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Portfolio extends Model
 {
@@ -45,5 +47,47 @@ class Portfolio extends Model
     {
        return $this->hasOneThrough('App\Models\StockSector','App\Models\Stock','id','id');
     }   
+
+    public static function createPortfolio(Request $request)
+    {
+        if(!empty($request)){
+
+            $portfolio = new Portfolio;
+
+            $portfolio->shareholder_id = $request->shareholder_id;
+            $portfolio->stock_id = $request->shareholder_id;
+            $portfolio->quantity = $request->quantity;
+            $portfolio->unit_cost = $request->unit_cost;
+            $portfolio->total_amount = $request->total_amount;
+            $portfolio->effective_rate = $request->effective_rate;
+            $portfolio->receipt_number = $request->receipt_number;
+            $portfolio->broker_no = $request->broker_number;
+            $portfolio->offer_id = $request->offer;
+            $portfolio->last_modified_by = Auth::id();
+            $portfolio->save();
+        
+        }
+        
+    }
+    
+    public static function updatePortfolio(Request $request)
+    {
+        if(!empty($request)){
+
+            $portfolio = Portfolio::find($request->id);
+
+            $portfolio->quantity = $request->quantity;
+            $portfolio->unit_cost = $request->unit_cost;
+            $portfolio->total_amount = $request->total_amount;
+            $portfolio->effective_rate = $request->effective_rate;
+            $portfolio->receipt_number = $request->receipt_number;
+            $portfolio->broker_no = $request->broker_number;
+            $portfolio->offer_id = $request->offer;
+            $portfolio->last_modified_by = Auth::id();
+            $portfolio->save();
+        
+        }
+        
+    }
     
 }

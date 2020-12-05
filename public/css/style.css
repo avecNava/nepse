@@ -289,7 +289,6 @@ section.c_info_band {
 } */
 .info_band_bottom button {
     margin-top: 30px;
-    width: 100%;
 }
 .info_band_bottom select {
     margin:5px 0;

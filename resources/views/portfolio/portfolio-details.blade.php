@@ -50,6 +50,7 @@
                     
                     @csrf()
                     <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
+                    <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ $shareholder_id }}"> 
                     <section>
                         <div class="form-field">
                             <label for="quantity"
@@ -99,7 +100,7 @@
                             <select name="broker" id="broker">
                                 @if(!empty(@brokers))
                                 @foreach($brokers as $broker)
-                                    <option value="{{ $broker->id }}">{{$broker->broker_name}}</option>
+                                    <option value="{{ $broker->broker_no }}">{{$broker->broker_name}}</option>
                                 @endforeach
                                 @endif
                             </select>
@@ -115,6 +116,7 @@
 
                         <div>
                             <button type="submit">Save</button>
+                            <button type="reset" onClick="hideEditForm()">Cancel</button>
                         </div>
                     </section>
                 </form> 
@@ -161,6 +163,7 @@
                         </div>
                         
                         <div class="action-buttons">
+                            <button id="new">New</button>
                             <button id="edit">Edit</button>
                             <button id="delete">Delete</button>
                         </div>
@@ -191,7 +194,7 @@
                             <td title="{{ $record->security_name }}">
                                 @if( !empty($record))
                                     <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                    <a href="{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
+                                    <a href="#{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
                                 @endif
                             </td>
                             <td>{{$record->quantity}}</td>
@@ -200,7 +203,9 @@
                             <td>{{$record->effective_rate}}</td>
                             <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
                             <td>{{$record->sector}}</td>
-                            <td>{{$record->first_name}} {{$record->last_name}}</td>
+                            <td>
+                                <div id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
+                            </td>
                             <td>{{$record->purchase_date}}</td>
                         </tr>
 
@@ -306,6 +311,7 @@
             console.log($record.remarks);
 
             document.getElementById('id').value = $record.id;
+            // document.getElementById('shareholder_id').value = $record.shareholder_id;
             document.getElementById('quantity').value = $record.quantity;
             document.getElementById('unit_cost').value = $record.unit_cost;
             document.getElementById('total_amount').value = $record.total_amount;
@@ -315,6 +321,16 @@
             setOption(document.getElementById('broker'), $record.broker_id);
 
         }
+
+        //-------------------------------------
+        // handle New button clicked
+        //-------------------------------------
+        let btn_new = document.getElementById("new");
+        
+        btn_new.addEventListener("click", function() {
+            const url = `${window.location.origin}/portfolio/new`;
+            window.location.replace(url);
+        });
 
         //-------------------------------------
         // handle Delete button clicked

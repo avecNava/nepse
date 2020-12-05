@@ -68,7 +68,7 @@ class BrokerTableSeeder extends Seeder
         ];
 
         foreach ($brokers as $key => $value) {
-            \DB::table('brokers')->insert(['broker_number' => $key['broker_no'],'broker_name' => $value['name'],'office_address' => $value['address'],'contact_number' => $value['phone'],'created_at' => Carbon::now()->toDateTimeString()]);
+            \DB::table('brokers')->insert(['broker_no' => $key['broker_no'],'broker_name' => $value['name'],'office_address' => $value['address'],'contact_number' => $value['phone'],'created_at' => Carbon::now()->toDateTimeString()]);
         } 
 
         

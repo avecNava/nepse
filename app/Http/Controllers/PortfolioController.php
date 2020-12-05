@@ -17,80 +17,48 @@ use Illuminate\Support\Collection;
 
 class PortfolioController extends Controller
 {
-    
+
     public function __constructor()
     {
         $this->middleware('auth');        
     }
 
     /**
-     * update portfolio
-     * 
+     * form for new Portfolio
      */
-    public function update(Request $request)
+    public function create()
     {
-        $validated = $request->validate([
-            // 'quantity' => 'required|numeric|gt:0', 
-            'quantity' => 'required|regex:/^[1-9][0-9]+$/',
-            'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
+        $user_id = Auth::id();
+        $shareholders = Shareholder::where('parent_id', $user_id)->get();
+
+        $sectors = StockCategory::all()->sortBy('sector');
+        $sectors = Stock::all()->sortBy('symbol');
+
+        $offers = StockOffer::all()->sortBy('offer_code');
+        
+        // $brokers = Broker::all()->sortBy('broker_name');
+        $brokers = collect([
+            ['broker_no'=>37, 'broker_name'=>'Swarnalaxmi Securities'],
+            ['broker_no'=>34, 'broker_name'=>'Another Broker '],
+            ]);
+        
+        $stocks = Stock::all()->sortBy('symbol');
+
+        return  view('portfolio.portfolio-new',
+        [
+            'sectors' => $sectors,
+            'offers' => $offers,
+            'brokers' => $brokers,
+            'stocks' => $stocks,
+            'shareholders' => $shareholders,
+            'stocks' => $stocks,
         ]);
-
-        $id = $request->id;
-        $data = Portfolio::find($id);
-
-        $data->quantity = $request->quantity;
-        $data->unit_cost = $request->unit_cost;
-        $data->total_amount = $request->total_amount;
-        $data->effective_rate = $request->effective_rate;
-        $data->receipt_number = $request->receipt_number;
-        $data->broker_no = $request->broker_number;
-        $data->offer_id = $request->offer;
-        $data->last_modified_by = Auth::id();
-        $data->save();
-        
-        // Portfolio::createPortfolio($validated);
-        
-        /* 
-            update total quantity, effective rate, WACC and update portfolio summary
-        */
-
-        // return response()->json(
-        //     [
-        //         'id' => $id,
-        //         'action' => 'update',
-        //         'status' => 'success',
-        //         'message' => 'Record updated. Record id : ' . $id,
-        //     ]);
-
-        return redirect()->back()->with('message', 'Record updated successfully');
-
     }
-
 
     /**
-     * getPortfolioDetail : gets the portfolio detail from the given id
-     * input : record_id
-     * output: json with portfolio detail
+     * store portfolio (main form)
      */
-    public function getPortfolioByID(int $id)
-    {
-        if($id){
-            
-            $portfolio = Portfolio::where('id', $id)->first();
-            return $portfolio->toJson();
-        }
-
-        return response()
-        ->json([
-            'message' => '`id` is required but not provided.',
-            'status' => 'error',
-        ]);
-    }
-
-    public function edit($id)
+    public function store($id)
     {   
         // $user_id = Auth::id();
 
@@ -114,6 +82,49 @@ class PortfolioController extends Controller
         // ]);
         
     }
+
+        /**
+     * getPortfolioDetail : gets the portfolio detail from the given id
+     * input : record_id
+     * output: json with portfolio detail
+     */
+    public function getPortfolioByID(int $id)
+    {
+        if($id){
+            
+            $portfolio = Portfolio::where('id', $id)->first();
+            return $portfolio->toJson();
+        }
+
+        return response()
+        ->json([
+            'message' => '`id` is required but not provided.',
+            'status' => 'error',
+        ]);
+    }
+
+
+    /**
+     * update portfolio
+     * 
+     */
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            // 'quantity' => 'required|numeric|gt:0', 
+            'quantity' => 'required|regex:/^[1-9][0-9]+$/',
+            'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
+        ]);
+
+        Portfolio::updatePortfolio($request);
+        
+        return redirect()->back()->with('message', 'Record updated successfully');
+
+    }
+
 
     /**
      * delete the portfolio
@@ -190,23 +201,26 @@ class PortfolioController extends Controller
         $temp = $portfolios->each(function($item, $key) use($metadata){
             $metadata->push([
                 'quantity' => $item->quantity,
+                'shareholder_id' => $item->shareholder_id,
                 'symbol' => "$item->security_name ($item->symbol)",
-                'member' => $item->first_name . ' '. $item->last_name,
+                'shareholder' => $item->first_name . ' '. $item->last_name,
                 'relation' => !empty($item->relation) ? " ($item->relation)" : '',
             ]);
         });
 
         $obj = $metadata->first();
         $symbol = $obj['symbol'];
-        $member = $obj['member'] . $obj['relation'];
+        $shareholder_id = $obj['shareholder_id'];
+        $shareholder = $obj['shareholder'] . $obj['relation'];
         $quantity = $metadata->sum('quantity');
-
+        
         return view("portfolio.portfolio-details", 
             [
                 'total_stocks'  => $quantity,
                 'last_price'  => 0,
                 'stock_name' => $symbol,
-                'shareholder_name' => $member,
+                'shareholder_id' => $shareholder_id,
+                'shareholder_name' => $shareholder,
                 'total_investment'  => 0,
                 'net_gain' => 0,
                 'net_worth' => 0,

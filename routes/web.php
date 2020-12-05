@@ -51,7 +51,7 @@ Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID'
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
 
 //add, edit portfolio
-Route::get('portfolio/create', [PortfolioController::class, 'new']);
+Route::get('portfolio/new', [PortfolioController::class, 'create']);
 Route::post('portfolio/create', [PortfolioController::class, 'store']);
 Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
 Route::post('portfolio/edit', [PortfolioController::class, 'update']);
