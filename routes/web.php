@@ -32,7 +32,7 @@ Route::get('/welcome', function(){
 
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
-Route::post('shareholder/delete/{id?}',[ShareholderController::class, 'delete']);
+Route::post('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
@@ -46,6 +46,10 @@ Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToP
 Route::pattern('username','[a-zA-Z0-9]+');
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
+
+Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
+Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
+
 //add, edit portfolio
 Route::get('portfolio/create', [PortfolioController::class, 'new']);
 Route::post('portfolio/create', [PortfolioController::class, 'store']);

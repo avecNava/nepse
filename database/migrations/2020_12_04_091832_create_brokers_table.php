@@ -15,15 +15,16 @@ class CreateBrokersTable extends Migration
     {
         Schema::create('brokers', function (Blueprint $table) {
             $table->id();
+            $table->mediumint('broker_number');
             $table->string('broker_name');
-            $table->string('founder');
-            $table->string('contact_person');
-            $table->string('office_address');
-            $table->string('phone1');
-            $table->string('phone1');
-            $table->string('email1');
-            $table->string('email2');
-            $table->text('remarks');
+            $table->string('founder')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('office_address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('phone1')->nullable();
+            $table->string('email')->nullable();
+            $table->string('email1')->nullable();
+            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }

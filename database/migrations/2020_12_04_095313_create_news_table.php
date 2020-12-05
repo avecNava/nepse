@@ -19,7 +19,7 @@ class CreateNewsTable extends Migration
             $table->string('title');
             $table->text('news');
             $table->string('referral')->nullable();
-            $table->foreignId('last_updated_by')->constraied('user');
+            $table->foreignId('last_modified_by')->constraied('user');
             $table->text('news');
             $table->timestamps();
         });

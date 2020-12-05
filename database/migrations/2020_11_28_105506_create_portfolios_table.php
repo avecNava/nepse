@@ -27,7 +27,7 @@ class CreatePortfoliosTable extends Migration
             $table->smallint('broker_numer')->nullable();
             $table->string('receipt_number')->nullable();
             $table->text('remarks')->nullable();
-            $table->foreignId('last_updated_by')->constrained('user')->nullable();
+            $table->foreignId('last_modified_by')->constrained('user')->nullable();
             $table->timestamps();
         });
     }

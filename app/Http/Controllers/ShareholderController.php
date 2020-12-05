@@ -64,7 +64,7 @@ class ShareholderController extends Controller
      * DONOT DELETE THE primary shareholder
      * $id is supplied via POST via AJAX request
      */
-    public function delete(Request $request, $id=null)
+    public function delete(Request $request, $id)
     {
         $flag = false;
         $message = 'Shareholder id can not be null';

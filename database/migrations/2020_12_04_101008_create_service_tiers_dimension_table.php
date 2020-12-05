@@ -19,7 +19,7 @@ class CreateServiceTiersDimensionTable extends Migration
             $table->string('tier_type');                //free, silver, gold, lifetime
             $table->float('tier_price',8,2);
             $table->datetime('last_updated');
-            $table->foreignId('last_updated_by')->constrained('users');
+            $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });
     }

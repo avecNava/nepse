@@ -23,7 +23,7 @@ class CreateStocksTable extends Migration
             $table->string('security_name');
             $table->boolean('active')->default(true);
             $table->foreignId('sector_id')->constrained('stock_sectors')->nullable();
-            $table->foreignId('last_updated_by')->nullable();           //userid
+            $table->foreignId('last_modified_by')->nullable();           //userid
             $table->timestamps();
         });
     

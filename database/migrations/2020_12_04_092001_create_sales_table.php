@@ -21,7 +21,7 @@ class CreateSalesTable extends Migration
             $table->float('sales_amount', 8, 2)->nullable();
             $table->float('net_gain', 8, 2)->nullable();
             $table->float('net_gain_per', 5, 2)->nullable();
-            $table->foreignId('last_updated_by')->constrained('user');
+            $table->foreignId('last_modified_by')->constrained('user');
             $table->timestamps();
         });
     }

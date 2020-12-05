@@ -1,6 +1,7 @@
-// Select all checkboxes with the name 'settings' using querySelectorAll.
+// Select all checkboxes with the name 's_id' using querySelectorAll.
 var checkboxes = document.querySelectorAll("input[type=checkbox][name=s_id]");
 
+//capture the id of the selected checkbox
 Array.prototype.forEach.call(checkboxes, function(el, i){
   el.addEventListener('change', function() {
     
@@ -144,6 +145,7 @@ btn_delete.addEventListener("click", function() {
   }
 
   if(confirm('Please confirm the delete operation')) {
+    
     let _token = document.getElementsByName('_token')[0].value;
     let request = new XMLHttpRequest();
     request.open('POST', '/shareholder/delete', true);

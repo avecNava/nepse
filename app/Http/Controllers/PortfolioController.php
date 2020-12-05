@@ -20,38 +20,134 @@ class PortfolioController extends Controller
     
     public function __constructor()
     {
-        
-        // Auth::loginUsingId(1);        
-        // Auth::loginUsingId(1, true);         // Login and "remember" the given user...
+        $this->middleware('auth');        
+    }
 
-        $this->middleware('auth');
+    /**
+     * update portfolio
+     * 
+     */
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            // 'quantity' => 'required|numeric|gt:0', 
+            'quantity' => 'required|regex:/^[1-9][0-9]+$/',
+            'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
+        ]);
+
+        $id = $request->id;
+        $data = Portfolio::find($id);
+
+        $data->quantity = $request->quantity;
+        $data->unit_cost = $request->unit_cost;
+        $data->total_amount = $request->total_amount;
+        $data->effective_rate = $request->effective_rate;
+        $data->receipt_number = $request->receipt_number;
+        $data->broker_no = $request->broker_number;
+        $data->offer_id = $request->offer;
+        $data->last_modified_by = Auth::id();
+        $data->save();
         
+        // Portfolio::createPortfolio($validated);
+        
+        /* 
+            update total quantity, effective rate, WACC and update portfolio summary
+        */
+
+        // return response()->json(
+        //     [
+        //         'id' => $id,
+        //         'action' => 'update',
+        //         'status' => 'success',
+        //         'message' => 'Record updated. Record id : ' . $id,
+        //     ]);
+
+        return redirect()->back()->with('message', 'Record updated successfully');
+
+    }
+
+
+    /**
+     * getPortfolioDetail : gets the portfolio detail from the given id
+     * input : record_id
+     * output: json with portfolio detail
+     */
+    public function getPortfolioByID(int $id)
+    {
+        if($id){
+            
+            $portfolio = Portfolio::where('id', $id)->first();
+            return $portfolio->toJson();
+        }
+
+        return response()
+        ->json([
+            'message' => '`id` is required but not provided.',
+            'status' => 'error',
+        ]);
     }
 
     public function edit($id)
     {   
-        $user_id = Auth::id();
+        // $user_id = Auth::id();
 
-        $sectors = StockCategory::all()->sortBy('sector');
+        // $sectors = StockCategory::all()->sortBy('sector');
 
-        $offers = StockOffer::all()->sortBy('offer_code');
+        // $offers = StockOffer::all()->sortBy('offer_code');
 
-        $stocks = Stock::all()->sortBy('symbol');
+        // $stocks = Stock::all()->sortBy('symbol');
 
-        $shareholders = Shareholder::where('parent_id', $user_id)->get();
+        // $shareholders = Shareholder::where('parent_id', $user_id)->get();
 
-        $record = Portfolio::where('id', $id)->with(['share:id,symbol,security_name','sector:sector'])->first();
+        // $record = Portfolio::where('id', $id)->with(['share:id,symbol,security_name','sector:sector'])->first();
 
-        return  view('portfolio.portfolio-edit',
-        [
-            'portfolio' => $record,
-            'sectors' => $sectors,
-            'offers' => $offers,
-            'brokers' => [],
-            'stocks' => $stocks,
-        ]);
+        // return  view('portfolio.portfolio-edit',
+        // [
+        //     'portfolio' => $record,
+        //     'sectors' => $sectors,
+        //     'offers' => $offers,
+        //     'brokers' => [],
+        //     'stocks' => $stocks,
+        // ]);
         
     }
+
+    /**
+     * delete the portfolio
+     * $id is the record id
+     */
+    public function delete(int $id)
+    {
+                
+        if(!$id){
+
+            return response()->json(
+                [
+                    'action'=>'delete', 
+                    'message'=> 'Shareholder id can not be null', 
+                    'status'=>'error',                
+                ]);
+        }
+        
+        $deleted = Portfolio::destroy($id);
+        
+        if($deleted > 0){
+
+            $message = "Porofolio with deleted. Record id : $id";
+        
+            return response()->json(
+                [
+                    'action'=>'delete', 
+                    'message'=> $message, 
+                    'status'=>'success',
+                ]);
+        }
+
+    }
+
 
     /**
      * Function: showPortfolioDetails
@@ -65,32 +161,31 @@ class PortfolioController extends Controller
     {
         //todo: check authorizations
         
-        //find shareholder info when null
-        $user_id = Auth::id();
+        $user_id = Auth::id();      //find shareholder info when null
 
         // $sectors = StockCategory::all()->sortBy('sector');
-        // $offers = StockOffer::all()->sortBy('offer_code');
         // $stocks = Stock::all()->sortBy('symbol');
         // $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
         
-        //todo: add stock_category via relation
+        $offers = StockOffer::all()->sortBy('offer_code');
 
-        $portfolios = DB::table('portfolios')
-        ->join('shareholders', 'shareholders.id', '=', 'portfolios.shareholder_id')
-        ->leftJoin('stock_offers', 'stock_offers.id', '=', 'portfolios.offer_id')
-        ->join('stocks', 'stocks.id', '=', 'portfolios.stock_id')
-        ->leftJoin('stock_sectors','stock_sectors.id', '=', 'stocks.sector_id')
-        ->select('portfolios.*',
-                'stock_sectors.sector',
-                'stocks.symbol', 'stocks.security_name', 
-                'shareholders.first_name', 'shareholders.last_name','shareholders.relation',
-                'stock_offers.offer_code','stock_offers.offer_name'
+        $portfolios = DB::table('portfolios as p')
+        ->join('shareholders as sh', 'sh.id', '=', 'p.shareholder_id')
+        ->leftJoin('stock_offers as o', 'o.id', '=', 'p.offer_id')
+        ->join('stocks as s', 's.id', '=', 'p.stock_id')
+        ->leftJoin('stock_sectors as ss','ss.id', '=', 's.sector_id')
+        ->select('p.*',
+                'ss.sector',
+                's.symbol', 's.security_name', 
+                'sh.first_name', 'sh.last_name','sh.relation',
+                'o.offer_code','o.offer_name'
                 )
         ->where(function($query) use($member, $symbol){
-            $query->where('portfolios.shareholder_id', $member)
-            ->where('stocks.symbol','=', $symbol);
+            $query->where('p.shareholder_id', $member)
+            ->where('s.symbol','=', $symbol);
         })->orderBy('purchase_date', 'DESC')->get();
-
+        
+        //collect info (shareholder name, total shares, security_name)
         $metadata = collect([]);
         $temp = $portfolios->each(function($item, $key) use($metadata){
             $metadata->push([
@@ -106,8 +201,6 @@ class PortfolioController extends Controller
         $member = $obj['member'] . $obj['relation'];
         $quantity = $metadata->sum('quantity');
 
-        // dd($member);
-
         return view("portfolio.portfolio-details", 
             [
                 'total_stocks'  => $quantity,
@@ -118,7 +211,7 @@ class PortfolioController extends Controller
                 'net_gain' => 0,
                 'net_worth' => 0,
                 'portfolios' => $portfolios,
-                'offers' => [],
+                'offers' => $offers,
                 'brokers' => [],
             ]);
 
@@ -215,7 +308,7 @@ class PortfolioController extends Controller
                     ],
                     [
                         'offer_id' => $row['offer_id'],
-                        'last_updated_by' => Auth::id(),
+                        'last_modified_by' => Auth::id(),
                         'sales_date' => $row['sales_date'],
                         'remarks' => $row['remarks'],
                     ]);
@@ -230,7 +323,7 @@ class PortfolioController extends Controller
                         ],
                         [
                             'quantity' => $row['quantity'], 
-                            'last_updated_by' => $row['shareholder_id'],
+                            'last_modified_by' => $row['shareholder_id'],
                         ]
                     );
                 }

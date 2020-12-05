@@ -20,6 +20,7 @@ class StockOffersTableSeeder extends Seeder
             'IPO' => 'Initial Public offering',
             'FPO' => 'Fixed Premium offering',
             'BONUS' => 'Bonus share',
+            'MUTUALFUND' => 'Mutual funds',
             'RIGHTS' => 'Rights share',
             'IPO1' => 'IPO premium',
             'SECONDARY' => 'Secondary market (Broker)',

@@ -20,7 +20,7 @@ class CreatePortfolioSummariesTable extends Migration
             $table->integer('quantity');
             $table->date('purchase_date')->nullable();
             $table->foreignId('created_by')->nullable();
-            $table->foreignId('last_updated_by')->nullable();
+            $table->foreignId('last_modified_by')->nullable();
             $table->timestamps();
         });
     }

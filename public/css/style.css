@@ -8,6 +8,11 @@ div#app, div#container {
     margin: 0 auto;
     width: 1024px;
 }
+.show {
+    transition-property: opacity, left, top, height;
+    transition-duration: 3s, 5s;
+    display: block !important;
+}
 mark {
     padding: 0px 3px;
     border-radius: 8px;
@@ -258,10 +263,8 @@ section.c_score_cards article {
     /* padding: 5px 10px; */
     background: #fafafa;
 }
-section.c_info_band {
-    
-    background: beige;
-    
+section.c_info_band {    
+    background: beige;    
 }
 .c_layout_portfolio_form {
     /* display: flex; */
@@ -272,19 +275,24 @@ section.c_info_band {
 section.c_info_band {
     margin: 20px 0;
 }
+
+/* form section inside portfolio details */
 .info_band_top {
     display: flex;
     justify-content: space-evenly;
     line-height: 35px;
     padding: 20px 0;
 }
-.info_band_bottom input {
+/* .info_band_bottom input {
     width: 120px;
     margin:10px 0;
+} */
+.info_band_bottom button {
+    margin-top: 30px;
+    width: 100%;
 }
 .info_band_bottom select {
-    width: 120px;
-    margin:10px 0;
+    margin:5px 0;
 }
 .info_band_bottom form {
     display: flex;
@@ -300,8 +308,11 @@ section.c_info_band {
 }
 .info_band_bottom {
     margin: 20px 0;
-    background: cadetblue;
+    background: #cacaa8;
     padding: 10px 0;
+}
+.info_band_bottom li {
+    color: #ee0000;
 }
 
 /* end of portfolio */

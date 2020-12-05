@@ -19,7 +19,7 @@ class CreateExpensesTable extends Migration
             $table->string('title');
             $table->decimal('amount',8,2);
             $table->foreignId('created_by')->constrained('shareholders');
-            $table->foreignId('last_updated_by')->constrained('users');
+            $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });
     }

@@ -18,16 +18,6 @@
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
-        <div class="c_band @if(session()->has('message')) c_band_success @endif">                    
-
-            @if(session()->has('message'))
-            <div class="message">
-                {{ session()->get('message') }}
-            </div>
-            @endif
-
-        </div>   
-
         <section class="c_info_band">
 
             <div class="info_band_top">
@@ -54,63 +44,92 @@
                 </div>
             </div>
 
-            <div class="info_band_bottom" hidden>
+            <div class="info_band_bottom"  @if (!$errors->any()) hidden @endif>
 
                 <form method="POST" action="/portfolio/edit">
                     
                     @csrf()
+                    <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
+                    <section>
+                        <div class="form-field">
+                            <label for="quantity"
+                            class="@error('quantity') is-invalid @enderror">Quantity</label>
+                            <input type="number" name="quantity" required id="quantity" required 
+                            value="{{ old('quantity') }}"/>
+                        </div>
 
-                    <div class="form-field">
-                        <input type="hidden" name="id"> 
-                        <label for="quantity">Quantity</label>
-                        <input type="number" name="quantity" required 
-                        class="@error('quantity') is-invalid @enderror" />
-                    </div>
+                        <div>
+                            <label for="unit_cost"  
+                            class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
+                            <input type="number" name="unit_cost" require id="unit_cost" required 
+                            value="{{ old('unit_cost') }}"/>
+                        </div> 
+                    </section>
+                    <section>
+                        <div>
+                            <label for="total_amount" title="bill amount"
+                            class="@error('total_amount') is-invalid @enderror">Total amount</label>
+                            <input type="number" name="total_amount" id="total_amount" required 
+                            value="{{ old('total_amount') }}"/>
+                        </div> 
 
-                    <div class="fields form-field">
-                        <label for="unit_cost">Unit cost</label>
-                        <input type="text" name="unit_cost" required
-                        class="@error('unit_cost') is-invalid @enderror" />
-                    </div> 
+                        <div>
+                            <label for="effective_rate" title="bill amount"
+                            class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
+                            <input type="number" name="effective_rate" id="effective_rate" required 
+                            value="{{ old('effective_rate') }}"/>
+                        </div> 
+                    </section>
+                    <section>
+                        <div>
+                            <label for="offer"
+                            class="@error('offer') is-invalid @enderror">Offer type</label>
+                            <select name="offer" id="offer">
+                                @if(!empty(@offers))
+                                @foreach($offers as $offer)
+                                    <option value="{{ $offer->id }}">{{$offer->offer_name}}</option>
+                                @endforeach
+                                @endif
+                            </select> 
+                        </div>
 
-                    <div class="fields form-field">
-                        <label for="total_amount" title="bill amount">Total amount</label>
-                        <input type="text" name="total_amount" 
-                        class="@error('total_amount') is-invalid @enderror" />
-                    </div> 
+                        <div>
+                            <label for="broker"
+                            class="@error('broker') is-invalid @enderror">Broker</label>
+                            <select name="broker" id="broker">
+                                @if(!empty(@brokers))
+                                @foreach($brokers as $broker)
+                                    <option value="{{ $broker->id }}">{{$broker->broker_name}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                    </section>
+                    <section>
+                        <div>
+                            <label for="receipt_number" title="bill amount"
+                            class="@error('receipt_number') is-invalid @enderror">Receipt number</label>
+                            <input type="text" name="receipt_number" id="receipt_number" 
+                            value="{{ old('receipt_number') }}"/>
+                        </div> 
 
-                    <div class="fields form-field" class="@error('offer') is-invalid @enderror">
-                        <label for="offer">Offer type</label>
-                        <select name="offer">
-                            @if(!empty(@offers))
-                            @foreach($offers as $offer)
-                                <option value="{{ $portfolio->id }}">{{$offer->offer_name}}</option>
-                            @endforeach
-                            @endif
-                        </select> 
-                    </div>
-
-                    <div class="fields form-field" class="@error('broker') is-invalid @enderror">
-                        <label for="broker">Broker</label>
-                        <select name="broker">
-                            @if(!empty(@brokers))
-                            @foreach($brokers as $broker)
-                                <option value="{{ $portfolio->id }}">{{$broker->broker_name}}</option>
-                            @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    
-                    <div class="fields form-field">
-                        <label for="receipt_number" title="bill amount">Receipt number</label>
-                        <input type="text" name="receipt_number" 
-                        class="@error('receipt_number') is-invalid @enderror" />
-                    </div> 
-
-                    <div class="button">
-                        <button type="submit">Save</button>
-                    </div>
+                        <div>
+                            <button type="submit">Save</button>
+                        </div>
+                    </section>
                 </form> 
+
+                <div class="validation-error">
+                @if ($errors->any())
+                    <div class="error">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                </div>
 
             </div>
 
@@ -127,16 +146,23 @@
   
                     <div class="c_band">
 
-                        <div id="message" class="message">
-                            @if(count($portfolios)>0)
-                                {{count($portfolios)}} records
+                        <div id="message" class="message">                            
+                            
+                            @if(session()->has('message'))
+                                {{ session()->get('message') }}
                             @else
-                                You will need to import before we can display something. See instructions above.
+                                @if(count($portfolios)>0)
+                                    {{count($portfolios)}} records
+                                @else
+                                    You will need to import before we can display something. See instructions above.
+                                @endif
                             @endif
-                        </div>
 
-                        <div class="buttons">
-                            <button id="delete" onClick="deletePortfolios()">Delete</button>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button id="edit">Edit</button>
+                            <button id="delete">Delete</button>
                         </div>
 
                     </div>
@@ -150,7 +176,7 @@
                         <th>Symbol</th>
                         <th>Quantity</th>
                         <th>Unit cost</th>
-                        <th>Total</th>
+                        <th>Total amount</th>
                         <th>Effective rate</th>
                         <th>Offer</th>
                         <th>Sector</th>
@@ -164,16 +190,16 @@
                             
                             <td title="{{ $record->security_name }}">
                                 @if( !empty($record))
-                                    <input type="checkbox" name="chk_{{ $record->id }}" id="chk-{{ $record->id }}">&nbsp;
+                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
                                     <a href="{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
                                 @endif
                             </td>
-                            <td>{{ $record->quantity }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$record->quantity}}</td>
+                            <td>{{$record->unit_cost}}</td>
+                            <td>{{$record->total_amount}}</td>
+                            <td>{{$record->effective_rate}}</td>
                             <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
-                            <td></td>
+                            <td>{{$record->sector}}</td>
                             <td>{{$record->first_name}} {{$record->last_name}}</td>
                             <td>{{$record->purchase_date}}</td>
                         </tr>
@@ -191,8 +217,185 @@
         </section>
 
     </div> <!-- end of portfolio_container -->
+
     <script>
 
+        // Select all checkboxes with the name 's_id' using querySelectorAll.
+        var checkboxes = document.querySelectorAll("input[type=checkbox][name=s_id]");
+
+        //capture the id of the selected checkbox
+        Array.prototype.forEach.call(checkboxes, function(el, i){
+
+            el.addEventListener('change', function() {
+                
+                let s_id = this.id;
+
+                if(this.checked){
+                document.getElementById('edit').setAttribute('data-id', s_id);
+                document.getElementById('delete').setAttribute('data-id', s_id);
+                }
+
+                else {
+                document.getElementById('edit').removeAttribute('data-id');
+                document.getElementById('delete').removeAttribute('data-id');
+                }
+
+                console.log(this.id, this.checked);
+                
+                //uncheck all other checkboxes (one select at a time)
+                Array.prototype.forEach.call(checkboxes, function(el, i){
+                if(el.id != s_id)
+                    el.checked = false;
+                });
+
+            })
+
+        });
+        
+
+        //-------------------------------------
+        // handle Edit button clicked
+        //-------------------------------------
+        let btn = document.getElementById("edit");
+        btn.addEventListener("click", function() {
+
+            //retrieve the data-id attribute from the edit button
+            let el = document.getElementById('edit');
+            let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
+            showEditForm();
+            if(!id_string){
+                alert('Please select a record to edit');
+                return;
+            }
+
+            showLoadingMessage();
+            clearMessage();
+
+            //parse the id from the given string
+            let record_id = parseID('chk_', id_string);
+
+            let request = new XMLHttpRequest();
+            const url = `${window.location.origin}/portfolio/get/${record_id}`;
+            request.open('GET', url, true);
+
+            request.onload = function() {
+
+                if (this.status >= 200 && this.status < 400) {
+                    $data = JSON.parse(this.response);
+                    updateFormFields($data);
+                    hideLoadingMessage();
+                }
+            }  
+
+            request.onerror = function() {
+                // There was a connection error of some sort
+                hideLoadingMessage();
+            };
+            
+            request.send();
+
+        });
+
+
+        //--------------------------------------------------------------------------------------
+        // data contains the record being created (first_name, last_name, parent_id, gender etc)
+        //--------------------------------------------------------------------------------------
+
+        function updateFormFields($record) {
+        
+            console.log($record.remarks);
+
+            document.getElementById('id').value = $record.id;
+            document.getElementById('quantity').value = $record.quantity;
+            document.getElementById('unit_cost').value = $record.unit_cost;
+            document.getElementById('total_amount').value = $record.total_amount;
+            document.getElementById('effective_rate').value = $record.effective_rate;
+            document.getElementById('receipt_number').value = $record.receipt_number;
+            setOption(document.getElementById('offer'), $record.offer_id);
+            setOption(document.getElementById('broker'), $record.broker_id);
+
+        }
+
+        //-------------------------------------
+        // handle Delete button clicked
+        //-------------------------------------
+        let btn_delete = document.getElementById("delete");
+        
+        btn_delete.addEventListener("click", function() {
+        
+            //retrieve the data-id attribute from the delete button
+            //the data-id attirbute is the id of the row
+            const  el = document.getElementById('delete');
+            let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
+            
+            if(!id_string){
+                alert('Please select a record to delete');
+                return;
+            }
+
+            //parse the id from the given string
+            let record_id = parseID('chk_', id_string);
+
+            if(confirm('Please confirm the delete operation')) {
+                clearMessage();
+                showLoadingMessage();
+                let _token = document.getElementsByName('_token')[0].value;
+                let request = new XMLHttpRequest();
+                request.open('POST', '/portfolio/delete', true);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+                request.onload = function() {
+                    if (this.status >= 200 && this.status < 400) {
+                        $data = JSON.parse(this.response);
+                        var $status = $data.status;
+                        var el_msg = document.querySelector('#message');
+                        // el_msg.innerHTML= $data.message;
+                    }
+                }  
+                request.send(`_token=${_token}&id=${record_id}`);
+            }
+        });
+        
+        function setOption(selectElement, value) {
+            var options = selectElement.options;
+            for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
+                if (options[i].value == value) {
+                    selectElement.selectedIndex = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showLoadingMessage() {
+            let ele_loading = document.getElementById('loading-message');
+            ele_loading.classList.add('loading');
+        }
+
+        function hideLoadingMessage() {
+            let ele_loading = document.getElementById('loading-message');
+            ele_loading.classList.remove('loading');
+        }
+
+        function showEditForm() {            
+            let el = document.getElementsByClassName('info_band_bottom');
+            el[0].classList.add('show');
+        }
+        
+        function hideEditForm() {
+            let el = document.getElementsByClassName('info_band_bottom');
+            el[0].classList.remove('show');
+        }
+
+        function clearMessage() {
+            document.getElementById('message').innerHTML='';
+        }
+
+        //parse record_id returns "28" from string "chk-28"
+        function parseID(prefix, id_string) {
+            const string_len = id_string.length;
+            return id_string.substr(prefix.length, string_len - prefix.length);
+        }
      
     </script>
 
