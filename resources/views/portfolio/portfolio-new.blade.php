@@ -15,7 +15,7 @@
             <h1 class="c_title">Add new Portfolio</h1>            
         </header>
 
-        <main class="c_shareholder_form">  
+        <main class="form_container">  
 
             <form method="POST" action="/portfolio/create">
 
@@ -151,8 +151,9 @@
 
                         <div class="block-right">
 
-                            <div class="form-field button">
+                            <div class="buttons">
                                 <button type="submit">Save</button>
+                                <button type="reset">Cancel</button>
                             </div>
 
                             <div class="validation-error">

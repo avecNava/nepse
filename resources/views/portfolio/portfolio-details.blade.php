@@ -43,8 +43,10 @@
 
                 </div>
             </div>
+        
+            </section>
 
-            <div class="info_band_bottom"  @if (!$errors->any()) hidden @endif>
+            <div id="portfolio-form" class="info_band_bottom"  @if (!$errors->any()) hidden @endif>
 
                 <form method="POST" action="/portfolio/edit">
                     
@@ -116,7 +118,7 @@
 
                         <div>
                             <button type="submit">Save</button>
-                            <button type="reset" onClick="hideForm()">Cancel</button>
+                            <button id="cancel" type="reset" onClick="hideForm()">Cancel</button>
                         </div>
                     </section>
                 </form> 
@@ -135,7 +137,7 @@
 
             </div>
 
-        </section>
+        
 
         <section class="portfolio">
         @if( !empty($portfolios) )
@@ -146,7 +148,7 @@
 
                 <div class="a_portfolio_main">
   
-                    <div class="c_band">
+                    <div class="c_band_right">
 
                         <div id="message" class="message">                            
                             
@@ -189,7 +191,7 @@
                     
                     @foreach ($portfolios as $record)
                         
-                        <tr>
+                        <tr id="row-{{ $record->id }}">
                             
                             <td title="{{ $record->security_name }}">
                                 @if( !empty($record))
@@ -236,16 +238,16 @@
                 let s_id = this.id;
 
                 if(this.checked){
-                document.getElementById('edit').setAttribute('data-id', s_id);
-                document.getElementById('delete').setAttribute('data-id', s_id);
+                    document.getElementById('edit').setAttribute('data-id', s_id);
+                    document.getElementById('delete').setAttribute('data-id', s_id);
                 }
 
                 else {
-                document.getElementById('edit').removeAttribute('data-id');
-                document.getElementById('delete').removeAttribute('data-id');
+                    document.getElementById('edit').removeAttribute('data-id');
+                    document.getElementById('delete').removeAttribute('data-id');
                 }
 
-                console.log(this.id, this.checked);
+                // console.log(this.id, this.checked);
                 
                 //uncheck all other checkboxes (one select at a time)
                 Array.prototype.forEach.call(checkboxes, function(el, i){
@@ -257,6 +259,27 @@
 
         });
         
+       //-------------------------------------
+        // handle New button clicked
+        //-------------------------------------
+        let btn_new = document.getElementById("new");
+        
+        btn_new.addEventListener("click", function() {
+            const url = `${window.location.origin}/portfolio/new`;
+            //redirect to the mian form
+            window.location.replace(url);
+        });
+
+        
+        //-------------------------------------
+        // handle Cancel button
+        //-------------------------------------
+        let btnCancel = document.getElementById("cancel");
+        btnCancel.addEventListener("click", function() {
+        hideForm('portfolio-form');
+        resetInputFields();
+        });
+
 
         //-------------------------------------
         // handle Edit button clicked
@@ -267,14 +290,14 @@
             //retrieve the data-id attribute from the edit button
             let el = document.getElementById('edit');
             let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
-            showForm();
             if(!id_string){
-                alert('Please select a record to edit');
-                return;
+                msg = 'Please select a record to edit';
+                showMessage(msg); return;
             }
 
             showLoadingMessage();
             clearMessage();
+            showForm('portfolio-form');
 
             //parse the id from the given string
             let record_id = parseID('chk_', id_string);
@@ -287,7 +310,7 @@
 
                 if (this.status >= 200 && this.status < 400) {
                     $data = JSON.parse(this.response);
-                    updateFormFields($data);
+                    updateInputFields($data);
                     hideLoadingMessage();
                 }
             }  
@@ -306,9 +329,8 @@
         // data contains the record being created (first_name, last_name, parent_id, gender etc)
         //--------------------------------------------------------------------------------------
 
-        function updateFormFields($record) {
+        function updateInputFields($record) {
         
-            console.log($record.remarks);
 
             document.getElementById('id').value = $record.id;
             // document.getElementById('shareholder_id').value = $record.shareholder_id;
@@ -321,16 +343,24 @@
             setOption(document.getElementById('broker'), $record.broker_id);
 
         }
-
-        //-------------------------------------
-        // handle New button clicked
-        //-------------------------------------
-        let btn_new = document.getElementById("new");
         
-        btn_new.addEventListener("click", function() {
-            const url = `${window.location.origin}/portfolio/new`;
-            window.location.replace(url);
-        });
+        //--------------------------------------------------------------------------------------
+        // reset
+        //--------------------------------------------------------------------------------------
+
+        function resetInputFields() {
+
+            document.getElementById('id').value = '';
+            // document.getElementById('shareholder_id').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('unit_cost').value = '';
+            document.getElementById('total_amount').value = '';
+            document.getElementById('effective_rate').value = '';
+            document.getElementById('receipt_number').value = '';
+            setOption(document.getElementById('offer'), 0);
+            setOption(document.getElementById('broker'), 0);
+
+        }
 
         //-------------------------------------
         // handle Delete button clicked
@@ -345,31 +375,37 @@
             let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
             
             if(!id_string){
-                alert('Please select a record to delete');
-                return;
+                msg = 'Please select a record to delete';
+                showMessage(msg); return;
             }
 
             //parse the id from the given string
             let record_id = parseID('chk_', id_string);
 
             if(confirm('Please confirm the delete operation')) {
+
                 clearMessage();
                 showLoadingMessage();
-                let _token = document.getElementsByName('_token')[0].value;
-                let request = new XMLHttpRequest();
-                request.open('POST', '/portfolio/delete', true);
-                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
-                request.onload = function() {
+                let request = new XMLHttpRequest();
+                request.open('GET', '/portfolio/delete/'+record_id, true);
+            
+                request.onload = function(ele_success, ele_loading) {
                     if (this.status >= 200 && this.status < 400) {
                         $data = JSON.parse(this.response);
-                        var $status = $data.status;
-                        var el_msg = document.querySelector('#message');
-                        // el_msg.innerHTML= $data.message;
+                        showMessage($data.message);
+                        hideLoadingMessage();
                     }
                 }  
-                request.send(`_token=${_token}&id=${record_id}`);
+                request.onerror = function() {
+                // There was a connection error of some sort
+                hideLoadingMessage();
+                };
+
+                request.send(); 
+
             }
+
         });
      
     </script>

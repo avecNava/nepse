@@ -32,7 +32,7 @@ Route::get('/welcome', function(){
 
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
-Route::any('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
+Route::get('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
@@ -43,7 +43,7 @@ Route::post('meroshare/transaction', [MeroShareController::class, 'importTransac
 Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
 Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
 
-Route::pattern('username','[a-zA-Z0-9]+');
+Route::pattern('username','[a-zA-Z0-9]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
 

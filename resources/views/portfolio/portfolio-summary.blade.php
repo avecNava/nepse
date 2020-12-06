@@ -93,11 +93,8 @@
                 </div>
 
                 <div class="a_portfolio_main">
-                    <!-- <div class="a_portfolio_header">
-                        <h1 class="c_title">My portfolio</h1>
-                        <span class="c_info">{{ $transaction_date }}</span>
-                    </div> -->
-                    <div class="c_band">
+            
+                    <div class="c_band_right">
                         <div id="message" class="message">
                             {{count($portfolios)}} records
                         </div>

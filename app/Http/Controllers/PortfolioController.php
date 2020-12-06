@@ -20,7 +20,7 @@ class PortfolioController extends Controller
 
     public function __constructor()
     {
-        $this->middleware('auth');        
+        $this->middleware('auth');
     }
 
     /**
@@ -121,7 +121,7 @@ class PortfolioController extends Controller
 
         Portfolio::updatePortfolio($request);
         
-        return redirect()->back()->with('message', 'Record updated successfully');
+        return redirect()->back()->with('message', 'Record updated successfully 👌');
 
     }
 
@@ -147,7 +147,7 @@ class PortfolioController extends Controller
         
         if($deleted > 0){
 
-            $message = "Porofolio with deleted. Record id : $id";
+            $message = "Portfolio deleted. Record id : $id";
         
             return response()->json(
                 [
@@ -209,10 +209,17 @@ class PortfolioController extends Controller
         });
 
         $obj = $metadata->first();
-        $symbol = $obj['symbol'];
-        $shareholder_id = $obj['shareholder_id'];
-        $shareholder = $obj['shareholder'] . $obj['relation'];
-        $quantity = $metadata->sum('quantity');
+        if(!empty($obj)){
+            $symbol = $obj['symbol'];
+            $shareholder_id = $obj['shareholder_id'];
+            $shareholder = $obj['shareholder'] . $obj['relation'];
+            $quantity = $metadata->sum('quantity');
+        } else {
+            $symbol = '';
+            $shareholder_id = '';
+            $shareholder = '';
+            $quantity = '';
+        }
         
         return view("portfolio.portfolio-details", 
             [

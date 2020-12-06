@@ -11,15 +11,15 @@ class ShareholderController extends Controller
 {
     public function __construct()
     {
-        
+        $this->middleware('auth');
     }
     
     public function index()
     {
         $user_id = Auth::id();
         $relationships = Relation::orderBy('relation','asc')->get();
-        //get all the shareholder names
-        // $shareholders = Shareholder::where('parent_id', $user_id)->get();
+
+        //get all the shareholder names with the logged in account (ie, the parent)
         $shareholders = Shareholder::where('parent_id', $user_id)->get();
 
         return view('shareholder',[
@@ -54,18 +54,19 @@ class ShareholderController extends Controller
             'relation' => 'required',
         ]);
         
+        //todo: check if the email address is unique (per parent shareholder)
         Shareholder::createShareholder($request);
         
         return redirect()->back()->with('message', 'Record created or updated succesfully.');
 
     }
+
     /**
      * delete the Shareholder
      * DONOT DELETE THE primary shareholder
+     * DONOT DELETE shareholder if protfolio exists
      * $id is supplied via POST via AJAX request
      */
-
-     //todo : do not let delete if shareholders have protfolio
 
     public function delete(Request $request, $id)
     {
@@ -82,6 +83,7 @@ class ShareholderController extends Controller
         if($shareholder->parent==true){
             $message = 'Can not delete a parent Shareholder';
         }
+        //do not delete shareholders if they have protfolio
         elseif($member->portfolio_count > 0){
             $message = "😒 Can not delete ! Selected member has '$member->portfolio_count stocks' in record.";
         }
@@ -96,4 +98,5 @@ class ShareholderController extends Controller
 
         return response()->json(['action'=>'delete', 'message'=> $message, 'status'=>$flag]);
     }
+
 }

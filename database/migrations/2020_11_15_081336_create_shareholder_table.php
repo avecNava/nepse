@@ -16,8 +16,10 @@ class CreateShareholderTable extends Migration
         Schema::create('shareholders', function (Blueprint $table) {
             $table->id();
             $table->integer('parent_id')->nullable();
+            $table->string('title')->nullable();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('alias')->nullable();
             $table->string('gender')->nullable();
             $table->string('email')->nullable();
             $table->date('date_of_birth')->nullable();
