@@ -5,7 +5,7 @@
 @endsection
 
 @section('js')
-    <script src="{{asset('assets/js/meroshare.js')}}"></script>
+    <script src="{{ URL::to('js/meroshare.js') }}"></script>
 @endsection
 
 @section('content')

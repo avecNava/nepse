@@ -104,9 +104,9 @@
                         <div class="c_shareholder">
                             @if( !empty($shareholders) )
                         
-                                <label for="shareholder">Shareholder</label>
+                                <!-- <label for="shareholder">Shareholder</label> -->
                                 <select id="shareholder" name="shareholder" onChange="loadShareholder()">
-                                    <option value="0">All</option>
+                                    <option value="0">Shareholder (All)</option>
                                     @foreach ($shareholders as $shareholder)
                                 
                                     <option 

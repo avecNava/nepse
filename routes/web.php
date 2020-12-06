@@ -7,7 +7,7 @@ use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
-use App\Models\Stock;
+use App\Models\Portfolio;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Route::get('/welcome', function(){
 
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
-Route::post('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
+Route::any('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
@@ -63,7 +63,9 @@ Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 
 
 Route::get('test',function(){
 
-    return Stock::select('id')->where('symbol', 'API')->first();
+    // return Stock::select('id')->where('symbol', 'API')->first();
+    // $hasPortfolio = Portfolio::where('shareholder_id',1)->select('shareholder_id')->withCount(['shareholder_id'])->get();
+    // dd($hasPortfolio);
 
 });
 

@@ -193,7 +193,9 @@
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
         </footer>
-
+        
+        <!-- <script src="{{asset('assets/js/shareholder.js')}}"></script> -->
+        <script src="{{ URL::to('js/app.js') }}"></script>
         @yield('js')
     
 

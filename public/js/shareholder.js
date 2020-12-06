@@ -27,21 +27,41 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
 });
 
 //-------------------------------------
+// handle Cancel button
+//-------------------------------------
+let btnCancel = document.getElementById("cancel");
+btnCancel.addEventListener("click", function() {
+  hideForm('shareholder-form');
+  resetInputFields();
+});
+
+//-------------------------------------
+// handle New button
+//-------------------------------------
+let btnNew = document.getElementById("new");
+btnNew.addEventListener("click", function() {
+  resetInputFields();   // reset form
+  showForm('shareholder-form');
+});
+
+//-------------------------------------
 // handle Edit button clicked
 //-------------------------------------
-let btn = document.getElementById("edit");
-btn.addEventListener("click", function() {
+let btnEdit = document.getElementById("edit");
+btnEdit.addEventListener("click", function() {
 
   //retrieve the data-id attribute from the edit button
   let el = document.getElementById('edit');
   let id = el.getAttribute('data-id');
 
   if(!id){
-    alert('Please select a record to edit');
-    return;
+    let msg = 'Please select a record to edit';
+    showMessage(msg);    return;
   }
 
-  showLoadingMessage();  
+  showLoadingMessage(); 
+  clearMessage(); 
+  showForm('shareholder-form');
 
   let request = new XMLHttpRequest();
   request.open('GET', '/shareholder/'+id, true);
@@ -49,7 +69,7 @@ btn.addEventListener("click", function() {
   request.onload = function(ele_success, ele_loading) {
       if (this.status >= 200 && this.status < 400) {
           $data = JSON.parse(this.response);
-          updateFormFields($data);
+          updateInputFields($data);
           hideLoadingMessage();
       }
   }  
@@ -62,12 +82,24 @@ btn.addEventListener("click", function() {
 
 });
 
+function resetInputFields() {
 
+  document.getElementById('id').value = '';
+  document.getElementById('first_name').value = '';
+  document.getElementById('last_name').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('date_of_birth').value='';
+
+  let el = document.getElementsByClassName('message');
+  el[0].classList.remove('show');
+  el[0].classList.innerHTML='';
+
+}
 //--------------------------------------------------------------------------------------
 // data contains the record being created (first_name, last_name, parent_id, gender etc)
 //--------------------------------------------------------------------------------------
 
-function updateFormFields($record) {
+function updateInputFields($record) {
   
   document.getElementById('id').value = $record['id'];
   document.getElementById('first_name').value = $record['first_name'];
@@ -103,22 +135,11 @@ function updateFormFields($record) {
 
 }
 
-function setOption(selectElement, value) {
-  var options = selectElement.options;
-  for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
-      if (options[i].value == value) {
-          selectElement.selectedIndex = i;
-          return true;
-      }
-  }
-  return false;
-}
-
 //-------------------------------------
 // handle Delete button clicked
 //-------------------------------------
-let btn_delete = document.getElementById("delete");
-btn_delete.addEventListener("click", function() {
+let btnDelete = document.getElementById("delete");
+btnDelete.addEventListener("click", function() {
   
   //retrieve the data-id attribute from the delete button
   //the data-id attirbute is the id of the row
@@ -136,50 +157,67 @@ btn_delete.addEventListener("click", function() {
   //https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
   let selector = '#row' + id;
   const record = document.querySelector(selector);
-  console.log(record, record.dataset.parent);
+  // console.log(record, record.dataset.parent);
 
   if(record.dataset.parent==true)
   {
-    alert('The selected record is a parent Shareholder. Can not delete parent record.');
+    let msg = 'Can not delete a parent Shareholder 🙄';
+    showMessage(msg);
     return;
   }
 
   if(confirm('Please confirm the delete operation')) {
     
-    let _token = document.getElementsByName('_token')[0].value;
     let request = new XMLHttpRequest();
-    request.open('POST', '/shareholder/delete', true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-
+    request.open('GET', '/shareholder/delete/'+id, true);
+  
     request.onload = function(ele_success, ele_loading) {
         if (this.status >= 200 && this.status < 400) {
             $data = JSON.parse(this.response);
-            var $status = $data.status;
-            var msg = document.querySelector('#message');
-            msg.innerHTML= $data.message;
-            hideSelectedRow(id, $status);
-            updateStyle('c_band01', $status);
+            showMessage($data.message);
+            hideLoadingMessage();
         }
     }  
-    request.send(`_token=${_token}&id=${id}`);
+    request.onerror = function() {
+      // There was a connection error of some sort
+      hideLoadingMessage();
+    };
+    request.send(); 
+
+    // request.send(`_token=${_token}&id=${id}`);
+    // let _token = document.getElementsByName('_token')[0].value;
+    // let request = new XMLHttpRequest();
+    // request.open('GET', '/shareholder/delete', true);
+    // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+    // request.onload = function(ele_success, ele_loading) {
+    //     if (this.status >= 200 && this.status < 400) {
+    //         $data = JSON.parse(this.response);
+    //         var $status = $data.status;
+    //         var msg = document.querySelector('#message');
+    //         msg.innerHTML= $data.message;
+    //         hideSelectedRow(id, $status);
+    //         // updateStyle('c_band01', $status);
+    //     }
+    // }  
+    // request.send(`_token=${_token}&id=${id}`);
+
   }
 });
 
-function updateStyle(id, status){
-  var ele = document.querySelector('#'+ id);
-  if(status){
-    ele.classList.remove('c_band__error');
-    ele.classList.add('c_band__success');
-    // ele.className = 'success';
-  }else{
-    ele.classList.remove('c_band__success');
-    ele.classList.add('c_band__error');
-  }
-}
+// function updateStyle(id, status){
+//   var ele = document.querySelector('#'+ id);
+//   if(status){
+//     ele.classList.remove('c_band__error');
+//     ele.classList.add('c_band__success');
+//     // ele.className = 'success';
+//   }else{
+//     ele.classList.remove('c_band__success');
+//     ele.classList.add('c_band__error');
+//   }
+// }
 
-function hideSelectedRow(id, flag){
+function hideSelectedRow(id){
   let rowid = 'row' + id;
-  if(flag){
-    document.getElementById(rowid).setAttribute('style','display:none');
-  }
+  document.getElementById(rowid).setAttribute('style','display:none');
 }

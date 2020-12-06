@@ -21,7 +21,7 @@ class ShareholderController extends Controller
         //get all the shareholder names
         // $shareholders = Shareholder::where('parent_id', $user_id)->get();
         $shareholders = Shareholder::where('parent_id', $user_id)->get();
-        // $shareholders->dd();
+
         return view('shareholder',[
             'shareholders' => $shareholders,
             'relationships' => $relationships,
@@ -64,17 +64,26 @@ class ShareholderController extends Controller
      * DONOT DELETE THE primary shareholder
      * $id is supplied via POST via AJAX request
      */
+
+     //todo : do not let delete if shareholders have protfolio
+
     public function delete(Request $request, $id)
     {
         $flag = false;
+
         $message = 'Shareholder id can not be null';
         if(empty($id)){
             $id = $request->id;             //get id from POST request
         }
         
         $shareholder = Shareholder::where('id', $id)->select('first_name','parent')->first();
+        $member = Shareholder::where('id', 1)->withCount('portfolio')->first();
+
         if($shareholder->parent==true){
             $message = 'Can not delete a parent Shareholder';
+        }
+        elseif($member->portfolio_count > 0){
+            $message = "😒 Can not delete ! Selected member has '$member->portfolio_count stocks' in record.";
         }
         else {
             $deleted = Shareholder::destroy($id);

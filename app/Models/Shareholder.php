@@ -28,6 +28,11 @@ class Shareholder extends Model
         return $this->belongsTo('App\Models\Portfolio');
     }
 
+    public function portfolio()
+    {
+        return $this->hasMany('App\Models\Portfolio', 'shareholder_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');        //join Shareholder and user by parent_id and  ids

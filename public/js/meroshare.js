@@ -1,33 +1,24 @@
-function showLoadingMessage() {
-    let ele_loading = document.getElementById('loading-message');
-    ele_loading.classList.add('loading');
-}
-function hideLoadingMessage() {
-    let ele_loading = document.getElementById('loading-message');
-    ele_loading.classList.remove('loading');
-}
-function showImportMessage($msg, $t=5000) {
-    let ele = document.getElementById('message');
-    ele.innerHTML = `${$msg}`;
-    setTimeout(function(){ 
-        ele.innerHTML = ' ';
-     }, $t);
-}
-function hideImportMessage() {
-    let ele = document.getElementById('import-message');
-    ele.classList.remove('success');
-}
-function checkAll() {
-    var select_all = document.getElementById('select_all');
-    var flag = select_all.checked;            
-    var elements = document.getElementsByName("t_id");
-    Array.prototype.forEach.call(elements, function(el, i){
-        el.checked=flag;
-    });
-}
-
-    //display selected count (select all)
+    function showImportMessage($msg, $t=5000) {
+        let ele = document.getElementById('message');
+        ele.innerHTML = `${$msg}`;
+        setTimeout(function(){ 
+            ele.innerHTML = ' ';
+        }, $t);
+    }
+    function hideImportMessage() {
+        let ele = document.getElementById('import-message');
+        ele.classList.remove('success');
+    }
+    function checkAll() {
+        var select_all = document.getElementById('select_all');
+        var flag = select_all.checked;            
+        var elements = document.getElementsByName("t_id");
+        Array.prototype.forEach.call(elements, function(el, i){
+            el.checked=flag;
+        });
+    }
     
+    //display selected count (select all)    
     const container = document.getElementById('message');
     document.querySelector('input[name=select_all]').addEventListener("change", function() {
         

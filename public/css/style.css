@@ -8,24 +8,59 @@ div#app, div#container {
     margin: 0 auto;
     width: 1024px;
 }
+
+a {text-decoration: none;}
+h1, h2, h3 {margin:0; margin-left:0;}
+h1 {font-family: 'Cutive', serif;font-size:1.5em;}
+h2 {font-size: 1.2em;}
+mark {padding: 0px 3px;border-radius: 8px;}
+img.c-logo__img {height: 130px;padding: 20px 0;}
+/* ul.thin {margin:0; padding: 0;} */
+
+/* form with two columns */
+.two-col-form {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+.form_container {
+    background: #fafafa;
+    margin: 20px 0;
+    border: 1px solid #6b64a0;
+    border-top-width: 0;
+    border-radius: 5px;
+}
+/* .form-container  label:first-of-type { */
+.form_container label {
+    display: inline-block;
+    width: 200px;
+    margin: 5px 0;
+}
+/* 
+component band : appears on top of form or tables
+container for message or buttons
+*/
+.c_band {
+    background: #214b25;
+    padding: 5px;
+    color: #fff;
+    height: 2em;
+    display: flex;
+}
+.c_band_right {
+    background: #6b64a0;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+.c_band a {color: #eef0f7;}
 .show {
     transition-property: opacity, left, top, height;
     transition-duration: 3s, 5s;
     display: block !important;
 }
-mark {
-    padding: 0px 3px;
-    border-radius: 8px;
-}
-img.c-logo__img {
-    height: 130px;
-    padding: 20px 0;
-}
-a {text-decoration: none;}
-h1, h2, h3 {margin:0; margin-left:0;}
-h1 {font-family: 'Cutive', serif;font-size:1.5em;}
-h2 {font-size: 1.2em;}
-ul.thin {margin:0; padding: 0;}
+
+/*table formatting*/
 table {border-spacing: 0px; width:100%;}
 th {
     background: aliceblue;
@@ -36,12 +71,10 @@ th {
 }
 tr:nth-child(even) {background: #FFF}
 tr:nth-child(odd) {background: #EEE}
-/* first column a yellow background, and then every second column starting from column 3 a gray one:
-col:first-child {background: #FF0}
-col:nth-child(2n+3) {background: #CCC} 
-*/
 td {padding-left: 2px;height: 30px;}
 .c_digit {text-align: right;}
+
+/* form input elements*/
 input {
     padding: 5px;
     width: 200px;
@@ -55,6 +88,28 @@ input[type="checkbox"], input[type="radio"] {
     vertical-align: middle;
     margin: 5px;
 }
+.buttons {align-self: flex-end;}
+select {
+    height: 2.4em;
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: 213px;
+    margin: 5px 0;
+}
+textarea {
+    margin: 5px 0;
+    width: 400px;
+    height: 100px;
+}
+button {
+    min-width: 100px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #214b252e;
+    height: 2.5em;
+    padding: 0 20px;
+}
+/* end of form input elements*/
 .loading {
     padding: 10px 60px;
     background-image: url(//s.svgbox.net/loaders.svg?fill=805ad5#three-dots);
@@ -77,53 +132,15 @@ input[type="checkbox"], input[type="radio"] {
     background-size: 30px;
     background-repeat: no-repeat;    
     background-position: left center;
+    color:#fff;
+}
+.c_shareholders .form-field.c_gender {
+    display: inline-block;
+}
+.c_gender label {
+    width: auto;
 }
 
-.buttons {
-    align-self: flex-end;
-}
-.c_band {
-    background: #6b64a0;
-    padding: 5px;
-    color: #fff;
-    display: flex;
-    justify-content: flex-end;
-}
-.c_band_left {justify-content: flex-start;}
-.c_band a {color: #eef0f7;}
-.c_band__success {
-    background: #09bb1a;
-}
-.c_band__error {
-    background: #ff0000;
-}
-/* #message .error {
-    background-image: url(//s.svgbox.net/hero-solid.svg?fill=ffffff#thumb-down);
-}
-#message .success {
-    background-image: url(//s.svgbox.net/hero-solid.svg?fill=ffffff#thumb-up);
-} */
-select {
-    height: 2.5em;  
-    border-radius: 5px;
-    padding: 2px 4px;
-    width: 210px;
-}
-button {
-    min-width: 100px;
-    border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #214b252e;
-    height: 2.5em;
-    padding: 0 20px;
-}
-.c_shareholder {
-    margin: 0 5px;
-    align-self: flex-end;
-}
-.c_shareholder label {
-    display: block;
-}
 /* layout */
 .c-header__wrapper {
     display: flex;
@@ -162,7 +179,7 @@ nav.c-nav__list li {
 
 /*meroshare*/
 button#import_all {
-    align-self: flex-end;
+    align-self: center;
 }
 .c_transaction_list 
 td:last-child {
@@ -255,14 +272,6 @@ section.c_score_cards article {
     background-image: url(//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
     color:#ff0000;
 }
-.c_shareholder_form .form-field > label:first-of-type {
-    display: inline-block;
-    width: 200px;
-    /* border: 1px solid; */
-    margin: 5px 0;
-    /* padding: 5px 10px; */
-    background: #fafafa;
-}
 section.c_info_band {    
     background: beige;    
 }
@@ -279,7 +288,7 @@ section.c_info_band {
 /* form section inside portfolio details */
 .info_band_top {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     line-height: 35px;
     padding: 20px 0;
 }
@@ -327,23 +336,18 @@ section.c_info_band {
 article.c_shareholder_list {
     margin-top: 50px;
 }
-main.c_shareholder_form {
+/* main.c_shareholder_form {
     background: #fafafa;
     margin: 20px 0;
     border: 1px solid #6b64a0;
     border-top-width: 0;
-}
-.c_shareholder_form .c_band {
-    background:#9db79f;
-    margin-bottom: 20px;
-    /* background:url(//s.svgbox.net/heropatterns.svg?fill=9db79f#death-star) #FFF; */
-    background-size:32px;"
-}
+} */
+
 .c_shareholder_form form {
     margin-bottom: 20px;
 }
-.c_shareholder_form .fields {
+/* .c_shareholder_form .fields {
     margin-left: 50px;
-}
+} */
 /* end of shareholders */
 

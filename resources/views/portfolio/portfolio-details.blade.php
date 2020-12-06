@@ -116,7 +116,7 @@
 
                         <div>
                             <button type="submit">Save</button>
-                            <button type="reset" onClick="hideEditForm()">Cancel</button>
+                            <button type="reset" onClick="hideForm()">Cancel</button>
                         </div>
                     </section>
                 </form> 
@@ -267,7 +267,7 @@
             //retrieve the data-id attribute from the edit button
             let el = document.getElementById('edit');
             let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
-            showEditForm();
+            showForm();
             if(!id_string){
                 alert('Please select a record to edit');
                 return;
@@ -371,47 +371,6 @@
                 request.send(`_token=${_token}&id=${record_id}`);
             }
         });
-        
-        function setOption(selectElement, value) {
-            var options = selectElement.options;
-            for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
-                if (options[i].value == value) {
-                    selectElement.selectedIndex = i;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function showLoadingMessage() {
-            let ele_loading = document.getElementById('loading-message');
-            ele_loading.classList.add('loading');
-        }
-
-        function hideLoadingMessage() {
-            let ele_loading = document.getElementById('loading-message');
-            ele_loading.classList.remove('loading');
-        }
-
-        function showEditForm() {            
-            let el = document.getElementsByClassName('info_band_bottom');
-            el[0].classList.add('show');
-        }
-        
-        function hideEditForm() {
-            let el = document.getElementsByClassName('info_band_bottom');
-            el[0].classList.remove('show');
-        }
-
-        function clearMessage() {
-            document.getElementById('message').innerHTML='';
-        }
-
-        //parse record_id returns "28" from string "chk-28"
-        function parseID(prefix, id_string) {
-            const string_len = id_string.length;
-            return id_string.substr(prefix.length, string_len - prefix.length);
-        }
      
     </script>
 
