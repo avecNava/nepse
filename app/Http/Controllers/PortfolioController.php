@@ -10,10 +10,12 @@ use App\Models\StockOffer;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use Illuminate\Support\Str;
+use App\Http\Requests\StorePortfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use App\Services\UtilityService;
 
 class PortfolioController extends Controller
 {
@@ -23,6 +25,27 @@ class PortfolioController extends Controller
         $this->middleware('auth');
     }
 
+    public function commission(UtilityService $broker, $amount=0)
+    {
+        if($amount<1){
+            return response()->json([
+                'amount' => $amount,
+                'message' => 'Invalid amount',
+            ]);
+        }
+
+        $comm = $broker->commission();
+        $result = $comm->filter(function($item, $key) use($amount){
+            return $amount >= $item['amount_fl'] && $amount <= $item['amount'];
+        });
+        
+        $result = $result->first();
+        return response()->json([
+            'rate' => $result['broker'],
+            'alias' => $result['alias'],
+            'cap_amount' => $result['amount'],
+        ]);
+    }
     /**
      * form for new Portfolio
      */
@@ -58,28 +81,14 @@ class PortfolioController extends Controller
     /**
      * store portfolio (main form)
      */
-    public function store($id)
+    public function store(StorePortfolio $request)
     {   
-        // $user_id = Auth::id();
+        $user_id = Auth::id();
 
-        // $sectors = StockCategory::all()->sortBy('sector');
+        // todo: update the portfolio_summary table
+        Portfolio::createPortfolio($request);
 
-        // $offers = StockOffer::all()->sortBy('offer_code');
-
-        // $stocks = Stock::all()->sortBy('symbol');
-
-        // $shareholders = Shareholder::where('parent_id', $user_id)->get();
-
-        // $record = Portfolio::where('id', $id)->with(['share:id,symbol,security_name','sector:sector'])->first();
-
-        // return  view('portfolio.portfolio-edit',
-        // [
-        //     'portfolio' => $record,
-        //     'sectors' => $sectors,
-        //     'offers' => $offers,
-        //     'brokers' => [],
-        //     'stocks' => $stocks,
-        // ]);
+        return  redirect()->back()->with('message','Record created successfully 👌 ');
         
     }
 
@@ -119,6 +128,7 @@ class PortfolioController extends Controller
             // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
         ]);
 
+        //todo: update the portfolio_summary table
         Portfolio::updatePortfolio($request);
         
         return redirect()->back()->with('message', 'Record updated successfully 👌');
@@ -143,6 +153,7 @@ class PortfolioController extends Controller
                 ]);
         }
         
+        //todo: update the portfolio_summary table
         $deleted = Portfolio::destroy($id);
         
         if($deleted > 0){
@@ -368,4 +379,5 @@ class PortfolioController extends Controller
         ]);
 
     }   
+
 }

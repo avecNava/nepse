@@ -38,113 +38,110 @@
 
                         <div class="block-left">
 
-                            <div class="fields form-field">
-                                <label for="symbol" class="@error('symbol') is-invalid @enderror" >Symbol</label>
-                                <select name="symbol">
-                                    <option value="0">Select</option>
-                                    @foreach($stocks as $stock)
-                                        <option value="{{ $stock->id }}">
-                                            {{$stock->stock_id}} {{$stock->symbol}} - {{$stock->security_name}}
-                                        </option>
-                                    @endforeach
-                                </select> 
-                                @error('symbol')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="fields form-field">
+                        <div class="fields form-field">
                                 <label for="shareholder" class="@error('shareholder') is-invalid @enderror" >Shareholder</label>
                                 <select name="shareholder">
                                 <option value="0">Select</option>
                                     @foreach($shareholders as $shareholder)
-                                        <option value="{{ $shareholder->id }}">
+                                        <option value="{{ $shareholder->id }}"
+                                            
+                                        @if(old('shareholder') == $shareholder->id )
+                                            SELECTED
+                                        @endif
+                                        >
                                             {{$shareholder->first_name}} {{$shareholder->last_name}}
                                             @if(!empty($shareholder->relation))
                                             ({{ $shareholder->relation }})
                                             @endif
                                         </option>
                                     @endforeach
-                                </select> 
-                                @error('shareholder')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="fields form-field">
-                                <label for="quantity" class="@error('quantity') is-invalid @enderror" >Quantity</label>
-                                <input type="number" ame="quantity" required  
-                                value="{{ old('quantity') }}" />
-                                @error('last_name')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
+                                </select>
                             </div>
 
                             <div class="fields form-field">
-                                <label for="unit_cost" class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                                <input type="number" name="unit_cost" required
-                                value="{{old('unit_cost')}}" />
-                                @error('unit_cost')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
-                            </div> 
-
-                            <div class="fields form-field">
-                                <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                                <input type="number" name="total_amount" required
-                                value="{{old('total_amount')}}"/>
-                                @error('total_amount')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
-                            </div> 
-
-                            <div class="fields form-field">
-                                <label for="offer"  class="@error('offer') is-invalid @enderror">Offer type</label>
-                                <select name="offer">
+                                <label for="stock" class="@error('stock') is-invalid @enderror" >Symbol</label>
+                                <select name="stock">
                                     <option value="0">Select</option>
-                                    @foreach($offers as $offer)
-                                        <option value="{{ $offer->id }}"
+                                    @foreach($stocks as $stock)
+                                        <option value="{{ $stock->id }}"
 
-                                        @if(old('offer_id') == $offer->id )
+                                        @if(old('stock') == $stock->id )
                                             SELECTED
                                         @endif
-
-                                        >{{$offer->offer_name}}</option>
+                                        >
+                                            {{$stock->stock_id}} {{$stock->symbol}} - {{$stock->security_name}}
+                                        </option>
                                     @endforeach
-                                </select> 
-                                @error('offer')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
+                                </select>
                             </div>
                             
+                            <div class="fields form-field">
+                                <label for="offer"  class="@error('offer') is-invalid @enderror">Offering type</label>
+                                <select name="offer" id="offer">
+                                    <option data-tag="none" value="0">Select</option>
+                                    @foreach($offers as $offer)
+                                        <option data-tag="{{ $offer->offer_code }}" value="{{ $offer->id }}"
+
+                                            @if(old('offer') == $offer->id )
+                                                SELECTED
+                                            @endif
+
+                                        >{{ $offer->offer_code }} ({{$offer->offer_name}})</option>
+                                    @endforeach
+                                </select> 
+                            </div>
+                            
+                            <div class="fields form-field">
+                                <label for="unit_cost" class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
+                                <input type="number" name="unit_cost" id="unit_cost" required value="{{old('unit_cost')}}" />
+                                <span id="unit_cost_label"></span>
+                            </div> 
+
+                            <div class="fields form-field">
+                                <label for="quantity" class="@error('quantity') is-invalid @enderror" >Quantity</label>
+                                <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" />
+                            </div>
+
+                            <div class="fields form-field" title="Bill amount">
+                                <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
+                                <input type="number" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                            </div>
+
+                            <div class="fields form-field">
+                                <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
+                                <input type="number" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
+                                <span id="effective_rate_label"></span>
+                            </div> 
+
                             <div class="fields form-field">
                                 <label for="broker" class="@error('broker') is-invalid @enderror">Broker</label>
                                 <select name="broker">
                                     <option value="0">Select</option>
                                     @foreach($brokers as $broker)
-                                        <option value="{{ $broker['broker_no'] }}">{{$broker['broker_name']}}</option>
+                                        <option value="{{ $broker['broker_no'] }}" 
+                                        @if(old('broker') == $broker['broker_no'] )
+                                            SELECTED
+                                        @endif
+                                        >{{$broker['broker_name']}}</option>
                                     @endforeach
-                                </select> 
-                                @error('broker')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
+                                </select>
+                                <span id="broker_label"></span>
                             </div>
                             
+                            <div class="fields form-field">
+                                <label for="purchase_date" class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
+                                <input type="date" value="{{old('purchase_date')}}" name="purchase_date"/>
+                            </div> 
                             
                             <div class="fields form-field">
                                 <label for="receipt_number" class="@error('receipt_number') is-invalid @enderror">Receipt number</label>
                                 <input type="text" value="{{old('receipt_number')}}" name="receipt_number"/>
-                                @error('receipt_number')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
                             </div> 
                             
-                            <div class="fields form-field">
+                            
+                            <div class="fields form-field remarks">
                                 <label for="remarks" class="@error('remarks') is-invalid @enderror">Remarks</label>
                                 <textarea name="remarks" rows="5" cols="30"> {{old('remarks')}} </textarea>
-                                @error('remarks')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
                             </div> 
                     
                         </div>
@@ -182,6 +179,60 @@
 
     </section>
     
-    <script></script>
+    <script>
+
+        document.getElementById('offer').addEventListener('change',function(){
+
+            let el_unit_cost = document.getElementById('unit_cost_label');
+            el_unit_cost.innerHTML = '';
+            let el_broker = document.getElementById('broker_label');
+            el_broker.innerHTML = '';
+
+            let el_offer = document.querySelector('#offer');
+            const i = el_offer.selectedIndex;            
+            let tag = el_offer.options[i].dataset.tag;
+            let unit_cost = '';
+
+            if(tag==='none') return;
+            
+            if(tag === 'IPO'){
+                unit_cost = 100;
+            }
+            else if (tag === 'BONUS'){
+                unit_cost = 0;
+            }
+            else if (tag === 'SECONDARY'){
+                el_broker.innerHTML =`<mark>Choose a broker</mark>`;
+                el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag} share</mark>`;
+            }
+            else{
+                el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag}</mark>`;
+                document.getElementById('unit_cost').value='';
+                document.getElementById('unit_cost').focus();
+                return;
+            }
+            document.getElementById('unit_cost').value = unit_cost;
+            updateTotalPrice();
+        });
+
+        document.getElementById('quantity').addEventListener('change',function(){
+            updateTotalPrice();
+        });
+        document.getElementById('unit_cost').addEventListener('change',function(){
+            updateTotalPrice();
+        });
+
+        function updateTotalPrice() {
+
+            let quantity = document.getElementById('quantity').value;
+            if (!quantity) return;
+
+            let unit_cost = document.getElementById('unit_cost').value;
+            if (!unit_cost) return;
+
+            document.getElementById('total_amount').value = (quantity * unit_cost).toFixed(2);
+
+        }
+    </script>
 
 @endsection

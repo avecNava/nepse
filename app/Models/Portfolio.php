@@ -54,14 +54,14 @@ class Portfolio extends Model
 
             $portfolio = new Portfolio;
 
-            $portfolio->shareholder_id = $request->shareholder_id;
-            $portfolio->stock_id = $request->shareholder_id;
+            $portfolio->shareholder_id = $request->shareholder;
+            $portfolio->stock_id = $request->stock;
             $portfolio->quantity = $request->quantity;
             $portfolio->unit_cost = $request->unit_cost;
             $portfolio->total_amount = $request->total_amount;
             $portfolio->effective_rate = $request->effective_rate;
             $portfolio->receipt_number = $request->receipt_number;
-            $portfolio->broker_no = $request->broker_number;
+            $portfolio->broker_no = $request->broker;
             $portfolio->offer_id = $request->offer;
             $portfolio->last_modified_by = Auth::id();
             $portfolio->save();

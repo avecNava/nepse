@@ -60,6 +60,7 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 
+Route::get('portfolio/broker-commission/{amount}', [PortfolioController::class, 'commission']);
 
 Route::get('test',function(){
 

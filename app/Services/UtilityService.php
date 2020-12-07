@@ -50,4 +50,45 @@ class UtilityService
         //todo: check if given date is government holiday
         return false;
     }
+
+    /**
+     * Broker Commission rate
+     */
+    public static function commission()  
+    {
+        $rate = collect([
+            [
+                'alias'=>'upto50K',
+                'amount_fl' => 1,
+                'amount' => 50000,
+                'broker' =>0.6,
+            ],
+            [
+                'alias'=>'upto5L',
+                'amount_fl' => 50000,
+                'amount' => 500000,
+                'broker' =>0.55,
+            ],
+            [
+                'alias'=>'upto20L',
+                'amount_fl' => 500000,
+                'amount' => 2000000,
+                'broker' =>0.5,
+            ],
+            [
+                'alias'=>'upto1Cr',
+                'amount_fl' => 200000,
+                'amount' => 10000000,
+                'broker' =>0.45,
+            ],
+            [
+                'alias'=>'beyond1Cr',
+                'amount_fl' => 10000000,
+                'amount' => 10000000,
+                'broker' =>0.4,
+            ],
+        ]);
+
+        return $rate;
+    }
 }

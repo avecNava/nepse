@@ -90,6 +90,7 @@
                             <select name="offer" id="offer">
                                 @if(!empty(@offers))
                                 @foreach($offers as $offer)
+                                <option value="0">Select</option>
                                     <option value="{{ $offer->id }}">{{$offer->offer_name}}</option>
                                 @endforeach
                                 @endif
@@ -101,6 +102,7 @@
                             class="@error('broker') is-invalid @enderror">Broker</label>
                             <select name="broker" id="broker">
                                 @if(!empty(@brokers))
+                                <option value="0">Select</option>
                                 @foreach($brokers as $broker)
                                     <option value="{{ $broker->broker_no }}">{{$broker->broker_name}}</option>
                                 @endforeach
@@ -158,7 +160,7 @@
                                 @if(count($portfolios)>0)
                                     {{count($portfolios)}} records
                                 @else
-                                    You will need to import before we can display something. See instructions above.
+                                    😟OOpsy! There are not any records to display. Click `New` button to add some.
                                 @endif
                             @endif
 
