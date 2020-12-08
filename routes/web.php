@@ -47,6 +47,7 @@ Route::pattern('username','[a-zA-Z0-9]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
 
+Route::get('portfolio/commission/{amount}', [PortfolioController::class, 'commission']);
 Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
 
@@ -60,7 +61,6 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 
-Route::get('portfolio/broker-commission/{amount}', [PortfolioController::class, 'commission']);
 
 Route::get('test',function(){
 

@@ -17,6 +17,27 @@
             el.checked=flag;
         });
     }
+    function unCheckAll() {
+        var select_all = document.getElementById('select_all');                    
+        var elements = document.getElementsByName("t_id");
+        Array.prototype.forEach.call(elements, function(el, i){
+            el.checked=false;
+        });
+    }
+    
+    //new button click, show the form
+    let btnNew = document.getElementById("new");
+        btnNew.addEventListener("click", function() {
+        showForm('meroshare-import-form');
+    });
+    
+    //cancel button click, hide the form
+    let btnCancel = document.getElementById("cancel");
+        btnCancel.addEventListener("click", function() {
+        hideForm('meroshare-import-form');
+        resetInputFields();
+    });
+
     
     //display selected count (select all)    
     const container = document.getElementById('message');
@@ -58,34 +79,44 @@
 /**
  * imports the selected transactions to the portfolio table
  */
-function importToMyPortfolio() {
-    let selected = [];
-    let elements = document.getElementsByName("t_id");
-    let ele_import = document.getElementById('import-message');
+document.getElementById('saveToPortfolio')
+        .addEventListener('click',function(){
+
+        let selected = [];
+        let elements = document.getElementsByName("t_id");
+        let ele_import = document.getElementById('message');
+        
+
+        Array.prototype.forEach.call(elements, function(el, i){
+            if(el.checked){
+                selected.push(el.id);
+            }
+        });
     
-    showLoadingMessage();
-
-    Array.prototype.forEach.call(elements, function(el, i){
-        if(el.checked){
-            selected.push(el.id);
+        if(selected.length <=0 ){
+            let message = 'Please select some records for Portfolio 🙏';
+            showImportMessage(message);
+            return;
         }
-    });
+        showLoadingMessage();
 
-    //call ajax 
-    let _token = document.getElementsByName('_token')[0].value;
-    let request = new XMLHttpRequest();
-    request.open('POST', '/meroshare/import-portfolio', true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.onload = function(ele_success, ele_loading) {
-        if (this.status >= 200 && this.status < 400) {
-            $data = JSON.parse(this.response);
-            hideLoadingMessage();
-            showImportMessage($data.message);
+        //call ajax 
+        let _token = document.getElementsByName('_token')[0].value;
+        let request = new XMLHttpRequest();
+        request.open('POST', '/meroshare/import-portfolio', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                $data = JSON.parse(this.response);
+                hideLoadingMessage();
+                unCheckAll();
+                showImportMessage($data.message);
+            }
         }
-    }
-    request.send(`_token=${_token}&trans_id=${selected.toString()}`);
 
-}
+        request.send(`_token=${_token}&trans_id=${selected.toString()}`);
+
+});
 
 let select = document.getElementById("shareholder_filter");
 select.addEventListener("change", function() {

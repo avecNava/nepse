@@ -390,7 +390,8 @@
                 showLoadingMessage();
 
                 let request = new XMLHttpRequest();
-                request.open('GET', '/portfolio/delete/'+record_id, true);
+                const url = `${window.location.origin}/portfolio/delete/${record_id}`;
+                request.open('GET', url, true);
             
                 request.onload = function(ele_success, ele_loading) {
                     if (this.status >= 200 && this.status < 400) {

@@ -5,6 +5,7 @@
 @endsection
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 @endsection
 
 @section('content')
@@ -105,6 +106,7 @@
                             <div class="fields form-field" title="Bill amount">
                                 <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
                                 <input type="number" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                                <span id="total_amount_label"></span>
                             </div>
 
                             <div class="fields form-field">
@@ -229,8 +231,53 @@
 
             let unit_cost = document.getElementById('unit_cost').value;
             if (!unit_cost) return;
+            
+            let total = (quantity * unit_cost).toFixed(2);
+            
+            const url = `${window.location.origin}/portfolio/commission/${total}`;
 
-            document.getElementById('total_amount').value = (quantity * unit_cost).toFixed(2);
+            // const sendGetRequest = async () => {
+            //     try {
+            //         const resp = await axios.get(url);
+            //         console.log(resp.data);
+            //     } catch (error) {
+            //         console.log(error);
+            //     }
+            // };
+
+            total_amount = total;
+            eff_rate = (total_amount/quantity).toFixed(2);
+
+            //calculate BROKER COMMISSION & SEBON COMMISSION for purchase via Secondary market
+            let el_offer = document.querySelector('#offer');
+            const i = el_offer.selectedIndex;            
+            let tag = el_offer.options[i].dataset.tag;
+
+            if(tag==='SECONDARY'){
+
+                let request = new XMLHttpRequest();
+                request.open('GET', url, true);
+            
+                request.onload = function() {
+                    if (this.status >= 200 && this.status < 400) {
+                        const data = JSON.parse(this.response);
+                        let broker = parseFloat(data.broker);
+                        let sebon = parseFloat(data.sebon);
+                        let broker_commission = ((broker/100) * total).toFixed(2);
+                        let sebon_commission = ((sebon/100) * total).toFixed(2);
+                        const total_amount = parseFloat(total) 
+                                            + parseFloat(broker_commission) 
+                                            + parseFloat(sebon_commission);
+                        const eff_rate = (total_amount / quantity).toFixed(2);
+                        let x = `total: ${total} + broker: ${broker_commission} + SEBON : ${sebon_commission}`;
+                        document.getElementById('total_amount_label').innerHTML = x;
+                    }            
+                }
+                request.send(); 
+            }
+            
+            document.getElementById('total_amount').value =  total_amount;
+            document.getElementById('effective_rate').value =  eff_rate;
 
         }
     </script>

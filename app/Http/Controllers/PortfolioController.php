@@ -25,6 +25,11 @@ class PortfolioController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Calculates Broker commission
+     * input: transaction amount
+     * return : broker percentage (JSON)
+     */
     public function commission(UtilityService $broker, $amount=0)
     {
         if($amount<1){
@@ -36,14 +41,15 @@ class PortfolioController extends Controller
 
         $comm = $broker->commission();
         $result = $comm->filter(function($item, $key) use($amount){
-            return $amount >= $item['amount_fl'] && $amount <= $item['amount'];
+            return $amount >= $item['min_amount'] && $amount <= $item['max_amount'];
         });
         
         $result = $result->first();
         return response()->json([
-            'rate' => $result['broker'],
-            'alias' => $result['alias'],
-            'cap_amount' => $result['amount'],
+            'broker' => $result['broker'],
+            'sebon' => $result['sebon'],
+            'label' => $result['label'],
+            'amount' => $result['max_amount'],
         ]);
     }
     /**
@@ -257,6 +263,8 @@ class PortfolioController extends Controller
      * The trans_ids and related data are stored into the Portfolio table for the given shareholder_id
      * 
      */
+
+     //todo: add unit_cost, effective_rate, total_amount for IPO,BONUS etc
     public function storeToPortfolio(Request $request)
     {
         $user_id = Auth::id();
@@ -328,8 +336,10 @@ class PortfolioController extends Controller
                 //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
                 //portfolio (all transactions)
                 foreach ($portfolios as $row) {
+
                     //update record if the following five attributes are met,
                     //else not create a new record with the following attributes
+
                     Portfolio::updateOrCreate(
                     [
                         'stock_id' => $row['stock_id'], 
@@ -343,6 +353,10 @@ class PortfolioController extends Controller
                         'last_modified_by' => Auth::id(),
                         'sales_date' => $row['sales_date'],
                         'remarks' => $row['remarks'],
+
+                        // 'unit_cost' => 0,
+                        // 'total_amount' => 0,
+                        // 'effective_rate' => 0,
                     ]);
                 }
                     
@@ -354,6 +368,7 @@ class PortfolioController extends Controller
                             'shareholder_id' => $row['shareholder_id'],
                         ],
                         [
+                            // 'wacc' => calcWACC(), 
                             'quantity' => $row['quantity'], 
                             'last_modified_by' => $row['shareholder_id'],
                         ]

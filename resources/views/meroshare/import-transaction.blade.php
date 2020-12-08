@@ -32,33 +32,21 @@
                 </div>
 
             </header>
-
-            <main class="c_trans_form">
+            @php
+                $hidden = 'hidden';
+                if ($errors->any() || session()->has('error') || session()->has('message')  || session()->has('success')) {
+                    $hidden = '';
+                } 
+            @endphp 
+            <main id="meroshare-import-form" class="meroshare-import-form" {{$hidden}}>
                 
                 <div class="c_band">
-                    @if (\Session::has('success'))
-                    <div class="message message_success">
-                        {!! \Session::get('success') !!}
-                    </div>
-                    @endif
-
-                    @if (\Session::has('error'))
-                    <div class="message message_error">
-                        {!! \Session::get('error') !!}</li>
-                    </div>
-                    @endif
-
-                    <!-- @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif -->
                     
+                    <h2>Import transaction from Meroshare account.</h2>
+
                 </div>
+               
+                
 
                 <form method="POST" action="/meroshare/transaction" enctype="multipart/form-data">
 
@@ -66,6 +54,7 @@
 
                         <div class="form-field">
                             <button type="submit">Import</button>
+                            <button id="cancel" type="reset">Cancel</button>
                         </div>
 
                         <div class="context-link">
@@ -75,8 +64,21 @@
                     </div>
 
                     <div class="block-right">
+                        
+                        <div class="form-message">
 
-                        <h2>Import transaction from Meroshare account.</h2>                    
+                            @if (\Session::has('success'))
+                                <div class="message success">
+                                    {!! \Session::get('success') !!}
+                                </div>
+                                @endif
+
+                                @if (\Session::has('error'))
+                                <div class="message error">
+                                    {!! \Session::get('error') !!}</li>
+                                </div>
+                            @endif
+                        </div>
 
                         @csrf()
 
@@ -88,8 +90,16 @@
                             </label>
                             <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                             @error('file')
-                                <div class="is-invalid">{{ $message }}</div>
+                                <div class="is-invalid">
+                                    {{ $message }}
+                                </div>
                             @enderror
+                            @if (\Session::has('error'))
+                            <div class="is-invalid">
+                                {!! \Session::get('error') !!}</li>
+                            </div>
+                            @endif
+                            
                         </div>
 
                         <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
@@ -98,7 +108,8 @@
                                 <option value="">Shareholder name</option>
                                 @if (!empty($shareholders))
                                     @foreach($shareholders as $member)
-                                        <option value="{{ $member->id }}">{{ $member->first_name }} {{ $member->last_name }} 
+                                        <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
+                                            {{ $member->first_name }} {{ $member->last_name }} 
                                             @if (!empty($member->relation))
                                                 ({{ $member->relation }})
                                             @endif
@@ -127,38 +138,44 @@
             <header>
 
                 @if( $transactions->count() > 0 )                
-                <div>
+                <div class="instruction">
                     Following are the data from  MeroShare account from your last import. You can import again to refresh the list. 
                     <br/>Select the transactions and click on "Import to <strong>My Portfolio</strong>"
                 </div>
                 @endif
 
-                <div class="c_band">
+                <div class="c_band_right">
+
                     <div id="message" class="message">
-                    @if(count($transactions)>0)
-                        {{count($transactions)}} records
-                    @else
-                        No records found for the selected Shareholder. Use the form above to import.
-                    @endif
+                        @if(count($transactions)>0)
+                            {{count($transactions)}} records
+                        @else
+                            No records found for the selected Shareholder. Use the form above to import.
+                        @endif
                     </div>
-                    <div class="c_shareholder">
-                        <!-- <label for="shareholder">Shareholder name</label>    -->
-                        <select id="shareholder_filter">
-                            <option value="">Shareholder name</option>
-                            @if (!empty($shareholders))
-                                @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}"
-                                    @if($shareholder_id == $member->id) SELECTED @endif>
-                                    {{ $member->first_name }} {{ $member->last_name }} 
-                                        @if (!empty($member->relation))
-                                            ({{ $member->relation }})
-                                        @endif
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
+                    
+                    <div class="c_band__components">
+                    <button id="new">Import Shares</button>
+                        <div class="c_shareholder">
+                            <!-- <label for="shareholder">Shareholder name</label>    -->
+                            <select id="shareholder_filter">
+                                <option value="">Shareholder name</option>
+                                @if (!empty($shareholders))
+                                    @foreach($shareholders as $member)
+                                        <option value="{{ $member->id }}"
+                                        @if($shareholder_id == $member->id) SELECTED @endif>
+                                        {{ $member->first_name }} {{ $member->last_name }} 
+                                            @if (!empty($member->relation))
+                                                ({{ $member->relation }})
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <button id="saveToPortfolio">Save to Portfolio</button>
                     </div>
-                    <button id="import_all" onClick="importToMyPortfolio()">Import to <strong>My Portfolio</strong></button>
+
                 </div>
             </header>
 

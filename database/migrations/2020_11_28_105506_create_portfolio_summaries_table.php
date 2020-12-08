@@ -18,8 +18,7 @@ class CreatePortfolioSummariesTable extends Migration
             $table->foreignId('shareholder_id')->constrained('shareholders');
             $table->foreignId('stock_id')->constrained('stocks');
             $table->integer('quantity');
-            $table->date('purchase_date')->nullable();
-            $table->foreignId('created_by')->nullable();
+            $table->float('wacc',8,2)->nullable();
             $table->foreignId('last_modified_by')->nullable();
             $table->timestamps();
         });

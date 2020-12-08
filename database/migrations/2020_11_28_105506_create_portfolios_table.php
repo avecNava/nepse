@@ -19,7 +19,7 @@ class CreatePortfoliosTable extends Migration
             $table->foreignId('stock_id')->constrained('stocks');
             $table->float('unit_cost',8,2)->nullable();
             $table->integer('quantity');
-            $table->float('total_amount',8,2)->nullable();
+            $table->float('total_amount',15,2)->nullable();             //extremely high value
             $table->float('effective_rate',8,2)->nullable();
             $table->foreignId('offer_id')->constrained('stock_offers')->nullable();
             // $table->foreignId('offer_id')->constrained('stock_offers')->nullable()->onDelete('cascade');
