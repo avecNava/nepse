@@ -15,10 +15,10 @@ class CreatePortfolioSummariesTable extends Migration
     {
         Schema::create('portfolio_summaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shareholder_id')->constrained('shareholders');
+            $table->foreignId('shareholder_id')->constrained('shareholders')->onDelete('cascade');
             $table->foreignId('stock_id')->constrained('stocks');
-            $table->integer('quantity');
-            $table->float('wacc',8,2)->nullable();
+            $table->integer('total_quantity');
+            $table->float('wacc_rate',8,2)->nullable();
             $table->foreignId('last_modified_by')->nullable();
             $table->timestamps();
         });

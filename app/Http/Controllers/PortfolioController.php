@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\MeroShare;
 use App\Models\Shareholder;
 use App\Models\Stock;
-use App\Models\StockCategory;
-use App\Models\StockOffer;
+use App\Models\StockSector;
+use App\Models\StockOffering;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use Illuminate\Support\Str;
@@ -60,10 +60,10 @@ class PortfolioController extends Controller
         $user_id = Auth::id();
         $shareholders = Shareholder::where('parent_id', $user_id)->get();
 
-        $sectors = StockCategory::all()->sortBy('sector');
+        $sectors = StockSector::all()->sortBy('sector');
         $sectors = Stock::all()->sortBy('symbol');
 
-        $offers = StockOffer::all()->sortBy('offer_code');
+        $offers = StockOffering::all()->sortBy('offer_code');
         
         // $brokers = Broker::all()->sortBy('broker_name');
         $brokers = collect([
@@ -127,17 +127,26 @@ class PortfolioController extends Controller
     {
         $validated = $request->validate([
             // 'quantity' => 'required|numeric|gt:0', 
-            'quantity' => 'required|regex:/^[1-9][0-9]+$/',
+            'quantity' => 'required|regex:/^[0-9]+$/',
             'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
             'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
             'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
             // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
         ]);
 
-        //todo: update the portfolio_summary table
-        Portfolio::updatePortfolio($request);
+        $result = Portfolio::updatePortfolio($request);
+
+        $result = $result->getData();
         
-        return redirect()->back()->with('message', 'Record updated successfully 👌');
+        if($result->status=='success'){
+
+            return redirect()->back()->with('message', $result->message );
+        }
+        else{
+            return redirect()->back()->withErrors($result->message );
+
+        }
+
 
     }
 
@@ -159,19 +168,25 @@ class PortfolioController extends Controller
                 ]);
         }
         
-        //todo: update the portfolio_summary table
+        $portfolio = Portfolio::where('id', $id)->first();
         $deleted = Portfolio::destroy($id);
+
+        //CALCULATE total_quantity and wacc_rate ; update in summary table
+        if(!empty($portfolio)){
+            PortfolioSummary::updateCascadePortfoliSummaries($portfolio->shareholder_id, $portfolio->stock_id);
+        }
+        
         
         if($deleted > 0){
 
             $message = "Portfolio deleted. Record id : $id";
         
             return response()->json(
-                [
-                    'action'=>'delete', 
-                    'message'=> $message, 
-                    'status'=>'success',
-                ]);
+            [
+                'action'=>'delete', 
+                'message'=> $message, 
+                'status'=>'success',
+            ]);
         }
 
     }
@@ -191,15 +206,15 @@ class PortfolioController extends Controller
         
         $user_id = Auth::id();      //find shareholder info when null
 
-        // $sectors = StockCategory::all()->sortBy('sector');
+        // $sectors = StockSector::all()->sortBy('sector');
         // $stocks = Stock::all()->sortBy('symbol');
         // $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
         
-        $offers = StockOffer::all()->sortBy('offer_code');
+        $offers = StockOffering::all()->sortBy('offer_code');
 
         $portfolios = DB::table('portfolios as p')
         ->join('shareholders as sh', 'sh.id', '=', 'p.shareholder_id')
-        ->leftJoin('stock_offers as o', 'o.id', '=', 'p.offer_id')
+        ->leftJoin('stock_offerings as o', 'o.id', '=', 'p.offer_id')
         ->join('stocks as s', 's.id', '=', 'p.stock_id')
         ->leftJoin('stock_sectors as ss','ss.id', '=', 's.sector_id')
         ->select('p.*',
@@ -254,145 +269,5 @@ class PortfolioController extends Controller
             ]);
 
     }
-
-
-    /**
-     * This function is called via AJAX POST method 
-     * when "Import to Poftfolio" is clicked on http://dev.nepse/meroshare/transaction route
-     * Input parameters (Request object with trans_ids and shareholder_id)
-     * The trans_ids and related data are stored into the Portfolio table for the given shareholder_id
-     * 
-     */
-
-     //todo: add unit_cost, effective_rate, total_amount for IPO,BONUS etc
-    public function storeToPortfolio(Request $request)
-    {
-        $user_id = Auth::id();
-        
-        $portfolios_sum  = collect([]);                         //data for portfolio_summary table
-        $portfolios = collect([]);                               //data for portfolio table
-
-        if( !empty($request->trans_id) ){
-
-           //trans_id is comma separated (eg, 1,2,3,4,5), explode into array 
-            $ids = Str::of($request->trans_id)->explode(',');
-            
-            // Get portfolio from meroshare_transactions table, related data from Shares and Offers table 
-            //consturct collections to store data
-            $transactions = 
-            MeroShare::whereIn('id', $ids->toArray())
-                    ->with(['share:id,symbol','offer:id,offer_code'])         //relationships (share, offer)
-                    ->get();
-            
-            //group by data by symbol; loop each symbol group; aggregate the debit and credit quantities
-            $transactions = $transactions->groupBy('symbol');
-            $transactions->map(function($item) use($portfolios, $portfolios_sum){
-
-                $total_dr = 0;
-                $total_cr = 0;
-
-                foreach ($item as $value) {
-                    
-                    //add up the total debit and credit for each symbols within a group
-                    $total_cr += empty($value->credit_quantity) ? 0 : $value->credit_quantity;
-                    $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
-                    
-                    $row = array(
-                        'quantity' => empty($value->credit_quantity) ? $value->debit_quantity : $value->credit_quantity,
-                        'shareholder_id' => $value->shareholder_id,
-                        'symbol' =>  empty($value->share) ? null : $value->share->symbol,
-                        'stock_id' =>  empty($value->share) ? null : $value->share->id,
-                        'offer_id' =>  empty($value->offer) ? null : $value->offer->id,            //get from related table
-                        'offer_code' =>  empty($value->offer) ? null : $value->offer->offer_code,            //get from related table
-                        'purchase_date' => empty($value->credit_quantity) ? null : $value->transaction_date,
-                        'sales_date'    => empty($value->debit_quantity) ? null :  $value->transaction_date,
-                        'remarks' => $value->remarks,
-                    );    
-                    $portfolios->push( $row );
-                    
-                };
-
-                //aggregated (summarized) portfolio
-                $net_quantity = $total_cr - $total_dr;
-                $row = array(
-                    'quantity' => $net_quantity,
-                    'shareholder_id' => $value->shareholder_id,
-                    'stock_id' =>  empty($value->share) ? null : $value->share->id,
-                    'symbol' =>  empty($value->share) ? null : $value->share->symbol,
-                );
-                
-                //only store stocks whose quantity > 0
-                if($net_quantity > 0){
-                    $portfolios_sum->push( $row );
-                }
-                
-            }); //end of map
-
-            // $portfolios->dd();
-            // $portfolios_sum->dd();
-
-            try {                
-           
-                //add or update the cleaned data to the protfolio table based on stock_id and shareholder-id
-                //portfolio (all transactions)
-                foreach ($portfolios as $row) {
-
-                    //update record if the following five attributes are met,
-                    //else not create a new record with the following attributes
-
-                    Portfolio::updateOrCreate(
-                    [
-                        'stock_id' => $row['stock_id'], 
-                        'shareholder_id' => $row['shareholder_id'],
-                        'offer_id' => $row['offer_id'],
-                        'quantity' => $row['quantity'], 
-                        'purchase_date' => $row['purchase_date'],
-                    ],
-                    [
-                        'offer_id' => $row['offer_id'],
-                        'last_modified_by' => Auth::id(),
-                        'sales_date' => $row['sales_date'],
-                        'remarks' => $row['remarks'],
-
-                        // 'unit_cost' => 0,
-                        // 'total_amount' => 0,
-                        // 'effective_rate' => 0,
-                    ]);
-                }
-                    
-                //portfolio_summary
-                foreach ($portfolios_sum as $row) {
-                    PortfolioSummary::updateOrCreate(
-                        [
-                            'stock_id' => $row['stock_id'], 
-                            'shareholder_id' => $row['shareholder_id'],
-                        ],
-                        [
-                            // 'wacc' => calcWACC(), 
-                            'quantity' => $row['quantity'], 
-                            'last_modified_by' => $row['shareholder_id'],
-                        ]
-                    );
-                }
-
-            } catch (QueryException $exception) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $exception->getMessage(),
-                ]);
-            }
-            return response()->json([
-                'message' => count($portfolios) . " records have been imported to your poftfolio 👌",
-                'count' => count($portfolios),
-            ]);
-
-        } //end if
-
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Confused 👀.Did you select any record at all?',
-        ]);
-
-    }   
 
 }

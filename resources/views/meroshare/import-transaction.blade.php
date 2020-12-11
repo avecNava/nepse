@@ -19,18 +19,6 @@
 
             <header class="c_message">
 
-                <h2>Import transaction from Meroshare account.</h2>
-                <div class="c_instructions">
-                    <ul>
-                        <li>Login to your<a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
-                        <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
-                        <li>Click on CSV button to download the transaction history.</li>
-                        <li>Click on Choose file (below) and browse the CSV file recently downloaded.</li>
-                        <li>Choose a Shareholder name.</li>
-                        <li>Click on <strong>Import</strong>.</li>
-                    </ul>  
-                </div>
-
             </header>
             @php
                 $hidden = 'hidden';
@@ -40,13 +28,27 @@
             @endphp 
             <main id="meroshare-import-form" class="meroshare-import-form" {{$hidden}}>
                 
-                <div class="c_band">
-                    
-                    <h2>Import transaction from Meroshare account.</h2>
-
+                <h2>Instructions</h2>
+               
+                <div class="c_instructions">
+                    <ul>
+                        <li>Login to your<a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
+                        <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
+                        <li>Click on CSV button to download the transaction history.</li>
+                        <li>
+                            Click on Choose file (below) and browse the CSV file recently downloaded.
+                            <br>Click here to see
+                            <a href="{{ URL::to('templates/sample-meroshare-transaction-history.xlsx')}}" target="_blank">SAMPLE FILE</a> file
+                        </li>
+                        <li>Choose a Shareholder name.</li>
+                        <li>Click on <strong>Import</strong>.</li>
+                    </ul>  
                 </div>
                
-                
+
+                <div class="c_band">                    
+                    <h2>Import transaction from Meroshare account.</h2>
+                </div>
 
                 <form method="POST" action="/meroshare/transaction" enctype="multipart/form-data">
 
@@ -75,7 +77,7 @@
 
                                 @if (\Session::has('error'))
                                 <div class="message error">
-                                    {!! \Session::get('error') !!}</li>
+                                    <!-- {!! \Session::get('error') !!}</li> -->
                                 </div>
                             @endif
                         </div>
@@ -150,7 +152,7 @@
                         @if(count($transactions)>0)
                             {{count($transactions)}} records
                         @else
-                            No records found for the selected Shareholder. Use the form above to import.
+                            No records
                         @endif
                     </div>
                     

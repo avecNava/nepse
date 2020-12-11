@@ -161,7 +161,7 @@
                             if(empty($record->close_price)){
                                 $ltp = $record->last_updated_price;
                             }
-                            $quantity = $record->quantity;
+                            $quantity = $record->total_quantity;
                             $ltp_prev = $record->previous_day_close_price;
                             
                             $worth_ltp = round($quantity * $ltp ,2);
@@ -201,7 +201,7 @@
                             @endif
                             </td>
 
-                            <td>{{ $record->quantity }}</td>
+                            <td>{{ $record->total_quantity }}</td>
                             <td title="Last updated at : {{$record->last_updated_time}}">{{ number_format($ltp) }}</td>
                             <td>{{ number_format( $worth_ltp) }}</td>
                             <td>{{ number_format($ltp_prev) }}</td>

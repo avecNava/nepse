@@ -1,21 +1,3 @@
-// import axios from 'axios';
-
-// const BASE_URL = 'https://jsonplaceholder.typicode.com';
-
-// const getTodos = async () => {
-//   try {
-//     const res = await axios.get(`${BASE_URL}/todos`);
-
-//     const todos = res.data;
-
-//     console.log(`GET: Here's the list of todos`, todos);
-
-//     return todos;
-//   } catch (e) {
-//     console.error(e);
-//   }
-// };
-
 //select an option in a list
 function setOption(selectElement, value) {
     var options = selectElement.options;
@@ -42,15 +24,14 @@ function showForm(form_id) {
     // let el = document.getElementsByClassName(form_id);
     // el[0].classList.add('show');
     console.log(form_id);
-    let el = document.getElementById(form_id);
-    el.classList.add('show');
+    document.getElementById(form_id).classList.add('show');
 }
 
 function hideForm(form_id) {
     // let el = document.getElementsByClassName(form_id);
     // el[0].classList.remove('show');
-    let el = document.getElementById(form_id);
-    el.classList.remove('show');
+    document.getElementById(form_id).classList.remove('show');
+    // el.classList.add('hide');
 }
 
 function showMessage(msg) {

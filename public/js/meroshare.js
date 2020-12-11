@@ -26,16 +26,13 @@
     }
     
     //new button click, show the form
-    let btnNew = document.getElementById("new");
-        btnNew.addEventListener("click", function() {
+    document.getElementById("new").addEventListener("click", function() {
         showForm('meroshare-import-form');
     });
     
     //cancel button click, hide the form
-    let btnCancel = document.getElementById("cancel");
-        btnCancel.addEventListener("click", function() {
-        hideForm('meroshare-import-form');
-        resetInputFields();
+    document.getElementById("cancel").addEventListener("click", function() {
+        hideForm('meroshare-import-form');  
     });
 
     
@@ -79,8 +76,7 @@
 /**
  * imports the selected transactions to the portfolio table
  */
-document.getElementById('saveToPortfolio')
-        .addEventListener('click',function(){
+document.getElementById('saveToPortfolio').addEventListener('click',function(){
 
         let selected = [];
         let elements = document.getElementsByName("t_id");
@@ -94,7 +90,7 @@ document.getElementById('saveToPortfolio')
         });
     
         if(selected.length <=0 ){
-            let message = 'Please select some records for Portfolio 🙏';
+            let message = 'Please select some records to add to the Portfolio 🙏';
             showImportMessage(message);
             return;
         }
@@ -103,7 +99,7 @@ document.getElementById('saveToPortfolio')
         //call ajax 
         let _token = document.getElementsByName('_token')[0].value;
         let request = new XMLHttpRequest();
-        request.open('POST', '/meroshare/import-portfolio', true);
+        request.open('POST', '/meroshare/store-portfolio', true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {

@@ -22,7 +22,7 @@ class CreateAnnouncementsTable extends Migration
             $table->string('referral')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->foreignId('offer_id')->constrained('stock_offers')->nullable();
+            $table->foreignId('offer_id')->constrained('stock_offerings')->nullable();
             $table->timestamps();
         });
     }

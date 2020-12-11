@@ -38,10 +38,9 @@ Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('meroshare/transaction/{shareholder_id?}', [MeroShareController::class, 'importTransactionForm']);
-Route::post('meroshare/transaction', [MeroShareController::class, 'importTransaction']);
+Route::post('meroshare/transaction', [MeroShareController::class, 'importTransactions']);
+Route::post('meroshare/store-portfolio', [MeroShareController::class, 'storeToPortfolio']);
 
-Route::get('meroshare/import-portfolio', [PortfolioController::class, 'portfolio']);
-Route::post('meroshare/import-portfolio', [PortfolioController::class, 'storeToPortfolio']);
 
 Route::pattern('username','[a-zA-Z0-9]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);

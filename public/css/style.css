@@ -15,8 +15,8 @@ h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
 mark {padding: 0px 3px;border-radius: 8px;}
 img.c-logo__img {height: 130px;padding: 20px 0;}
-.error {color:red; !important}
-.success {color:green; !important}
+.error {color:red !important;}
+.success {color:green !important;}
 .context-link {
     color: darkred;
     padding: 10px;
@@ -65,6 +65,9 @@ container for message or buttons
     transition-property: opacity, left, top, height;
     transition-duration: 3s, 5s;
     display: block !important;
+}
+.hide {
+    display: none;
 }
 
 /*table formatting*/
@@ -216,8 +219,7 @@ td:last-child {
 .c_transaction_list td {border-bottom: 1px solid #d6dcde;}
 .c_transaction_list article { padding: 10px 0;}
 main .meroshare-import-form {
-    background: #e5ede6;
-    margin-bottom: 50px;
+    margin-bottom: 50px 0;
 }
  .meroshare-import-form mark {
     padding: 5px 6px;
@@ -247,12 +249,16 @@ main .meroshare-import-form {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
-    padding: 40px 0;
+    background: #e5ede6;
 }
 article.c_transaction_list header {
     margin: 10px 0;
     display: block;
 }
+.form-message {
+    margin: 10px 0;
+}
+
 /*end of meroshare*/
 
 /*portfolio css*/
@@ -309,6 +315,11 @@ section.c_info_band {
 }
 
 /* form section inside portfolio details */
+.display-label {
+    margin: 10px 0;
+    max-width: 200px;
+    display: block;
+}
 .info_band_top {
     display: flex;
     justify-content: space-around;

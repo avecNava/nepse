@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Portfolio extends Model
 {
@@ -50,23 +51,58 @@ class Portfolio extends Model
 
     public static function createPortfolio(Request $request)
     {
-        if(!empty($request)){
+        if(empty($request)){
+            
+            return response()->json([
+                'status' => 'error',
+                'message' =>  'Empty request received',
+            ]);
+        }
 
+        try {
+            
             $portfolio = new Portfolio;
 
             $portfolio->shareholder_id = $request->shareholder;
             $portfolio->stock_id = $request->stock;
             $portfolio->quantity = $request->quantity;
             $portfolio->unit_cost = $request->unit_cost;
-            $portfolio->total_amount = $request->total_amount;
             $portfolio->effective_rate = $request->effective_rate;
+            $portfolio->broker_commission = $request->broker_commission;
+            $portfolio->sebon_commission = $request->sebon_commission;
+            $portfolio->total_amount = $request->total_amount;
             $portfolio->receipt_number = $request->receipt_number;
             $portfolio->broker_no = $request->broker;
             $portfolio->offer_id = $request->offer;
             $portfolio->last_modified_by = Auth::id();
             $portfolio->save();
         
+            //CALCULATE total_quantity and wacc_rate ; update in summary table
+            PortfolioSummary::updateCascadePortfoliSummaries(
+                $request->shareholder, 
+                $request->stock
+            );
+
+        } catch (\Throwable $th) {
+            
+            $error = [
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'file' => $th->getFile(),
+            ];
+            Log::error('New Portfolio Error! ', $error);
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>  'New Portfolio Error!!' . $error['message'],
+            ]);
+
         }
+
+        return response()->json([
+            'status' => 'success',
+            'message' =>  'Portfolio created successfully',
+        ]);
         
     }
     
@@ -74,20 +110,76 @@ class Portfolio extends Model
     {
         if(!empty($request)){
 
-            $portfolio = Portfolio::find($request->id);
+            try {
+                
+                $portfolio = Portfolio::find($request->id);
+                
+                //get shareholder_id and stock_id for update in summary table
+                $shareholder_id = $portfolio->shareholder_id;
+                $stock_id = $portfolio->stock_id;
+                $portfolio->quantity = $request->quantity;
+                $portfolio->unit_cost = $request->unit_cost;
+                $portfolio->effective_rate = $request->effective_rate;
+                $portfolio->broker_commission = $request->broker_commission;
+                $portfolio->sebon_commission = $request->sebon_commission;
+                $portfolio->total_amount = $request->total_amount;
+                $portfolio->receipt_number = $request->receipt_number;
+                $portfolio->broker_number = $request->broker_number;
+                $portfolio->offer_id = $request->offer;
+                $portfolio->last_modified_by = Auth::id();
+                $portfolio->save();
 
-            $portfolio->quantity = $request->quantity;
-            $portfolio->unit_cost = $request->unit_cost;
-            $portfolio->total_amount = $request->total_amount;
-            $portfolio->effective_rate = $request->effective_rate;
-            $portfolio->receipt_number = $request->receipt_number;
-            $portfolio->broker_no = $request->broker_number;
-            $portfolio->offer_id = $request->offer;
-            $portfolio->last_modified_by = Auth::id();
-            $portfolio->save();
-        
-        }
-        
+                //CALCULATE total_quantity and wacc_rate ; update in summary table
+                PortfolioSummary::updateCascadePortfoliSummaries($shareholder_id, $stock_id);
+                
+            
+            } catch (\Throwable $th) {
+
+                $error = [
+                    'message' => $th->getMessage(),
+                    'line' => $th->getLine(),
+                    'file' => $th->getFile(),
+                ];
+                Log::error('Portfolio update mismatch in portfolio and portfolio_summary table', $error);
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' =>  'Portfolio not updated. Error message: ' . $error['message'],
+                ]);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' =>  'Portfolio updated successfully',
+            ]);
+        }    
     }
+
+    /**
+     * update or create portfolios based on input object
+     */
+    public static function updateOrCreatePortfolios($portfolios)
+    {
+        foreach ($portfolios as $row) {
+ 
+            //update record if the following five attributes are met,
+            //else not create a new record with the following attributes
+
+            Portfolio::updateOrCreate(
+            [
+                'stock_id' => $row['stock_id'], 
+                'shareholder_id' => $row['shareholder_id'],
+                'offer_id' => $row['offer_id'],
+                'quantity' => $row['quantity'], 
+                'purchase_date' => $row['transaction_date'],
+            ],
+            [
+                'offer_id' => $row['offer_id'],
+                'last_modified_by' => Auth::id(),
+                'remarks' => $row['remarks'],
+            ]);
+        }
+    }
+
     
 }

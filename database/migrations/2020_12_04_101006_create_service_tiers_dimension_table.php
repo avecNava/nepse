@@ -13,7 +13,7 @@ class CreateServiceTiersDimensionTable extends Migration
      */
     public function up()
     {
-        Schema::create('dim_service_tiers', function (Blueprint $table) {
+        Schema::create('service_tiers', function (Blueprint $table) {
             $table->id();
             $table->string('tier_name');
             $table->string('tier_type');                //free, silver, gold, lifetime
@@ -31,6 +31,6 @@ class CreateServiceTiersDimensionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dim_service_tiers');
+        Schema::dropIfExists('service_tiers');
     }
 }

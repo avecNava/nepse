@@ -18,14 +18,20 @@ class StockSectorsTableSeeder extends Seeder
         // \DB::table('stock_sectors')->truncate();
         $sectors = [
             'Hydropower',
-            'Banks',
+            'Corporate Debenture',
             'Hotels',
+            'Commercial Banks',
+            'Development Banks',
             'Insurance - life',
             'Insurance- Non life',
             'Microfinance',
+            'Finance',
             'Production',
             'Hotel',
             'Investment fund',
+            'Manufacturing And Processing',
+            'Tradings',
+            'Preferred Stocks',
             'Other'
         ];
 

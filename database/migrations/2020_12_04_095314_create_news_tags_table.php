@@ -15,8 +15,8 @@ class CreateNewsTagsTable extends Migration
     {
         Schema::create('news_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained('news')->nullable();
-            $table->foreignId('tag_id')->constrained('tags')->nullable();
+            $table->foreignId('news_id')->constrained('news')->nullable()->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained('tags')->nullable()->onDelete('cascade');
             $table->timestamps();
         });
     }

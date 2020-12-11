@@ -15,8 +15,8 @@ class CreateNewsAuthorsTable extends Migration
     {
         Schema::create('news_authors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained('news');
-            $table->foreignId('author_id')->constrained('users');
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

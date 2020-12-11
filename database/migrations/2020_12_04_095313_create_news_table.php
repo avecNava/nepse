@@ -20,7 +20,6 @@ class CreateNewsTable extends Migration
             $table->text('news');
             $table->string('referral')->nullable();
             $table->foreignId('last_modified_by')->constraied('user');
-            $table->text('news');
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ class CreateNewsCommentsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->string('comments');
-            $table->smallint('rating');
+            $table->integer('rating');
             $table->timestamps();
         });
     }

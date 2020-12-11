@@ -17,7 +17,7 @@ class CreateExpenseDetailsTable extends Migration
             $table->id();
             $table->foreignId('expense_id')->constrained('expenses');
             $table->string('title');
-            $table->string('title');
+            $table->string('title1');
             $table->timestamps();
         });
     }

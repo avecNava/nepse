@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStockOffersTable extends Migration
+class CreateStockOfferingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStockOffersTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_offers', function (Blueprint $table) {
+        Schema::create('stock_offerings', function (Blueprint $table) {
             $table->id();
             $table->string('offer_code');
             $table->string('offer_name')->nullable();
@@ -28,6 +28,6 @@ class CreateStockOffersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_offers');
+        Schema::dropIfExists('stock_offerings');
     }
 }

@@ -18,8 +18,8 @@ class CreateMetadataTable extends Migration
     {
         Schema::create('metadata', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stock_id')->references('stocks');
-            $table->int('customers')->nullable();
+            $table->foreignId('stock_id')->constrained('stocks');
+            $table->integer('customers')->nullable();
             $table->unsignedBigInteger('capital')->nullable();
             $table->float('eps',5,2)->nullable();
             $table->float('eps_q1',5,2)->nullable();

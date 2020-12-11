@@ -27,7 +27,7 @@ class MeroShare extends Model
 
     public function offer()
     {
-        return $this->belongsTo('App\Models\StockOffer', 'offer_code', 'offer_code');
+        return $this->belongsTo('App\Models\StockOffering', 'offer_code', 'offer_code');
     }
     
     /***

@@ -5,7 +5,8 @@
 @endsection
 
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
 @section('content')
@@ -33,7 +34,7 @@
                 <div class="c_portfolio_new">
                     
                     @csrf()
-                    <input type="hidden" value="{{old('id')}}" name="id">                     
+                    <input type="hidden" value="{{old('id')}}" name="id">  
                     
                     <div class="two-col-form">
 
@@ -102,6 +103,7 @@
                                 <label for="quantity" class="@error('quantity') is-invalid @enderror" >Quantity</label>
                                 <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" />
                             </div>
+                            
 
                             <div class="fields form-field" title="Bill amount">
                                 <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
@@ -109,26 +111,37 @@
                                 <span id="total_amount_label"></span>
                             </div>
 
+                            <section id="secondary">
+
+                                <div class="fields form-field">
+                                    <label for="broker" class="@error('broker') is-invalid @enderror">Broker</label>
+                                    <select name="broker">
+                                        <option value="0">Select</option>
+                                    @foreach($brokers as $broker)
+                                    <option value="{{ $broker['broker_no'] }}" 
+                                    @if(old('broker') == $broker['broker_no'] )
+                                    SELECTED
+                                    @endif
+                                    >{{$broker['broker_name']}}</option>
+                                    @endforeach
+                                </select>
+                                <span id="broker_label"></span>
+                            </div>
+                            <div>
+                                <label for="broker_commission">Broker Commission</label>
+                                <input type="text" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
+                            </div>
+                            <div>
+                                <label for="sebon_commission">Sebon Commission</label>
+                                <input type="text" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
+                            </div>
+                            </section>
+                            
                             <div class="fields form-field">
                                 <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
                                 <input type="number" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
                                 <span id="effective_rate_label"></span>
                             </div> 
-
-                            <div class="fields form-field">
-                                <label for="broker" class="@error('broker') is-invalid @enderror">Broker</label>
-                                <select name="broker">
-                                    <option value="0">Select</option>
-                                    @foreach($brokers as $broker)
-                                        <option value="{{ $broker['broker_no'] }}" 
-                                        @if(old('broker') == $broker['broker_no'] )
-                                            SELECTED
-                                        @endif
-                                        >{{$broker['broker_name']}}</option>
-                                    @endforeach
-                                </select>
-                                <span id="broker_label"></span>
-                            </div>
                             
                             <div class="fields form-field">
                                 <label for="purchase_date" class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
@@ -152,7 +165,7 @@
 
                             <div class="buttons">
                                 <button type="submit">Save</button>
-                                <button type="reset">Cancel</button>
+                                <button type="reset">Reset</button>
                             </div>
 
                             <div class="validation-error">
@@ -180,106 +193,5 @@
         <footer></footer>
 
     </section>
-    
-    <script>
-
-        document.getElementById('offer').addEventListener('change',function(){
-
-            let el_unit_cost = document.getElementById('unit_cost_label');
-            el_unit_cost.innerHTML = '';
-            let el_broker = document.getElementById('broker_label');
-            el_broker.innerHTML = '';
-
-            let el_offer = document.querySelector('#offer');
-            const i = el_offer.selectedIndex;            
-            let tag = el_offer.options[i].dataset.tag;
-            let unit_cost = '';
-
-            if(tag==='none') return;
-            
-            if(tag === 'IPO'){
-                unit_cost = 100;
-            }
-            else if (tag === 'BONUS'){
-                unit_cost = 0;
-            }
-            else if (tag === 'SECONDARY'){
-                el_broker.innerHTML =`<mark>Choose a broker</mark>`;
-                el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag} share</mark>`;
-            }
-            else{
-                el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag}</mark>`;
-                document.getElementById('unit_cost').value='';
-                document.getElementById('unit_cost').focus();
-                return;
-            }
-            document.getElementById('unit_cost').value = unit_cost;
-            updateTotalPrice();
-        });
-
-        document.getElementById('quantity').addEventListener('change',function(){
-            updateTotalPrice();
-        });
-        document.getElementById('unit_cost').addEventListener('change',function(){
-            updateTotalPrice();
-        });
-
-        function updateTotalPrice() {
-
-            let quantity = document.getElementById('quantity').value;
-            if (!quantity) return;
-
-            let unit_cost = document.getElementById('unit_cost').value;
-            if (!unit_cost) return;
-            
-            let total = (quantity * unit_cost).toFixed(2);
-            
-            const url = `${window.location.origin}/portfolio/commission/${total}`;
-
-            // const sendGetRequest = async () => {
-            //     try {
-            //         const resp = await axios.get(url);
-            //         console.log(resp.data);
-            //     } catch (error) {
-            //         console.log(error);
-            //     }
-            // };
-
-            total_amount = total;
-            eff_rate = (total_amount/quantity).toFixed(2);
-
-            //calculate BROKER COMMISSION & SEBON COMMISSION for purchase via Secondary market
-            let el_offer = document.querySelector('#offer');
-            const i = el_offer.selectedIndex;            
-            let tag = el_offer.options[i].dataset.tag;
-
-            if(tag==='SECONDARY'){
-
-                let request = new XMLHttpRequest();
-                request.open('GET', url, true);
-            
-                request.onload = function() {
-                    if (this.status >= 200 && this.status < 400) {
-                        const data = JSON.parse(this.response);
-                        let broker = parseFloat(data.broker);
-                        let sebon = parseFloat(data.sebon);
-                        let broker_commission = ((broker/100) * total).toFixed(2);
-                        let sebon_commission = ((sebon/100) * total).toFixed(2);
-                        const total_amount = parseFloat(total) 
-                                            + parseFloat(broker_commission) 
-                                            + parseFloat(sebon_commission);
-                        const eff_rate = (total_amount / quantity).toFixed(2);
-                        let x = `total: ${total} + broker: ${broker_commission} + SEBON : ${sebon_commission}`;
-                        document.getElementById('total_amount_label').innerHTML = x;
-                    }            
-                }
-                request.send(); 
-            }
-            
-            document.getElementById('total_amount').value =  total_amount;
-            document.getElementById('effective_rate').value =  eff_rate;
-
-        }
-    </script>
 
 @endsection

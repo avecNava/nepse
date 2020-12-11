@@ -18,7 +18,7 @@ class CreateWatchlistsTable extends Migration
             $table->foreignId('shareholder_id')->constrained('shareholders');
             $table->foreignId('stock_id')->constrained('stocks');
             $table->foreignId('created_by')->constrained('users');
-            $table->bit('trigger')->default(1);
+            $table->boolean('trigger')->default(1);
             $table->float('low_amount',8,2)->nullable();
             $table->float('high_amount',8,2)->nullable();
             $table->string('notification_mode')->default('email');

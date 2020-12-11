@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTagsDimensionTable extends Migration
+class CreateExpenseDimensionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTagsDimensionTable extends Migration
      */
     public function up()
     {
-        Schema::create('dim_tags', function (Blueprint $table) {
+        Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('tag');
+            $table->string('category');         //Food, Clothing, Beverage etc
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateTagsDimensionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dim_tags');
+        Schema::dropIfExists('expense_categories');
     }
 }

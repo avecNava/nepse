@@ -15,14 +15,14 @@ class CreateUserTiersTable extends Migration
     {
         Schema::create('user_tiers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('tier_id')->constrained('tiers');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('tier_id')->constrained('service_tiers')->onDelete('cascade');
             $table->date('enroll_date');
             $table->date('expiry_date');
             $table->string('mode_payment')->nullable();         //cash, voucher, card, payment gateway
             $table->string('receipt_number')->nullable();
             $table->float('bill_amount',8,2)->nullable();
-            $table->bit('confirmation')->default(0);
+            $table->boolean('confirmation')->default(0);
             $table->timestamps();
         });
     }
