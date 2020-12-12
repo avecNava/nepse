@@ -6,6 +6,7 @@ use App\Models\MeroShare;
 use App\Models\Shareholder;
 use App\Models\Stock;
 use App\Models\StockSector;
+use App\Models\StockPrice;
 use App\Models\StockOffering;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
@@ -268,6 +269,34 @@ class PortfolioController extends Controller
                 'brokers' => [],
             ]);
 
+    }
+
+    /**
+     * returns stocks for the given user (user_id) in JSON format
+     */
+    public function getUserStocks(int $id)
+    {
+        // $stocks = Portfolio::where('shareholder_id', $id)->get();
+        $transaction_date = StockPrice::getLastDate();
+        $stocks = DB::table('portfolio_summaries as p')
+            ->join('stocks as s', 's.id', '=', 'p.stock_id')
+            ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
+            ->select('p.*','s.*', 'pr.*')
+            ->where('pr.transaction_date','=', $transaction_date)
+            ->where('p.shareholder_id', $id)
+            ->orderBy('s.symbol')
+            ->get();
+        // dd($stocks);
+        if(!empty($stocks)){
+            return  response()->json([
+               'status' => 'success',
+               'data' => $stocks->toJson(),
+            ]);
+        }
+        return response()->json([
+            'message' => 'Can not find any stocks with the supplied id',
+            'status' => 'error',
+        ]);
     }
 
 }

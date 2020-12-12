@@ -49,6 +49,7 @@ Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class
 Route::get('portfolio/commission/{amount}', [PortfolioController::class, 'commission']);
 Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
+Route::get('portfolio/user/{id}', [PortfolioController::class, 'getUserStocks']);
 
 //add, edit portfolio
 Route::get('portfolio/new', [PortfolioController::class, 'create']);

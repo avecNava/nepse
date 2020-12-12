@@ -167,7 +167,7 @@
                         </section>
                     </summary>
 
-                    <p> {{$row['shareholder']}}</p> 
+                    <div id="detail-{{$row['id']}}"></div> 
 
                 </details>
 
@@ -187,36 +187,102 @@
         
         var elements = document.getElementsByClassName("summary");
 
-        var myFunction = function() {
-
+        var getUserStocks = function() {
+            
+            showLoadingMessage();
+            
             var attribute = this.getAttribute("id");
             const id = parseID('row-',attribute);
 
             let request = new XMLHttpRequest();
 
             //todo: get symbols by shareholder and display
-            request.open('GET', '/portfolio/details/'+ id, true);
+            request.open('GET', '/portfolio/user/'+ id, true);
 
-            request.onload = function(ele_success, ele_loading) {
+            request.onload = function() {
                 if (this.status >= 200 && this.status < 400) {
-                    $data = JSON.parse(this.response);
-                    updateInputFields($data);
+                    const result = JSON.parse(this.response);
+                    if(result.status === 'success'){
+                        const stocks = JSON.parse(result.data);
+                        showUserStocks(stocks, id);
+                    }else{
+                        showUserStocksError(data.message);
+                    }
                     hideLoadingMessage();
                 }
             }  
             request.onerror = function() {
-                // There was a connection error of some sort
                 hideLoadingMessage();
             };
             request.send();
-            // request.send(`_token=${_token}&id=${id}`);
-
-            });
 
         };
 
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].addEventListener('click', myFunction, false);
+        // for (var i = 0; i < elements.length; i++) {
+        //     elements[i].addEventListener('click', getUserStocks, false);
+        // }
+
+        Array.from(elements).forEach(function(element) {
+            element.addEventListener('click', getUserStocks);
+        });
+
+        function showUserStocksError(msg){
+            document.getElementById('message').innerHTML = msg;
+        }
+
+        function showUserStocks(stocks, id){
+            const html_head = `
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>LTP</th>
+                        <th>Worth (LTP)</th>
+                        <th>Prev Price</th>
+                        <th>Worth(Prev)</th>
+                        <th>Change</th>
+                        <th>Cost Price</th>
+                        <th>Net Worth</th>
+                        <th>Profit</th>
+                    </tr>`;
+
+            const html_foot = `</table>`;
+            var html_body ='';
+
+            stocks.forEach(item => {
+                let up_or_down = '';
+                html_body += 
+                `
+                <tr>
+                    <td title="${ item.security_name }"> ${ item.symbol }</td>
+                    <td> ${ item.total_quantity }</td>
+                    <td>  ${ item.close_price } (${ item.last_updated_price })</td>
+                    <td> ${ item.total_quantity * item.close_price }</td>
+                    <td> ${ item.previous_day_close_price }</td>
+                    <td> ${ item.previous_day_close_price * item.total_quantity }</td>
+                    <td>
+                        <div class="c_change  ${ up_or_down }">
+                            <span class="c_change_val">
+                             
+                            </span>
+                            <span class="c_change_per">
+                                ( %)
+                            </span>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>test</td>
+                </tr>
+                `
+            });
+
+        var html = `${html_head}${html_body}${html_foot}`;
+        // console.log(html);
+        const detail_id = `detail-${id}`;
+        console.log(detail_id);
+        document.getElementById(detail_id).innerHTML = html;
+
         }
 
         // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
