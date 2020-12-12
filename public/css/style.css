@@ -3,6 +3,8 @@ body {
     /* font-family: 'Cutive', serif; */
     /* font-family: 'Lora', serif; */
     font-family: 'Scope One', serif; 
+    --scorecard : #1d1c25;
+    --form-band : #6b64a0;
 }
 div#app, div#container {
     margin: 0 auto;
@@ -48,14 +50,14 @@ component band : appears on top of form or tables
 container for message or buttons
 */
 .c_band {
-    background: #214b25;
+    background: var(--form-band);
     padding: 5px;
     color: #fff;
     height: 2em;
     display: flex;
 }
 .c_band_right {
-    background: #6b64a0;
+    background: var(--form-band);
     padding: 5px;
     display: flex;
     justify-content: space-between;
@@ -251,6 +253,7 @@ main .meroshare-import-form {
     justify-content: space-around;
     background: #e5ede6;
 }
+section.transaction-history button#new { margin: 20px 0; }
 article.c_transaction_list header {
     margin: 10px 0;
     display: block;
@@ -271,11 +274,14 @@ section.c_score_cards {
 }
 section.c_score_cards article {
     width: 200px;
-    background: aliceblue;
-    padding: 10px;
+    background: var(--scorecard);
+    padding: 15px;
     margin: 5px;
+    color: #fff;
 }
-
+.a_portfolio .message {
+    padding-left: 10px;
+}
 .a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
 .a_portfolio td:first-child,.a_portfolio td:last-child,.a_portfolio th:first-child, .a_portfolio th:last-child{text-align: left;}
 .a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
@@ -303,6 +309,36 @@ section.c_score_cards article {
 }
 section.c_info_band {    
     background: beige;    
+}
+.a_portfolio h3 {
+    display: inline-block;
+    min-width: 200px;
+    font-size: 15px;
+}
+.a_portfolio summary:focus {
+    outline: none;
+    background: beige;
+}
+.a_portfolio summary {
+    padding: 10px;
+}
+.shareholder-group {
+    display: inline;
+}
+.shareholder-group ul {
+    display: inherit;
+    padding: 0;
+}
+.shareholder-group li {
+    display: inline-block;
+    min-width: 120px;
+    list-style-type: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+.summary-label {
+    font-size: 15px;
+    font-weight: normal;
 }
 .c_layout_portfolio_form {
     /* display: flex; */

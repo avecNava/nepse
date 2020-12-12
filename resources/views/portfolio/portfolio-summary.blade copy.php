@@ -78,7 +78,7 @@
         </section>
 
             
-        @if( !empty($portfolio_summary) )
+        @if( !empty($portfolios) )
         
         <section class="a_portfolio">
         
@@ -89,7 +89,7 @@
                     <div class="c_band_right">
 
                         <div id="message" class="message">
-                            {{count($portfolio_summary)}} members
+                            {{count($portfolios)}} records
                         </div>
 
                         <div class="c_shareholder">
@@ -126,49 +126,122 @@
 
             <main>
 
-                @foreach ($portfolio_summary as $row)
+                @foreach ($portfolios as $shareholder => $rows)
 
-                <details id="row-{{$row['id']}}" class='summary'>
+                <details>
 
                     <summary>
-                        <section class='shareholder-group'>
+                        <section id='shareholder-group'>
                             <ul>
-                                <li title="{{$row['relation']}}">
-                                   <h3>{{$row['shareholder']}}</h3> 
-                                </li>
-
                                 <li>
-                                    <div class='summary-label'># scripts :</div>
-                                    {{ $row['stocks'] }}
+                                   <h3 title="{{ $shareholder }}">                            
+                                        {{$shareholder}}                                    
+                                    </h3> 
                                 </li>
                                 <li>
-                                    <div class='summary-label'># units :</div>
-                                    {{ $row['quantity'] }}
-                                </li>
-                                
-                                <li>
-                                    <div class='summary-label'>Current worth :</div>
-                                    {{round($row['current_worth'],2)}}
-                                    @if($row['total_amount'])
-                                    ({{$row['total_amount']}})
-                                    @endif
+                                    {{$shareholder}}
                                 </li>
                                 <li>
-                                    <div class='summary-label'>Previous worth :</div>
-                                    {{round($row['prev_worth'],2)}}
+                                    {{$shareholder}}
                                 </li>
                                 <li>
-                                    <div class='summary-label'>Gain :</div>
-                                    {{ round($row['gain'], 2 )}}
-                                    ({{ round($row['change']/100, 2 )}}%)
+                                    {{$shareholder}}
                                 </li>
-
                             </ul>
                         </section>
                     </summary>
 
-                    <p> {{$row['shareholder']}}</p> 
+                    <table>
 
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
+                                &nbsp;
+                                <label for="select_all">Symbol</label>
+                            </th>
+                            <th>Quantity</th>
+                            <th>LTP</th>
+                            <th>Worth (LTP)</th>
+                            <th>Prev Price</th>
+                            <th>Worth(Prev)</th>
+                            <th>Change</th>
+                            <th>Cost Price</th>
+                            <th>Net Worth</th>
+                            <th>Profit</th>
+                        </tr>
+                        
+                        @foreach ($rows as $record)
+
+                            @php
+                                
+                                $ltp = $record->close_price;
+                                if(empty($record->close_price)){
+                                    $ltp = $record->last_updated_price;
+                                }
+                                $quantity = $record->total_quantity;
+                                $ltp_prev = $record->previous_day_close_price;
+                                
+                                $worth_ltp = round($quantity * $ltp ,2);
+                                $worth_prev_ltp = round($quantity * $ltp_prev ,2);
+
+                                $change = $ltp - $ltp_prev;
+                                $change_per = round(($change/$ltp_prev)*100,2);
+
+                                //up or down
+                                if($change == 0){
+                                    $upordown = 'no-change';
+                                }elseif($change>0){
+                                    $upordown = 'increase';
+                                }else{
+                                    $upordown = 'decrease';
+                                }
+
+                            @endphp
+                            
+                            <tr>
+                                
+                                <td>
+                                @if( !empty($record))
+                                    <input type="checkbox" name="chk_{{ $record->id }}" id="{{ $record->id }}">
+                                    &nbsp;
+                                    <label for="{{ $record->id }}"></label>
+                                    <a href="{{ url('portfolio', 
+                                                [
+                                                    Str::lower($record->first_name), 
+                                                    Str::lower($record->symbol), 
+                                                    $record->shareholder_id 
+                                                ]) 
+                                            }}" 
+                                        title="{{ $record->security_name }}">
+                                        {{ $record->symbol }}
+                                    </a> 
+                                    
+                                @endif
+                                </td>
+
+                                <td>{{ $record->total_quantity }}</td>
+                                <td title="Last updated at : {{$record->last_updated_time}}">{{ number_format($ltp) }}</td>
+                                <td>{{ number_format( $worth_ltp) }}</td>
+                                <td>{{ number_format($ltp_prev) }}</td>
+                                <td>{{ number_format( $worth_prev_ltp ) }}</td>
+                                <td>
+                                    <div class="c_change {{ $upordown }}">
+                                        <span class="c_change_val">
+                                        {{ $change }} 
+                                        </span>
+                                        <span class="c_change_per">
+                                            ({{$change_per}}%)
+                                        </span>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                        @endforeach
+
+                    </table>
                 </details>
 
                 @endforeach   
@@ -184,40 +257,6 @@
 
     </div> <!-- end of portfolio_container -->
     <script>
-        
-        var elements = document.getElementsByClassName("summary");
-
-        var myFunction = function() {
-
-            var attribute = this.getAttribute("id");
-            const id = parseID('row-',attribute);
-
-            let request = new XMLHttpRequest();
-
-            //todo: get symbols by shareholder and display
-            request.open('GET', '/portfolio/details/'+ id, true);
-
-            request.onload = function(ele_success, ele_loading) {
-                if (this.status >= 200 && this.status < 400) {
-                    $data = JSON.parse(this.response);
-                    updateInputFields($data);
-                    hideLoadingMessage();
-                }
-            }  
-            request.onerror = function() {
-                // There was a connection error of some sort
-                hideLoadingMessage();
-            };
-            request.send();
-            // request.send(`_token=${_token}&id=${id}`);
-
-            });
-
-        };
-
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].addEventListener('click', myFunction, false);
-        }
 
         // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
         function loadShareholder(){
@@ -233,7 +272,6 @@
             
             window.location.replace(url);
         }
-
     </script>
 
 @endsection

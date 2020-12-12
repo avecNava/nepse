@@ -48,21 +48,78 @@ class PortfolioSummaryController extends Controller
         //todo: leftJoin is not working fine
         //when stockPrice is not present for a symbol, the share is not displayed in the portfolio
         //eg, TVJCL
-        $portfolios = DB::table('portfolio_summaries')
-            ->join('stocks', 'stocks.id', '=', 'portfolio_summaries.stock_id')
-            ->join('shareholders', function($join) use($shareholder_id){
-                $join->on('shareholders.id', '=', 'portfolio_summaries.shareholder_id')
-                    ->whereIn('shareholders.id', $shareholder_id);
+
+        // $portfolios = DB::table('portfolio_summaries')
+        //     ->join('stocks', 'stocks.id', '=', 'portfolio_summaries.stock_id')
+        //     ->join('shareholders', function($join) use($shareholder_id){
+        //         $join->on('shareholders.id', '=', 'portfolio_summaries.shareholder_id')
+        //             ->whereIn('shareholders.id', $shareholder_id);
+        //     })
+        //     ->leftJoin('stock_prices', 'stock_prices.stock_id', '=', 'portfolio_summaries.stock_id')
+        //     ->select('portfolio_summaries.*','stocks.*', 'shareholders.*','stock_prices.*')
+        //     ->where('stock_prices.transaction_date','=', $transaction_date)            
+        //     ->orderBy('stocks.symbol')
+        //     ->get();
+
+        $portfolios = DB::table('portfolios as p')
+            ->join('shareholders as s', function($join) use($shareholder_id){
+                $join->on('s.id', '=', 'p.shareholder_id')
+                    ->whereIn('s.id', $shareholder_id);
             })
-            ->leftJoin('stock_prices', 'stock_prices.stock_id', '=', 'portfolio_summaries.stock_id')
-            ->select('portfolio_summaries.*','stocks.*', 'shareholders.*','stock_prices.*')
-            ->where('stock_prices.transaction_date','=', $transaction_date)            
-            ->orderBy('stocks.symbol')
+            ->join('stocks as st', 'st.id', '=', 'p.stock_id')
+            ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
+            ->selectRaw(
+                'st.symbol, SUM(p.quantity) as total_quantity, AVG(p.effective_rate) as average_rate, SUM(p.total_amount) as total_amount,
+                CONCAT(s.first_name," ", s.last_name) as shareholder, s.id, s.relation,
+                AVG(pr.close_price) as ltp, AVG(pr.last_updated_price) as last_price, AVG(pr.previous_day_close_price) as last_ltp'
+                )
+            ->where('pr.transaction_date','=', $transaction_date)
+            ->groupBy('shareholder','s.id','st.symbol','s.relation')
             ->get();
+
+            //group the resultset by shareholder_id and symbol
+            $portfolio_grouped = $portfolios->groupBy(function($item){
+                // return $item->id . '-' . $item->symbol;
+                return $item->id;
+            });
+
+            $portfolio_agg = $portfolio_grouped->map(function ($items, $key) {
+
+                $sum_stocks = 0;
+                $sum_quantity = 0;
+                $sum_total_amount = 0;
+                $sum_current_worth = 0;
+                $sum_prev_worth = 0;
+
+                foreach ($items as $item) {
+                    $sum_stocks += 1;
+                    $quantity = $item->total_quantity;
+                    $sum_total_amount = $item->total_amount;
+                    $sum_quantity += $quantity;
+                    $sum_prev_worth += $quantity * $item->last_ltp;
+                    $sum_current_worth = $item->ltp ? $quantity * $item->ltp : $quantity * $last_price;
+                }
+
+                return ([
+                    'shareholder' => $item->shareholder,
+                    'relation' => $item->relation,
+                    'id' => $item->id,
+                    'stocks' => $sum_stocks,
+                    'quantity' => $sum_quantity,
+                    'total_amount' => $sum_total_amount,
+                    'current_worth' => $sum_current_worth,
+                    'prev_worth' => $sum_prev_worth,
+                    'change' => round($sum_current_worth / $sum_prev_worth, 2),
+                    'gain' => round($sum_current_worth - $sum_prev_worth, 2),
+                ]);
+
+            });
+
+        // dd($portfolio_agg);
 
         return view("portfolio.portfolio-summary", 
             [
-                'portfolios' => $portfolios,
+                'portfolio_summary' => $portfolio_agg,
                 'shareholders' => $shareholders,
                 'shareholder_id' => empty($member) ? 0 : $member,
                 'transaction_date' => $transaction_date,

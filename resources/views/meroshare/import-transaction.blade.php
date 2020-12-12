@@ -14,7 +14,7 @@
     <section class="transaction-history">
 
         <h1 class="c_title">Import transaction</h1>
-
+        <button id="new">Import Shares</button>
         <article>
 
             <header class="c_message">
@@ -157,7 +157,7 @@
                     </div>
                     
                     <div class="c_band__components">
-                    <button id="new">Import Shares</button>
+                    
                         <div class="c_shareholder">
                             <!-- <label for="shareholder">Shareholder name</label>    -->
                             <select id="shareholder_filter">
