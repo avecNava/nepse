@@ -82,7 +82,7 @@ class PortfolioSummaryController extends Controller
                 // return $item->id . '-' . $item->symbol;
                 return $item->id;
             });
-
+            // dd($portfolio_grouped);
             $portfolio_agg = $portfolio_grouped->map(function ($items, $key) {
 
                 $sum_stocks = 0;
@@ -97,7 +97,7 @@ class PortfolioSummaryController extends Controller
                     $sum_total_amount = $item->total_amount;
                     $sum_quantity += $quantity;
                     $sum_prev_worth += $quantity * $item->last_ltp;
-                    $sum_current_worth = $item->ltp ? $quantity * $item->ltp : $quantity * $last_price;
+                    $sum_current_worth = $item->ltp ? $quantity * $item->ltp : $quantity * $item->last_price;
                 }
 
                 return ([

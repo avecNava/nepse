@@ -294,7 +294,7 @@ section.c_score_cards article {
     border-radius: 5px;
 }
 .c_change {
-    width:100px;
+    min-width: 120px;
     background-repeat: no-repeat;
     background-position: top right;
     display: inline-block;

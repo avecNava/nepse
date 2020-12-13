@@ -248,31 +248,56 @@
 
             const html_foot = `</table>`;
             var html_body ='';
+            var nf = Intl.NumberFormat();
 
             stocks.forEach(item => {
+
                 let up_or_down = '';
+                let close_price = '';
+
+                if(!item.close_price) {
+                    close_price = item.last_updated_price;
+                 }else{
+                    close_price = item.close_price;
+                 }
+                const worth = item.total_quantity * close_price;
+                const prev_worth = item.previous_day_close_price * item.total_quantity;
+                const change = worth - prev_worth;
+                change_css='';
+                if(change > 0){
+                    change_css = 'increase';
+                } 
+                else if(change < 0) {
+                    change_css = 'decrease';
+                }
+                const change_pc = ((change / prev_worth)*100).toFixed(2);
+                const investment = '';
+                const gain = '';
+                if(item.effective_rate){
+                    investment = (item.total_quantity * item.effective_rate).toFixed(2);
+                    const gain = worth - investment;
+                }
                 html_body += 
-                `
-                <tr>
+                `<tr>
                     <td title="${ item.security_name }"> ${ item.symbol }</td>
                     <td> ${ item.total_quantity }</td>
-                    <td>  ${ item.close_price } (${ item.last_updated_price })</td>
-                    <td> ${ item.total_quantity * item.close_price }</td>
+                    <td> ${ close_price } </td>
+                    <td> ${ nf.format(worth) }</td>
                     <td> ${ item.previous_day_close_price }</td>
-                    <td> ${ item.previous_day_close_price * item.total_quantity }</td>
+                    <td> ${ nf.format(prev_worth) }</td>
                     <td>
-                        <div class="c_change  ${ up_or_down }">
+                        <div class="c_change  ${ change_css }">
                             <span class="c_change_val">
-                             
+                             ${nf.format(change)}
                             </span>
                             <span class="c_change_per">
-                                ( %)
+                                ( ${change_pc}%)
                             </span>
                         </div>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td>test</td>
+                    <td>${investment}</td>
+                    <td>${investment - worth}</td>
+                    <td>${gain}</td>
                 </tr>
                 `
             });
