@@ -37,6 +37,7 @@ class CreateStockPricesTable extends Migration
             // $table->string('last_updated_time')->nullable();
             $table->datetime('last_updated_time')->nullable();
             $table->date('transaction_date');
+            $table->boolean('latest')->default(false);
 
             $table->string('source')->default('nepalstock');
             $table->timestamps();

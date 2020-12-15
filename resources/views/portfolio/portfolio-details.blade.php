@@ -20,25 +20,103 @@
 
         <section class="c_info_band">
 
+            @php
+                $qty = $info['total_quantity'];
+                $avg_rate = $info['average_rate'];
+                $investment = $info['investment'];
+                $wacc_rate = ($investment > 0) ? ($investment / $qty) : '';
+                $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
+                $ltp_prev = $price->previous_day_close_price;
+                $worth = $qty * $ltp;
+                $worth_prev = $qty * $ltp_prev;
+                $price_high = $price->high_price;
+                $price_low = $price->low_price;
+                $price_high_52 = $price->fifty_two_week_high_price;
+                $price_low_52 = $price->fifty_two_week_low_price;
+                $change = $ltp - $ltp_prev;
+                $gain = $worth - $investment;
+                $change_per = ''; $gain_per='';
+                if($ltp_prev > 0){
+                    $change_per = ($change/$ltp_prev)*100;
+                }
+                if($investment > 0){
+                    $gain_per = ($gain/$investment)*100;
+                }
+            @endphp
+
             <div class="info_band_top">
                 <div class="block-left">
 
-                    <h2 class="name">{{$shareholder_name}}</h2>
+                    <h2 class="name" title="{{$info['relation']}}">{{$info['shareholder']}}</h2>
                     <div class="stock">
-                        <h3>Symbol : {{$stock_name}}</h3>
-                        <h3>Total quantity : {{$total_stocks}}</h3>
-                        <h3>Last price (LTP) : NPR {{$last_price}}</h3>
+                        <h2>{{$info['security_name']}}</h2>
+                        <h3><label>Total quantity </label>
+                            <span class="value">
+                                {{number_format($qty)}}
+                            </span>
+                        </h3>
+                        <h3><label>WACC (Weighted avg.) </label>
+                            <span class="value">
+                                {{number_format($wacc_rate,2)}}
+                            </span>
+                        </h3>
+                        <h3><label>Last price (LTP) </label>
+                            <span class="value">
+                                {{number_format($ltp)}}
+                            </span>
+                        </h3>
+                        <h3><label>Previous day price </label>
+                            <span class="value">
+                                {{number_format($ltp_prev)}}
+                            </span>
+                        </h3>
+                        <h3><label>Change </label>
+                            <span class="value">
+                                {{number_format($change)}} ({{number_format($change_per,2)}}%)
+                            </span>
+                        </h3>  
                     </div>
 
                 </div>
 
                 <div class="block-right">
-
+                   
                     <div class="stock">
-                        <h3>Total investment : NPR {{$total_investment}}</h3>
-                        <h3>Current worth : NPR {{$net_worth}}</h3>
-                        <h3>Net Gains : {{$net_gain}}</h3>  
-                        <h3>Net Gains per : {{$net_gain}}%</h3>  
+                        <h3><label>Total investment </label>
+                            <span class="value">
+                                {{ number_format($investment)}}
+                            </span>
+                        </h3>
+                        <h3><label>Current worth </label>
+                            <span class="value">
+                                {{number_format($worth)}}
+                            </span>
+                        </h3>
+                        <h3><label>Gain </label>
+                            <span class="value">
+                            {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
+                            </span>
+                        </h3>  
+                        <h3><label>High </label>
+                            <span class="value"> 
+                                {{number_format($price_high)}}
+                            </span>
+                        </h3>
+                        <h3><label>Low </label>
+                            <span class="value"> 
+                                {{number_format($price_low)}}
+                            </span>
+                        </h3>
+                        <h3><label>52 weeks high</label>
+                            <span class="value">
+                                {{number_format($price_high_52)}}
+                            </span>
+                        </h3>
+                        <h3><label>52 weeks low</label>
+                            <span class="value">
+                                {{number_format($price_low_52)}}
+                            </span>
+                        </h3>
                     </div>
 
                 </div>
@@ -46,20 +124,27 @@
         
         </section>
 
-        <div id="portfolio-form" class="info_band_bottom" hidden>
+        @php 
+            $hidden = 'hidden';
+            if($errors->any()){
+                $hidden = '';
+            }
+        @endphp
+
+        <div id="portfolio-form" class="info_band_bottom" {{$hidden}}>
 
             <form method="POST" action="/portfolio/edit">
                 
                 @csrf()
                 <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ $shareholder_id }}">
+                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id') }}">
 
                 <section>
                     <div class="display-label">
-                        <label>Shareholder</label><div title="{{$shareholder_name}}"><strong>{{$shareholder_name}}</strong></div>
+                        <label>Shareholder</label><div title="{{$info['relation']}}"><strong>{{$info['shareholder']}}</strong></div>
                     </div>
                     <div class="display-label">
-                        <label>Symbol</label><div title="{{$stock_name}}"><strong>{{$stock_name}}</strong></div>
+                        <label>Script</label><div><strong>{{$info['security_name']}}</strong></div>
                     </div>
                     <div>
                         <label for="offer" class="@error('offer') is-invalid @enderror">Offering type</label>
@@ -165,7 +250,7 @@
             @if( !empty($portfolios) )
         
             <article class="a_portfolio_details">
-            
+         
                 <header>
 
                     <div class="a_portfolio_main">
@@ -203,11 +288,11 @@
                     <table>
                         <tr>
                             <th>Symbol</th>
+                            <th>Offering type</th>
                             <th>Quantity</th>
                             <th>Unit cost</th>
                             <th>Total amount</th>
                             <th>Effective rate</th>
-                            <th>Offer</th>
                             <th>Sector</th>
                             <th>Shareholder</th>
                             <th>Purchase date</th>
@@ -217,20 +302,20 @@
                             
                             <tr id="row-{{ $record->id }}">
                                 
-                                <td title="{{ $record->security_name }}">
+                                <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
                                     @if( !empty($record))
-                                        <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                        <a href="#{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
+                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
+                                    <a href="#{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
                                     @endif
                                 </td>
+                                <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
                                 <td>{{$record->quantity}}</td>
                                 <td>{{$record->unit_cost}}</td>
                                 <td>{{$record->total_amount}}</td>
                                 <td>{{$record->effective_rate}}</td>
-                                <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
                                 <td>{{$record->sector}}</td>
                                 <td>
-                                    <div id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
+                                    <div title="{{$record->relation}}" id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
                                 </td>
                                 <td>{{$record->purchase_date}}</td>
                             </tr>
@@ -247,6 +332,40 @@
 
             @endif
 
+        </section>
+        
+        <section class="sales">
+            @php
+                $count = count($sales);
+                $count_str = ($count <= 2) ? ' record' :' records';
+            @endphp
+            @if($count)
+            <details>
+                <summary><h2>Sales</h2> ({{$count}} {{$count_str}} )</summary>                
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Sales amount</th>
+                        <th>Net gain</th>
+                        <th>Receipt #</th>
+                        <th>Sales date</th>
+                    </tr>
+                    
+                    @foreach ($sales as $record)
+                        <tr>
+                            <td data-id="stock-{{$record->share->id}}">{{$record->share->symbol}}</td>
+                            <td>{{$record->quantity}}</td>
+                            <td>{{$record->sales_amount}}</td>
+                            <td>{{$record->net_gain}}</td>
+                            <td>{{$record->receipt_number}}</td>
+                            <td>{{$record->sales_date}}</td>
+                        </tr>
+                    @endforeach
+                </table>
+
+            </details>
+            @endif
         </section>
 
     </div> <!-- end of portfolio_container -->

@@ -38,10 +38,19 @@ class PortfolioSummary extends Model
      */
     public static function updateCascadePortfoliSummaries(int $shareholder_id, int $stock_id)
     {
-        $total_quantity = 
+        //get aggregate purchases, aggregate sales and average rates. Calculate net quantity, Add to the summary table
+        
+        $total_purchases = 
             Portfolio::where('shareholder_id', $shareholder_id)
             ->where('stock_id', $stock_id)
             ->sum('quantity');
+        
+        $total_sales = 
+            Sales::where('shareholder_id', $shareholder_id)
+            ->where('stock_id', $stock_id)
+            ->sum('quantity');
+        
+        $total_quantity = $total_purchases - $total_sales;
         
         $wacc_rate = 
             Portfolio::where('shareholder_id', $shareholder_id)

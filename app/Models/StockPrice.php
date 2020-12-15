@@ -16,7 +16,7 @@ class StockPrice extends Model
 
     public function share()
     {
-        return $this->belongsTo('App\Models\Stock','symbol','symbol');
+        return $this->belongsTo(Stock::class,'symbol','symbol');
     }
 
     //todo : use transaction
@@ -58,31 +58,6 @@ class StockPrice extends Model
     }
 
 
-    // public static function updateStockIDs()
-    // {
-    //     //get all records with null stock_id 
-    //     $stock_prices =  StockPrice::select('id','symbol','stock_id')->where('stock_id',null)->get();
-        
-    //     //get all records from Stocks table
-    //     $stocks =  Stock::select('id','symbol')->get();
-
-    //         foreach ($stock_prices as $record) {
-                    
-    //             $symbol = $record['symbol'];
-    //             $stock_id = $stocks->map(function($item, $key) use($symbol){                    
-    //                 if( Str::lower($item->symbol) == Str::lower($symbol) ){
-    //                     return $item->id;                       
-    //                 }
-    //             });
-
-    //             $stock = StockPrice::find($record->id);
-    //             $stock->stock_id = $stock_id;
-    //             $stock->save();
-                
-    //         }  
-
-    // }
-
     /**
      * get stocks with null stock-id and update them
      */
@@ -101,7 +76,7 @@ class StockPrice extends Model
     }
 
     /**
-     * gets the last transaction date from portfolios table
+     * gets the last transaction date from stock_prices table
      */
     public static function getLastDate()
     {
@@ -111,6 +86,23 @@ class StockPrice extends Model
             return null;
 
         return $date->transaction_date;
+    }
+    
+    /**
+     * gets the last transaction price from stock_prices table
+     */
+    public static function getPrice(string $symbol)
+    {
+        
+        if($symbol){
+
+            $record = StockPrice::where('symbol',$symbol)
+            ->with(['share'])
+            ->orderBy('transaction_date','desc')->first();
+            
+            return $record;
+        }
+
     }
 
 }

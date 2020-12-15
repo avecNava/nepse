@@ -42,14 +42,14 @@ Route::post('meroshare/transaction', [MeroShareController::class, 'importTransac
 Route::post('meroshare/store-portfolio', [MeroShareController::class, 'storeToPortfolio']);
 
 
-Route::pattern('username','[a-zA-Z0-9]+');      //doesn't support unicode
+Route::pattern('username','[a-zA-Z0-9\-]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
+Route::get('portfolio/user/{id}', [PortfolioController::class, 'getUserStocks']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
 
 Route::get('portfolio/commission/{amount}', [PortfolioController::class, 'commission']);
 Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
-Route::get('portfolio/user/{id}', [PortfolioController::class, 'getUserStocks']);
 
 //add, edit portfolio
 Route::get('portfolio/new', [PortfolioController::class, 'create']);

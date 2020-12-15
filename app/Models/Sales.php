@@ -12,6 +12,11 @@ class Sales extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function share()
+    {
+        return $this->belongsTo(Stock::class, 'stock_id');
+    }
+
      /**
      * update or create portfolios based on input object
      */

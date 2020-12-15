@@ -61,7 +61,7 @@ class PortfolioSummaryController extends Controller
         //     ->orderBy('stocks.symbol')
         //     ->get();
 
-        $portfolios = DB::table('portfolios as p')
+        $portfolios = DB::table('portfolio_summaries as p')
             ->join('shareholders as s', function($join) use($shareholder_id){
                 $join->on('s.id', '=', 'p.shareholder_id')
                     ->whereIn('s.id', $shareholder_id);
@@ -69,7 +69,7 @@ class PortfolioSummaryController extends Controller
             ->join('stocks as st', 'st.id', '=', 'p.stock_id')
             ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
             ->selectRaw(
-                'st.symbol, SUM(p.quantity) as total_quantity, AVG(p.effective_rate) as average_rate, SUM(p.total_amount) as total_amount,
+                'st.symbol, SUM(p.total_quantity) as total_quantity, AVG(p.wacc_rate) as average_rate,
                 CONCAT(s.first_name," ", s.last_name) as shareholder, s.id, s.relation,
                 AVG(pr.close_price) as ltp, AVG(pr.last_updated_price) as last_price, AVG(pr.previous_day_close_price) as last_ltp'
                 )
@@ -77,7 +77,7 @@ class PortfolioSummaryController extends Controller
             ->groupBy('shareholder','s.id','st.symbol','s.relation')
             ->get();
 
-            //group the resultset by shareholder_id and symbol
+            //group the resultset by shareholder
             $portfolio_grouped = $portfolios->groupBy(function($item){
                 // return $item->id . '-' . $item->symbol;
                 return $item->id;
@@ -87,30 +87,55 @@ class PortfolioSummaryController extends Controller
 
                 $sum_stocks = 0;
                 $sum_quantity = 0;
-                $sum_total_amount = 0;
+                $sum_investment = 0;
                 $sum_current_worth = 0;
                 $sum_prev_worth = 0;
+                $sum_rate = 0;
 
                 foreach ($items as $item) {
                     $sum_stocks += 1;
                     $quantity = $item->total_quantity;
-                    $sum_total_amount = $item->total_amount;
                     $sum_quantity += $quantity;
-                    $sum_prev_worth += $quantity * $item->last_ltp;
+                    if($item->average_rate){
+                        $sum_investment += $quantity * $item->average_rate;
+                        $sum_rate += $item->average_rate;
+                    }
+                    $sum_prev_worth += $quantity * $item->last_ltp;                    
                     $sum_current_worth = $item->ltp ? $quantity * $item->ltp : $quantity * $item->last_price;
+                }
+
+                $wacc_rate = $sum_rate / $sum_stocks;
+                $difference = $sum_current_worth - $sum_prev_worth;
+                $diff_class = '';
+                if($difference > 0){ $diff_class = 'increase';} elseif($difference<0){$diff_class='decrease';}
+                $diff_per ='' ;
+                if($sum_prev_worth > 0){
+                    $diff_per = round(($difference / $sum_prev_worth)*100 ,2);
+                }
+                $gain = $sum_current_worth - $sum_investment;
+                $gain_class = '';
+                if($gain > 0){ $gain_class = 'increase';} elseif($gain<0){$gain_class='decrease';}
+                $gain_per = '';
+                if($sum_investment > 0){
+                    $gain_per = round(($gain/$sum_investment)*100 ,2);
                 }
 
                 return ([
                     'shareholder' => $item->shareholder,
                     'relation' => $item->relation,
-                    'id' => $item->id,
+                    'shareholder_id' => $item->id,
                     'stocks' => $sum_stocks,
                     'quantity' => $sum_quantity,
-                    'total_amount' => $sum_total_amount,
+                    'effective_rate' => $wacc_rate,
+                    'investment' => $sum_investment,
                     'current_worth' => $sum_current_worth,
                     'prev_worth' => $sum_prev_worth,
-                    'change' => round($sum_current_worth / $sum_prev_worth, 2),
-                    'gain' => round($sum_current_worth - $sum_prev_worth, 2),
+                    'diff' => $difference,
+                    'diff_per' => $diff_per,
+                    'diff_class' => $diff_class,
+                    'gain' => $gain,
+                    'gain_per' => $gain_per,
+                    'gain_class' => $gain_class,
                 ]);
 
             });

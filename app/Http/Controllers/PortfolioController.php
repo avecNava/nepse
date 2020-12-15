@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\MeroShare;
 use App\Models\Shareholder;
 use App\Models\Stock;
+use App\Models\Sales;
 use App\Models\StockSector;
+use App\Models\Broker;
 use App\Models\StockPrice;
 use App\Models\StockOffering;
 use App\Models\Portfolio;
@@ -127,13 +129,16 @@ class PortfolioController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            // 'quantity' => 'required|numeric|gt:0', 
-            'quantity' => 'required|regex:/^[0-9]+$/',
-            'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
-        ]);
+                // 'quantity' => 'required|numeric|gt:0', 
+                'offer' => 'required|numeric|gt:0', 
+                'quantity' => 'required|regex:/^[0-9]+$/',
+                'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+                'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+                'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+                // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
+            ],
+            [ 'offer.*' => 'Please specify an offering type']
+        );
 
         $result = Portfolio::updatePortfolio($request);
 
@@ -199,20 +204,29 @@ class PortfolioController extends Controller
      * $username is just a label kept for clarity via Route::pattern
      * $symbol is the stock symbol eg, CHCL
      * $member is the shareholder_id
+     * $all (include SALES record from sales table)
      */
 
     public function showPortfolioDetails($username, $symbol, $member)
     {
         //todo: check authorizations
-        
-        $user_id = Auth::id();      //find shareholder info when null
+        $user_id = Auth::id();                                      //find shareholder info when null
 
-        // $sectors = StockSector::all()->sortBy('sector');
-        // $stocks = Stock::all()->sortBy('symbol');
-        // $shareholders = Shareholder::where('parent_id', $user_id)->get()    ;       //only select shareholders for the current 
-        
         $offers = StockOffering::all()->sortBy('offer_code');
 
+        $sales = Sales::where('shareholder_id', $member)
+                ->with(['share:id,symbol'])
+                ->orderByDesc('sales_date')
+                ->get();
+
+        $sales = $sales->filter(function($item, $key) use($symbol){
+            return $item->share->symbol == $symbol;
+        });
+
+        $stock_price = StockPrice::getPrice($symbol);
+        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_name')->get();
+
+        //portfolio data (for the given stock)
         $portfolios = DB::table('portfolios as p')
         ->join('shareholders as sh', 'sh.id', '=', 'p.shareholder_id')
         ->leftJoin('stock_offerings as o', 'o.id', '=', 'p.offer_id')
@@ -228,46 +242,35 @@ class PortfolioController extends Controller
             $query->where('p.shareholder_id', $member)
             ->where('s.symbol','=', $symbol);
         })->orderBy('purchase_date', 'DESC')->get();
-        
-        //collect info (shareholder name, total shares, security_name)
-        $metadata = collect([]);
-        $temp = $portfolios->each(function($item, $key) use($metadata){
-            $metadata->push([
-                'quantity' => $item->quantity,
-                'shareholder_id' => $item->shareholder_id,
-                'symbol' => "$item->security_name ($item->symbol)",
-                'shareholder' => $item->first_name . ' '. $item->last_name,
-                'relation' => !empty($item->relation) ? " ($item->relation)" : '',
-            ]);
-        });
 
-        $obj = $metadata->first();
-        if(!empty($obj)){
-            $symbol = $obj['symbol'];
-            $shareholder_id = $obj['shareholder_id'];
-            $shareholder = $obj['shareholder'] . $obj['relation'];
-            $quantity = $metadata->sum('quantity');
-        } else {
-            $symbol = '';
-            $shareholder_id = '';
-            $shareholder = '';
-            $quantity = '';
-        }
-        
+        //summary data to display in the top band
+        $item = $portfolios->first();
+        $metadata = collect([
+            'total_scripts' => $portfolios->count('stock_id'),
+            'total_quantity' => $portfolios->sum('quantity'),
+            'investment' => $portfolios->sum(function($item){
+                                return $item->quantity * $item->unit_cost;
+                            }),
+            'average_rate' => $portfolios->avg('effective_rate'),
+            'shareholder' => "$item->first_name $item->last_name",
+            'security_name' => $item->security_name,
+            'relation' => $item->relation,
+        ]);
+       
+        // $x = $portfolios->avg(function($item){
+        //     return $item->unit_cost;
+        // });
+        // dd($metadata);
+
         return view("portfolio.portfolio-details", 
-            [
-                'total_stocks'  => $quantity,
-                'last_price'  => 0,
-                'stock_name' => $symbol,
-                'shareholder_id' => $shareholder_id,
-                'shareholder_name' => $shareholder,
-                'total_investment'  => 0,
-                'net_gain' => 0,
-                'net_worth' => 0,
-                'portfolios' => $portfolios,
-                'offers' => $offers,
-                'brokers' => [],
-            ]);
+        [
+            'sales'  => $sales,
+            'price'  => $stock_price,
+            'info'  => $metadata,
+            'portfolios' => $portfolios,
+            'offers' => $offers,
+            'brokers' => $brokers,
+        ]);
 
     }
 
@@ -279,9 +282,10 @@ class PortfolioController extends Controller
         // $stocks = Portfolio::where('shareholder_id', $id)->get();
         $transaction_date = StockPrice::getLastDate();
         $stocks = DB::table('portfolio_summaries as p')
+            ->join('shareholders as m', 'm.id', '=', 'p.shareholder_id')
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
             ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
-            ->select('p.*','s.*', 'pr.*')
+            ->select('p.*','s.*', 'pr.*','m.first_name','m.last_name')
             ->where('pr.transaction_date','=', $transaction_date)
             ->where('p.shareholder_id', $id)
             ->orderBy('s.symbol')

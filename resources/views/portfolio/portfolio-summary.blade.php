@@ -22,7 +22,7 @@
         <section class="c_score_cards">
             <article>
                 <header>
-                    Investment
+                    cost_price
                 </header>
                 <main>
                     6900
@@ -125,49 +125,69 @@
             </header>
 
             <main>
+                <section class='shareholder-group header-row'>
+                    <div class="shareholder" style="margin-left:6px">Shareholders</div>
+                    <div class='header-labels header-items'>
+                        <div>Shares</div>
+                        <div>Units</div>
+                        <div>Current worth</div>
+                        <div>Previous worth</div>
+                        <div>Difference</div>
+                        <div>Investment</div>
+                        <div>Gain</div>
+                    </div>
+                </section>
 
                 @foreach ($portfolio_summary as $row)
 
-                <details id="row-{{$row['id']}}" class='summary'>
+                <details id="row-{{$row['shareholder_id']}}" class='summary'>
 
                     <summary>
-                        <section class='shareholder-group'>
-                            <ul>
-                                <li title="{{$row['relation']}}">
+                        <section class='shareholder-group inset'>
+                                <div title="{{$row['relation']}}" class="shareholder">
                                    <h3>{{$row['shareholder']}}</h3> 
-                                </li>
+                                </div>
+                                <div class='header-labels'>
+                                    <div>                                    
+                                        {{ $row['stocks'] }}
+                                    </div>
+                                    <div>
+                                        {{ number_format($row['quantity']) }}
+                                    </div>
+                                    
+                                    <div>
+                                        {{number_format($row['current_worth'])}}
+                                    </div>
+                                    <div>
+                                        {{number_format( $row['prev_worth'] ) }}
+                                    </div>
+                                    
+                                    <div class="c_change">
+                                            <div>
+                                                <span>{{ number_format( $row['diff'] ) }}</span>&nbsp;
+                                                <span class={{ $row["diff_class"] }}>({{ $row['diff_per'] }}%)</span>
+                                            </div>
+                                            <div class="{{ $row["diff_class"]  }}_icon"></div>
+                                    </div>
 
-                                <li>
-                                    <div class='summary-label'># scripts :</div>
-                                    {{ $row['stocks'] }}
-                                </li>
-                                <li>
-                                    <div class='summary-label'># units :</div>
-                                    {{ $row['quantity'] }}
-                                </li>
-                                
-                                <li>
-                                    <div class='summary-label'>Current worth :</div>
-                                    {{round($row['current_worth'],2)}}
-                                    @if($row['total_amount'])
-                                    ({{$row['total_amount']}})
-                                    @endif
-                                </li>
-                                <li>
-                                    <div class='summary-label'>Previous worth :</div>
-                                    {{round($row['prev_worth'],2)}}
-                                </li>
-                                <li>
-                                    <div class='summary-label'>Gain :</div>
-                                    {{ round($row['gain'], 2 )}}
-                                    ({{ round($row['change']/100, 2 )}}%)
-                                </li>
+                                    <div>{{number_format($row['investment'])}}</div>
 
-                            </ul>
+                                    <div class="c_change">
+                                        <div>
+                                            <span>{{ number_format( $row['gain'] ) }} </span>
+                                            <span class={{ $row["gain_class"] }}>
+                                                @if($row['gain_per'])
+                                                    ({{ $row['gain_per'] }}%)
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="{{ $row["diff_class"]  }}_icon"></div>
+                                    </div>
+                                </div>
                         </section>
                     </summary>
 
-                    <div id="detail-{{$row['id']}}"></div> 
+                    <div id="detail-{{$row['shareholder_id']}}"></div> 
 
                 </details>
 
@@ -188,11 +208,19 @@
         var elements = document.getElementsByClassName("summary");
 
         var getUserStocks = function() {
-            
-            showLoadingMessage();
+
             
             var attribute = this.getAttribute("id");
             const id = parseID('row-',attribute);
+            
+            //ignore if details already open
+            const isOpen = document.getElementById(attribute).hasAttribute('open');
+            if(isOpen){
+                return;
+            }
+
+            showLoadingMessage();
+            
 
             let request = new XMLHttpRequest();
 
@@ -231,19 +259,23 @@
         }
 
         function showUserStocks(stocks, id){
+            console.log(stocks);
             const html_head = `
                 <table>
                     <tr>
                         <th>Symbol</th>
-                        <th>Quantity</th>
+                        <th>Qty</th>
+                        <th title="Effective rate">Eff. rate</th>
+                        <th>Cost price</th>
                         <th>LTP</th>
-                        <th>Worth (LTP)</th>
-                        <th>Prev Price</th>
-                        <th>Worth(Prev)</th>
+                        <th>Current worth</th>
+                        <th title="Previous price">*Price</th>
+                        <th title="Previous worth">*Worth</th>
                         <th>Change</th>
-                        <th>Cost Price</th>
                         <th>Net Worth</th>
                         <th>Profit</th>
+                        <th>Profit %</th>
+
                     </tr>`;
 
             const html_foot = `</table>`;
@@ -260,8 +292,9 @@
                  }else{
                     close_price = item.close_price;
                  }
-                const worth = item.total_quantity * close_price;
-                const prev_worth = item.previous_day_close_price * item.total_quantity;
+                var quantity = item.total_quantity;
+                const worth = quantity * close_price;
+                const prev_worth = item.previous_day_close_price * quantity;
                 const change = worth - prev_worth;
                 change_css='';
                 if(change > 0){
@@ -270,34 +303,58 @@
                 else if(change < 0) {
                     change_css = 'decrease';
                 }
-                const change_pc = ((change / prev_worth)*100).toFixed(2);
-                const investment = '';
-                const gain = '';
-                if(item.effective_rate){
-                    investment = (item.total_quantity * item.effective_rate).toFixed(2);
-                    const gain = worth - investment;
+                let change_pc = '';
+                if(prev_worth>0){
+                    change_pc = `(${ ((change / prev_worth)*100).toFixed(1) })%`;
                 }
+                let cost_price = '-';
+                let gain = '-';
+                let net_worth = '';
+                let gain_per = '';
+                if(item.effective_rate){
+                    cost_price = (quantity * item.effective_rate).toFixed(1);
+                    net_worth = worth - cost_price;
+                    gain = net_worth - cost_price;
+                    if(cost_price > 0){
+                        gain_per = `${((gain/cost_price)*100).toFixed(1)}%`;
+                    }
+                    gain = nf.format(net_worth - cost_price);
+                }
+                const url = window.location.origin;
+                const effective_rate = item.effective_rate ? item.effective_rate : '';
+                const full_name = `${item.first_name}-${item.last_name}`;
+                const shareholder_name = serializeString(full_name);
+
                 html_body += 
                 `<tr>
-                    <td title="${ item.security_name }"> ${ item.symbol }</td>
-                    <td> ${ item.total_quantity }</td>
+                    <td title="${ item.stock_id }-${ item.security_name }">
+                        <a href="${url}/portfolio/${shareholder_name}/${item.symbol}/${item.shareholder_id }">
+                            ${ item.symbol }
+                        </a>
+                    </td>
+                    <td> ${ quantity }</td>
+                    <td> ${ effective_rate } </td>
+                    <td>${cost_price}</td>
                     <td> ${ close_price } </td>
                     <td> ${ nf.format(worth) }</td>
                     <td> ${ item.previous_day_close_price }</td>
                     <td> ${ nf.format(prev_worth) }</td>
                     <td>
-                        <div class="c_change  ${ change_css }">
-                            <span class="c_change_val">
-                             ${nf.format(change)}
-                            </span>
-                            <span class="c_change_per">
-                                ( ${change_pc}%)
-                            </span>
+                        <div class="c_change">
+                            <div>
+                                <span class="c_change_val">
+                                    ${nf.format(change)}
+                                </span>
+                                <span class="${ change_css }">
+                                    ${change_pc}
+                                </span>
+                            </div>
+                            <div class="${ change_css }_icon"></div>
                         </div>
                     </td>
-                    <td>${investment}</td>
-                    <td>${investment - worth}</td>
+                    <td>${net_worth}</td>
                     <td>${gain}</td>
+                    <td>${gain_per}</td>
                 </tr>
                 `
             });

@@ -22,9 +22,9 @@ class UtilityService
     
     }
     
-    public static function serializeString($name)
+    public static function serializeString($name, $delim='')
     {
-        return Str::of( $name )->replaceMatches('/[ :-]+/','');    
+        return Str::lower(Str::of( $name )->replaceMatches('/[ :-]+/', $delim));    
     }
 
     /**

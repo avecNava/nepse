@@ -47,3 +47,8 @@ function parseID(prefix, id_string) {
     const string_len = id_string.length;
     return id_string.substr(prefix.length, string_len - prefix.length);
 }
+
+//serialize name (replace spaces with dashes)
+function serializeString(name){
+    return name.replace(/\s+/g, '-').toLowerCase();
+}

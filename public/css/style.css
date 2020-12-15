@@ -10,11 +10,13 @@ div#app, div#container {
     margin: 0 auto;
     width: 1024px;
 }
-
+.no-border {border: none !important;}
+.txt_right {text-align:right;}
 a {text-decoration: none;}
 h1, h2, h3 {margin:0; margin-left:0;}
 h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
+h3 {font-size: 1em;}
 mark {padding: 0px 3px;border-radius: 8px;}
 img.c-logo__img {height: 130px;padding: 20px 0;}
 .error {color:red !important;}
@@ -283,8 +285,8 @@ section.c_score_cards article {
     padding-left: 10px;
 }
 .a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
-.a_portfolio td:first-child,.a_portfolio td:last-child,.a_portfolio th:first-child, .a_portfolio th:last-child{text-align: left;}
-.a_portfolio td:nth-child(7),.a_portfolio th:nth-child(7){text-align: left; padding-left: 10px;}
+.a_portfolio td:first-child,.a_portfolio th:first-child{text-align: left;}
+
 .a_portfolio_main h1 {display: inline-block;}
 .a_portfolio_header {align-self: center; }
 
@@ -293,19 +295,33 @@ section.c_score_cards article {
     padding-top: 6px;
     border-radius: 5px;
 }
-.c_change {
+/* .c_change {
     min-width: 120px;
     background-repeat: no-repeat;
     background-position: top right;
     display: inline-block;
+} */
+
+.c_change {
+    display: flex;
+    justify-content: flex-end;
 }
 .increase {
-    background-image: url(//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
-    color:#09bb1a;
+    color: #74cc32;
 }
 .decrease {
+    color: #ff0000;
+    width: 20px;
+}
+.increase_icon {
+    background-image: url(//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
+    width: 20px;
+    background-repeat: no-repeat;
+}
+.decrease_icon {
     background-image: url(//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
-    color:#ff0000;
+    width: 20px;
+    background-repeat: no-repeat;
 }
 section.c_info_band {    
     background: beige;    
@@ -314,6 +330,10 @@ section.c_info_band {
     display: inline-block;
     min-width: 200px;
     font-size: 15px;
+    margin-left: 20px;
+}
+.a_portfolio td:first-child {
+    padding: 5px;
 }
 .a_portfolio summary:focus {
     outline: none;
@@ -322,19 +342,44 @@ section.c_info_band {
 .a_portfolio summary {
     padding: 10px;
 }
-.shareholder-group {
+h3 span {
+    min-width: 100px;
+    display: inline-block;
+}
+h3 label {
+    color: darkslategrey;
+    width: 200px;
+    display: inline-block;
+}
+section.shareholder-group {
+    display: flex;
+    justify-content: space-between;
+}
+section.sales h2 {
     display: inline;
 }
-.shareholder-group ul {
-    display: inherit;
-    padding: 0;
+section.sales {
+    margin: 30px 0;
 }
-.shareholder-group li {
-    display: inline-block;
-    min-width: 120px;
-    list-style-type: none;
-    font-size: 15px;
+section.sales summary {
+    outline: none;
+}
+.header-row {
+    margin-top: 10px;
     font-weight: bold;
+}
+.inset{
+    top: -22px;
+    position: relative;
+}
+.header-labels {
+    display: flex;
+    flex-basis: 75%;
+    justify-content: flex-end;
+}
+.header-labels>div {
+    padding: 5px;
+    margin-left: 5px;
 }
 .summary-label {
     font-size: 15px;

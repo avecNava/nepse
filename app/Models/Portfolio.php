@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class Portfolio extends Model
@@ -20,7 +21,7 @@ class Portfolio extends Model
 
     public function share()
     {
-        return $this->belongsTo('App\Models\Stock','stock_id');
+        return $this->belongsTo(Stock::class,'stock_id');
     }
 
     public function stockPrice()
@@ -160,10 +161,13 @@ class Portfolio extends Model
      */
     public static function updateOrCreatePortfolios($portfolios)
     {
+        
         foreach ($portfolios as $row) {
  
             //update record if the following five attributes are met,
             //else not create a new record with the following attributes
+
+            //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
 
             Portfolio::updateOrCreate(
             [
@@ -177,6 +181,10 @@ class Portfolio extends Model
                 'offer_id' => $row['offer_id'],
                 'last_modified_by' => Auth::id(),
                 'remarks' => $row['remarks'],
+                'unit_cost' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100 : 0,
+                'effective_rate' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100 : 0,
+                'total_amount' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100*$row['quantity'] : 0,
+                
             ]);
         }
     }

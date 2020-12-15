@@ -23,7 +23,7 @@ class CreatePortfoliosTable extends Migration
             $table->float('broker_commission',8,2)->nullable();
             $table->float('sebon_commission',8,2)->nullable();
             $table->float('total_amount',15,2)->nullable();             //extremely high value
-            $table->foreignId('offer_id')->constrained('stock_offerings')->nullable();
+            $table->foreignId('offer_id')->nullable()->constrained('stock_offerings');
             // $table->foreignId('offer_id')->constrained('stock_offerings')->nullable()->onDelete('cascade');
             $table->date('purchase_date')->nullable();
             $table->integer('broker_number')->nullable();
