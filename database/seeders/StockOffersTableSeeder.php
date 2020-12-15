@@ -21,14 +21,14 @@ class StockOfferingsTableSeeder extends Seeder
             'FPO' => 'Fixed Premium offering',
             'BONUS' => 'Bonus share',
             'MUTUALFUND' => 'Mutual funds',
-            'RIGHT' => 'Rights share',
+            'RIGHTS' => 'Rights share',
             'PREMIUM' => 'IPO premium',
             'SECONDARY' => 'Broker',
             'OTC' => 'Over the Counter',
             'AUCTION' => 'Auction',
-            'BOND' => 'Bonds',
-            // 'SALES' => 'Sales',
-            'OTHER' => 'Others',
+            'BONDS' => 'Bonds',
+            'SALES' => 'Sales',
+            'OTHERS' => 'Others',
         ];
 
         foreach ($offers as $key => $value) {

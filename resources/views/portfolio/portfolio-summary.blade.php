@@ -92,32 +92,6 @@
                             {{count($portfolio_summary)}} members
                         </div>
 
-                        <div class="c_shareholder">
-                            @if( !empty($shareholders) )
-                        
-                                <!-- <label for="shareholder">Shareholder</label> -->
-                                <select id="shareholder" name="shareholder" onChange="loadShareholder()">
-                                    <option value="0">Shareholder (All)</option>
-                                    @foreach ($shareholders as $shareholder)
-                                
-                                    <option 
-                                    @php                                
-                                    
-                                    if( $shareholder_id == $shareholder->id){
-                                        echo "SELECTED";
-                                    }                                
-                                    
-                                    @endphp
-                                    value="{{ $shareholder->id }}">
-                                        {{ $shareholder->first_name }} {{ $shareholder->last_name }}
-                                        @if (!empty($shareholder->relation))
-                                            ({{ $shareholder->relation }})
-                                        @endif
-                                    </option>
-                                    @endforeach
-                                </select>
-                            @endif
-                        </div>
                     </div>
 
                 </div>
@@ -128,63 +102,75 @@
                 <section class='shareholder-group header-row'>
                     <div class="shareholder" style="margin-left:6px">Shareholders</div>
                     <div class='header-labels header-items'>
-                        <div>Shares</div>
-                        <div>Units</div>
-                        <div>Current worth</div>
-                        <div>Previous worth</div>
-                        <div>Difference</div>
-                        <div>Investment</div>
-                        <div>Gain</div>
+                        <div class="col1"># Scripts</div>
+                        <div class="col2"># Units</div>
+                        <div class="col3">Investment</div>
+                        <div class="col4">Current worth</div>
+                        <div class="col5">Previous worth</div>
+                        <div class="col6">Difference</div>
+                        <div class="col7">Gain</div>
                     </div>
                 </section>
 
                 @foreach ($portfolio_summary as $row)
-
+                
                 <details id="row-{{$row['shareholder_id']}}" class='summary'>
 
                     <summary>
-                        <section class='shareholder-group inset'>
-                                <div title="{{$row['relation']}}" class="shareholder">
-                                   <h3>{{$row['shareholder']}}</h3> 
-                                </div>
-                                <div class='header-labels'>
-                                    <div>                                    
-                                        {{ $row['stocks'] }}
-                                    </div>
-                                    <div>
-                                        {{ number_format($row['quantity']) }}
-                                    </div>
-                                    
-                                    <div>
-                                        {{number_format($row['current_worth'])}}
-                                    </div>
-                                    <div>
-                                        {{number_format( $row['prev_worth'] ) }}
-                                    </div>
-                                    
-                                    <div class="c_change">
-                                            <div>
-                                                <span>{{ number_format( $row['diff'] ) }}</span>&nbsp;
-                                                <span class={{ $row["diff_class"] }}>({{ $row['diff_per'] }}%)</span>
-                                            </div>
-                                            <div class="{{ $row["diff_class"]  }}_icon"></div>
-                                    </div>
+                    <section class='shareholder-group inset'>
 
-                                    <div>{{number_format($row['investment'])}}</div>
+                        <div title="{{$row['relation']}}" class="shareholder">
+                            <h3>{{$row['shareholder']}}</h3> 
+                        </div>
+                        <div class='header-labels'>
 
-                                    <div class="c_change">
-                                        <div>
-                                            <span>{{ number_format( $row['gain'] ) }} </span>
-                                            <span class={{ $row["gain_class"] }}>
-                                                @if($row['gain_per'])
-                                                    ({{ $row['gain_per'] }}%)
-                                                @endif
-                                            </span>
-                                        </div>
-                                        <div class="{{ $row["diff_class"]  }}_icon"></div>
+                            <div class="col1">                                    
+                                {{ number_format($row['total_scripts']) }}
+                            </div>
+                            <div class="col2">
+                                {{ number_format($row['total_units']) }}
+                            </div>                                    
+                            <div class="col3">
+                                {{number_format($row['total_investment'])}}
+                            </div>
+                            <div class="col4">
+                                {{number_format( $row['current_worth'] ) }}
+                            </div>
+                            <div class="col5">{{number_format($row['prev_worth'])}}</div>
+
+                            <div class="col6">
+                                <div class="c_change">
+                                    <div>
+                                        <span>{{ number_format( $row['change'] ) }} </span>
+                                        <span class={{ $row["change_class"] }}>
+                                            @if($row['change_pc'])
+                                                ({{ $row['change_pc'] }}%)
+                                            @endif
+                                        </span>
                                     </div>
+                                    <div class="{{ $row["change_class"]  }}_icon"></div>
                                 </div>
-                        </section>
+                            </div>
+
+                            <div class="col7">
+                                <div class="c_change">
+                                    <div>
+                                        <span>{{ number_format( $row['gain'] ) }} </span>
+                                        <span class={{ $row["gain_class"] }}>
+                                            @if($row['gain_pc'])
+                                                ({{ $row['gain_pc'] }}%)
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="{{ $row["gain_class"]  }}_icon"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        
+                    </section>
+
                     </summary>
 
                     <div id="detail-{{$row['shareholder_id']}}"></div> 

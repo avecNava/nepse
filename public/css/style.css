@@ -340,7 +340,25 @@ section.c_info_band {
     background: beige;
 }
 .a_portfolio summary {
-    padding: 10px;
+    padding: 10px 0;
+}
+.header-labels>.col7, .header-labels>.col6 {
+    width: 110px;
+}
+.header-labels>.col3, .header-labels>.col4,.header-labels>.col5 {
+    width: 100px;
+}
+.c_change span {
+    display: flex;
+    flex-direction: column;
+}
+.header-items>div {
+    font-weight: normal;
+    /* padding:0 5px; */
+}
+.header-labels>div {
+    padding: 0 5px;
+    text-align: right;
 }
 h3 span {
     min-width: 100px;
@@ -377,10 +395,7 @@ section.sales summary {
     flex-basis: 75%;
     justify-content: flex-end;
 }
-.header-labels>div {
-    padding: 5px;
-    margin-left: 5px;
-}
+
 .summary-label {
     font-size: 15px;
     font-weight: normal;

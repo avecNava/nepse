@@ -168,6 +168,7 @@ class Portfolio extends Model
             //else not create a new record with the following attributes
 
             //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
+            $offers =['IPO','RIGHTS'];
 
             Portfolio::updateOrCreate(
             [
@@ -181,10 +182,9 @@ class Portfolio extends Model
                 'offer_id' => $row['offer_id'],
                 'last_modified_by' => Auth::id(),
                 'remarks' => $row['remarks'],
-                'unit_cost' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100 : 0,
-                'effective_rate' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100 : 0,
-                'total_amount' => (Str::lower( $row['offer_code'] ) == 'ipo') ? 100*$row['quantity'] : 0,
-                
+                'unit_cost' => in_array($row['offer_code'], $offers) ? 100 : 0,
+                'effective_rate' => in_array($row['offer_code'], $offers) ? 100 : 0,
+                'total_amount' => in_array($row['offer_code'], $offers) ? 100 : 0,                
             ]);
         }
     }

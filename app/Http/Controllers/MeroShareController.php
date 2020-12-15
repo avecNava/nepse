@@ -257,9 +257,9 @@ class MeroShareController extends Controller
           // Get portfolio from meroshare_transactions table, related data from Shares and Offers table 
           //consturct collections to store data
           $transactions = 
-          MeroShare::whereIn('id', $ids->toArray())
-          ->with(['share:id,symbol','offer:id,offer_code'])         //relationships (share, offer)
-          ->get();
+               MeroShare::whereIn('id', $ids->toArray())
+               ->with(['share:id,symbol','offer:id,offer_code'])         //relationships (share, offer)
+               ->get();
           
           //group by data by symbol; loop each symbol group; aggregate the debit and credit quantities
           $transactions = $transactions->groupBy('symbol');
@@ -280,7 +280,7 @@ class MeroShareController extends Controller
                          'shareholder_id' => $value->shareholder_id,
                          'symbol' =>  empty($value->share) ? null : $value->share->symbol,
                          'stock_id' =>  empty($value->share) ? null : $value->share->id,
-                         'offer_id' =>  empty($value->offer) ? null : $value->offer->id,            //get from related table
+                         'offer_id' =>  empty($value->offer) ? null : $value->offer->id,                      //get from related table
                          'offer_code' =>  empty($value->offer) ? null : $value->offer->offer_code,            //get from related table
                          'transaction_date' => $value->transaction_date,
                          'remarks' => $value->remarks,

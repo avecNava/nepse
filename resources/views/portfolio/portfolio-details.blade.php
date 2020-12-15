@@ -21,10 +21,11 @@
         <section class="c_info_band">
 
             @php
+                //dd($info);
                 $qty = $info['total_quantity'];
                 $avg_rate = $info['average_rate'];
                 $investment = $info['investment'];
-                $wacc_rate = ($investment > 0) ? ($investment / $qty) : '';
+                $wacc_rate = ($investment > 0) ? ($investment / $qty) : 0;
                 $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
                 $ltp_prev = $price->previous_day_close_price;
                 $worth = $qty * $ltp;
@@ -35,7 +36,7 @@
                 $price_low_52 = $price->fifty_two_week_low_price;
                 $change = $ltp - $ltp_prev;
                 $gain = $worth - $investment;
-                $change_per = ''; $gain_per='';
+                $change_per = 0; $gain_per=0;
                 if($ltp_prev > 0){
                     $change_per = ($change/$ltp_prev)*100;
                 }

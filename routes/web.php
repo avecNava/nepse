@@ -58,12 +58,13 @@ Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
 Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 
 Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('home');
-Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
+// Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 
 
 Route::get('test',function(){
-
+    $offers =['IPO','RIGHTS'];
+    return in_array('RIGHTS', $offers) ? 'EXISTS' :'DOES NOT EXIST';
     // return Stock::select('id')->where('symbol', 'API')->first();
     // $hasPortfolio = Portfolio::where('shareholder_id',1)->select('shareholder_id')->withCount(['shareholder_id'])->get();
     // dd($hasPortfolio);
