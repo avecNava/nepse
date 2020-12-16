@@ -69,10 +69,7 @@ class PortfolioController extends Controller
         $offers = StockOffering::all()->sortBy('offer_code');
         
         // $brokers = Broker::all()->sortBy('broker_name');
-        $brokers = collect([
-            ['broker_no'=>37, 'broker_name'=>'Swarnalaxmi Securities'],
-            ['broker_no'=>34, 'broker_name'=>'Another Broker '],
-            ]);
+        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
         
         $stocks = Stock::all()->sortBy('symbol');
 
@@ -224,7 +221,7 @@ class PortfolioController extends Controller
         });
 
         $stock_price = StockPrice::getPrice($symbol);
-        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_name')->get();
+        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
 
         //portfolio data (for the given stock)
         $portfolios = DB::table('portfolios as p')
@@ -288,6 +285,7 @@ class PortfolioController extends Controller
             ->select('p.*','s.*', 'pr.*','m.first_name','m.last_name')
             ->where('pr.transaction_date','=', $transaction_date)
             ->where('p.shareholder_id', $id)
+            ->where('p.total_quantity','>',0)
             ->orderBy('s.symbol')
             ->get();
         // dd($stocks);

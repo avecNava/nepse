@@ -21,7 +21,7 @@
         <section class="c_info_band">
 
             @php
-                //dd($info);
+                
                 $qty = $info['total_quantity'];
                 $avg_rate = $info['average_rate'];
                 $investment = $info['investment'];
@@ -43,6 +43,9 @@
                 if($investment > 0){
                     $gain_per = ($gain/$investment)*100;
                 }
+                $gain_class =''; $change_class = '';
+                if($change_per > 0) {$change_class='increase';}elseif($change_per < 0){$change_class='decrease';}
+                if($gain_per > 0) {$gain_class='increase';}elseif($gain_per < 0){$gain_class='decrease';}
             @endphp
 
             <div class="info_band_top">
@@ -72,7 +75,7 @@
                             </span>
                         </h3>
                         <h3><label>Change </label>
-                            <span class="value">
+                            <span class="value {{$change_class}}">
                                 {{number_format($change)}} ({{number_format($change_per,2)}}%)
                             </span>
                         </h3>  
@@ -94,7 +97,7 @@
                             </span>
                         </h3>
                         <h3><label>Gain </label>
-                            <span class="value">
+                            <span class="value {{$change_class}}">
                             {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
                             </span>
                         </h3>  
@@ -182,13 +185,13 @@
                     <div>
                         <label for="total_amount" title="bill amount"
                         class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                        <input type="number" name="total_amount" id="total_amount" required 
+                        <input type="text" name="total_amount" id="total_amount" required 
                         value="{{ old('total_amount') }}"/>
                     </div>
                     <div>
                         <label for="effective_rate"
                         class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
-                        <input type="number" name="effective_rate" id="effective_rate" required 
+                        <input type="text" name="effective_rate" id="effective_rate" required 
                         value="{{ old('effective_rate') }}"/>
                     </div>
 
@@ -203,7 +206,7 @@
                             @if(!empty(@brokers))
                             <option value="0">Select</option>
                             @foreach($brokers as $broker)
-                                <option value="{{ $broker->broker_no }}">{{$broker->broker_name}}</option>
+                                <option value="{{ $broker->broker_no }}">{{ $broker->broker_no }} - {{$broker->broker_name}}</option>
                             @endforeach
                             @endif
                         </select>
@@ -338,11 +341,12 @@
         <section class="sales">
             @php
                 $count = count($sales);
+                $quantity = $sales->sum('quantity');
                 $count_str = ($count <= 2) ? ' record' :' records';
             @endphp
             @if($count)
             <details>
-                <summary><h2>Sales</h2> ({{$count}} {{$count_str}} )</summary>                
+                <summary><h2>Sales</h2> - {{$count}} {{$count_str}} {{$quantity}} units </summary>                
                 <table>
                     <tr>
                         <th>Symbol</th>
@@ -372,17 +376,35 @@
     </div> <!-- end of portfolio_container -->
 
     <script>
+
         // handle New button clicked
         document.getElementById("new").addEventListener("click", function() {
             const url = `${window.location.origin}/portfolio/new`;
             //redirect to the mian form
             window.location.replace(url);
         });
+
         // handle Cancel button
         document.getElementById("cancel").addEventListener("click", function() {
             hideForm('portfolio-form');
             resetInputFields();
         });
+
+        //when offer is changed, recalcualte commission and effective rate
+        // const el_offer = document.querySelector('#offer');
+        // el_offer.addEventListener('change', function(e){
+        
+        //     //show hide secondary section in the form
+        //     const el_offer = document.querySelector('#offer');
+            
+        //     const i = el_offer.selectedIndex;            
+        //     let tag = el_offer.options[i].dataset.tag;
+
+        //     if(tag==='SECONDARY'){
+        //         document.getElementById('secondary').classList.remove('hide');
+        //     }
+
+        // });
 
         // handle Edit button clicked
         document.getElementById("edit").addEventListener("click", function() {
@@ -398,16 +420,9 @@
             showLoadingMessage();
             clearMessage();
             showForm('portfolio-form');
+            
             document.querySelector('.message').innerHTML='';
 
-            //show hide secondary section in the form
-            let el_offer = document.querySelector('#offer');
-            const i = el_offer.selectedIndex;            
-            let tag = el_offer.options[i].dataset.tag;
-
-            if(tag==='SECONDARY'){
-                document.getElementById('secondary').classList.remove('hide');
-            }
 
             //parse the id from the given string
             let record_id = parseID('chk_', id_string);
@@ -421,6 +436,7 @@
                 if (this.status >= 200 && this.status < 400) {
                     $data = JSON.parse(this.response);
                     updateInputFields($data);
+                    document.querySelector('#offer').dispatchEvent(new Event("change"));
                     hideLoadingMessage();
                 }
             }  

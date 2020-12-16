@@ -48,6 +48,8 @@ class PortfolioSummaryController extends Controller
                         pr.close_price, pr.last_updated_price, pr.previous_day_close_price'
                         )
                     ->where('pr.transaction_date','=', $transaction_date)
+                    ->where('p.total_quantity','>', 0)
+                    ->orderBy('s.first_name','asc')
                     ->get();
 
             //group the resultset by shareholder

@@ -35,6 +35,11 @@ class Portfolio extends Model
         return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id')->where('transaction_date','=',$transaction_date);
     }   
 
+    public function scopeNonZero($query)
+    {
+        return $query->where('quantity','>',0);
+    }
+
     /**
      * get sector name via stocks table -> hasOneThrough
      * //https://laravel.com/docs/8.x/eloquent-relationships#has-one-through

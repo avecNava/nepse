@@ -139,8 +139,11 @@ class MeroShareController extends Controller
      elseif(Str::contains($offering_txt,'ca-rights')){
           return 'RIGHTS';
      }
+     elseif(Str::contains($offering_txt,'ca-merger')){
+          return 'MERGER';
+     }
      elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
-          return 'IPO';
+          return 'FPO';
      }
      elseif(Str::contains($offering_txt,['initial public offering','ipo'])) {
           return 'IPO';
@@ -162,6 +165,7 @@ class MeroShareController extends Controller
      }
      
    }
+
 
    public static function getTransactionMode($str){
      
@@ -201,8 +205,17 @@ class MeroShareController extends Controller
           $portfolios = (new MeroShareController)->parseTransactions($request);
           
           //1. parse purchase data
-          $purchases = $portfolios->filter(function($item, $key){
-               return Str::lower($item['offer_code']) != 'sales';
+          $purchase_arr = [
+               'BONUS',
+               'RIGHTS',
+               'RIGHT',
+               'FPO',
+               'IPO',
+               'SECONDARY',
+          ];
+
+          $purchases = $portfolios->filter(function($item, $key) use($purchase_arr){
+               return in_array($item['offer_code'], $purchase_arr);
           });
 
           //2. insert/update Portfolios table
@@ -211,8 +224,16 @@ class MeroShareController extends Controller
           }
           
           //3. parse sales data
-          $sales = $portfolios->filter(function($item, $key){
-               return Str::lower($item['offer_code']) == 'sales';
+          $sales_arr = [
+               'SALES',
+               'SALE',
+               'MERGER',
+               'OTHER',
+               'OTHERS',
+          ];
+
+          $sales = $portfolios->filter(function($item, $key) use($sales_arr){
+               return in_array($item['offer_code'], $sales_arr);
           });
           
           //4. insert/update Portfolios table

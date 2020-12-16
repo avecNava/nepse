@@ -35,100 +35,95 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
 document.getElementById('quantity').addEventListener('change',function(){
     updateTotalPrice();
 });
+//handle quantity blur
+document.getElementById('quantity').addEventListener('blur',function(){
+    updateTotalPrice();
+});
 //handle unit_cost change
 document.getElementById('unit_cost').addEventListener('change',function(){
     updateTotalPrice();
 });
+//handle unit_cost blur
+document.getElementById('unit_cost').addEventListener('blur',function(){
+    updateTotalPrice();
+});
+
 //handle offer change
 document.getElementById('offer').addEventListener('change',function(){
 
-    // let el_unit_cost = document.getElementById('unit_cost_label');
-    // el_unit_cost.innerHTML = '';
-    // let el_broker = document.getElementById('broker_label');
-    // el_broker.innerHTML = '';
-
     let el_offer = document.querySelector('#offer');
-    const i = el_offer.selectedIndex;            
-    let tag = el_offer.options[i].dataset.tag;
-    let unit_cost = 0;
-
+    let tag = el_offer.options[ el_offer.selectedIndex ].dataset.tag;
     if(tag==='none') return;
 
     document.getElementById('secondary').classList.add('hide');
-    if(tag === 'IPO'){
-        unit_cost = 100;
-        document.getElementById('unit_cost').value = unit_cost;
-    }
-    else if (tag === 'BONUS'){
-        unit_cost = 0;
-        document.getElementById('unit_cost').value = unit_cost;
-    }
-    else if (tag === 'SECONDARY'){
+    if(tag === 'IPO' || tag === 'RIGHTS'){
+        document.getElementById('unit_cost').value = 100;
+    }else if (tag === 'BONUS'){    
+        document.getElementById('unit_cost').value = 0;
+    }else if (tag === 'SECONDARY'){
         document.getElementById('secondary').classList.remove('hide');
-        // el_broker.innerHTML =`<mark>Choose a broker</mark>`;
-        // el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag} share</mark>`;
     }
-    // else{
-    //     el_unit_cost.innerHTML =`<mark>Enter unit cost for ${tag}</mark>`;
-    //     document.getElementById('unit_cost').value='';
-    //     document.getElementById('unit_cost').focus();
-    //     return;
-    // }
-    // document.getElementById('unit_cost').value = unit_cost;
-    document.getElementById('unit_cost').focus();
     updateTotalPrice();
 });
 
 function updateTotalPrice() {
+    
+    document.getElementById('broker_commission').value =  '';
+    document.getElementById('sebon_commission').value =  '';
+    document.getElementById('total_amount').value =  '';
+    document.getElementById('effective_rate').value =  '';
 
-    let quantity = document.getElementById('quantity').value;
+    var quantity = document.getElementById('quantity').value;
     if (!quantity) return;
+    if (quantity < 1) return;
 
     let unit_cost = document.getElementById('unit_cost').value;
     if (!unit_cost) return;
     
-    let total = (quantity * unit_cost).toFixed(2);
-    
-    const url = `${window.location.origin}/portfolio/commission/${total}`;
+    var sub_total = (quantity * unit_cost).toFixed(2);
 
-    total_amount = total;
-    eff_rate = (total_amount/quantity).toFixed(2);
+    var eff_rate = unit_cost;
+    var total_amount = sub_total;
+
+    document.getElementById('total_amount').value =  total_amount;
+    document.getElementById('effective_rate').value =  eff_rate;
+    
+    const el_offer = document.querySelector('#offer');
+    const tag = el_offer.options[ el_offer.selectedIndex ].dataset.tag;
 
     //calculate BROKER COMMISSION & SEBON COMMISSION for purchase via Secondary market
-    let el_offer = document.querySelector('#offer');
-    const i = el_offer.selectedIndex;            
-    let tag = el_offer.options[i].dataset.tag;
+    const url = `${window.location.origin}/portfolio/commission/${sub_total}`;
 
-    if(tag==='SECONDARY'){
+    if(tag === 'SECONDARY'){
 
         let request = new XMLHttpRequest();
         request.open('GET', url, true);
     
         request.onload = function() {
+
             if (this.status >= 200 && this.status < 400) {
+
                 const data = JSON.parse(this.response);
+
                 let broker = parseFloat(data.broker);
                 let sebon = parseFloat(data.sebon);
-                let broker_commission = ((broker/100) * total).toFixed(2);
-                let sebon_commission = ((sebon/100) * total).toFixed(2);
-                const total_amount = parseFloat(total) 
-                                    + parseFloat(broker_commission) 
-                                    + parseFloat(sebon_commission);
-                const eff_rate = (total_amount / quantity).toFixed(2);
-                // let x = `total: ${total} + broker: ${broker_commission} + SEBON : ${sebon_commission}`;
-                // document.getElementById('total_amount_label').innerHTML = x;
-                document.getElementById('broker_commission').value =  broker_commission;
-                document.getElementById('sebon_commission').value =  sebon_commission;
-            }            
+                let broker_commission = ((broker/100) * sub_total);
+                let sebon_commission = ((sebon/100) * sub_total);
+
+                total_amount = parseFloat(sub_total) + parseFloat(broker_commission) + parseFloat(sebon_commission);
+                eff_rate = (total_amount / quantity);
+                if(broker_commission)
+                    document.getElementById('broker_commission').value =  broker_commission.toFixed(2);
+                if(sebon_commission) 
+                    document.getElementById('sebon_commission').value =  sebon_commission.toFixed(2);
+                if(total_amount)
+                    document.getElementById('total_amount').value =  total_amount.toFixed(2);
+                if(eff_rate)
+                    document.getElementById('effective_rate').value =  eff_rate.toFixed(2);
+            } 
+
         }
         request.send(); 
-    }
-    else{
-            document.getElementById('broker_commission').value =  '';
-            document.getElementById('sebon_commission').value =  '';
-    }
-    
-    document.getElementById('total_amount').value =  total_amount;
-    document.getElementById('effective_rate').value =  eff_rate;
+    } 
 
 }

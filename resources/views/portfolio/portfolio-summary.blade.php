@@ -328,10 +328,10 @@
                     <td>
                         <div class="c_change">
                             <div>
-                                <span class="c_change_val">
+                                <span class='change-val'>
                                     ${nf.format(change)}
                                 </span>
-                                <span class="${ change_css }">
+                                <span class="change-val ${ change_css }">
                                     ${change_pc}
                                 </span>
                             </div>

@@ -122,7 +122,7 @@
                                     @if(old('broker') == $broker['broker_no'] )
                                     SELECTED
                                     @endif
-                                    >{{$broker['broker_name']}}</option>
+                                    >{{ $broker['broker_no'] }}-{{$broker['broker_name']}}</option>
                                     @endforeach
                                 </select>
                                 <span id="broker_label"></span>

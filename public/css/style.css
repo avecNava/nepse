@@ -306,6 +306,7 @@ section.c_score_cards article {
     display: flex;
     justify-content: flex-end;
 }
+
 .increase {
     color: #74cc32;
 }
@@ -340,7 +341,8 @@ section.c_info_band {
     background: beige;
 }
 .a_portfolio summary {
-    padding: 10px 0;
+    padding: 10px;
+    padding-right: 0;
 }
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;
@@ -348,10 +350,7 @@ section.c_info_band {
 .header-labels>.col3, .header-labels>.col4,.header-labels>.col5 {
     width: 100px;
 }
-.c_change span {
-    display: flex;
-    flex-direction: column;
-}
+
 .header-items>div {
     font-weight: normal;
     /* padding:0 5px; */
@@ -422,7 +421,9 @@ section.c_info_band {
     line-height: 35px;
     padding: 20px 0;
 }
-
+.value {
+    width: 120px;
+}
 .info_band_bottom button {
     margin-top: 30px;
 }

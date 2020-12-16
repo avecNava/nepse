@@ -22,17 +22,17 @@ class StockSectorsTableSeeder extends Seeder
             'Hotels',
             'Commercial Banks',
             'Development Banks',
-            'Insurance - life',
-            'Insurance- Non life',
+            'Life Insurance',
+            'Non life Insurance',
             'Microfinance',
             'Finance',
             'Production',
             'Hotel',
-            'Investment fund',
-            'Manufacturing And Processing',
+            'Investment Fund',
+            'Manufacturing & Processing',
             'Tradings',
             'Preferred Stocks',
-            'Other'
+            'Others'
         ];
 
         foreach ($sectors as $value) {

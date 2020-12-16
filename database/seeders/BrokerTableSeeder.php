@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class BrokerTableSeeder extends Seeder
 {
@@ -67,8 +68,15 @@ class BrokerTableSeeder extends Seeder
             
         ];
 
-        foreach ($brokers as $key => $value) {
-            \DB::table('brokers')->insert(['broker_no' => $key['broker_no'],'broker_name' => $value['name'],'office_address' => $value['address'],'contact_number' => $value['phone'],'created_at' => Carbon::now()->toDateTimeString()]);
+        foreach ($brokers as $value) {
+            \DB::table('brokers')->insert(
+                [
+                    'broker_no' => $value['broker_no'],
+                    'broker_name' => $value['name'],
+                    'office_address' => $value['address'],
+                    'phone' => $value['phone'],
+                    'created_at' => Carbon::now()->toDateTimeString()
+                ]);
         } 
 
         

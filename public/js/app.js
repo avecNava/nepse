@@ -21,9 +21,6 @@ function hideLoadingMessage() {
 }
 
 function showForm(form_id) {            
-    // let el = document.getElementsByClassName(form_id);
-    // el[0].classList.add('show');
-    console.log(form_id);
     document.getElementById(form_id).classList.add('show');
 }
 
