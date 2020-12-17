@@ -32,7 +32,13 @@ class PortfolioSummaryController extends Controller
             $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();        //return Array            
         }
         
-        //lookup data
+        $net_prev_gain = '';
+        $diff = '';
+        $sectors = '';
+        $scripts ='';
+        $members = '';
+
+
         $transaction_date = StockPrice::getLastDate();
 
         $portfolios = DB::table('portfolio_summaries as p')
@@ -43,15 +49,35 @@ class PortfolioSummaryController extends Controller
                     ->join('stocks as st', 'st.id', '=', 'p.stock_id')
                     ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
                     ->selectRaw(
-                        'st.symbol, p.quantity, p.wacc,
+                        'st.symbol, p.*,
                         CONCAT(s.first_name," ", s.last_name) as shareholder, s.id, s.relation,
                         pr.close_price, pr.last_updated_price, pr.previous_day_close_price'
                         )
                     ->where('pr.transaction_date','=', $transaction_date)
-                    ->where('p.quantity','>', 0)
+                    // ->where('p.quantity','>', 0)
                     ->orderBy('s.first_name','asc')
                     ->get();
+            
+            //aggregates
+            $total_investment = $portfolios->sum('investment');
+            $net_worth = $portfolios->sum(function($item){
+                $close_price = $item->last_updated_price ?  $item->last_updated_price  : $item->close_price;
+                return $item->quantity * $close_price;
+            });
+            $net_gain = $net_worth - $total_investment;
+            $total_shareholders = $portfolios->unique('shareholder_id');
+            $total_scripts = $portfolios->unique('stock_id');
 
+            $score_card = collect([
+                'total_investment' => $total_investment,
+                'net_worth' => $net_worth,
+                'net_gain' => $net_gain,
+                'net_gain_per' => ($net_gain/$total_investment)*100,
+                'net_gain_css' => $net_gain > 0 ? 'positive' : 'negative',
+                'shareholders' => $total_shareholders->count(),
+                'total_scripts' =>  $total_scripts->count(),
+            ]);
+            // dd($score_card);
             //group the resultset by shareholder
             $portfolios = $portfolios->groupBy(function($item){
                 // return $item->id . '-' . $item->symbol;
@@ -112,17 +138,13 @@ class PortfolioSummaryController extends Controller
                         'change_css' => $change_class,
 
                     ]);
-
-
             });
-
-
-        // dd($portfolio_agg);
 
         return view("portfolio.portfolio-summary", 
             [
                 'portfolio_summary' => $portfolio_agg,
                 'transaction_date' => $transaction_date,
+                'scorecard' => $score_card,
             ]);
         
     }

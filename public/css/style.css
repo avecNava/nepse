@@ -27,6 +27,12 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
     padding: 10px;
     border: 1px dotted;
 }
+.positive {
+    background: #009400 !important;
+}
+.negative {
+    background: #e60f05 !important;
+}
 /* ul.thin {margin:0; padding: 0;} */
 
 /* form with two columns */
@@ -272,8 +278,14 @@ article.c_transaction_list header {
 /* scorecard */
 section.c_score_cards {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin: 10px 0 20px 0;
+}
+section.c_score_cards main {
+    font-size: 30px;
+}
+section.c_score_cards footer {
+    text-align: right;
 }
 section.c_score_cards article {
     width: 200px;

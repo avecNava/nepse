@@ -21,60 +21,31 @@
 
         <section class="c_score_cards">
             <article>
-                <header>
-                    cost_price
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
+                <header>Total investment</header>
+                <main>{{number_format($scorecard['total_investment'])}}</main>
+                <footer></footer>
             </article>
             <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
+                <header>Net worth</header>
+                <main>{{number_format($scorecard['net_worth'])}}</main>
+                <footer></footer>
+            </article>
+            <article class="{{$scorecard['net_gain_css']}}">
+                <header>Net Gain</header>
+                <main>{{number_format($scorecard['net_gain'])}}</main>
+                <footer>{{number_format($scorecard['net_gain_per'])}}%</footer>
             </article>
             <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
+                <header># Shareholders</header>
+                <main>{{number_format($scorecard['shareholders'])}}</main>
+                <footer></footer>
             </article>
             <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
+                <header># Scripts</header>
+                <main>{{number_format($scorecard['total_scripts'])}}</main>
+                <footer></footer>
             </article>
-            <article>
-                <header>
-                    Investment
-                </header>
-                <main>
-                    6900
-                </main>
-                <footer>
-                    NPR
-                </footer>
-            </article>
+            
         </section>
 
             
@@ -189,6 +160,7 @@
 
 
     </div> <!-- end of portfolio_container -->
+
     <script>
         
         var elements = document.getElementsByClassName("summary");
