@@ -30,7 +30,7 @@ class StorePortfolio extends FormRequest
             'quantity' => 'required|numeric|gt:0', 
             'unit_cost' => 'required|numeric|gt:0', 
             'effective_rate' => 'required|numeric|gt:0', 
-            'purchase_date' => 'null|numeric|gt:0', 
+            'purchase_date' => 'nullable|date', 
             'total_amount' => 'required|numeric|gt:0', 
             // 'broker' => 'required|numeric|gt:0', 
         ];

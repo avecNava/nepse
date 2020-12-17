@@ -293,12 +293,12 @@
                 if(prev_worth > 0){
                     change_pc = (change / prev_worth)*100;
                     if(change_pc != 0)
-                        change_pc_f = ` (${ change_pc.toFixed(2) })%`;
+                        change_pc_f = ` (${ change_pc.toFixed(1) })%`;
                 }
                 if(investment > 0){ 
                     gain_pc = (gain/investment)*100;
                     if(gain_pc != 0)
-                        gain_pc_f = ` (${ gain_pc.toFixed(2) })%`;
+                        gain_pc_f = ` (${ gain_pc.toFixed(1) })%`;
                 }
                 
                 if(gain > 0){ gain_css = 'increase'; } else if(gain < 0){ gain_css = 'decrease'; }

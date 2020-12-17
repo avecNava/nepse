@@ -78,7 +78,11 @@ class PortfolioSummary extends Model
 
             $quantity = $portfolios->sum('quantity');
 
-            return round($investment / $quantity, 2);
+            if($quantity>0)
+                return round($investment / $quantity, 2);
+            else {
+                return 0;
+            }
         }
         
         return 0;

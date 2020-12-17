@@ -107,7 +107,7 @@
 
                             <div class="fields form-field" title="Bill amount">
                                 <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                                <input type="number" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                                <input type="text" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
                                 <span id="total_amount_label"></span>
                             </div>
 
@@ -139,7 +139,7 @@
                             
                             <div class="fields form-field">
                                 <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
-                                <input type="number" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
+                                <input type="text" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
                                 <span id="effective_rate_label"></span>
                             </div> 
                             

@@ -91,8 +91,11 @@ class PortfolioController extends Controller
     {   
         $user_id = Auth::id();
 
-        // todo: update the portfolio_summary table
         Portfolio::createPortfolio($request);
+        
+        $shareholder = $request->shareholder;
+        $stock = $request->stock;
+        PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
 
         return  redirect()->back()->with('message','Record created successfully 👌 ');
         
@@ -138,6 +141,14 @@ class PortfolioController extends Controller
         );
 
         $result = Portfolio::updatePortfolio($request);
+
+        //CALCULATE total_quantity and wacc_rate ; update in summary table
+        $shareholder = $request->shareholder_id;
+        $stock = $request->stock_id;
+
+        //todo: OR GET shareholder_id and stock_id from db
+
+        PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
 
         $result = $result->getData();
         

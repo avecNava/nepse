@@ -132,6 +132,10 @@
             if($errors->any()){
                 $hidden = '';
             }
+
+            $stock = $portfolios->first();
+            $stock_id = $stock->stock_id;
+            $shareholder_id = $stock->shareholder_id;
         @endphp
 
         <div id="portfolio-form" class="info_band_bottom" {{$hidden}}>
@@ -140,7 +144,8 @@
                 
                 @csrf()
                 <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id') }}">
+                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $shareholder_id) }}">
+                <input type="hidden" name="stock_id" value="{{ old('stock_id', $stock_id) }}">
 
                 <section>
                     <div class="display-label">
@@ -411,6 +416,7 @@
             //retrieve the data-id attribute from the edit button
             let el = document.getElementById('edit');
             let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
+
             if(!id_string){
                 msg = 'Please select a record to edit';
                 showMessage(msg); return;

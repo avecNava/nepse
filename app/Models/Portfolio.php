@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class Portfolio extends Model
 {
@@ -64,11 +65,9 @@ class Portfolio extends Model
                 'message' =>  'Empty request received',
             ]);
         }
-
+        
         try {
-            
             $portfolio = new Portfolio;
-
             $portfolio->shareholder_id = $request->shareholder;
             $portfolio->stock_id = $request->stock;
             $portfolio->quantity = $request->quantity;
@@ -80,15 +79,10 @@ class Portfolio extends Model
             $portfolio->receipt_number = $request->receipt_number;
             $portfolio->broker_no = $request->broker;
             $portfolio->offer_id = $request->offer;
+            $portfolio->purchase_date = $request->purchase_date;
             $portfolio->last_modified_by = Auth::id();
-            $portfolio->save();
-        
-            //CALCULATE total_quantity and wacc_rate ; update in summary table
-            PortfolioSummary::updateCascadePortfoliSummaries(
-                $request->shareholder, 
-                $request->stock
-            );
-
+            $portfolio->save();         //returns true on success
+            
         } catch (\Throwable $th) {
             
             $error = [
@@ -130,15 +124,12 @@ class Portfolio extends Model
                 $portfolio->sebon_commission = $request->sebon_commission;
                 $portfolio->total_amount = $request->total_amount;
                 $portfolio->receipt_number = $request->receipt_number;
-                $portfolio->broker_number = $request->broker_number;
+                $portfolio->broker_no = $request->broker_number;
                 $portfolio->offer_id = $request->offer;
+                $portfolio->purchase_date = $request->purchase_date ? $request->purchase_date : Carbon::now();
                 $portfolio->last_modified_by = Auth::id();
                 $portfolio->save();
 
-                //CALCULATE total_quantity and wacc_rate ; update in summary table
-                PortfolioSummary::updateCascadePortfoliSummaries($shareholder_id, $stock_id);
-                
-            
             } catch (\Throwable $th) {
 
                 $error = [
