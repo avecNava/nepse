@@ -22,10 +22,9 @@
 
             @php
                 
-                $qty = $info['total_quantity'];
-                $avg_rate = $info['average_rate'];
+                $qty = $info['quantity'];
                 $investment = $info['investment'];
-                $wacc_rate = ($investment > 0) ? ($investment / $qty) : 0;
+                $wacc = ($investment > 0 ) ? $investment / $qty : 0;
                 $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
                 $ltp_prev = $price->previous_day_close_price;
                 $worth = $qty * $ltp;
@@ -61,7 +60,7 @@
                         </h3>
                         <h3><label>WACC (Weighted avg.) </label>
                             <span class="value">
-                                {{number_format($wacc_rate,2)}}
+                                {{number_format($wacc,2)}}
                             </span>
                         </h3>
                         <h3><label>Last price (LTP) </label>

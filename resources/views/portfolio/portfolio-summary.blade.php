@@ -253,12 +253,11 @@
                         <th title="Effective rate">Eff. rate</th>
                         <th>Investment</th>
                         <th>LTP</th>
-                        <th>Current worth</th>
-                        <th title="Previous price">*Price</th>
-                        <th title="Previous worth">*Worth</th>
-                        <th>Change</th>
-                        <th>Net Worth</th>
+                        <th>Net worth</th>
                         <th>Gain</th>
+                        <th title="Previous price">Prev. price</th>
+                        <th title="Previous worth">Prev. worth</th>
+                        <th>Change</th>
                     </tr>`;
 
             const html_foot = `</table>`;
@@ -266,51 +265,50 @@
             var nf = Intl.NumberFormat();
 
             stocks.forEach(item => {
-                console.log(item);
-                let up_or_down = '';
-                let close_price = '';
+                
+                let close_price = 0;
 
                 if(!item.close_price) {
                     close_price = item.last_updated_price;
                  }else{
                     close_price = item.close_price;
                  }
-                let rate = item.wacc;
+
                 var quantity = item.quantity;
                 const worth = quantity * close_price;
                 const prev_worth = item.previous_day_close_price * quantity;
-                const change = worth - prev_worth;
+                let change = worth - prev_worth;
+                let rate = item.wacc ? item.wacc : 0;
+                const investment = item.investment ? item.investment : 0;
+                const investment_f = investment > 0 ? nf.format(investment) : '-';
+                const gain = worth - investment;
                 
-                let change_css='';
-                if(change > 0){ change_css = 'increase'; }  else if(change < 0) { change_css = 'decrease'; }
-
                 let change_pc = '';
-                if(prev_worth>0){
-                    change_pc = `${ ((change / prev_worth)*100).toFixed(2) }`;
-                }
-
-                let gain = 0;
-                let gain_per = 0;
+                let gain_pc = '';
+                let change_pc_f = '';
+                let gain_pc_f = '';
                 let gain_css = '';
-                var net_worth = 0;
-                let investment = item.investment ? item.investment : 0;
+                let change_css='';
 
-                if(rate){
-                    
-                    net_worth = worth - investment;                    
-                    gain = net_worth - investment;
-
-                    if(investment > 0){ gain_per = `${((gain/investment)*100).toFixed(2)}%`; }
-                    if(gain > 0){ gain_css = 'increase'; } else if(gain < 0){ gain_css = 'decrease'; }
-                
+                if(prev_worth > 0){
+                    change_pc = (change / prev_worth)*100;
+                    if(change_pc != 0)
+                        change_pc_f = ` (${ change_pc.toFixed(2) })%`;
                 }
-
-                const gain_f = nf.format(net_worth - investment);
-                const url = window.location.origin;
+                if(investment > 0){ 
+                    gain_pc = (gain/investment)*100;
+                    if(gain_pc != 0)
+                        gain_pc_f = ` (${ gain_pc.toFixed(2) })%`;
+                }
+                
+                if(gain > 0){ gain_css = 'increase'; } else if(gain < 0){ gain_css = 'decrease'; }
+                if(change > 0){ change_css = 'increase'; }  else if(change < 0) { change_css = 'decrease'; }
+                
                 const effective_rate = item.effective_rate ? item.effective_rate : '';
                 const full_name = `${item.first_name}-${item.last_name}`;
                 const shareholder_name = serializeString(full_name);
-
+                
+                const url = window.location.origin;
                 html_body += 
                 `<tr>
                     <td title="${ item.stock_id }-${ item.security_name }">
@@ -320,9 +318,24 @@
                     </td>
                     <td> ${ quantity }</td>
                     <td> ${ rate } </td>
-                    <td> ${ investment }</td>
+                    <td> ${ investment_f }</td>
                     <td> ${ close_price } </td>
                     <td> ${ nf.format(worth) }</td>
+
+                    <td>
+                        <div class="c_change">
+                            <div>
+                                <span class='change-val'>
+                                    ${nf.format(gain)}
+                                </span>
+                                <span class="change-val ${ gain_css }">
+                                    ${gain_pc_f}
+                                </span>
+                            </div>
+                            <div class="${ gain_css }_icon"></div>
+                        </div>
+                    </td>
+                    
                     <td> ${ item.previous_day_close_price }</td>
                     <td> ${ nf.format(prev_worth) }</td>
                     <td>
@@ -332,16 +345,11 @@
                                     ${nf.format(change)}
                                 </span>
                                 <span class="change-val ${ change_css }">
-                                    (${change_pc})%
+                                    ${change_pc_f}
                                 </span>
                             </div>
                             <div class="${ change_css }_icon"></div>
                         </div>
-                    </td>
-                    <td>${net_worth}</td>
-                    <td>
-                        <span>${gain_f}</span>
-                        <span class="${gain_css}">(${gain_per})%</span>
                     </td>
                 </tr>
                 `

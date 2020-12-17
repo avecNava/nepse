@@ -40,19 +40,12 @@ class PortfolioSummary extends Model
     {
         //get aggregate purchases, aggregate sales and average rates. Calculate net quantity, Add to the summary table
         
-        $total_purchases = 
-            Portfolio::where('shareholder_id', $shareholder_id)
-            ->where('stock_id', $stock_id)
-            ->sum('quantity');
+        $quantity =  Portfolio::where('shareholder_id', $shareholder_id)
+                    ->where('stock_id', $stock_id)
+                    ->sum('quantity');
         
-        $total_sales = 
-            Sales::where('shareholder_id', $shareholder_id)
-            ->where('stock_id', $stock_id)
-            ->sum('quantity');
+        $effective_rate = PortfolioSummary::calculateWACC($shareholder_id, $stock_id);
         
-        $total_quantity = $total_purchases - $total_sales;
-        
-        $effective_rate = PortfolioSummary::calculateWACC($shareholder_id, $stock_id);            
         $investment = Portfolio::where('shareholder_id',$shareholder_id)
                         ->where('stock_id', $stock_id)
                         ->sum('total_amount');
@@ -63,7 +56,7 @@ class PortfolioSummary extends Model
             'stock_id' => $stock_id,
         ],
         [
-            'quantity' => $total_quantity,
+            'quantity' => $quantity,
             'investment' => $investment,
             'wacc' => $effective_rate,
             'last_modified_by' => Auth::id(),
@@ -77,7 +70,7 @@ class PortfolioSummary extends Model
         $portfolios = Portfolio::where('shareholder_id', $shareholder)
                     ->where('stock_id', $stock)->get();
         
-                    if(!empty($portfolios)){
+        if(!empty($portfolios)){
 
             $investment = $portfolios->sum(function($item){
                 return $item->quantity * $item->effective_rate;
@@ -85,7 +78,7 @@ class PortfolioSummary extends Model
 
             $quantity = $portfolios->sum('quantity');
 
-            return round($investment/$quantity,2);
+            return round($investment / $quantity, 2);
         }
         
         return 0;

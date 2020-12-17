@@ -163,6 +163,7 @@ class Portfolio extends Model
 
     /**
      * update or create portfolios based on input object
+     * used by MeroShare for mass importing shares from meroshare portfolio
      */
     public static function updateOrCreatePortfolios($portfolios)
     {
@@ -189,7 +190,7 @@ class Portfolio extends Model
                 'remarks' => $row['remarks'],
                 'unit_cost' => in_array($row['offer_code'], $offers) ? 100 : 0,
                 'effective_rate' => in_array($row['offer_code'], $offers) ? 100 : 0,
-                'total_amount' => in_array($row['offer_code'], $offers) ? 100 : 0,                
+                'total_amount' => in_array($row['offer_code'], $offers) ? $row['quantity']*100 : 0,                
             ]);
         }
     }

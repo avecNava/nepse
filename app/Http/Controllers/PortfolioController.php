@@ -244,20 +244,16 @@ class PortfolioController extends Controller
         $item = $portfolios->first();
         $metadata = collect([
             'total_scripts' => $portfolios->count('stock_id'),
-            'total_quantity' => $portfolios->sum('quantity'),
+            'quantity' => $portfolios->sum('quantity'),
             'investment' => $portfolios->sum(function($item){
-                                return $item->quantity * $item->unit_cost;
+                                $rate = $item->effective_rate ? $item->effective_rate : $item->unit_cost;
+                                return $item->quantity * $rate;
                             }),
-            'average_rate' => $portfolios->avg('effective_rate'),
             'shareholder' => "$item->first_name $item->last_name",
             'security_name' => $item->security_name,
             'relation' => $item->relation,
         ]);
        
-        // $x = $portfolios->avg(function($item){
-        //     return $item->unit_cost;
-        // });
-        // dd($metadata);
 
         return view("portfolio.portfolio-details", 
         [
@@ -285,7 +281,7 @@ class PortfolioController extends Controller
             ->select('p.*','s.*', 'pr.*','m.first_name','m.last_name')
             ->where('pr.transaction_date','=', $transaction_date)
             ->where('p.shareholder_id', $id)
-            ->where('p.quantity','>',0)
+            // ->where('p.quantity','>',0)
             ->orderBy('s.symbol')
             ->get();
         // dd($stocks);
