@@ -10,6 +10,7 @@ div#app, div#container {
     margin: 0 auto;
     width: 1024px;
 }
+.band-tall { height: 50px;}
 .no-border {border: none !important;}
 .txt_right {text-align:right;}
 a {text-decoration: none;}
@@ -341,8 +342,12 @@ section.c_info_band {
     background: beige;
 }
 .a_portfolio summary {
-    padding: 10px;
-    padding-right: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+    border: 1px dashed #d6f6f6;
+    margin-bottom: 5px;
+    background: azure;
+    border-radius: 5px;
 }
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;

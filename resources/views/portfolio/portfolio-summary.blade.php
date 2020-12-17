@@ -86,7 +86,7 @@
 
                 <div class="a_portfolio_main">
             
-                    <div class="c_band_right">
+                    <div class="c_band_right band-tall">
 
                         <div id="message" class="message">
                             {{count($portfolio_summary)}} members
@@ -141,28 +141,28 @@
                             <div class="col6">
                                 <div class="c_change">
                                     <div>
-                                        <span>{{ number_format( $row['change'] ) }} </span>
-                                        <span class={{ $row["change_class"] }}>
+                                        <div>{{ number_format( $row['change'] ) }} </div>
+                                        <span class="{{ $row["change_css"] }}"">
                                             @if($row['change_pc'])
-                                                ({{ $row['change_pc'] }}%)
+                                                {{ $row['change_pc'] }}%
                                             @endif
                                         </span>
                                     </div>
-                                    <div class="{{ $row["change_class"]  }}_icon"></div>
+                                    <div class="{{ $row["change_css"]  }}_icon"></div>
                                 </div>
                             </div>
 
                             <div class="col7">
                                 <div class="c_change">
                                     <div>
-                                        <span>{{ number_format( $row['gain'] ) }} </span>
-                                        <span class={{ $row["gain_class"] }}>
+                                        <div>{{ number_format( $row['gain'] ) }} </div>
+                                        <span class={{ $row["gain_css"] }}>
                                             @if($row['gain_pc'])
-                                                ({{ $row['gain_pc'] }}%)
+                                                {{ $row['gain_pc'] }}%
                                             @endif
                                         </span>
                                     </div>
-                                    <div class="{{ $row["gain_class"]  }}_icon"></div>
+                                    <div class="{{ $row["gain_css"]  }}_icon"></div>
                                 </div>
 
                             </div>
@@ -245,23 +245,20 @@
         }
 
         function showUserStocks(stocks, id){
-            console.log(stocks);
             const html_head = `
                 <table>
                     <tr>
                         <th>Symbol</th>
                         <th>Qty</th>
                         <th title="Effective rate">Eff. rate</th>
-                        <th>Cost price</th>
+                        <th>Investment</th>
                         <th>LTP</th>
                         <th>Current worth</th>
                         <th title="Previous price">*Price</th>
                         <th title="Previous worth">*Worth</th>
                         <th>Change</th>
                         <th>Net Worth</th>
-                        <th>Profit</th>
-                        <th>Profit %</th>
-
+                        <th>Gain</th>
                     </tr>`;
 
             const html_foot = `</table>`;
@@ -269,7 +266,7 @@
             var nf = Intl.NumberFormat();
 
             stocks.forEach(item => {
-
+                console.log(item);
                 let up_or_down = '';
                 let close_price = '';
 
@@ -278,34 +275,37 @@
                  }else{
                     close_price = item.close_price;
                  }
-                var quantity = item.total_quantity;
+                let rate = item.wacc;
+                var quantity = item.quantity;
                 const worth = quantity * close_price;
                 const prev_worth = item.previous_day_close_price * quantity;
                 const change = worth - prev_worth;
-                change_css='';
-                if(change > 0){
-                    change_css = 'increase';
-                } 
-                else if(change < 0) {
-                    change_css = 'decrease';
-                }
+                
+                let change_css='';
+                if(change > 0){ change_css = 'increase'; }  else if(change < 0) { change_css = 'decrease'; }
+
                 let change_pc = '';
                 if(prev_worth>0){
-                    change_pc = `(${ ((change / prev_worth)*100).toFixed(1) })%`;
+                    change_pc = `${ ((change / prev_worth)*100).toFixed(2) }`;
                 }
-                let cost_price = '-';
-                let gain = '-';
-                let net_worth = '';
-                let gain_per = '';
-                if(item.effective_rate){
-                    cost_price = (quantity * item.effective_rate).toFixed(1);
-                    net_worth = worth - cost_price;
-                    gain = net_worth - cost_price;
-                    if(cost_price > 0){
-                        gain_per = `${((gain/cost_price)*100).toFixed(1)}%`;
-                    }
-                    gain = nf.format(net_worth - cost_price);
+
+                let gain = 0;
+                let gain_per = 0;
+                let gain_css = '';
+                var net_worth = 0;
+                let investment = item.investment ? item.investment : 0;
+
+                if(rate){
+                    
+                    net_worth = worth - investment;                    
+                    gain = net_worth - investment;
+
+                    if(investment > 0){ gain_per = `${((gain/investment)*100).toFixed(2)}%`; }
+                    if(gain > 0){ gain_css = 'increase'; } else if(gain < 0){ gain_css = 'decrease'; }
+                
                 }
+
+                const gain_f = nf.format(net_worth - investment);
                 const url = window.location.origin;
                 const effective_rate = item.effective_rate ? item.effective_rate : '';
                 const full_name = `${item.first_name}-${item.last_name}`;
@@ -319,8 +319,8 @@
                         </a>
                     </td>
                     <td> ${ quantity }</td>
-                    <td> ${ effective_rate } </td>
-                    <td>${cost_price}</td>
+                    <td> ${ rate } </td>
+                    <td> ${ investment }</td>
                     <td> ${ close_price } </td>
                     <td> ${ nf.format(worth) }</td>
                     <td> ${ item.previous_day_close_price }</td>
@@ -332,15 +332,17 @@
                                     ${nf.format(change)}
                                 </span>
                                 <span class="change-val ${ change_css }">
-                                    ${change_pc}
+                                    (${change_pc})%
                                 </span>
                             </div>
                             <div class="${ change_css }_icon"></div>
                         </div>
                     </td>
                     <td>${net_worth}</td>
-                    <td>${gain}</td>
-                    <td>${gain_per}</td>
+                    <td>
+                        <span>${gain_f}</span>
+                        <span class="${gain_css}">(${gain_per})%</span>
+                    </td>
                 </tr>
                 `
             });
@@ -348,7 +350,6 @@
         var html = `${html_head}${html_body}${html_foot}`;
         // console.log(html);
         const detail_id = `detail-${id}`;
-        console.log(detail_id);
         document.getElementById(detail_id).innerHTML = html;
 
         }

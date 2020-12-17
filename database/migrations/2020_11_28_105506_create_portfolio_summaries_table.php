@@ -17,8 +17,9 @@ class CreatePortfolioSummariesTable extends Migration
             $table->id();
             $table->foreignId('shareholder_id')->constrained('shareholders')->onDelete('cascade');
             $table->foreignId('stock_id')->constrained('stocks');
-            $table->integer('total_quantity');
-            $table->float('wacc_rate',8,2)->nullable();
+            $table->integer('quantity');
+            $table->float('investment',12,2);
+            $table->float('wacc',8,2)->nullable();
             $table->foreignId('last_modified_by')->nullable();
             $table->timestamps();
         });

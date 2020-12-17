@@ -285,7 +285,7 @@ class PortfolioController extends Controller
             ->select('p.*','s.*', 'pr.*','m.first_name','m.last_name')
             ->where('pr.transaction_date','=', $transaction_date)
             ->where('p.shareholder_id', $id)
-            ->where('p.total_quantity','>',0)
+            ->where('p.quantity','>',0)
             ->orderBy('s.symbol')
             ->get();
         // dd($stocks);

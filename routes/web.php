@@ -63,8 +63,12 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 
 
 Route::get('test',function(){
-    $offers =['IPO','RIGHTS'];
-    return in_array('RIGHTS', $offers) ? 'EXISTS' :'DOES NOT EXIST';
+
+    return Portfolio::where('shareholder_id', 16)
+                    ->where('stock_id', 113)->get();
+    // return Portfolio::where($shareholder_id, $stock_id)->sum('quantity')
+    // $offers =['IPO','RIGHTS'];
+    // return in_array('RIGHTS', $offers) ? 'EXISTS' :'DOES NOT EXIST';
     // return Stock::select('id')->where('symbol', 'API')->first();
     // $hasPortfolio = Portfolio::where('shareholder_id',1)->select('shareholder_id')->withCount(['shareholder_id'])->get();
     // dd($hasPortfolio);

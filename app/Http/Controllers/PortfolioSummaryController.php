@@ -43,12 +43,12 @@ class PortfolioSummaryController extends Controller
                     ->join('stocks as st', 'st.id', '=', 'p.stock_id')
                     ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
                     ->selectRaw(
-                        'st.symbol, p.total_quantity, p.wacc_rate,
+                        'st.symbol, p.quantity, p.wacc,
                         CONCAT(s.first_name," ", s.last_name) as shareholder, s.id, s.relation,
                         pr.close_price, pr.last_updated_price, pr.previous_day_close_price'
                         )
                     ->where('pr.transaction_date','=', $transaction_date)
-                    ->where('p.total_quantity','>', 0)
+                    ->where('p.quantity','>', 0)
                     ->orderBy('s.first_name','asc')
                     ->get();
 
@@ -66,20 +66,20 @@ class PortfolioSummaryController extends Controller
                 $total_scripts = $items->count();
 
                 $total_units = $items->sum(function($row){
-                    return $row->total_quantity;
+                    return $row->quantity;
                 });
                 
                 $total_investment = $items->sum(function($row){
-                    return $row->total_quantity * $row->wacc_rate;
+                    return $row->quantity * $row->wacc;
                 });
 
                 $current_worth = $items->sum(function($row){
                     $ltp = $row->last_updated_price ?  $row->last_updated_price : $row->close_price;
-                    return $row->total_quantity * $ltp;
+                    return $row->quantity * $ltp;
                 });
                 
                 $prev_worth = $items->sum(function($row){
-                    return $row->total_quantity * $row->previous_day_close_price;
+                    return $row->quantity * $row->previous_day_close_price;
                 });
 
                 $gain = $current_worth - $total_investment;
@@ -106,10 +106,10 @@ class PortfolioSummaryController extends Controller
                         'prev_worth' => $prev_worth,
                         'gain' => $gain,
                         'gain_pc' => round($gain_pc,2),
-                        'gain_class' => $gain_class,
+                        'gain_css' => $gain_class,
                         'change' => $change,
                         'change_pc' => round($change_pc,2),
-                        'change_class' => $change_class,
+                        'change_css' => $change_class,
 
                     ]);
 
@@ -154,7 +154,7 @@ class PortfolioSummaryController extends Controller
     //                 ->join('stocks as st', 'st.id', '=', 'p.stock_id')
     //                 ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
     //                 ->selectRaw(
-    //                     'st.symbol, SUM(p.total_quantity) as total_quantity, AVG(p.wacc_rate) as average_rate,
+    //                     'st.symbol, SUM(p.quantity) as quantity, AVG(p.wacc) as average_rate,
     //                     CONCAT(s.first_name," ", s.last_name) as shareholder, s.id, s.relation,
     //                     AVG(pr.close_price) as ltp, AVG(pr.last_updated_price) as last_price, AVG(pr.previous_day_close_price) as last_ltp'
     //                     )
@@ -180,7 +180,7 @@ class PortfolioSummaryController extends Controller
 
     //             foreach ($items as $item) {
     //                 $sum_stocks += 1;
-    //                 $quantity = $item->total_quantity;
+    //                 $quantity = $item->quantity;
     //                 $sum_quantity += $quantity;
     //                 if($item->average_rate){
     //                     $sum_investment += $quantity * $item->average_rate;
@@ -190,7 +190,7 @@ class PortfolioSummaryController extends Controller
     //                 $sum_current_worth = $item->ltp ? $quantity * $item->ltp : $quantity * $item->last_price;
     //             }
 
-    //             $wacc_rate = $sum_rate / $sum_stocks;
+    //             $wacc = $sum_rate / $sum_stocks;
     //             $difference = $sum_current_worth - $sum_prev_worth;
     //             $diff_class = '';
     //             if($difference > 0){ $diff_class = 'increase';} elseif($difference<0){$diff_class='decrease';}
@@ -212,7 +212,7 @@ class PortfolioSummaryController extends Controller
     //                 'shareholder_id' => $item->id,
     //                 'stocks' => $sum_stocks,
     //                 'quantity' => $sum_quantity,
-    //                 'effective_rate' => $wacc_rate,
+    //                 'effective_rate' => $wacc,
     //                 'investment' => $sum_investment,
     //                 'current_worth' => $sum_current_worth,
     //                 'prev_worth' => $sum_prev_worth,

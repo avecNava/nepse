@@ -52,10 +52,10 @@ class PortfolioSummary extends Model
         
         $total_quantity = $total_purchases - $total_sales;
         
-        $wacc_rate = 
-            Portfolio::where('shareholder_id', $shareholder_id)
-            ->where('stock_id', $stock_id)
-            ->avg('effective_rate');
+        $effective_rate = PortfolioSummary::calculateWACC($shareholder_id, $stock_id);            
+        $investment = Portfolio::where('shareholder_id',$shareholder_id)
+                        ->where('stock_id', $stock_id)
+                        ->sum('total_amount');
         
         PortfolioSummary::updateOrCreate(
         [
@@ -63,11 +63,32 @@ class PortfolioSummary extends Model
             'stock_id' => $stock_id,
         ],
         [
-            'total_quantity' => $total_quantity,
-            'wacc_rate' => $wacc_rate,
+            'quantity' => $total_quantity,
+            'investment' => $investment,
+            'wacc' => $effective_rate,
             'last_modified_by' => Auth::id(),
         ]);
 
+    }
+
+    public static function calculateWACC(int $shareholder, int $stock)
+    {
+        
+        $portfolios = Portfolio::where('shareholder_id', $shareholder)
+                    ->where('stock_id', $stock)->get();
+        
+                    if(!empty($portfolios)){
+
+            $investment = $portfolios->sum(function($item){
+                return $item->quantity * $item->effective_rate;
+            });
+
+            $quantity = $portfolios->sum('quantity');
+
+            return round($investment/$quantity,2);
+        }
+        
+        return 0;
     }
     
 }
