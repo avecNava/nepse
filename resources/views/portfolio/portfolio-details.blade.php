@@ -21,18 +21,26 @@
         <section class="c_info_band">
 
             @php
-                
+                $ltp=0;
+                $ltp_prev=0;
+                $worth=0;
+                $price_high=0;
+                $price_low=0;
+                $price_high_52=0;
+                $price_low_52=0;
                 $qty = $info['quantity'];
                 $investment = $info['investment'];
                 $wacc = ($investment > 0 ) ? $investment / $qty : 0;
-                $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
-                $ltp_prev = $price->previous_day_close_price;
-                $worth = $qty * $ltp;
-                $worth_prev = $qty * $ltp_prev;
-                $price_high = $price->high_price;
-                $price_low = $price->low_price;
-                $price_high_52 = $price->fifty_two_week_high_price;
-                $price_low_52 = $price->fifty_two_week_low_price;
+                if(!empty($price)){
+                    $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
+                    $ltp_prev = $price->previous_day_close_price;
+                    $worth = $qty * $ltp;
+                    $worth_prev = $qty * $ltp_prev;
+                    $price_high = $price->high_price;
+                    $price_low = $price->low_price;
+                    $price_high_52 = $price->fifty_two_week_high_price;
+                    $price_low_52 = $price->fifty_two_week_low_price;
+                } 
                 $change = $ltp - $ltp_prev;
                 $gain = $worth - $investment;
                 $change_per = 0; $gain_per=0;
@@ -43,8 +51,8 @@
                     $gain_per = ($gain/$investment)*100;
                 }
                 $gain_class =''; $change_class = '';
-                if($change_per > 0) {$change_class='increase';}elseif($change_per < 0){$change_class='decrease';}
-                if($gain_per > 0) {$gain_class='increase';}elseif($gain_per < 0){$gain_class='decrease';}
+                if($change > 0) { $change_class='increase'; } else if($change < 0) { $change_class='decrease'; }
+                if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
             @endphp
 
             <div class="info_band_top">
@@ -96,7 +104,7 @@
                             </span>
                         </h3>
                         <h3><label>Gain </label>
-                            <span class="value {{$change_class}}">
+                            <span class="value {{$gain_class}}">
                             {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
                             </span>
                         </h3>  
@@ -233,6 +241,12 @@
                         value="{{ old('receipt_number') }}"/>
                     </div>
                     <div>
+                        <label for="purchase_date"
+                        class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
+                        <input type="date" name="purchase_date" id="purchase_date" 
+                        value="{{ old('purchase_date') }}"/>
+                    </div>
+                    <div class='action-buttons'>
                         <button type="submit">Save</button>
                         <button id="cancel" type="reset" onClick="hideForm()">Cancel</button>
                     </div>
@@ -302,7 +316,7 @@
                             <th>Total amount</th>
                             <th>Effective rate</th>
                             <th>Sector</th>
-                            <th>Shareholder</th>
+                            <!-- <th>Shareholder</th> -->
                             <th>Purchase date</th>
                         </tr>
                         
@@ -312,19 +326,19 @@
                                 
                                 <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
                                     @if( !empty($record))
-                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                    <a href="#{{url('portfolio/edit', [$record->id])}}">{{ $record->symbol }}</a>
+                                        <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
+                                        {{ $record->symbol }}
                                     @endif
                                 </td>
                                 <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
                                 <td>{{$record->quantity}}</td>
                                 <td>{{$record->unit_cost}}</td>
-                                <td>{{$record->total_amount}}</td>
+                                <td>{{ number_format($record->total_amount)}}</td>
                                 <td>{{$record->effective_rate}}</td>
                                 <td>{{$record->sector}}</td>
-                                <td>
+                                <!-- <td>
                                     <div title="{{$record->relation}}" id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
-                                </td>
+                                </td> -->
                                 <td>{{$record->purchase_date}}</td>
                             </tr>
 
@@ -464,6 +478,7 @@
             document.getElementById('total_amount').value = $record.total_amount;
             document.getElementById('effective_rate').value = $record.effective_rate;
             document.getElementById('receipt_number').value = $record.receipt_number;
+            document.getElementById('purchase_date').value = $record.purchase_date;
             document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
             document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
             setOption(document.getElementById('offer'), $record.offer_id);
@@ -472,9 +487,10 @@
         }
 
         function resetInputFields() {
+            let date = Date.now();
+            let date_str = date.getFullYear() + '-' + date.getMonth() + 1 + '-' + getDate();
 
             document.getElementById('id').value = '';
-            // document.getElementById('shareholder_id').value = '';
             document.getElementById('quantity').value = '';
             document.getElementById('unit_cost').value = '';
             document.getElementById('total_amount').value = '';
@@ -482,6 +498,7 @@
             document.getElementById('broker_commission').value = '';
             document.getElementById('sebon_commission').value = '';
             document.getElementById('receipt_number').value = '';
+            document.getElementById('purchase_date').value = date_str;
             setOption(document.getElementById('offer'), 0);
             setOption(document.getElementById('broker'), 0);
 

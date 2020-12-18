@@ -18,9 +18,12 @@ class Stock extends Model
     public function sector()
     {
         //todo: get stock category 
-        //use the result in portfolio-details
     }
 
+    /**
+     * creates or updates stocks from the given array
+     * input: array with symbol and security_name
+     */
     public static function addOrUpdateStock(Array $stocks)
     {
         if( empty($stocks) ) return false;

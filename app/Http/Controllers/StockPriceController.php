@@ -37,7 +37,7 @@ class StockPriceController extends Controller
 
         // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
         $date_string =  $time_start->toDateString();
-        // $date_string =  "2020-11-29";
+        // $date_string =  '2020-12-17';
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
@@ -45,7 +45,7 @@ class StockPriceController extends Controller
 
         $response = $client->request('GET',"today-price", [
             'query' => [
-                'size' => '500',                            
+                'size' => '600',                            
                 'businessDate' => $date_string
             ],
             'http_errors' => false              //parse the response, not matter it's ok or error

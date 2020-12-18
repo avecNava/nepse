@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 class StockPrice extends Model
@@ -19,14 +20,26 @@ class StockPrice extends Model
         return $this->belongsTo(Stock::class,'symbol','symbol');
     }
 
-    //todo : use transaction
+    /**
+     * addes the stock prices into the stock_prices table
+     * a service scrapes nepse trade data every day and prices are saved to stock_prices table
+     * input1: an array with symbol, transaction_date, close_price, open_price and other price details
+     * input2: a date string indicating date for which transactions have been imported
+     */
     public static function updateOrCreateStockPrice(Array $stock_prices)
     {
         if(empty($stock_prices)) return;
+        
+        $symbols = collect([]);
+        $date_str =  $stock_prices[0]['businessDate'];
+        
 
-        DB::transaction(function() use($stock_prices){
+        //task-1 : save new price, set latest=true
+        DB::transaction(function() use($stock_prices, $symbols){
             
             foreach ($stock_prices as $record) {
+
+                $symbols->push($record['symbol']);
 
                 StockPrice::updateOrCreate(
                     [
@@ -34,6 +47,7 @@ class StockPrice extends Model
                         'transaction_date' => $record['businessDate']
                     ],
                     [
+                        'latest' => true,
                         'open_price' => $record['openPrice'],
                         'high_price' => $record['highPrice'],
                         'low_price' => $record['lowPrice'],
@@ -55,6 +69,15 @@ class StockPrice extends Model
 
         });
 
+        //task-2 : query all records with given symbol, transaction_date (from input array) and latest=true
+        //set latest to false
+
+        StockPrice::whereIn('symbol', $symbols->toArray())
+            ->where('transaction_date','<>', $date_str)
+            ->where('latest',true)
+            ->update(['latest' => false]);
+        
+        
     }
 
 
@@ -88,6 +111,10 @@ class StockPrice extends Model
         return $date->transaction_date;
     }
     
+    public function scopeLastTradePrice($query)
+    {
+        return $query->where('latest',true);
+    }
     /**
      * gets the last transaction price from stock_prices table
      */
@@ -96,9 +123,9 @@ class StockPrice extends Model
         
         if($symbol){
 
-            $record = StockPrice::where('symbol',$symbol)
+            $record = StockPrice::where('symbol', $symbol)
             ->with(['share'])
-            ->orderBy('transaction_date','desc')->first();
+            ->LastTradePrice()->first();
             
             return $record;
         }

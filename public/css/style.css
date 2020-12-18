@@ -5,6 +5,32 @@ body {
     font-family: 'Scope One', serif; 
     --scorecard : #1d1c25;
     --form-band : #6b64a0;
+    --color-orange-light95:#fff5e6;
+    --color-orange-light90:#ffebcc;
+    --color-orange-light70:#ffc266;
+    --color-orange-light50:#ff9900;
+    --color-blue-light95:#e6f0ff;
+    --color-blue-light90:#cce0ff;
+    --color-blue-light70:#66a3ff;
+    --color-blue-light50:#0066ff;
+    --color-brown-light95:#ffece6;
+    --color-brown-light90:#ffd9cc;
+    --color-brown-light70:#ff8c66;
+    --color-brown-light50:#cc3300;
+    --color-green-light95:#e6ffe6;
+    --color-green-light90:#ccffcc;
+    --color-green-light70:#66ff66;
+    --color-green-light50:#00cc00;
+    --color-green-light30:#009900;
+    --color-green-light20:#006600;
+    --color-black-light95:#f2f2f2;
+    --color-black-light90:#e6e6e6;
+    --color-black-light70:#b3b3b3;
+    --color-black-light50:#808080;
+    --color-black-light30:#4d4d4d;
+    --color-black-light20:#333333;
+    --color-black-light10:#1a1a1a;
+    --color-black-light5:#0d0d0d;
 }
 div#app, div#container {
     margin: 0 auto;
@@ -28,7 +54,7 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
     border: 1px dotted;
 }
 .positive {
-    background: #009400 !important;
+    background: var(--color-green-light30) !important;
 }
 .negative {
     background: #e60f05 !important;
@@ -84,14 +110,14 @@ container for message or buttons
 /*table formatting*/
 table {border-spacing: 0px; width:100%;}
 th {
-    background: aliceblue;
+    background: var(--color-orange-light70);
     padding: 4px;
     text-align: left;
     font-size: 15px;
     height: 30px;
 }
-tr:nth-child(even) {background: #FFF}
-tr:nth-child(odd) {background: #EEE}
+tr:nth-child(even) { background: var(--color-black-light90);}
+tr:nth-child(odd) { background: var(--color-orange-light95);}
 td {padding-left: 2px;height: 30px;}
 .c_digit {text-align: right;}
 
@@ -321,7 +347,7 @@ section.c_score_cards article {
 }
 
 .increase {
-    color: #74cc32;
+    color: var(--color-green-light30);
 }
 .decrease {
     color: #ff0000;
@@ -340,32 +366,12 @@ section.c_score_cards article {
 section.c_info_band {    
     background: beige;    
 }
-.a_portfolio h3 {
-    display: inline-block;
-    min-width: 200px;
-    font-size: 15px;
-    margin-left: 20px;
-}
-.a_portfolio td:first-child {
-    padding: 5px;
-}
-.a_portfolio summary:focus {
-    outline: none;
-    background: beige;
-}
-.a_portfolio summary {
-    padding-left: 10px;
-    padding-top: 10px;
-    border: 1px dashed #d6f6f6;
-    margin-bottom: 5px;
-    background: azure;
-    border-radius: 5px;
-}
+
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;
 }
 .header-labels>.col3, .header-labels>.col4,.header-labels>.col5 {
-    width: 100px;
+    min-width: 110px;
 }
 
 .header-items>div {
@@ -375,6 +381,8 @@ section.c_info_band {
 .header-labels>div {
     padding: 0 5px;
     text-align: right;
+    font-size: 18px;
+    color: var(--color-black-light30);
 }
 h3 span {
     min-width: 100px;
@@ -399,8 +407,7 @@ section.sales summary {
     outline: none;
 }
 .header-row {
-    margin-top: 10px;
-    font-weight: bold;
+    margin: 20px 0;
 }
 .inset{
     top: -22px;
@@ -411,7 +418,10 @@ section.sales summary {
     flex-basis: 75%;
     justify-content: flex-end;
 }
-
+.header-items>div {
+    font-size: 15px;
+    font-weight: bold;
+}
 .summary-label {
     font-size: 15px;
     font-weight: normal;
@@ -426,6 +436,43 @@ section.c_info_band {
     margin: 20px 0;
 }
 
+/* portfolio-summary*/
+.a_portfolio h3 {
+    display: inline-block;
+    min-width: 200px;
+    font-size: 18px;
+    color: var(--color-black-light30);
+    margin-left:20px;
+}
+.a_portfolio td:first-child {
+    padding: 5px;
+}
+.a_portfolio summary:focus {
+    outline: none;
+    background: beige;
+}
+.a_portfolio summary {
+    padding-left: 10px;
+    padding-top: 10px;
+    border-bottom: 1px dashed #d6f6f6;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+.a_portfolio tr,
+.a_portfolio tr {
+    height: 50px;
+}
+details>summary:hover {
+    background:beige;
+}
+details:nth-child(even)>summary {
+    /* background: var(--color-blue-light95); */
+}
+details:nth-child(odd)>summary {
+    /* background: var(--color-orange-light95); */
+}
+/*end portfoliosummary*/
+
 /* form section inside portfolio details */
 .display-label {
     margin: 10px 0;
@@ -439,7 +486,7 @@ section.c_info_band {
     padding: 20px 0;
 }
 .value {
-    width: 120px;
+    width: 200px;
 }
 .info_band_bottom button {
     margin-top: 30px;

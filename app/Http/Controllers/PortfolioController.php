@@ -135,7 +135,7 @@ class PortfolioController extends Controller
                 'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
                 'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
                 'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-                // 'effective_rate' => 'required|regex:/^[1-9][0-9]+$/',
+                'purchase_date' => 'nullable|date',
             ],
             [ 'offer.*' => 'Please specify an offering type']
         );
@@ -143,12 +143,8 @@ class PortfolioController extends Controller
         $result = Portfolio::updatePortfolio($request);
 
         //CALCULATE total_quantity and wacc_rate ; update in summary table
-        $shareholder = $request->shareholder_id;
-        $stock = $request->stock_id;
-
-        //todo: OR GET shareholder_id and stock_id from db
-
-        PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
+        $data = $portfolio = Portfolio::find($request->id);        
+        PortfolioSummary::updateCascadePortfoliSummaries($data->shareholder_id, $data->stock_id);
 
         $result = $result->getData();
         
@@ -188,6 +184,8 @@ class PortfolioController extends Controller
         //CALCULATE total_quantity and wacc_rate ; update in summary table
         if(!empty($portfolio)){
             PortfolioSummary::updateCascadePortfoliSummaries($portfolio->shareholder_id, $portfolio->stock_id);
+            //remove from summaries where quantity is zero
+            PortfolioSummary::where('quantity','<=',0)->delete();
         }
         
         
@@ -251,8 +249,10 @@ class PortfolioController extends Controller
             ->where('s.symbol','=', $symbol);
         })->orderBy('purchase_date', 'DESC')->get();
 
+        
         //summary data to display in the top band
         $item = $portfolios->first();
+        
         $metadata = collect([
             'total_scripts' => $portfolios->count('stock_id'),
             'quantity' => $portfolios->sum('quantity'),
@@ -260,9 +260,9 @@ class PortfolioController extends Controller
                                 $rate = $item->effective_rate ? $item->effective_rate : $item->unit_cost;
                                 return $item->quantity * $rate;
                             }),
-            'shareholder' => "$item->first_name $item->last_name",
-            'security_name' => $item->security_name,
-            'relation' => $item->relation,
+            'shareholder' => $item ?  "$item->first_name $item->last_name" : '-',
+            'security_name' => $item ? $item->security_name : '-',
+            'relation' => $item ? $item->relation : '-',
         ]);
        
 
@@ -284,13 +284,18 @@ class PortfolioController extends Controller
     public function getUserStocks(int $id)
     {
         // $stocks = Portfolio::where('shareholder_id', $id)->get();
-        $transaction_date = StockPrice::getLastDate();
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', 'm.id', '=', 'p.shareholder_id')
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
-            ->leftJoin('stock_prices as pr', 'pr.stock_id', '=', 'p.stock_id')
-            ->select('p.*','s.*', 'pr.*','m.first_name','m.last_name')
-            ->where('pr.transaction_date','=', $transaction_date)
+            ->leftJoin('stock_prices as pr', function($join){
+                $join->on('pr.stock_id','p.stock_id')
+                    ->where('pr.latest',TRUE);
+            })
+            ->select(
+                'p.*','s.*', 
+                'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
+                'm.first_name','m.last_name'
+            )
             ->where('p.shareholder_id', $id)
             // ->where('p.quantity','>',0)
             ->orderBy('s.symbol')

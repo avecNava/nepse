@@ -8,6 +8,9 @@ use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Models\Portfolio;
+use App\Models\StockPrice;
+use App\Models\PortfolioSummary;
+use  Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,9 +66,24 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 
 
 Route::get('test',function(){
+   
+    $symbols = ['ADBL','AHPC','AIL','AKJCL','AKPL','ALBSL','ALICL','API'];
+    $date_str = '2020-12-17';
+    $result = StockPrice::whereIn('symbol', $symbols)
+                ->where('transaction_date','<>',$date_str)
+                ->where('latest',true)
+                ->update(['latest' => false]);
 
-    return Portfolio::where('shareholder_id', 16)
-                    ->where('stock_id', 113)->get();
+    return $result;
+
+    // $symbol = 'cndbl';
+    // return \App\Models\StockPrice::where('symbol', $symbol)
+    //     ->LastTradePrice()
+    //     ->with(['share'])
+    //     ->first();
+    // return PortfolioSummary::where('quantity','<=',0)->delete();
+    // return Portfolio::where('shareholder_id', 16)
+    //                 ->where('stock_id', 113)->get();
     // return Portfolio::where($shareholder_id, $stock_id)->sum('quantity')
     // $offers =['IPO','RIGHTS'];
     // return in_array('RIGHTS', $offers) ? 'EXISTS' :'DOES NOT EXIST';

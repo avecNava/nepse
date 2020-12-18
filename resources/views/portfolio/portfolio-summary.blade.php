@@ -71,7 +71,7 @@
 
             <main>
                 <section class='shareholder-group header-row'>
-                    <div class="shareholder" style="margin-left:6px">Shareholders</div>
+                    <div></div>
                     <div class='header-labels header-items'>
                         <div class="col1"># Scripts</div>
                         <div class="col2"># Units</div>
@@ -291,7 +291,7 @@
                     <td> ${ quantity }</td>
                     <td> ${ rate } </td>
                     <td> ${ investment_f }</td>
-                    <td> ${ close_price } </td>
+                    <td> ${ close_price ? close_price : '-' } </td>
                     <td> ${ nf.format(worth) }</td>
 
                     <td>
@@ -308,7 +308,7 @@
                         </div>
                     </td>
                     
-                    <td> ${ item.previous_day_close_price }</td>
+                    <td> ${ item.previous_day_close_price ? item.previous_day_close_price : '-' }</td>
                     <td> ${ nf.format(prev_worth) }</td>
                     <td>
                         <div class="c_change">

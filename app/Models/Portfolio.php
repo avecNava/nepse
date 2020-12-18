@@ -114,9 +114,6 @@ class Portfolio extends Model
                 
                 $portfolio = Portfolio::find($request->id);
                 
-                //get shareholder_id and stock_id for update in summary table
-                $shareholder_id = $portfolio->shareholder_id;
-                $stock_id = $portfolio->stock_id;
                 $portfolio->quantity = $request->quantity;
                 $portfolio->unit_cost = $request->unit_cost;
                 $portfolio->effective_rate = $request->effective_rate;
