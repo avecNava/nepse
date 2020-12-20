@@ -5,23 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use App\Services\UtilityService;
 use Illuminate\Support\Collection;
-use Illuminate\Http\Request;
 use App\Models\MeroShare;
 use App\Models\StockOffering;
 use App\Models\PortfolioSummary;
 use App\Models\Portfolio;
 use App\Models\Sales;
 use App\Models\Shareholder;
-use Illuminate\Support\Facades\Auth;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class MeroShareController extends Controller
 {
-   public function index()
-   {
-        
-   }
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
 
    /**
     * displays the share import form and meroshare transaction listing for various shareholders

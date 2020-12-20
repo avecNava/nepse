@@ -12,12 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class PortfolioSummaryController extends Controller
 {
     
-    public function __constructor()
+    public function __construct()
     {
-        $this->middleware('auth');        
+        $this->middleware('auth');
     }
 
     /**
@@ -80,7 +81,7 @@ class PortfolioSummaryController extends Controller
                 'total_investment' => $total_investment,
                 'net_worth' => $net_worth,
                 'net_gain' => $net_gain,
-                'net_gain_per' => ($net_gain/$total_investment)*100,
+                'net_gain_per' => $total_investment ? ($net_gain/$total_investment)*100 :'',
                 'net_gain_css' => $net_gain > 0 ? 'positive' : 'negative',
                 'shareholders' => $total_shareholders->count(),
                 'total_scripts' =>  $total_scripts->count(),
@@ -120,8 +121,8 @@ class PortfolioSummaryController extends Controller
                 $gain = $current_worth - $total_investment;
                 $change = $current_worth - $prev_worth;
 
-                $gain_pc = ($gain/$total_investment)*100;
-                $change_pc = ($change/$prev_worth)*100;
+                $gain_pc = $total_investment ? ($gain/$total_investment)*100 : 0;
+                $change_pc = $prev_worth ? ($change/$prev_worth)*100 : 0;
 
                 $gain_class = ''; $change_class ='';
                 if($gain_pc > 0) {$gain_class='increase';} elseif($gain_pc < 0) {$gain_class='decrease';}

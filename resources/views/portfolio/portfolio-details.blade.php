@@ -470,7 +470,6 @@
         });
 
         function updateInputFields($record) {
-
             document.getElementById('id').value = $record.id;
             // document.getElementById('shareholder_id').value = $record.shareholder_id;
             document.getElementById('quantity').value = $record.quantity;
@@ -481,6 +480,7 @@
             document.getElementById('purchase_date').value = $record.purchase_date;
             document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
             document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
+            setOption(document.getElementById('broker'), $record.broker_no);
             setOption(document.getElementById('offer'), $record.offer_id);
             setOption(document.getElementById('broker'), $record.broker_id);
 
@@ -499,6 +499,7 @@
             document.getElementById('sebon_commission').value = '';
             document.getElementById('receipt_number').value = '';
             document.getElementById('purchase_date').value = date_str;
+            setOption(document.getElementById('broker'), 0);
             setOption(document.getElementById('offer'), 0);
             setOption(document.getElementById('broker'), 0);
 

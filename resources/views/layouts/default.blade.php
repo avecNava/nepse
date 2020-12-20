@@ -14,6 +14,7 @@
     <div id="container">
         
         <header class="c-header">
+
             <div class="c-header__wrapper">
 
                 <div class="c-logo">
@@ -23,11 +24,28 @@
                 </div>                
 
                 <div class="c-nav">
+                    <div class="c-nav__user__wrapper">
+                        <span class="c-nav__user">
+                            {{ Auth::user()->name }}
+                        </span>
+                        <span class="c_nav__logout">
+                            <a href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                        </span>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+
                     <div class="a_page_header">
                         @yield('header_title')
                     </div>
+
                     <nav class="c-nav__list">
-                        <ul>
+                        <ul class="navbar-nav">
                             <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('/portfolio/new') }}">New</a></li>
                             <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
@@ -36,14 +54,9 @@
                         </ul>
                     </nav>
                 </div>
-                <!-- @auth
-                    <div class="c-user">
-                        @if (!empty( Auth::user()->name ))
-                            {{ Auth::user()->name }}  
-                        @endif
-                    </div>
-                @endauth -->
+
             </div>
+             
         </header>
 
         <main class="c_content">
@@ -154,42 +167,43 @@
                 </div>
 
                 <div class="links">
-                <h5>Links</h5>
-                <ul>
-                    <li>
-                        <a href="portfolio">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#!Shareholder">Watchlist</a>
-                    </li>
-                    <li>
-                        <a href="#!Shareholder">Companies</a>
-                    </li>
-                    <li>
-                        <a href="main/stockprice">Market rate <span class="new_release">new</span></a>                      
-                    </li>  
-                </ul>
+                    <h5>Links</h5>
+                    <ul>
+                        <li>
+                            <a href="portfolio">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#!Shareholder">Watchlist</a>
+                        </li>
+                        <li>
+                            <a href="#!Shareholder">Companies</a>
+                        </li>
+                        <li>
+                            <a href="main/stockprice">Market rate <span class="new_release">new</span></a>                      
+                        </li>  
+                    </ul>
                 </div>
 
                 <div class="accounts">
-                <h5>Account</h5>
-                <ul>
-                    <li>
-                    <a href="account/shareholder">Shareholder</a>
-                    </li>
-                    <li>
-                        <a href="account/sharegroup">Share group</a>
-                    </li>                          
-                    <li>
-                        <a href="account/change_password">Change password</a>
-                    </li>
-                    <li>
-                        <a href="account/logout">Log Out</a>
-                    </li>
-                </ul>
+                    <h5>Account</h5>
+                    <ul>
+                        <li>
+                        <a href="account/shareholder">Shareholder</a>
+                        </li>
+                        <li>
+                            <a href="account/sharegroup">Share group</a>
+                        </li>                          
+                        <li>
+                            <a href="account/change_password">Change password</a>
+                        </li>
+                        <li>
+                            <a href="account/logout">Log Out</a>
+                        </li>
+                    </ul>
                 </div>
+
             </section>
-            <div class="wlnz-footer">
+            <div>
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
         </footer>

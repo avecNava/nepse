@@ -18,7 +18,7 @@
     <div class="c_portfolio_container">
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
-
+        @if(!empty($scorecard))
         <section class="c_score_cards">
             <article>
                 <header>Total investment</header>
@@ -33,7 +33,7 @@
             <article class="{{$scorecard['net_gain_css']}}">
                 <header>Net Gain</header>
                 <main>{{number_format($scorecard['net_gain'])}}</main>
-                <footer>{{number_format($scorecard['net_gain_per'])}}%</footer>
+                <footer>{{$scorecard['net_gain_per'] ? number_format($scorecard['net_gain_per']) :''}}%</footer>
             </article>
             <article>
                 <header># Shareholders</header>
@@ -47,26 +47,16 @@
             </article>
             
         </section>
-
+        @endif
             
         @if( !empty($portfolio_summary) )
         
         <section class="a_portfolio">
         
             <header>
-
-                <div class="a_portfolio_main">
-            
-                    <div class="c_band_right band-tall">
-
-                        <div id="message" class="message">
-                            {{count($portfolio_summary)}} members
-                        </div>
-
-                    </div>
-
+                <div class="portfolio__message">
+                    {{count($portfolio_summary)}} members
                 </div>
-
             </header>
 
             <main>
@@ -204,10 +194,6 @@
 
         };
 
-        // for (var i = 0; i < elements.length; i++) {
-        //     elements[i].addEventListener('click', getUserStocks, false);
-        // }
-
         Array.from(elements).forEach(function(element) {
             element.addEventListener('click', getUserStocks);
         });
@@ -277,7 +263,8 @@
                 if(change > 0){ change_css = 'increase'; }  else if(change < 0) { change_css = 'decrease'; }
                 
                 const effective_rate = item.effective_rate ? item.effective_rate : '';
-                const full_name = `${item.first_name}-${item.last_name}`;
+                const l_name = item.last_name.length>0 ? `-${item.last_name}` :'';
+                const full_name = `${item.first_name}${l_name}`;
                 const shareholder_name = serializeString(full_name);
                 
                 const url = window.location.origin;

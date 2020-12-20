@@ -7,10 +7,11 @@ use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
-use App\Models\Portfolio;
-use App\Models\StockPrice;
-use App\Models\PortfolioSummary;
-use  Carbon\Carbon;
+use App\Mail\WelcomeMail;
+// use App\Models\Portfolio;
+// use App\Models\StockPrice;
+// use App\Models\PortfolioSummary;
+// use  Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +24,23 @@ use  Carbon\Carbon;
 |
 */
 
-Auth::loginUsingId(1); 
-Auth::routes();
-// Auth::routes(['register' => true]);        //disable user registration
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/', [PortfolioSummaryController::class, 'index']);
+// Auth::loginUsingId(1); 
+// Auth::routes();
+Auth::routes(['register' => true]);        //disable user registration
 
 Route::get('/welcome', function(){
-    return view('welcome');
+    // return view('welcome');
+    $user = Auth::user();
+    return Mail::to($user)->send(new WelcomeMail($user));
 });
+
+Route::get('mail', function(){
+    $user = Auth::user();
+    return new App\Mail\WelcomeMail($user);
+});
+
+Route::get('/', [PortfolioSummaryController::class, 'index']);
+
 
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
@@ -99,5 +108,5 @@ Route::get('contact-us',function(){
             <p>Please write to : nava.bogatee@gmail.com <br/>until we come up with the contact us page 🙏
             <br/><br/>Thank you
             </p>';
-});
+})->name('contact-us');
 

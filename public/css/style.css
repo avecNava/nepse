@@ -61,6 +61,43 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
 }
 /* ul.thin {margin:0; padding: 0;} */
 
+
+/* login */
+.c-nav__user {
+    font-size: 18px;
+    font-weight: bold;
+}
+.c-nav__user__wrapper {
+    align-self: flex-end;
+}
+ul.navbar-nav {
+    padding: 20px;
+}
+main.c-main {
+    padding: 50px 0;
+}
+ul.navbar-nav {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    font-size: 18px;
+    align-self: flex-end;
+}
+.c-header__wrapper {
+    display: flex;
+}
+.card-header {
+    margin-bottom: 20px;
+}
+.footer-row {
+    margin: 20px 0;
+}
+.footer-row .btn-link {
+    margin-left: 25px;
+}
+/* end of login */
+
+
 /* form with two columns */
 .two-col-form {
     display: flex;
@@ -74,12 +111,15 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
     border-top-width: 0;
     border-radius: 5px;
 }
+
 /* .form-container  label:first-of-type { */
+    
 .form_container label {
     display: inline-block;
     width: 200px;
     margin: 5px 0;
 }
+
 /* 
 component band : appears on top of form or tables
 container for message or buttons
@@ -334,12 +374,12 @@ section.c_score_cards article {
     padding-top: 6px;
     border-radius: 5px;
 }
-/* .c_change {
-    min-width: 120px;
-    background-repeat: no-repeat;
-    background-position: top right;
-    display: inline-block;
-} */
+.portfolio__message {
+    font-size: 20px;
+    padding-left: 10px;
+    font-weight: bold;
+    color: var(--color-black-light30);
+}
 
 .c_change {
     display: flex;

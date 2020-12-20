@@ -9,6 +9,8 @@ use App\Models\Shareholder;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 class RegisterController extends Controller
 {
@@ -86,6 +88,8 @@ class RegisterController extends Controller
             'last_modified_by' => $user->id,
         ]);
         
+        Mail::to($user)->send(new WelcomeMail($user));
+
         return $user;
     }
 }
