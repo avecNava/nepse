@@ -24,7 +24,7 @@ use App\Mail\WelcomeMail;
 |
 */
 
-// Auth::loginUsingId(1); 
+Auth::loginUsingId(1);  
 // Auth::routes();
 Auth::routes(['register' => true]);        //disable user registration
 
@@ -34,12 +34,13 @@ Route::get('/welcome', function(){
     return Mail::to($user)->send(new WelcomeMail($user));
 });
 
-Route::get('mail', function(){
-    $user = Auth::user();
-    return new App\Mail\WelcomeMail($user);
-});
+// Route::get('mail', function(){
+//     $user = Auth::user();
+//     return new App\Mail\WelcomeMail($user);
+// });
 
 Route::get('/', [PortfolioSummaryController::class, 'index']);
+Route::get('guidelines', [HomeController::class, 'guideline']);
 
 
 
@@ -56,6 +57,7 @@ Route::post('meroshare/store-portfolio', [MeroShareController::class, 'storeToPo
 
 Route::pattern('username','[a-zA-Z0-9\-]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
+Route::get('{username}/dashboard/{id}', [PortfolioController::class, 'shareholderDashboard']);
 Route::get('portfolio/user/{id}', [PortfolioController::class, 'getUserStocks']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
 

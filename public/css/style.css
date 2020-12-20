@@ -437,6 +437,9 @@ section.shareholder-group {
     display: flex;
     justify-content: space-between;
 }
+.shareholder>a>h3 {
+    color: #3F51B5;
+}
 section.sales h2 {
     display: inline;
 }
@@ -450,7 +453,7 @@ section.sales summary {
     margin: 20px 0;
 }
 .inset{
-    top: -22px;
+    top: -16px;
     position: relative;
 }
 .header-labels {
@@ -588,3 +591,38 @@ article.c_shareholder_list {
 } */
 /* end of shareholders */
 
+
+
+.guidelines a {
+    color: #3F51B5;
+}
+.guidelines {
+    padding: 10px 0;
+    font-size: 20px;
+}
+
+.guidelines .article {
+    display: flex;
+    flex-direction: column;
+}
+
+article>div {
+    padding: 20px;
+    background: beige;
+    margin:10px 0;
+}   
+
+article p {
+    margin: 10px 0;
+    font-size:18px;
+}
+.guidelines a:hover {
+    background: #CDDC39;
+    transition-property: background;
+    transition-duration: 1s;
+}
+.guidelines a {
+    color: #3F51B5;
+    border-bottom: 1px dashed #FF5722;
+    padding: 0 5px;
+}

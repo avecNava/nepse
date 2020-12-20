@@ -28,6 +28,12 @@ class PortfolioController extends Controller
         $this->middleware('auth');
     }
 
+    public function shareholderDashboard($username, $id)
+    {
+        $shareholders = Portfolio::where('shareholder_id',$id)->get();
+        return response()->json($shareholders);
+    }
+
     /**
      * Calculates Broker commission
      * input: transaction amount

@@ -9,6 +9,9 @@
     <span class="c_info"><label>as of</label> {{ $transaction_date }}</span>
 @endsection
 
+<style>
+
+</style>
 @section('js')
     
 @endsection
@@ -79,9 +82,13 @@
 
                     <summary>
                     <section class='shareholder-group inset'>
-
-                        <div title="{{$row['relation']}}" class="shareholder">
-                            <h3>{{$row['shareholder']}}</h3> 
+                            @php
+                                $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
+                            @endphp
+                        <div class="shareholder">
+                            <a href={{url("$shareholder/dashboard", [ $row['shareholder_id'] ]) }}>
+                                <h3>{{ $row['shareholder']}}</h3> 
+                            </a>
                         </div>
                         <div class='header-labels'>
 

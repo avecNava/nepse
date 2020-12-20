@@ -24,7 +24,7 @@ class UtilityService
     
     public static function serializeString($name, $delim='')
     {
-        return Str::lower(Str::of( $name )->replaceMatches('/[ :-]+/', $delim));    
+        return Str::lower(Str::of( $name )->replaceMatches('/[ :_]+/', $delim));    
     }
 
     /**
