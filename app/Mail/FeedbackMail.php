@@ -7,19 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeMail extends Mailable
+class FeedbackMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
-
+    public $feedback;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($data)
     {
-        $this->user = $user;
+        $this->feedback = $data;
     }
 
     /**
@@ -29,7 +28,7 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        $subject = 'Welcome from ' . config('app.name');
-        return $this->view('emails.welcome')->subject($subject));
+        $subject = 'You received a feedback from ' . config('app.name');
+        return $this->view('emails.feedback')->subject($subject);
     }
 }

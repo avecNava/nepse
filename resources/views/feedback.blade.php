@@ -14,15 +14,16 @@
     <section class="contact-us">
         
         <p> <strong>Thanks for showing up here.</strong> </p>
-        <p>Please use the form below to contact us or send us complaints, suggestions or even a <strong>Thank You note</strong> 👀 </p>
+        <p>Please use the form below to contact us, submit complaints, suggestions or just even a Thank You note 👀 </p>
         
         <div class="contact-us__form">
 
             <div id="message">            
 
-                @if (\Session::has('success'))
+                @if (\Session::has('message'))
                     <div class="message success">
-                        {!! \Session::get('success') !!}
+                        Thank you for your time 🙏 <br>
+                        {!! \Session::get('message') !!}
                     </div>
                     @endif
 
@@ -32,7 +33,7 @@
 
             </div>
                 
-            <form method="POST" action="contact-us" enctype="multipart/form-data">
+            <form method="POST" action="feedbacks" enctype="multipart/form-data">
                 @csrf()
             
                 <div class="form-field buttons">

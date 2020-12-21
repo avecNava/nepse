@@ -59,7 +59,6 @@ class MeroShareController extends Controller
           $validator = $request->validate([
                'shareholder' => 'required',
                'file' => 'required'
-          //   'file' => 'required'
           ]);
 
           // $destinationPath = base_path('public/menu');
@@ -70,11 +69,7 @@ class MeroShareController extends Controller
           //get the file extension from filename manually
           $tmp = explode('.', $file_name);
           $extension = $tmp[ sizeof($tmp)-1 ];
-          
-          $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
-          $request->file('file')->move($destinationPath, $new_name);
-          $pathToCSV = $destinationPath .'/'. $new_name;
-          
+
           // Valid File Extensions
           $valid_extension = ["txt","csv","xls","xlsx"];
 
@@ -82,6 +77,10 @@ class MeroShareController extends Controller
           if( !in_array(strtolower($extension),$valid_extension, true)){
                return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
           }
+          
+          $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
+          $request->file('file')->move($destinationPath, $new_name);
+          $pathToCSV = $destinationPath .'/'. $new_name;
           
           $transactions = collect();
           $shareholder_id = $request->input('shareholder');

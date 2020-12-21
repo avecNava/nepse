@@ -49,6 +49,7 @@ class UtilityService
          }
          return $class;
     }
+    
     public static function gainLossClass1($value)
     {
         

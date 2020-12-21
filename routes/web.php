@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StockPriceController;
 use App\Http\Controllers\MeroShareController;
@@ -9,23 +11,30 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Mail\WelcomeMail;
+use App\Mail\FeedbackMail;
+use App\Models\Feedback;
 // use App\Models\Portfolio;
 // use App\Models\StockPrice;
 // use App\Models\PortfolioSummary;
 // use  Carbon\Carbon;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
-Auth::loginUsingId(1);  
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/login');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Auth::loginUsingId(1);  
 // Auth::routes();
 Auth::routes(['register' => true]);        //disable user registration
 
@@ -35,10 +44,12 @@ Route::get('/welcome', function(){
     return Mail::to($user)->send(new WelcomeMail($user));
 });
 
-// Route::get('mail', function(){
-//     $user = Auth::user();
-//     return new App\Mail\WelcomeMail($user);
-// });
+
+Route::get('mail', function(){
+    $feedback = Feedback::find(1);
+    return new App\Mail\FeedbackMail($feedback);
+    // return new App\Mail\WelcomeMail($user);
+});
 
 Route::get('/', [PortfolioSummaryController::class, 'index']);
 Route::get('guidelines', [HomeController::class, 'guideline']);
@@ -76,7 +87,8 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 // Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
 Route::get('contact-us', [FeedbackController::class, 'index'])->name('contact-us');
-Route::post('contact-us', [FeedbackController::class, 'store']);
+Route::post('feedbacks', [FeedbackController::class, 'store']);
+Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 
 
 Route::get('test',function(){
