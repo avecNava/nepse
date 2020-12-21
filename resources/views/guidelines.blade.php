@@ -5,7 +5,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ URL::to('js/shareholder.js') }}"></script>
+   
 @endsection
 
 @section('content')

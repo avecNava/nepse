@@ -624,3 +624,38 @@ article p {
     border-bottom: 1px dashed #FF5722;
     padding: 0 5px;
 }
+
+/* feedback */
+section.contact-us {
+    font-size: 18px;
+}
+.contact-us__form .form-field {
+    margin: 10px 0;
+}
+.contact-us__form label {
+    width: 200px;
+    display: inline-block;
+}
+.contact-us__form input[type="file"] {
+    width: 594px;
+    height: 70px;
+    padding-top: 50px;
+    border: 1px dashed #d1d3d1;
+    background: #f7f7f7;
+}
+.contact-us__form .buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+.contact-us__form button{
+    margin: 0 5px;
+}
+.contact-us__form input[type="title"] {
+    width: 400px;
+}
+.contact-us__form textarea {
+    width: 600px;
+    height: 300px;
+    padding: 10px;
+    font-size: 18px;
+}

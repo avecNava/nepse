@@ -24,14 +24,15 @@
                 </div>                
 
                 <div class="c-nav">
+                    @if(Auth::check())
                     <div class="c-nav__user__wrapper">
                         <span class="c-nav__user">
-                            {{ Auth::user()->name }}
+                            {{ optional(Auth::user())->name }}
                         </span>
                         <span class="c_nav__logout">
                             <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+                                    document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
                         </span>
@@ -39,6 +40,7 @@
                             @csrf
                         </form>
                     </div>
+                    @endif
 
                     <div class="a_page_header">
                         @yield('header_title')

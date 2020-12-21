@@ -7,6 +7,7 @@ use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
+use App\Http\Controllers\FeedbackController;
 use App\Mail\WelcomeMail;
 // use App\Models\Portfolio;
 // use App\Models\StockPrice;
@@ -74,6 +75,8 @@ Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('home');
 // Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
+Route::get('contact-us', [FeedbackController::class, 'index'])->name('contact-us');
+Route::post('contact-us', [FeedbackController::class, 'store']);
 
 
 Route::get('test',function(){
@@ -105,10 +108,4 @@ Route::get('test',function(){
 });
 
 
-Route::get('contact-us',function(){
-    return '<p>Hi</p>
-            <p>Please write to : nava.bogatee@gmail.com <br/>until we come up with the contact us page 🙏
-            <br/><br/>Thank you
-            </p>';
-})->name('contact-us');
 
