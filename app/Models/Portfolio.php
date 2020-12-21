@@ -77,6 +77,7 @@ class Portfolio extends Model
             $portfolio->sebon_commission = $request->sebon_commission;
             $portfolio->total_amount = $request->total_amount;
             $portfolio->receipt_number = $request->receipt_number;
+            $portfolio->tags = $request->tags;
             $portfolio->broker_no = $request->broker;
             $portfolio->offer_id = $request->offer;
             $portfolio->purchase_date = $request->purchase_date;
@@ -120,8 +121,9 @@ class Portfolio extends Model
                 $portfolio->broker_commission = $request->broker_commission;
                 $portfolio->sebon_commission = $request->sebon_commission;
                 $portfolio->total_amount = $request->total_amount;
+                $portfolio->tags = $request->tags;
                 $portfolio->receipt_number = $request->receipt_number;
-                $portfolio->broker_no = $request->broker_number;
+                $portfolio->broker_no = $request->broker;
                 $portfolio->offer_id = $request->offer;
                 $portfolio->purchase_date = $request->purchase_date ? $request->purchase_date : Carbon::now();
                 $portfolio->last_modified_by = Auth::id();

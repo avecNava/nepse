@@ -30,9 +30,63 @@ class PortfolioController extends Controller
 
     public function shareholderDashboard($username, $id)
     {
-        $shareholders = Portfolio::where('shareholder_id',$id)->get();
-        return response()->json($shareholders);
-    }
+        
+        $stocks = DB::table('portfolio_summaries as p')
+            ->join('shareholders as m', 'm.id', '=', 'p.shareholder_id')
+            ->join('stocks as s', 's.id', '=', 'p.stock_id')
+            ->leftJoin('stock_prices as pr', function($join){
+                $join->on('pr.stock_id','p.stock_id')
+                    ->where('pr.latest',TRUE);
+            })
+            ->select(
+                'p.*','s.*', 
+                'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
+                'm.first_name','m.last_name'
+            )
+            ->where('p.shareholder_id', $id)
+            ->orderBy('s.symbol')
+            ->get();
+            
+            $row = $stocks->first();
+            $scripts =  $stocks->count('stock_id');
+            $quantity =  $stocks->sum('quantity');
+            $investment =  $stocks->sum(function($item){
+                return $item->quantity * $item->wacc;
+            });
+            $worth = $stocks->sum(function($item){
+                $rate = $item->last_updated_price ?  $item->last_updated_price : $item->close_price;
+                return $item->quantity * $rate;
+            });
+            $prev_worth = $stocks->sum(function($item){
+                $rate = $item->previous_day_close_price;
+                return $item->quantity * $rate;
+            });
+            $gain = $worth - $investment;
+            $change = $worth - $prev_worth;
+           
+            $data = [
+                'scripts'  => $scripts,
+                'quantity'  => $quantity,
+                'investment'  => $investment,
+                'worth'  => $worth,
+                'prev_worth'  => $prev_worth,
+                'gain' => $gain,
+                'change' => $change,
+                'gain_per' => UtilityService::calculatePercentage($gain, $investment),
+                'gain_class' => UtilityService::gainLossClass($gain),
+                'change_per' => UtilityService::calculatePercentage($change, $prev_worth),
+                'change_class' => UtilityService::gainLossClass($change),
+            ];
+
+            return  view(
+                'portfolio.shareholder-dashboard', 
+                [
+                    'shareholder' => $row->first_name . " " . $row->last_name,
+                    'portfolios' => $stocks,
+                    'scorecard' => $data,
+                ]
+            );
+        }
 
     /**
      * Calculates Broker commission
@@ -267,6 +321,7 @@ class PortfolioController extends Controller
                                 return $item->quantity * $rate;
                             }),
             'shareholder' => $item ?  "$item->first_name $item->last_name" : '-',
+            'sector' => $item ?  $item->sector : '',
             'security_name' => $item ? $item->security_name : '-',
             'relation' => $item ? $item->relation : '-',
         ]);

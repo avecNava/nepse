@@ -156,11 +156,15 @@ th {
     font-size: 15px;
     height: 30px;
 }
-tr:nth-child(even) { background: var(--color-black-light90);}
+/* tr:nth-child(even) { background: var(--color-black-light90);} */
 tr:nth-child(odd) { background: var(--color-orange-light95);}
-td {padding-left: 2px;height: 30px;}
+td:first-child, th:first-child {text-align: left; padding-left:10px;}
+td:last-child, th:last-child {text-align: right; padding-right:10px;}
 .c_digit {text-align: right;}
-
+tr.separator {
+    background: none;
+    height: 30px;
+}
 /* form input elements*/
 input {
     padding: 5px;
@@ -284,8 +288,7 @@ nav.c-nav__list li {
     width: 180px;
     height: 2.6em;
 }
-.c_transaction_list 
-td:last-child {
+.c_transaction_list td:last-child {
     max-width: 250px;
     font-size: 12px;
 }
@@ -363,9 +366,6 @@ section.c_score_cards article {
 .a_portfolio .message {
     padding-left: 10px;
 }
-.a_portfolio th,.a_portfolio th,.a_portfolio td, .a_portfolio td {text-align: right;}
-.a_portfolio td:first-child,.a_portfolio th:first-child{text-align: left;}
-
 .a_portfolio_main h1 {display: inline-block;}
 .a_portfolio_header {align-self: center; }
 
@@ -487,9 +487,7 @@ section.c_info_band {
     color: var(--color-black-light30);
     margin-left:20px;
 }
-.a_portfolio td:first-child {
-    padding: 5px;
-}
+
 .a_portfolio summary:focus {
     outline: none;
     background: beige;

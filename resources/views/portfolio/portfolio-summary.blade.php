@@ -66,6 +66,7 @@
                 <section class='shareholder-group header-row'>
                     <div></div>
                     <div class='header-labels header-items'>
+                        <div class="col1">SN</div>
                         <div class="col1"># Scripts</div>
                         <div class="col2"># Units</div>
                         <div class="col3">Investment</div>
@@ -85,7 +86,7 @@
                             @php
                                 $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
                             @endphp
-                        <div class="shareholder">
+                        <div class="shareholder" title="Click to see dashboard for '{{$row['shareholder']}}'">
                             <a href={{url("$shareholder/dashboard", [ $row['shareholder_id'] ]) }}>
                                 <h3>{{ $row['shareholder']}}</h3> 
                             </a>
@@ -213,6 +214,7 @@
             const html_head = `
                 <table>
                     <tr>
+                        <th>SN</th>
                         <th>Symbol</th>
                         <th>Qty</th>
                         <th title="Effective rate">Eff. rate</th>
@@ -225,9 +227,15 @@
                         <th>Change</th>
                     </tr>`;
 
-            const html_foot = `</table>`;
+            const html_foot = 
+                `<tr class="separator">
+                    <td colspan="11"><hr/></td>
+                </tr>
+                </table>`;
+
             var html_body ='';
             var nf = Intl.NumberFormat();
+            var $row = 0;
 
             stocks.forEach(item => {
                 
@@ -277,16 +285,17 @@
                 const url = window.location.origin;
                 html_body += 
                 `<tr>
+                    <td class="c_digit">${ ++$row }</td>
                     <td title="${ item.stock_id }-${ item.security_name }">
                         <a href="${url}/portfolio/${shareholder_name}/${item.symbol}/${item.shareholder_id }">
                             ${ item.symbol }
                         </a>
                     </td>
-                    <td> ${ quantity }</td>
-                    <td> ${ rate } </td>
-                    <td> ${ investment_f }</td>
-                    <td> ${ close_price ? close_price : '-' } </td>
-                    <td> ${ nf.format(worth) }</td>
+                    <td class="c_digit"> ${ quantity }</td>
+                    <td class="c_digit"> ${ rate } </td>
+                    <td class="c_digit"> ${ investment_f }</td>
+                    <td class="c_digit"> ${ close_price ? close_price : '-' } </td>
+                    <td class="c_digit"> ${ nf.format(worth) }</td>
 
                     <td>
                         <div class="c_change">
@@ -302,8 +311,8 @@
                         </div>
                     </td>
                     
-                    <td> ${ item.previous_day_close_price ? item.previous_day_close_price : '-' }</td>
-                    <td> ${ nf.format(prev_worth) }</td>
+                    <td class="c_digit"> ${ item.previous_day_close_price ? item.previous_day_close_price : '-' }</td>
+                    <td class="c_digit"> ${ nf.format(prev_worth) }</td>
                     <td>
                         <div class="c_change">
                             <div>

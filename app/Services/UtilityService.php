@@ -21,6 +21,49 @@ class UtilityService
         return Str::of( $time )->replaceMatches('/[ :-]+/','');
     
     }
+
+    /**
+     * calculates the percentage
+     */
+    public static function calculatePercentage($value, $total_value)
+    {
+        if($total_value<=0) return 0;
+        return number_format(($value/$total_value)*100,1).'%';
+    }
+
+    /**
+     * calculates gain or loss based on give value
+     */
+    public static function gainLossClass($value)
+    {
+        
+        if(!$value) return '';
+
+        $class = '';
+
+        if($value > 0)  {
+            $class = 'positive';
+         }
+         else if($value < 0){
+             $class = 'negative';
+         }
+         return $class;
+    }
+    public static function gainLossClass1($value)
+    {
+        
+        if(!$value) return '';
+
+        $class = '';
+
+        if($value > 0)  {
+            $class = 'increase';
+         }
+         else if($value < 0){
+             $class = 'decrease';
+         }
+         return $class;
+    }
     
     public static function serializeString($name, $delim='')
     {

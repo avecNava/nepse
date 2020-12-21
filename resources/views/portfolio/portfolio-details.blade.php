@@ -60,7 +60,8 @@
 
                     <h2 class="name" title="{{$info['relation']}}">{{$info['shareholder']}}</h2>
                     <div class="stock">
-                        <h2>{{$info['security_name']}}</h2>
+                        <h3>{{$info['security_name']}}</h3>
+                        <h3>{{$info['sector']}}</h3>
                         <h3><label>Total quantity </label>
                             <span class="value">
                                 {{number_format($qty)}}
@@ -241,6 +242,12 @@
                         value="{{ old('receipt_number') }}"/>
                     </div>
                     <div>
+                        <label for="tags"
+                        class="@error('tags') is-invalid @enderror">Tags</label>
+                        <input type="text" name="tags" id="tags" 
+                        value="{{ old('tags') }}"/>
+                    </div>
+                    <div>
                         <label for="purchase_date"
                         class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
                         <input type="date" name="purchase_date" id="purchase_date" 
@@ -315,9 +322,10 @@
                             <th>Unit cost</th>
                             <th>Total amount</th>
                             <th>Effective rate</th>
-                            <th>Sector</th>
+                            <!-- <th>Sector</th> -->
                             <!-- <th>Shareholder</th> -->
                             <th>Purchase date</th>
+                            <th>Tags</th>
                         </tr>
                         
                         @foreach ($portfolios as $record)
@@ -335,11 +343,12 @@
                                 <td>{{$record->unit_cost}}</td>
                                 <td>{{ number_format($record->total_amount)}}</td>
                                 <td>{{$record->effective_rate}}</td>
-                                <td>{{$record->sector}}</td>
+                                <!-- <td>{{$record->sector}}</td> -->
                                 <!-- <td>
                                     <div title="{{$record->relation}}" id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
                                 </td> -->
                                 <td>{{$record->purchase_date}}</td>
+                                <td>{{$record->tags}}</td>
                             </tr>
 
                         @endforeach   
@@ -470,6 +479,7 @@
         });
 
         function updateInputFields($record) {
+            console.log($record);
             document.getElementById('id').value = $record.id;
             // document.getElementById('shareholder_id').value = $record.shareholder_id;
             document.getElementById('quantity').value = $record.quantity;
@@ -477,6 +487,7 @@
             document.getElementById('total_amount').value = $record.total_amount;
             document.getElementById('effective_rate').value = $record.effective_rate;
             document.getElementById('receipt_number').value = $record.receipt_number;
+            document.getElementById('tags').value = $record.tags;
             document.getElementById('purchase_date').value = $record.purchase_date;
             document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
             document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
@@ -498,6 +509,7 @@
             document.getElementById('broker_commission').value = '';
             document.getElementById('sebon_commission').value = '';
             document.getElementById('receipt_number').value = '';
+            document.getElementById('tags').value = '';
             document.getElementById('purchase_date').value = date_str;
             setOption(document.getElementById('broker'), 0);
             setOption(document.getElementById('offer'), 0);

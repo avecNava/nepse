@@ -153,6 +153,11 @@
                                 <input type="text" value="{{old('receipt_number')}}" name="receipt_number"/>
                             </div> 
                             
+                            <div class="fields form-field">
+                                <label for="tags" class="@error('tags') is-invalid @enderror">Tags</label>
+                                <input type="text" value="{{old('tags')}}" name="tags"/>
+                            </div> 
+                            
                             
                             <div class="fields form-field remarks">
                                 <label for="remarks" class="@error('remarks') is-invalid @enderror">Remarks</label>

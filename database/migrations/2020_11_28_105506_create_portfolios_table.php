@@ -28,6 +28,7 @@ class CreatePortfoliosTable extends Migration
             $table->date('purchase_date')->nullable();
             $table->integer('broker_no')->nullable();
             $table->string('receipt_number')->nullable();
+            $table->string('tags')->nullable();
             $table->varchar('remarks',500)->nullable();
             $table->foreignId('last_modified_by')->constrained('users')->nullable();
             $table->timestamps();

@@ -32,7 +32,7 @@ class StorePortfolio extends FormRequest
             'effective_rate' => 'required|numeric|gt:0', 
             'purchase_date' => 'nullable|date', 
             'total_amount' => 'required|numeric|gt:0', 
-            // 'broker' => 'required|numeric|gt:0', 
+            // 'broker_no' => 'nullable|numeric', 
         ];
     }
 
