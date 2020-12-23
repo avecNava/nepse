@@ -141,10 +141,13 @@
             if($errors->any()){
                 $hidden = '';
             }
-
+            $stock_id=0;
+            $shareholder_id=0;
             $stock = $portfolios->first();
-            $stock_id = $stock->stock_id;
-            $shareholder_id = $stock->shareholder_id;
+            if(!empty($stock)){
+                $stock_id = $stock->stock_id;
+                $shareholder_id = $stock->shareholder_id;
+            }
         @endphp
 
         <div id="portfolio-form" class="info_band_bottom" {{$hidden}}>

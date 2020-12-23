@@ -29,6 +29,12 @@ class FeedbackMail extends Mailable
     public function build()
     {
         $subject = 'You received a feedback from ' . config('app.name');
-        return $this->view('emails.feedback')->subject($subject);
+        $path_to_attachment = storage_path('app/feedbacks') . 
+                            DIRECTORY_SEPARATOR . 
+                            $this->feedback->attachment;
+        return $this->view('emails.feedback-email')
+            ->subject($subject)
+            ->attach( $path_to_attachment );
+            // ->attachFromStorage( $path_to_attachment );
     }
 }

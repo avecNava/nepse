@@ -78,17 +78,28 @@ class RegisterController extends Controller
         $first_name = $splitName[0];
         $last_name = !empty($splitName[1]) ? $splitName[1] : ''; // If last name doesn't exist, make it empty
         
+        //todo : uncomment here
         //insert the user as shareholder
-        Shareholder::create([
-            'parent_id' => $user->id,
-            'parent' => true,                   //all registered users will be the parent by default
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $data['email'],
-            'last_modified_by' => $user->id,
-        ]);
+        // Shareholder::create([
+        //     'parent_id' => $user->id,
+        //     'parent' => true,                   //all registered users will be the parent by default
+        //     'first_name' => $first_name,
+        //     'last_name' => $last_name,
+        //     'email' => $data['email'],
+        //     'last_modified_by' => $user->id,
+        // ]);
         
-        Mail::to($user)->send(new WelcomeMail($user));
+        
+        //https://laravel.com/docs/8.x/notifications#using-the-notifiable-trait
+        // Mail::to($user)->send(new WelcomeMail($user));
+
+        // $user->notify(new \App\Notifications\UserRegistrationNotification($user));
+        // $user->notify(new \App\Notifications\UserVerifyNotification($user));
+
+        //todo: check using these events
+        //event(new Registered($user));
+        // $user->notify(new SendRegisterMailNotification());
+
 
         return $user;
     }

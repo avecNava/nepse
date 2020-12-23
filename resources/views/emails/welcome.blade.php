@@ -15,8 +15,8 @@
     </head>
 
     <body>
-
-        <p>Dear {{ blank($user->name) ? 'user' : $user->name }},</p>
+        
+        <p>Dear {{ !empty($user) ? $user->name : 'user' }},</p>
         <p>
             Thanks for signing up with us 🙏
         </p>
@@ -30,7 +30,7 @@
             We believe that you will have an wonderful experience in managing your stocks with us.
         </p>
         <p>
-            Should you encounter any issues while using the app or have any comments, suggestions or something to share, we would love to hear from you. You can use the <a class="nav-link" href="{{ route('contact-us') }}">{{ __('Contact us') }}</a> form to reach us.
+            Should you encounter any issues while using the app or have any comments, suggestions or something to share, we would love to hear from you. You can use the <a class="nav-link" href="{{ route('feedback') }}">{{ __('Contact us') }}</a> form to reach us.
         </p>
         <p>
             Best regards, <br><br>

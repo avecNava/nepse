@@ -34,10 +34,7 @@
                 color: #3f51b5d6;
             }
             
-            footer {
-                display: flex;
-                justify-content: space-between;
-            }
+            
             footer div {
                 font-size: 18px;
             }
@@ -61,6 +58,14 @@
             .copyright.footer>p {
                 margin: 0;
                 font-weight: 100;
+            }
+            footer {
+                margin-top: 100px;
+            }
+
+            footer {
+                display: flex;
+                justify-content: space-between;
             }
         </style>
     </head>
@@ -87,13 +92,7 @@
 
             <footer>
 
-                <div class="copyright footer">
-                    <p><a href="{{ config('app.url') }}">{{ config('app.name')}}</a></p>
-                    <p>©<?=date("Y")?>&nbsp; All rights reserved.</p>
-                </div>
-
                 <div class="shout-out">
-                    <div class="label" style="margin-bottom:5px;font-weight:bold">Shout out 😮 </div>
                     <div class="social-links">
                         <div>
                             <div class="label">Twitter</div>
@@ -112,6 +111,10 @@
                             {{ config('app.email')}}
                         </div>
                     </div>
+                </div>
+                <div class="copyright footer">
+                    <p><a href="{{ config('app.url') }}">{{ config('app.name')}}</a></p>
+                    <p>©<?=date("Y")?>&nbsp; All rights reserved.</p>
                 </div>
 
             </footer>

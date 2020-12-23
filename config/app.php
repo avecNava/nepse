@@ -19,8 +19,8 @@ return [
     'email' => env('CONTACT_EMAIL', 'nava.bogatee@gmail.com'),
     'twitter' => env('CONTACT_TWITTER', 'avecNava'),
     'facebook' => env('CONTACT_FACEBOOK', 'nepse.today'),
-    // 'Log' =>'daily',
-    // 'log_max_files' => 30,
+    'log' => env('APP_LOG', 'daily'),           //or single
+    'log_max_files' => 30,
 
 
 

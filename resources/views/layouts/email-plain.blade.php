@@ -23,11 +23,14 @@
             }
             body {
                 margin: 0;
-                font-size: 16px;
+                font-size: 20px;
                 font-family: 'Scope One', serif; 
             }
             a{
                 text-decoration: none;
+            }
+            span.break-all {
+                font-size: 15px;
             }
         
         </style>

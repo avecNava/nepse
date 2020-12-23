@@ -7,19 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeMail extends Mailable
+class VerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
-
+    pubic user;
+    public $action;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $action)
     {
         $this->user = $user;
+        $this->action = $action;
     }
 
     /**
@@ -30,8 +31,6 @@ class WelcomeMail extends Mailable
     public function build()
     {
         $subject = 'Welcome from ' . config('app.name');
-        return $this->view('emails.welcome')->subject($subject);
-        //return $this->from('test@mail.com')->subject('Hello')->markdown('emails.welcome');
-
+        return $this->view('emails.user-verify')->subject($subject);
     }
 }

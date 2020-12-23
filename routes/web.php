@@ -13,48 +13,48 @@ use App\Http\Controllers\FeedbackController;
 use App\Mail\WelcomeMail;
 use App\Mail\FeedbackMail;
 use App\Models\Feedback;
-// use App\Models\Portfolio;
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
+
 // use App\Models\StockPrice;
 // use App\Models\PortfolioSummary;
 // use  Carbon\Carbon;
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
-
-Route::get('/email/verify', function () {
-    return view('auth.verify');
-})->middleware('auth')->name('verification.notice');
-
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-
-    return redirect('/login');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
 // Auth::loginUsingId(1);  
-// Auth::routes();
-Auth::routes(['register' => true]);        //disable user registration
+Auth::routes([
+    'verify' => true,
+    'register' => true,
+]);
 
-Route::get('/welcome', function(){
-    // return view('welcome');
-    $user = Auth::user();
-    return Mail::to($user)->send(new WelcomeMail($user));
-});
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+//     return back()->with('message', 'Verification link sent!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
+// Route::get('/email/verify', function () {
+//     return view('auth.verify');
+// })->middleware('auth')->name('verification.notice');
+
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+
+//     return redirect('/login');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('mail', function(){
-    $feedback = Feedback::find(1);
-    return new App\Mail\FeedbackMail($feedback);
+    $user = User::find(1);
+    
+    event(new \App\Events\UserRegisteredEvent($user));
+    // event(new \App\Events\UserRegisteredEvent($user));
+    //$user->notify(new \App\Notifications\UserRegistrationNotification($user));
+    // Notification::send($user,new \App\Notifications\UserRegistrationNotification($user));
+    // Notification::send($user,new \App\Notifications\UserVerifyNotification($user));
+    // $feedback = Feedback::find(1);
+    // return new App\Mail\FeedbackMail($feedback);
     // return new App\Mail\WelcomeMail($user);
 });
 
 Route::get('/', [PortfolioSummaryController::class, 'index']);
-Route::get('guidelines', [HomeController::class, 'guideline']);
-
-
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
@@ -86,13 +86,15 @@ Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('home');
 // Route::get('portfolio/{username}/{member}', [PortfolioSummaryController::class, 'index']);
 
-Route::get('contact-us', [FeedbackController::class, 'index'])->name('contact-us');
+Route::get('guidelines', [HomeController::class, 'guideline']);
+Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);
 Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 
-
 Route::get('test',function(){
-   
+    $user = Auth::user();
+    return $user->notify(new \App\Notifications\UserRegistration($user));
+ 
     $symbols = ['ADBL','AHPC','AIL','AKJCL','AKPL','ALBSL','ALICL','API'];
     $date_str = '2020-12-17';
     $result = StockPrice::whereIn('symbol', $symbols)
@@ -101,23 +103,16 @@ Route::get('test',function(){
                 ->update(['latest' => false]);
 
     return $result;
-
-    // $symbol = 'cndbl';
-    // return \App\Models\StockPrice::where('symbol', $symbol)
-    //     ->LastTradePrice()
-    //     ->with(['share'])
-    //     ->first();
-    // return PortfolioSummary::where('quantity','<=',0)->delete();
-    // return Portfolio::where('shareholder_id', 16)
-    //                 ->where('stock_id', 113)->get();
-    // return Portfolio::where($shareholder_id, $stock_id)->sum('quantity')
-    // $offers =['IPO','RIGHTS'];
-    // return in_array('RIGHTS', $offers) ? 'EXISTS' :'DOES NOT EXIST';
-    // return Stock::select('id')->where('symbol', 'API')->first();
-    // $hasPortfolio = Portfolio::where('shareholder_id',1)->select('shareholder_id')->withCount(['shareholder_id'])->get();
-    // dd($hasPortfolio);
-
 });
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::fallback(function() {
+    return 'Ouch 🙄';
+});

@@ -34,6 +34,12 @@
                     <main>{{number_format($scorecard['worth'])}}</main>
                     <footer></footer>
                 </article>
+                
+                <article class="{{$scorecard['gain_class']}}">
+                    <header>Net Gain</header>
+                    <main>{{number_format($scorecard['gain'])}}</main>
+                    <footer>{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</footer>
+                </article>
 
                 <article title="Previous worth">
                     <header>Prev. worth</header>
@@ -45,12 +51,6 @@
                     <header>Difference</header>
                     <main>{{number_format($scorecard['change'])}}</main>
                     <footer>{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</footer>
-                </article>
-
-                <article class="{{$scorecard['gain_class']}}">
-                    <header>Net Gain</header>
-                    <main>{{number_format($scorecard['gain'])}}</main>
-                    <footer>{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</footer>
                 </article>
 
                 <article>
