@@ -19,7 +19,6 @@ class UtilityService
     {
         $time = Carbon::now();
         return Str::of( $time )->replaceMatches('/[ :-]+/','');
-    
     }
 
     /**

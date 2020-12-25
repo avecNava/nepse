@@ -18,49 +18,56 @@
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
+        @php
+            $ltp=0;
+            $ltp_prev=0;
+            $worth=0;
+            $price_high=0;
+            $price_low=0;
+            $price_high_52=0;
+            $price_low_52=0;
+            $qty = $info['quantity'];
+            $investment = $info['investment'];
+            $wacc = ($investment > 0 ) ? $investment / $qty : 0;
+            if(!empty($price)){
+                $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
+                $ltp_prev = $price->previous_day_close_price;
+                $worth = $qty * $ltp;
+                $worth_prev = $qty * $ltp_prev;
+                $price_high = $price->high_price;
+                $price_low = $price->low_price;
+                $price_high_52 = $price->fifty_two_week_high_price;
+                $price_low_52 = $price->fifty_two_week_low_price;
+            } 
+            $change = $ltp - $ltp_prev;
+            $gain = $worth - $investment;
+            $change_per = 0; $gain_per=0;
+            if($ltp_prev > 0){
+                $change_per = ($change/$ltp_prev)*100;
+            }
+            if($investment > 0){
+                $gain_per = ($gain/$investment)*100;
+            }
+            $gain_class =''; $change_class = '';
+            if($change > 0) { $change_class='increase'; } else if($change < 0) { $change_class='decrease'; }
+            if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
+        @endphp
+            
         <section class="c_info_band">
-
-            @php
-                $ltp=0;
-                $ltp_prev=0;
-                $worth=0;
-                $price_high=0;
-                $price_low=0;
-                $price_high_52=0;
-                $price_low_52=0;
-                $qty = $info['quantity'];
-                $investment = $info['investment'];
-                $wacc = ($investment > 0 ) ? $investment / $qty : 0;
-                if(!empty($price)){
-                    $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
-                    $ltp_prev = $price->previous_day_close_price;
-                    $worth = $qty * $ltp;
-                    $worth_prev = $qty * $ltp_prev;
-                    $price_high = $price->high_price;
-                    $price_low = $price->low_price;
-                    $price_high_52 = $price->fifty_two_week_high_price;
-                    $price_low_52 = $price->fifty_two_week_low_price;
-                } 
-                $change = $ltp - $ltp_prev;
-                $gain = $worth - $investment;
-                $change_per = 0; $gain_per=0;
-                if($ltp_prev > 0){
-                    $change_per = ($change/$ltp_prev)*100;
-                }
-                if($investment > 0){
-                    $gain_per = ($gain/$investment)*100;
-                }
-                $gain_class =''; $change_class = '';
-                if($change > 0) { $change_class='increase'; } else if($change < 0) { $change_class='decrease'; }
-                if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
-            @endphp
 
             <div class="info_band_top">
                 <div class="block-left">
 
-                    <h2 class="name" title="{{$info['relation']}}">{{$info['shareholder']}}</h2>
+                <section class="shareholder nav">
+                    <h2>
+                        <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
+                            {{ $info['shareholder'] }}
+                        </a>
+                    </h2>
+                </section>
+
                     <div class="stock">
-                        <h3>{{$info['security_name']}}</h3>
+                        <h2 class='highlight'>{{$info['security_name']}}</h2>
                         <h3>{{$info['sector']}}</h3>
                         <h3><label>Total quantity </label>
                             <span class="value">
@@ -141,8 +148,8 @@
             if($errors->any()){
                 $hidden = '';
             }
-            $stock_id=0;
-            $shareholder_id=0;
+            $stock_id = 0;
+            $shareholder_id = 0;
             $stock = $portfolios->first();
             if(!empty($stock)){
                 $stock_id = $stock->stock_id;
@@ -321,17 +328,27 @@
                         <tr>
                             <th>Symbol</th>
                             <th>Offering type</th>
-                            <th>Quantity</th>
-                            <th>Unit cost</th>
-                            <th>Total amount</th>
-                            <th>Effective rate</th>
-                            <!-- <th>Sector</th> -->
-                            <!-- <th>Shareholder</th> -->
-                            <th>Purchase date</th>
+                            <th class="c_digit">Quantity</th>
+                            <th class="c_digit">Unit cost</th>
+                            <th class="c_digit" title="Effective rate">Eff. rate</th>
+                            <th class="c_digit">Total amount</th>
+                            <th class="c_digit">LTP</th>
+                            <th class="c_digit">Worth</th>
+                            <th class="c_digit">Gain</th>
+                            <th class="c_digit">Purchase date</th>
                             <th>Tags</th>
                         </tr>
                         
                         @foreach ($portfolios as $record)
+                            @php
+                                $ltp = $record->last_updated_price?: $record->close_price;
+                                $qty = $record->quantity;
+                                $worth = $qty * $ltp;
+                                $investment = $record->total_amount;
+                                $gain = $worth - $investment;
+                                $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
+                                $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
+                            @endphp
                             
                             <tr id="row-{{ $record->id }}">
                                 
@@ -342,15 +359,26 @@
                                     @endif
                                 </td>
                                 <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
-                                <td>{{$record->quantity}}</td>
-                                <td>{{$record->unit_cost}}</td>
-                                <td>{{ number_format($record->total_amount)}}</td>
-                                <td>{{$record->effective_rate}}</td>
-                                <!-- <td>{{$record->sector}}</td> -->
-                                <!-- <td>
-                                    <div title="{{$record->relation}}" id='owner_{{$record->shareholder_id}}'>{{$record->first_name}} {{$record->last_name}}</div>
-                                </td> -->
-                                <td>{{$record->purchase_date}}</td>
+                                <td class="c_digit">{{ $qty }}</td>
+                                <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
+                                <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
+                                <td class="c_digit">{{ number_format($record->total_amount) }}</td>
+                                <td class="c_digit">{{ number_format($ltp) }}</td>
+                                <td class="c_digit">{{ number_format($worth) }}</td>
+                                <td class="c_digit">
+                                    <div class="c_change">
+                                        <div>
+                                            <span class="change-val">
+                                            {{ number_format($gain, 1) }}
+                                            </span>
+                                            <span class="change-val {{$gain_class}}">
+                                            ({{ $gain_per }})
+                                            </span>
+                                        </div>
+                                        <div class="{{$gain_class}}_icon"></div>
+                                    </div>
+                                </td>
+                                <td class="c_digit">{{$record->purchase_date}}</td>
                                 <td>{{$record->tags}}</td>
                             </tr>
 
@@ -459,13 +487,14 @@
             let record_id = parseID('chk_', id_string);
 
             let request = new XMLHttpRequest();
-            const url = `${window.location.origin}/portfolio/get/${record_id}`;
+            const url = `${window.location.origin}/portfolio/${record_id}`;
             request.open('GET', url, true);
 
             request.onload = function() {
 
                 if (this.status >= 200 && this.status < 400) {
                     $data = JSON.parse(this.response);
+                    console.log($data);
                     updateInputFields($data);
                     document.querySelector('#offer').dispatchEvent(new Event("change"));
                     hideLoadingMessage();
@@ -482,7 +511,6 @@
         });
 
         function updateInputFields($record) {
-            console.log($record);
             document.getElementById('id').value = $record.id;
             // document.getElementById('shareholder_id').value = $record.shareholder_id;
             document.getElementById('quantity').value = $record.quantity;

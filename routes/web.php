@@ -20,7 +20,7 @@ use App\Models\User;
 // use App\Models\PortfolioSummary;
 // use  Carbon\Carbon;
 
-// Auth::loginUsingId(1);  
+Auth::loginUsingId(1);
 Auth::routes([
     'verify' => true,
     'register' => true,
@@ -69,12 +69,12 @@ Route::post('meroshare/store-portfolio', [MeroShareController::class, 'storeToPo
 
 Route::pattern('username','[a-zA-Z0-9\-]+');      //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
-Route::get('{username}/dashboard/{id}', [PortfolioController::class, 'shareholderDashboard']);
-Route::get('portfolio/user/{id}', [PortfolioController::class, 'getUserStocks']);
+Route::get('portfolio/{username}/{id}', [PortfolioController::class, 'shareholderPortfolio']);
+Route::get('summary/stocks/{id}', [PortfolioController::class, 'getUserStocks']);
 // Route::get('portfolio/{view}', [PortfolioController::class, 'showPortfolioDetails']);
 
 Route::get('portfolio/commission/{amount}', [PortfolioController::class, 'commission']);
-Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
+Route::get('portfolio/{id}', [PortfolioController::class, 'getPortfolioByID']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
 
 //add, edit portfolio

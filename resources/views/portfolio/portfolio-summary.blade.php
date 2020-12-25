@@ -86,8 +86,8 @@
                             @php
                                 $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
                             @endphp
-                        <div class="shareholder" title="Click to see dashboard for '{{$row['shareholder']}}'">
-                            <a href={{url("$shareholder/dashboard", [ $row['shareholder_id'] ]) }}>
+                        <div class="shareholder" title="Click to see portfolio for '{{$row['shareholder']}}'">
+                            <a href={{url("portfolio/$shareholder", [ $row['shareholder_id'] ]) }}>
                                 <h3>{{ $row['shareholder']}}</h3> 
                             </a>
                         </div>
@@ -181,7 +181,7 @@
             let request = new XMLHttpRequest();
 
             //todo: get symbols by shareholder and display
-            request.open('GET', '/portfolio/user/'+ id, true);
+            request.open('GET', '/summary/stocks/'+ id, true);
 
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400) {

@@ -5,11 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Scopes\TenantScope;
 
 class PortfolioSummary extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    //global scope : to filter records by respective tenant_id
+    //https://laravel.com/docs/8.x/eloquent#applying-global-scopes
+    protected static function booted()
+    {
+        static::addGlobalScope(new TenantScope);
+    }
 
     public function shareholder()
     {

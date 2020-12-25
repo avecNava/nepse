@@ -380,7 +380,9 @@ section.c_score_cards article {
     font-weight: bold;
     color: var(--color-black-light30);
 }
-
+.shareholder.nav h2 {
+    font-size: 1.4em;
+}
 .c_change {
     display: flex;
     justify-content: flex-end;

@@ -9,11 +9,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Scopes\TenantScope;
 
 class Portfolio extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new TenantScope);
+    }
 
     public function shareholder()
     {

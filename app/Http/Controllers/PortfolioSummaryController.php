@@ -18,7 +18,7 @@ class PortfolioSummaryController extends Controller
     
     public function __construct()
     {
-        $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'verified']); 
     }
 
     /**
@@ -26,13 +26,8 @@ class PortfolioSummaryController extends Controller
      */
     public function index()
     {
-       
         $user_id = Auth::id();
-        $shareholder_id = [];       //make the varible array
-        if(empty($member)){
-            $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->all();        //return Array            
-        }
-        
+      
         $net_prev_gain = '';
         $diff = '';
         $sectors = '';
@@ -43,10 +38,10 @@ class PortfolioSummaryController extends Controller
         $transaction_date = StockPrice::getLastDate();
 
         $portfolios = DB::table('portfolio_summaries as p')
-                    ->join('shareholders as s', function($join) use($shareholder_id){
+                    ->join('shareholders as s', function($join){
 
                         $join->on('s.id', '=', 'p.shareholder_id')
-                            ->whereIn('s.id', $shareholder_id);
+                            ->where('s.tenant_id', session()->get('tenant_id'));
 
                     })
                     ->join('stocks as st', 'st.id', '=', 'p.stock_id')
@@ -62,7 +57,7 @@ class PortfolioSummaryController extends Controller
                         st.symbol, 
                         p.*,
                         pr.close_price, pr.last_updated_price, pr.previous_day_close_price'
-                    )
+                    )                    
                     ->orderBy('s.first_name','asc')
                     ->get();
             
