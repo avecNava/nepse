@@ -30,7 +30,7 @@ class CreatePortfoliosTable extends Migration
             $table->string('receipt_number')->nullable();
             $table->string('tags')->nullable();
             $table->varchar('remarks',500)->nullable();
-            $table->integer('tenant_id')->nullable();
+            $table->integer('tenant_id')->nullable()->index();
             $table->foreignId('last_modified_by')->constrained('users')->nullable();
             $table->timestamps();
         });

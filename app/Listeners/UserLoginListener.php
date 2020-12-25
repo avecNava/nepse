@@ -25,8 +25,8 @@ class UserLoginListener
      */
     public function handle($event)
     {
-        session()->put('tenant_id', [$event->user->id]);
-        info('User logged in', [$event->user->name]);
+        session()->put('tenant_id', $event->user->id);
+        // info('User logged in', [$event->user->name]);
         // info('Tenant added to session, tenant_id :', session()->get('tenant_id'));
     }
 }

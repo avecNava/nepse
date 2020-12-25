@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Services\UtilityService;
+use Illuminate\Support\Facades\Log;
+
 
 
 class PortfolioController extends Controller
@@ -119,6 +121,7 @@ class PortfolioController extends Controller
             'amount' => $result['max_amount'],
         ]);
     }
+
     /**
      * form for new Portfolio
      */
@@ -127,8 +130,8 @@ class PortfolioController extends Controller
         $user_id = Auth::id();
         $shareholders = Shareholder::where('parent_id', $user_id)->get();
 
-        $sectors = StockSector::all()->sortBy('sector');
-        $sectors = Stock::all()->sortBy('symbol');
+        // $sectors = StockSector::all()->sortBy('sector');
+        // $sectors = Stock::all()->sortBy('symbol');
 
         $offers = StockOffering::all()->sortBy('offer_code');
         
@@ -139,12 +142,12 @@ class PortfolioController extends Controller
 
         return  view('portfolio.portfolio-new',
         [
-            'sectors' => $sectors,
+            // 'sectors' => $sectors,
             'offers' => $offers,
             'brokers' => $brokers,
             'stocks' => $stocks,
             'shareholders' => $shareholders,
-            'stocks' => $stocks,
+            // 'stocks' => $stocks,
         ]);
     }
 
@@ -155,17 +158,30 @@ class PortfolioController extends Controller
     {   
         $user_id = Auth::id();
 
-        Portfolio::createPortfolio($request);
+        try {
+            
+            
+            Portfolio::createPortfolio($request);
         
-        $shareholder = $request->shareholder;
-        $stock = $request->stock;
-        PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
+            $shareholder = $request->shareholder;
+            $stock = $request->stock;
+            PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
 
-        return  redirect()->back()->with('message','Record created successfully 👌 ');
+            return  redirect()->back()->with('message','Record created successfully 👌 ');
+
+        } catch (\Throwable $th) {
+            $error = [
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'file' => $th->getFile(),
+            ];
+            Log::error('New Portfolio error', $error);
+            return  redirect()->back()->with('error',$error['message']);
+        }
         
     }
 
-        /**
+    /**
      * getPortfolioDetail : gets the portfolio detail from the given id
      * input : record_id
      * output: json with portfolio detail

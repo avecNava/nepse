@@ -27,6 +27,12 @@
                     <div class="message">
                         {{ session()->get('message') }}
                     </div>
+                    @endif     
+
+                    @if(session()->has('error'))
+                    <div class="message">
+                        {{ session()->get('error') }}
+                    </div>
                     @endif                   
 
                 </div>          

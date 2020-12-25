@@ -9,17 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use App\Scopes\TenantScope;
+use App\Traits\BelongsToTenant;
 
 class Portfolio extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+    //Trait BelongsToTenant has definitions for Global Scope
+    use HasFactory, BelongsToTenant;
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new TenantScope);
-    }
+    protected $guarded = [];
 
     public function shareholder()
     {

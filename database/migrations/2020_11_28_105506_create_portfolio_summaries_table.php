@@ -20,7 +20,7 @@ class CreatePortfolioSummariesTable extends Migration
             $table->integer('quantity');
             $table->float('investment',12,2);
             $table->float('wacc',8,2)->nullable();
-            $table->integer('tenant_id')->nullable();
+            $table->integer('tenant_id')->nullable()->index();
             $table->foreignId('last_modified_by')->nullable();
             $table->timestamps();
         });

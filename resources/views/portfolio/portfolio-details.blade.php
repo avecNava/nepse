@@ -487,15 +487,15 @@
             let record_id = parseID('chk_', id_string);
 
             let request = new XMLHttpRequest();
-            const url = `${window.location.origin}/portfolio/${record_id}`;
+            const url = `${window.location.origin}/portfolio/get/${record_id}`;
             request.open('GET', url, true);
 
             request.onload = function() {
 
                 if (this.status >= 200 && this.status < 400) {
-                    $data = JSON.parse(this.response);
-                    console.log($data);
-                    updateInputFields($data);
+                    data = JSON.parse(this.response);
+                    console.log(data);
+                    updateInputFields(data);
                     document.querySelector('#offer').dispatchEvent(new Event("change"));
                     hideLoadingMessage();
                 }

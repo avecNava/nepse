@@ -5,19 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Scopes\TenantScope;
+use App\Traits\BelongsToTenant;
 
 class PortfolioSummary extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
+    
     protected $guarded = [];
-
-    //global scope : to filter records by respective tenant_id
-    //https://laravel.com/docs/8.x/eloquent#applying-global-scopes
-    protected static function booted()
-    {
-        static::addGlobalScope(new TenantScope);
-    }
 
     public function shareholder()
     {
@@ -62,7 +56,7 @@ class PortfolioSummary extends Model
         $investment = Portfolio::where('shareholder_id',$shareholder_id)
                         ->where('stock_id', $stock_id)
                         ->sum('total_amount');
-        
+        // dd($stock_id);
         PortfolioSummary::updateOrCreate(
         [
             'shareholder_id' => $shareholder_id,
@@ -72,7 +66,7 @@ class PortfolioSummary extends Model
             'quantity' => $quantity,
             'investment' => $investment,
             'wacc' => $effective_rate,
-            'last_modified_by' => Auth::id(),
+            // 'last_modified_by' => Auth::id(),
         ]);
 
     }

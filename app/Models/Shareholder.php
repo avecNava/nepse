@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\BelongsToTenant;
 
 class Shareholder extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
+    
     protected $fillable = [
         'first_name',
         'last_name',
@@ -20,7 +22,8 @@ class Shareholder extends Model
         'gender',
         'email',
         'date_of_birth',
-        'last_modified_by'
+        'last_modified_by',
+        'tenant_id',
     ];
 
     public function shares()

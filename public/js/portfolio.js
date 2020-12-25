@@ -92,7 +92,7 @@ function updateTotalPrice() {
     const tag = el_offer.options[ el_offer.selectedIndex ].dataset.tag;
 
     //calculate BROKER COMMISSION & SEBON COMMISSION for purchase via Secondary market
-    const url = `${window.location.origin}/portfolio/commission/${sub_total}`;
+    const url = `${window.location.origin}/commission/${sub_total}`;
 
     if(tag === 'SECONDARY'){
 
@@ -102,8 +102,9 @@ function updateTotalPrice() {
         request.onload = function() {
 
             if (this.status >= 200 && this.status < 400) {
-
+                
                 const data = JSON.parse(this.response);
+                console.log(data);
 
                 let broker = parseFloat(data.broker);
                 let sebon = parseFloat(data.sebon);
