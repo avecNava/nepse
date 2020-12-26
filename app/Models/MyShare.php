@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MeroShare extends Model
+class MyShare extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
-    protected $table = "meroshare_transactions";
 
     public function share()
     {
         //related model, foreign_key in current model (meroshare_transactions), related column in the related model
         return $this->belongsTo('App\Models\Stock','symbol','symbol');
     }
-    
+
     public function shareholder()
     {
         //map shareholder_id of current model to the id field of shareholders table (shareholder_id)
@@ -29,28 +25,25 @@ class MeroShare extends Model
     {
         return $this->belongsTo(StockOffering::class, 'offer_code', 'offer_code');
     }
-    
-    /***
-     * saves transactions as portfolio
-     */
+
     public static function importTransactions($transactions)
     {
         $transactions->whenNotEmpty(function() use($transactions){
             
             foreach ($transactions as $trans ) {
-                MeroShare::create([
+                MyShare::create([
                     'symbol' => $trans['symbol'],
-                    'shareholder_id' => $trans['shareholder_id'],
-                    'transaction_date' => $trans['transaction_date'],
-                    'remarks' => $trans['remarks'],
+                    'purchase_date' => $trans['purchase_date'],
+                    'description' => $trans['description'],
                     'offer_code' => $trans['offer_type'],
-                    'transaction_mode' => $trans['transaction_mode'],
-                    'credit_quantity' => $trans['credit_quantity'],
-                    'debit_quantity' => $trans['debit_quantity'],
+                    'quantity' => $trans['quantity'],
+                    'unit_cost' => $trans['unit_cost'],
+                    'shareholder_id' => $trans['shareholder_id'],
+                    'effective_rate' => $trans['effective_rate'],
                 ]);
             }
 
         });
     }
-
+    
 }

@@ -18,7 +18,7 @@ Auth::routes([
     ]);
     
     
-Auth::loginUsingId(5);
+Auth::loginUsingId(1);
 Route::get('test',function(){
     return new \App\Mail\WelcomeMail(Auth::user());
 });
@@ -44,9 +44,16 @@ Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
-Route::get('meroshare/transaction/{shareholder_id?}', [MeroShareController::class, 'importTransactionForm']);
-Route::post('meroshare/transaction', [MeroShareController::class, 'importTransactions']);
+
+Route::get('share/import', [HomeController::class, 'importForm']);
+Route::post('share/import', [MyShareController::class, 'importShares']);
+Route::post('share/store-portfolio', [MyShareController::class, 'storeToPortfolio']);
+Route::post('share/delete', [MyShareController::class, 'delete']);
+
+Route::get('meroshare/{shareholder_id?}', [MeroShareController::class, 'importForm']);
+Route::post('meroshare/import', [MeroShareController::class, 'importShares']);
 Route::post('meroshare/store-portfolio', [MeroShareController::class, 'storeToPortfolio']);
+Route::post('meroshare/delete', [MeroShareController::class, 'delete']);
 
 
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode

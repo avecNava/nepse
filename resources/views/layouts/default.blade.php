@@ -50,7 +50,7 @@
                             <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('/portfolio/new') }}">New</a></li>
                             <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                            <li><a href="{{ url('meroshare/transaction') }}">Import Share</a></li>
+                            <li><a href="{{ url('share/import') }}">Import Share</a></li>
                             <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
                         </ul>
                     </nav>

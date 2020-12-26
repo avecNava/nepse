@@ -40,7 +40,7 @@ div#app, div#container {
 .no-border {border: none !important;}
 .txt_right {text-align:right;}
 a {text-decoration: none;}
-h1, h2, h3 {margin:0; margin-left:0;}
+h1, h2, h3 {margin:5px; margin-left:0;}
 h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
 h3 {font-size: 1em;}
@@ -59,6 +59,7 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
 .negative {
     background: #e60f05 !important;
 }
+
 /* ul.thin {margin:0; padding: 0;} */
 
 
@@ -164,11 +165,16 @@ th {
     font-size: 15px;
     height: 30px;
 }
+td {
+    line-height: 3em;
+    padding: 0 5px;
+}
+tr:hover {
+    background: beige;
+}
 /* tr:nth-child(even) { background: var(--color-black-light90);} */
 tr:nth-child(odd) { background: var(--color-orange-light95);}
-td:first-child, th:first-child {text-align: left; padding-left:10px;}
-td:last-child, th:last-child {text-align: right; padding-right:10px;}
-.c_digit {text-align: right;}
+.c_digit {text-align: right;padding: 0 5px;}
 tr.separator {
     background: none;
     height: 30px;
@@ -187,7 +193,10 @@ input[type="checkbox"], input[type="radio"] {
     vertical-align: middle;
     margin: 5px;
 }
-.buttons {align-self: flex-end;}
+.buttons {
+    align-self: center;
+    margin: 0 5px;
+}
 select {
     height: 2.4em;
     border-radius: 5px;
@@ -280,7 +289,14 @@ nav.c-nav__list li {
 /* end of form validation css */
 
 /*meroshare*/
+#import-shares-links {
+    font-size: 20px;
+}
 
+.link_menu {
+    font-size: 20px;
+    font-weight: bold;
+}
 .c_band__components {
     display: flex;
     justify-content: space-around;
@@ -297,18 +313,29 @@ nav.c-nav__list li {
     height: 2.6em;
 }
 .c_transaction_list td:last-child {
-    max-width: 250px;
+    /* max-width: 250px; */
     font-size: 12px;
 }
+
 .c_transaction_list td:first-child {
     background-color: #d1d6691a;
-    border-bottom: 1px solid  #d6dcde;;
 }
-.c_transaction_list td {border-bottom: 1px solid #d6dcde;}
+.c_transaction_list td {
+    border-right: 1px solid #d6dcde7d;
+}
 .c_transaction_list article { padding: 10px 0;}
 main .meroshare-import-form {
     margin-bottom: 50px 0;
 }
+.transaction-history .import__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.import__header h1 {
+    margin-bottom: 20px;
+}
+
  .meroshare-import-form mark {
     padding: 5px 6px;
     border-radius: 10px;
@@ -341,7 +368,7 @@ main .meroshare-import-form {
 }
 section.transaction-history button#new { margin: 20px 0; }
 article.c_transaction_list header {
-    margin: 10px 0;
+    margin: 20px 0;
     display: block;
 }
 .form-message {

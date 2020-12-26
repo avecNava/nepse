@@ -26,15 +26,14 @@
     }
     
     //new button click, show the form
-    document.getElementById("new").addEventListener("click", function() {
-        showForm('meroshare-import-form');
-    });
+    function openForm($name){
+        showForm($name);
+    }
     
     //cancel button click, hide the form
-    document.getElementById("cancel").addEventListener("click", function() {
-        hideForm('meroshare-import-form');  
-    });
-
+    function closeForm($name){
+        hideForm($name);
+    }
     
     //display selected count (select all)    
     const container = document.getElementById('message');
@@ -73,16 +72,16 @@
         });
     });
 
+
 /**
- * imports the selected transactions to the portfolio table
+ * imports the selected transactions from meroshare to the portfolio table
  */
-document.getElementById('saveToPortfolio').addEventListener('click',function(){
+function importMeroShareTransactions(){
 
         let selected = [];
         let elements = document.getElementsByName("t_id");
         let ele_import = document.getElementById('message');
         
-
         Array.prototype.forEach.call(elements, function(el, i){
             if(el.checked){
                 selected.push(el.id);
@@ -112,20 +111,174 @@ document.getElementById('saveToPortfolio').addEventListener('click',function(){
 
         request.send(`_token=${_token}&trans_id=${selected.toString()}`);
 
-});
+}
 
-let select = document.getElementById("shareholder_filter");
-select.addEventListener("change", function() {
+function meroShareShareholderRefresh(){
 
-    let url = window.location.origin + "/meroshare/transaction/";
-    
+    let url = `${window.location.origin}/meroshare/`;    
+    const $shareholder = document.getElementById('meroshare-shareholder_filter');
+
     //get the value from selectedIndex
-    let options = this.options[this.selectedIndex];
+    let options = $shareholder.options[$shareholder.selectedIndex];
 
     //append shareholder_id to the url (ie, /meroshare/import-transaction/1)
-    if(this.selectedIndex > 0)
+    if($shareholder.selectedIndex > 0)
         url = url + options.value;            
-    
+
     window.location.replace(url);
 
-});
+};
+
+/**
+ * deletes the selected records from MeroShare table
+ */
+function deleteMeroShareTransactions(){
+
+    let selected = [];
+    let elements = document.getElementsByName("t_id");
+    let ele_import = document.getElementById('message');
+    let url = `${window.location.origin}/meroshare/import`;
+
+    Array.prototype.forEach.call(elements, function(el, i){
+        if(el.checked){
+            selected.push(el.id);
+        }
+    });
+
+    if(selected.length <=0 ){
+        let message = 'Please select records to delete';
+        showImportMessage(message);
+        return;
+    }
+
+    if(confirm('Please confirm the delete operation')){
+    
+        showLoadingMessage();
+
+        //call ajax 
+        let _token = document.getElementsByName('_token')[0].value;
+        let request = new XMLHttpRequest();
+        request.open('POST', '/meroshare/delete', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                $data = JSON.parse(this.response);
+                hideLoadingMessage();                
+                showImportMessage($data.message);
+
+                setTimeout(function(){ 
+                    window.location.replace(url);
+                }, 1000);
+            }
+        }
+
+        request.send(`_token=${_token}&trans_id=${selected.toString()}`);
+
+    }
+
+}
+
+/**
+ * imports the selected transactions from myshare to the portfolio table
+ */
+function importMyShareTransactions(){
+
+    let selected = [];
+    let elements = document.getElementsByName("t_id");
+    let ele_import = document.getElementById('message');
+    
+
+    Array.prototype.forEach.call(elements, function(el, i){
+        if(el.checked){
+            selected.push(el.id);
+        }
+    });
+
+    if(selected.length <=0 ){
+        let message = 'Please select some records to add to the Portfolio 🙏';
+        showImportMessage(message);
+        return;
+    }
+    showLoadingMessage();
+
+    //call ajax 
+    let _token = document.getElementsByName('_token')[0].value;
+    let request = new XMLHttpRequest();
+    request.open('POST', '/share/store-portfolio', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            $data = JSON.parse(this.response);
+            hideLoadingMessage();
+            unCheckAll();
+            showImportMessage($data.message);
+        }
+    }
+
+    request.send(`_token=${_token}&trans_id=${selected.toString()}`);
+
+}
+
+function myShareShareholderRefresh(){
+
+    let url = `${window.location.origin}/share/`;
+    const $shareholder = document.getElementById('myshare-shareholder_filter');
+    //get the value from selectedIndex
+    let options = $shareholder.options[$shareholder.selectedIndex];
+
+    //append shareholder_id to the url (ie, /meroshare/import-transaction/1)
+    if($shareholder.selectedIndex > 0)
+        url = url + options.value;            
+
+    window.location.replace(url);
+
+}
+
+/**
+ * deletes the selected records from MyShare table
+ */
+function deleteMyShareTransactions(){
+
+    let selected = [];
+    let elements = document.getElementsByName("t_id");
+    let ele_import = document.getElementById('message');
+    let url = `${window.location.origin}/share/import`;
+
+    Array.prototype.forEach.call(elements, function(el, i){
+        if(el.checked){
+            selected.push(el.id);
+        }
+    });
+
+    if(selected.length <=0 ){
+        let message = 'Please select records to delete';
+        showImportMessage(message);
+        return;
+    }
+
+    if(confirm('Please confirm the delete operation')){
+
+        showLoadingMessage();
+
+        //call ajax 
+        let _token = document.getElementsByName('_token')[0].value;
+        let request = new XMLHttpRequest();
+        request.open('POST', '/meroshare/delete', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                $data = JSON.parse(this.response);
+                hideLoadingMessage();                
+                showImportMessage($data.message);
+
+                setTimeout(function(){ 
+                    window.location.replace(url);
+                }, 1000);
+            }
+        }
+
+        request.send(`_token=${_token}&trans_id=${selected.toString()}`);
+
+    }
+
+}
