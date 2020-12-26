@@ -1,7 +1,9 @@
 <?php
 namespace App\Services;
+
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class UtilityService
@@ -138,5 +140,24 @@ class UtilityService
         ]);
 
         return $rate;
+    }
+
+    
+    /**
+     * create log
+     */
+    public static function createLog($message, $arr, $type='exception')
+    {
+        $obj = [
+            'message' => $arr->getMessage(),
+            'line' => $arr->getLine(),
+            'file' => $arr->getFile(),
+        ];
+        if (Str::contains(Str::lower($type), 'exception')){
+            Log::error("ERROR: $message", [$obj]);
+        }
+        else {
+            Log::info("MESSAGE: $message ", [$obj]);
+        }
     }
 }

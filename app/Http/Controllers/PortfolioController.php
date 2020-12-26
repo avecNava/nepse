@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Services\UtilityService;
-use Illuminate\Support\Facades\Log;
 
 
 
@@ -28,11 +27,12 @@ class PortfolioController extends Controller
 
     public function __constructor()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verify']);
     }
 
     public function shareholderPortfolio($username, $id)
     {
+        // dd('shareholderPortfolio');
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($id){
                 $join->on('m.id', '=', 'p.shareholder_id')
@@ -160,23 +160,19 @@ class PortfolioController extends Controller
 
         try {
             
-            
             Portfolio::createPortfolio($request);
         
+            //todo: get $shareholder and stock id from db
             $shareholder = $request->shareholder;
             $stock = $request->stock;
+
             PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
 
             return  redirect()->back()->with('message','Record created successfully 👌 ');
 
         } catch (\Throwable $th) {
-            $error = [
-                'message' => $th->getMessage(),
-                'line' => $th->getLine(),
-                'file' => $th->getFile(),
-            ];
-            Log::error('New Portfolio error', $error);
-            return  redirect()->back()->with('error',$error['message']);
+            UtilityService::createLog('storePortfolio', $th);
+            return  redirect()->back()->with('error', $th->getMessage());
         }
         
     }
@@ -299,7 +295,7 @@ class PortfolioController extends Controller
 
     public function showPortfolioDetails($username, $symbol, $shareholder_id)
     {
-        //todo: check authorizations
+        // dd('showPortfolioDetails');
         $user_id = Auth::id();                                      //find shareholder info when null
         
         $offers = StockOffering::all()->sortBy('offer_code');
@@ -378,6 +374,7 @@ class PortfolioController extends Controller
      */
     public function getUserStocks(int $id)
     {
+        // dd('here');
         // $stocks = Portfolio::where('shareholder_id', $id)->get();
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($id){

@@ -10,12 +10,18 @@ use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
+use App\Models\Shareholder;
 
-Auth::loginUsingId(2);
 Auth::routes([
     'verify' => true,
     'register' => true,
-]);
+    ]);
+    
+    
+Auth::loginUsingId(5);
+Route::get('test',function(){
+    return new \App\Mail\WelcomeMail(Auth::user());
+});
 
 Route::get('mail', function(){
     $user = User::find(1);
@@ -65,22 +71,6 @@ Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);
 Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 
-Route::get('test',function(){
-    // return session()->get('tenant_id');
-    // dd();
-    $user = Auth::user();
-    return $user->notify(new \App\Notifications\UserRegistration($user));
- 
-    $symbols = ['ADBL','AHPC','AIL','AKJCL','AKPL','ALBSL','ALICL','API'];
-    $date_str = '2020-12-17';
-    $result = StockPrice::whereIn('symbol', $symbols)
-                ->where('transaction_date','<>',$date_str)
-                ->where('latest',true)
-                ->update(['latest' => false]);
-
-    return $result;
-
-});
 
 
 

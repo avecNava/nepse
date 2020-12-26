@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\BelongsToTenant;
+use App\Services\UtilityService;
 
 class PortfolioSummary extends Model
 {
@@ -56,19 +57,24 @@ class PortfolioSummary extends Model
         $investment = Portfolio::where('shareholder_id',$shareholder_id)
                         ->where('stock_id', $stock_id)
                         ->sum('total_amount');
-        // dd($stock_id);
-        PortfolioSummary::updateOrCreate(
-        [
-            'shareholder_id' => $shareholder_id,
-            'stock_id' => $stock_id,
-        ],
-        [
-            'quantity' => $quantity,
-            'investment' => $investment,
-            'wacc' => $effective_rate,
-            // 'last_modified_by' => Auth::id(),
-        ]);
-
+        
+        try {
+            
+            PortfolioSummary::updateOrCreate(
+                [
+                    'shareholder_id' => $shareholder_id,
+                    'stock_id' => $stock_id,
+                ],
+                [
+                    'quantity' => $quantity,
+                    'investment' => $investment,
+                    'wacc' => $effective_rate,
+                    'last_modified_by' => Auth::id(),
+                ]);
+                    
+        } catch (\Throwable $th) {
+            UtilityService::createLog('updateCascadePortfoliSummaries', $th);
+        }
     }
 
     public static function calculateWACC(int $shareholder, int $stock)

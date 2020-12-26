@@ -57,9 +57,11 @@
         <section class="a_portfolio">
         
             <header>
-                <div class="portfolio__message">
-                    {{count($portfolio_summary)}} members
-                </div>
+                @if(count($portfolio_summary)>1)
+                    <div class="portfolio__message">
+                        {{count($portfolio_summary)}} members
+                    </div>
+            @endif
             </header>
 
             <main>

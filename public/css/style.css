@@ -128,7 +128,7 @@ container for message or buttons
     background: var(--form-band);
     padding: 5px;
     color: #fff;
-    height: 2em;
+    min-height: 2em;
     display: flex;
 }
 .c_band_right {
@@ -136,6 +136,14 @@ container for message or buttons
     padding: 5px;
     display: flex;
     justify-content: space-between;
+    min-height: 2em;
+}
+.c_band .error, .c_band_right .error {
+    color: red !important;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
 }
 .c_band a {color: #eef0f7;}
 .show {

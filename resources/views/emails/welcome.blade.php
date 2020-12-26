@@ -33,6 +33,11 @@
             Should you encounter any issues while using the app or have any comments, suggestions or something to share, we would love to hear from you. You can use the <a class="nav-link" href="{{ route('feedback') }}">{{ __('Contact us') }}</a> form to reach us.
         </p>
         <p>
+            <mark>
+                Since it is your first time using this application, some random records has been created for you. You can navigate around and experience the application without much effort. <strong>PLEASE DELETE THE SAMPLE RECORDS</strong> once you start adding your own records.
+            </mark>
+        </p>
+        <p>
             Best regards, <br><br>
             <strong>{{config('app.signature')}}</strong><br/>
             {{ config('app.signature-title')}}

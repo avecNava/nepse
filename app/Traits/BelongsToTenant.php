@@ -15,6 +15,13 @@ trait  BelongsToTenant
             static::addGlobalScope(new TenantScope);
         }
 
+        //or using closure
+        // if (auth()->user()->role_id != 1) {
+        //     static::addGlobalScope('created_by_user_id', function (Builder $builder) {
+        //         $builder->where('created_by_user_id', auth()->id());
+        //     });
+        // }
+
         if(session()->has('tenant_id')){
             static::creating(function ($model) {
                 $model->tenant_id = session()->get('tenant_id');

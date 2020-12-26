@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Traits\BelongsToTenant;
+use App\Services\UtilityService;
+use App\Models\PortfolioSummary;
+use App\Models\StockPrice;
+use Illuminate\Support\Facades\DB;
+// use App\Services\UtilityService;
 
 class Portfolio extends Model
 {
@@ -89,16 +93,11 @@ class Portfolio extends Model
             
         } catch (\Throwable $th) {
             
-            $error = [
-                'message' => $th->getMessage(),
-                'line' => $th->getLine(),
-                'file' => $th->getFile(),
-            ];
-            Log::error('New Portfolio Error! ', $error);
+            UtilityService::createLog('createPortfolio', $th);
 
             return response()->json([
                 'status' => 'error',
-                'message' =>  'New Portfolio Error!!' . $error['message'],
+                'message' =>  'Create portfolio error!! ' . $th->getMessage(),
             ]);
 
         }
@@ -134,16 +133,11 @@ class Portfolio extends Model
 
             } catch (\Throwable $th) {
 
-                $error = [
-                    'message' => $th->getMessage(),
-                    'line' => $th->getLine(),
-                    'file' => $th->getFile(),
-                ];
-                Log::error('Portfolio update mismatch in portfolio and portfolio_summary table', $error);
+                UtilityService::createLog('updatePortfolio', $th);
 
                 return response()->json([
                     'status' => 'error',
-                    'message' =>  'Portfolio not updated. Error message: ' . $error['message'],
+                    'message' =>  'Portfolio not updated. Error message: ' . $th->getMessage(),
                 ]);
             }
 
@@ -188,5 +182,44 @@ class Portfolio extends Model
         }
     }
 
-    
+    /**
+     * create random record for the user in session
+     */
+    public static function createRandomRecord()
+    {
+        info('Portfolio: create sample records');
+
+        //1. get random 3 stocks 
+        info('1. Obtained random stocks');
+        $record = DB::table('stock_prices')->where('latest',true)->select('stock_id','close_price')->inRandomOrder()->take(2)->get();
+        $qty = collect([10, 20, 30, 40, 50, 100]);
+        $quantity = $qty->random();
+
+        $date_str = Carbon::now();
+        
+        //2. add to the portfolio table
+        $record->each(function($item) use($quantity, $date_str) {
+
+            $portfolio = new Portfolio;
+            $portfolio->shareholder_id = session()->get('shareholder_id');
+            $portfolio->stock_id = $item->stock_id;
+            $portfolio->quantity = $quantity;
+            $portfolio->unit_cost = 100;
+            $portfolio->total_amount = $quantity*100;
+            $portfolio->offer_id = 1;
+            $portfolio->purchase_date = $date_str->toDateString();
+            $portfolio->last_modified_by = Auth::id();
+            $portfolio->save();
+        
+        });
+
+        //3. update the portfolio_summary table
+        $record->each(function($item) {
+            PortfolioSummary::updateCascadePortfoliSummaries(
+                session()->get('shareholder_id'), 
+                $item->stock_id
+            );
+        });
+    }
+
 }
