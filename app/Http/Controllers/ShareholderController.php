@@ -78,18 +78,17 @@ class ShareholderController extends Controller
         }
         
         $shareholder = Shareholder::where('id', $id)->select('first_name','parent')->first();
-        $member = Shareholder::where('id', 1)->withCount('portfolio')->first();
+        $member = Shareholder::where('id', $id)->withCount('scripts as total')->first();
 
         if($shareholder->parent==true){
             $message = 'Can not delete a parent Shareholder';
         }
         //do not delete shareholders if they have protfolio
-        elseif($member->portfolio_count > 0){
-            $message = "😒 Can not delete ! Selected member has '$member->portfolio_count stocks' in record.";
+        elseif($member->total > 0){
+            $message = "😒 Can not delete! Selected member has $member->total scripts in record.";
         }
         else {
             $deleted = Shareholder::destroy($id);
-            // $deleted = 1;
             if($deleted > 0){
                 $message = "Shareholder $shareholder->first_name deleted.";
                 $flag = true;

@@ -355,7 +355,7 @@
                                 <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
                                     @if( !empty($record))
                                         <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                        {{ $record->symbol }}
+                                        <label for="chk-{{ $record->id }}">{{ $record->symbol }}</label>
                                     @endif
                                 </td>
                                 <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>

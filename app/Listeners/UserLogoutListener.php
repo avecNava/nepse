@@ -25,7 +25,6 @@ class UserLogoutListener
      */
     public function handle($event)
     {
-        // dd($event);
         info('User log out', [session()->get('tenant_id')]),
     }
 }

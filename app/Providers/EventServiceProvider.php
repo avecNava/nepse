@@ -14,6 +14,8 @@ use App\Listeners\UserLoginListener;
 use App\Listeners\UserLogoutListener;
 use App\Listeners\SendWelcomeMailListener;
 use App\Listeners\SendVerificationMailListener;
+use App\Events\CreateSampleRecordsEvent;
+use App\Listeners\CreateSampleRecordsListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,10 @@ class EventServiceProvider extends ServiceProvider
         /*set session for the current tenant_id when logged out*/
         Logout::class => [
             UserLogoutListener::class,
+        ],
+        /*create sample records*/
+        CreateSampleRecordsEvent::class => [
+            CreateSampleRecordsListener::class,
         ],
         /*test only*/
         UserRegisteredEvent::class => [

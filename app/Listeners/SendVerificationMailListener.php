@@ -26,8 +26,6 @@ class SendVerificationMailListener
     public function handle($event)
     {
         $user = $event->user;
-        // $action = $event->action;
-        // Mail::to($user->email)->send(new Verification($user, $action));
 
         //Notifications may be sent in two ways: using the notify method of the Notifiable trait or using the Notification facade. 
         $user->notify(new \App\Notifications\UserVerifyNotification($user));

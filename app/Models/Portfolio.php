@@ -183,9 +183,9 @@ class Portfolio extends Model
     }
 
     /**
-     * create random record for the user in session
+     * create random record for the supplied shareholder
      */
-    public static function createRandomRecord()
+    public static function createRandomRecord($shareholder)
     {
         info('Portfolio: create sample records');
 
@@ -198,10 +198,10 @@ class Portfolio extends Model
         $date_str = Carbon::now();
         
         //2. add to the portfolio table
-        $record->each(function($item) use($quantity, $date_str) {
+        $record->each(function($item) use($quantity, $date_str, $shareholder) {
 
             $portfolio = new Portfolio;
-            $portfolio->shareholder_id = session()->get('shareholder_id');
+            $portfolio->shareholder_id = $shareholder;
             $portfolio->stock_id = $item->stock_id;
             $portfolio->quantity = $quantity;
             $portfolio->unit_cost = 100;
@@ -214,9 +214,9 @@ class Portfolio extends Model
         });
 
         //3. update the portfolio_summary table
-        $record->each(function($item) {
+        $record->each(function($item) use($shareholder) {
             PortfolioSummary::updateCascadePortfoliSummaries(
-                session()->get('shareholder_id'), 
+                $shareholder,
                 $item->stock_id
             );
         });

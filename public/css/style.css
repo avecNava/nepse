@@ -451,15 +451,11 @@ section.c_info_band {
     min-width: 110px;
 }
 
-.header-items>div {
-    font-weight: normal;
-    /* padding:0 5px; */
-}
 .header-labels>div {
     padding: 0 5px;
     text-align: right;
-    font-size: 18px;
     color: var(--color-black-light30);
+    min-width: 40px;
 }
 h3 span {
     min-width: 100px;
@@ -470,9 +466,42 @@ h3 label {
     width: 200px;
     display: inline-block;
 }
+details>div {
+    margin: 5px 0;
+}
+details {
+    margin: 5px 0;
+}
+details summary::before {
+    content: '🎅';
+    margin-left:5px;
+}
+details[open] summary::before {
+    content: '🎁';
+    margin-left:5px;
+}
+details summary::-webkit-details-marker {
+    padding:10px 0;
+    color: white;
+}
+details[open] summary::-webkit-details-marker {
+    padding:10px 0;
+    color: beige;
+}
+details summary:hover {
+    background:beige;
+}
+details summary:hover::-webkit-details-marker {
+    color: beige;
+}
 section.shareholder-group {
     display: flex;
-    justify-content: space-between;
+    position: relative;
+    top: -30px;
+    margin-left: 20px;
+}
+.shareholder {
+    display: inline-block;
 }
 .shareholder>a>h3 {
     color: #3F51B5;
@@ -487,15 +516,13 @@ section.sales summary {
     outline: none;
 }
 .header-row {
-    margin: 20px 0;
-}
-.inset{
-    top: -16px;
-    position: relative;
+    padding: 20px 5px;
+    background: var(--color-orange-light70);
+    margin-bottom: 5px;
 }
 .header-labels {
     display: flex;
-    flex-basis: 75%;
+    flex-basis: 100%;
     justify-content: flex-end;
 }
 .header-items>div {
@@ -507,8 +534,6 @@ section.sales summary {
     font-weight: normal;
 }
 .c_layout_portfolio_form {
-    /* display: flex; */
-    /* justify-content: space-between; */
     margin: 20px 50px;
     line-height: 35px;
 }
@@ -529,26 +554,18 @@ section.c_info_band {
     outline: none;
     background: beige;
 }
-.a_portfolio summary {
+/* .a_portfolio summary {
     padding-left: 10px;
     padding-top: 10px;
     border-bottom: 1px dashed #d6f6f6;
     margin-bottom: 5px;
     border-radius: 5px;
-}
+} */
 .a_portfolio tr,
 .a_portfolio tr {
     height: 50px;
 }
-details>summary:hover {
-    background:beige;
-}
-details:nth-child(even)>summary {
-    /* background: var(--color-blue-light95); */
-}
-details:nth-child(odd)>summary {
-    /* background: var(--color-orange-light95); */
-}
+
 /*end portfoliosummary*/
 
 /* form section inside portfolio details */
@@ -608,9 +625,9 @@ details:nth-child(odd)>summary {
 .c_shareholder_list .action button {
     margin: 0 5px;
 }
-article.c_shareholder_list {
+/* article.c_shareholder_list {
     margin-top: 50px;
-}
+} */
 /* main.c_shareholder_form {
     background: #fafafa;
     margin: 20px 0;

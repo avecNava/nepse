@@ -26,11 +26,11 @@ class Shareholder extends Model
         'tenant_id',
     ];
 
-    public function shares()
+    public function scripts()
     {
-        return $this->belongsTo('App\Models\Portfolio');
+        return $this->hasMany('App\Models\PortfolioSummary', 'shareholder_id');
     }
-
+    
     public function portfolio()
     {
         return $this->hasMany('App\Models\Portfolio', 'shareholder_id');

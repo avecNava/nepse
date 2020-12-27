@@ -11,6 +11,7 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
+use App\Models\User;
 
 Auth::routes([
     'verify' => true,
@@ -19,13 +20,21 @@ Auth::routes([
     
     
 Auth::loginUsingId(1);
+
 Route::get('test',function(){
-    return new \App\Mail\WelcomeMail(Auth::user());
+    $count = Shareholder::where('parent_id', Auth::id())->withCount('portfolio as total')->first();
+    return $count->total;
+});
+
+
+Route::get('sample-record', function(){
+    $shareholder = Shareholder::find(19);
+    event(new \App\Events\CreateSampleRecordsEvent($shareholder->id));
+    return "Sample record created for Shareholder<br/>" . $shareholder->toJson(JSON_PRETTY_PRINT) ;
 });
 
 Route::get('mail', function(){
     $user = User::find(1);
-    
     event(new \App\Events\UserRegisteredEvent($user));
     // event(new \App\Events\UserRegisteredEvent($user));
     //$user->notify(new \App\Notifications\UserRegistrationNotification($user));
@@ -77,9 +86,6 @@ Route::get('guidelines', [HomeController::class, 'guideline']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);
 Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
-
-
-
 
 
 Auth::routes();

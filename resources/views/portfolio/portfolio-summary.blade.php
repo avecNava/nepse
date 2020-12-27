@@ -65,10 +65,9 @@
             </header>
 
             <main>
-                <section class='shareholder-group header-row'>
+                <section class='header-row'>
                     <div></div>
                     <div class='header-labels header-items'>
-                        <div class="col1">SN</div>
                         <div class="col1"># Scripts</div>
                         <div class="col2"># Units</div>
                         <div class="col3">Investment</div>
@@ -84,14 +83,16 @@
                 <details id="row-{{$row['shareholder_id']}}" class='summary'>
 
                     <summary>
-                    <section class='shareholder-group inset'>
-                            @php
-                                $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
-                            @endphp
+                    <section class='shareholder-group'>
+                        
+                        @php
+                            $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
+                        @endphp
                         <div class="shareholder" title="Click to see portfolio for '{{$row['shareholder']}}'">
-                            <a href={{url("portfolio/$shareholder", [ $row['shareholder_id'] ]) }}>
-                                <h3>{{ $row['shareholder']}}</h3> 
-                            </a>
+                            <h3><a href={{url("portfolio/$shareholder", [ $row['shareholder_id'] ]) }}>
+                                {{ $row['shareholder']}} 
+                                </a>
+                            </h3>
                         </div>
                         <div class='header-labels'>
 

@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Models\Shareholder;
-use App\Models\Portfolio;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
@@ -41,11 +40,8 @@ class UserLoginListener
         }else{
             Log::error('Could not create session shareholder_id. Shareholder not found', [$shareholder]);
         }
-
-        //add a random stock if the user is new (if no records for the given tenant_id)
-        $count = \App\Models\Portfolio::where('tenant_id', $event->user->id)->count();
-        if($count < 1){
-            Portfolio::createRandomRecord();
-        }
+        
+        //create sample record for the user
+        event(new \App\Events\CreateSampleRecordsEvent(session()->get('shareholder_id')));
     }
 }
