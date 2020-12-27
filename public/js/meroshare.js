@@ -98,7 +98,7 @@ function importMeroShareTransactions(){
         //call ajax 
         let _token = document.getElementsByName('_token')[0].value;
         let request = new XMLHttpRequest();
-        request.open('POST', '/meroshare/store-portfolio', true);
+        request.open('POST', '/meroshare/export/portfolio', true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
@@ -115,7 +115,7 @@ function importMeroShareTransactions(){
 
 function meroShareShareholderRefresh(){
 
-    let url = `${window.location.origin}/meroshare/`;    
+    let url = `${window.location.origin}/import/meroshare/`;    
     const $shareholder = document.getElementById('meroshare-shareholder_filter');
 
     //get the value from selectedIndex
@@ -137,14 +137,15 @@ function deleteMeroShareTransactions(){
     let selected = [];
     let elements = document.getElementsByName("t_id");
     let ele_import = document.getElementById('message');
-    let url = `${window.location.origin}/meroshare/import`;
-
+    let url = `${window.location.origin}/import/meroshare`;
+    let url_delete = `${url}/delete`;
+    
     Array.prototype.forEach.call(elements, function(el, i){
         if(el.checked){
             selected.push(el.id);
         }
     });
-
+    
     if(selected.length <=0 ){
         let message = 'Please select records to delete';
         showImportMessage(message);
@@ -158,7 +159,7 @@ function deleteMeroShareTransactions(){
         //call ajax 
         let _token = document.getElementsByName('_token')[0].value;
         let request = new XMLHttpRequest();
-        request.open('POST', '/meroshare/delete', true);
+        request.open('POST', url_delete, true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
@@ -204,7 +205,7 @@ function importMyShareTransactions(){
     //call ajax 
     let _token = document.getElementsByName('_token')[0].value;
     let request = new XMLHttpRequest();
-    request.open('POST', '/share/store-portfolio', true);
+    request.open('POST', '/share/export/portfolio', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
@@ -221,7 +222,7 @@ function importMyShareTransactions(){
 
 function myShareShareholderRefresh(){
 
-    let url = `${window.location.origin}/share/`;
+    let url = `${window.location.origin}/import/share/`;
     const $shareholder = document.getElementById('myshare-shareholder_filter');
     //get the value from selectedIndex
     let options = $shareholder.options[$shareholder.selectedIndex];
@@ -242,7 +243,9 @@ function deleteMyShareTransactions(){
     let selected = [];
     let elements = document.getElementsByName("t_id");
     let ele_import = document.getElementById('message');
-    let url = `${window.location.origin}/share/import`;
+    let url = `${window.location.origin}/import/share`;
+    let url_delete = `${url}/delete`;
+
 
     Array.prototype.forEach.call(elements, function(el, i){
         if(el.checked){
@@ -263,7 +266,7 @@ function deleteMyShareTransactions(){
         //call ajax 
         let _token = document.getElementsByName('_token')[0].value;
         let request = new XMLHttpRequest();
-        request.open('POST', '/meroshare/delete', true);
+        request.open('POST', url_delete, true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {

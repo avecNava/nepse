@@ -258,27 +258,31 @@ class PortfolioController extends Controller
                 ]);
         }
         
-        $portfolio = Portfolio::where('id', $id)->first();
+        $portfolio = Portfolio::find($id);
         $deleted = Portfolio::destroy($id);
-
         //CALCULATE total_quantity and wacc_rate ; update in summary table
         if(!empty($portfolio)){
+            
             PortfolioSummary::updateCascadePortfoliSummaries($portfolio->shareholder_id, $portfolio->stock_id);
+            
             //remove from summaries where quantity is zero
-            PortfolioSummary::where('quantity','<=',0)->delete();
+            PortfolioSummary::where('quantity', '<=', 0)->delete();
+
         }
         
         
         if($deleted > 0){
-
+            
             $message = "Portfolio deleted. Record id : $id";
-        
             return response()->json(
-            [
-                'action'=>'delete', 
-                'message'=> $message, 
-                'status'=>'success',
-            ]);
+                [
+                    'action'=>'delete', 
+                    'message'=> $message, 
+                    'status'=>'success',
+                ], 
+                201
+            );
+
         }
 
     }

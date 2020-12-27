@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MyShare extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     public function share()
     {
@@ -31,11 +32,13 @@ class MyShare extends Model
         $transactions->whenNotEmpty(function() use($transactions){
             
             foreach ($transactions as $trans ) {
+                $date = $trans['purchase_date'];
+                
                 MyShare::create([
                     'symbol' => $trans['symbol'],
-                    'purchase_date' => $trans['purchase_date'],
+                    'purchase_date' => empty($trans['purchase_date']) ? null : $date->format('Y-m-d'),
                     'description' => $trans['description'],
-                    'offer_code' => $trans['offer_type'],
+                    'offer_code' => $trans['offer_code'],
                     'quantity' => $trans['quantity'],
                     'unit_cost' => $trans['unit_cost'],
                     'shareholder_id' => $trans['shareholder_id'],

@@ -27,7 +27,7 @@ class MeroShareController extends Controller
     * displays the share import form and meroshare transaction listing for various shareholders
     * parameter : $shareholder_id 
     */
-   public function importForm($shareholder_id = null)
+   public function create($shareholder_id = null)
    {   
           
           $user_id = Auth::id();
@@ -57,7 +57,7 @@ class MeroShareController extends Controller
    /**
     * Read from uploaded excel file and save data to meroshare_transactions table
     */
-   public function importShares(Request $request)
+   public function store(Request $request)
    {
 
           $validator = $request->validate([
@@ -193,7 +193,7 @@ class MeroShareController extends Controller
      * The trans_ids and related data are stored into the Portfolio table for the given shareholder_id
      * 
      */
-     public function storeToPortfolio(Request $request)
+     public function exportPortfolio(Request $request)
      {
           
           if( empty($request->trans_id) ){
@@ -264,7 +264,6 @@ class MeroShareController extends Controller
 
      }
 
-
      /**
      * loop the request, parse  data and create records in Portfolios table
      */
@@ -279,7 +278,7 @@ class MeroShareController extends Controller
           $ids = Str::of($request->trans_id)->explode(',');
           
           // Get portfolio from meroshare_transactions table, related data from Shares and Offers table 
-          //consturct collections to store data
+          //construct collections to store data
           $transactions = 
                MeroShare::whereIn('id', $ids->toArray())
                ->with(['share:id,symbol','offer:id,offer_code'])         //relationships (share, offer)

@@ -19,7 +19,7 @@
         padding: 0 20px;
 }
 </style>
-<div id="loading-message" style="display:none">Importing... Please wait...</div>
+<div id="loading-message" style="display:none">Working... Please wait...</div>
 
 <section id="import-my-share">
 
@@ -31,7 +31,7 @@
                 <a class="link_menu"  onClick="openForm('myshare-import-form')" href="#">+ Import data</a>
             </div>
             <div id="import-shares-links">
-                <a class="link_menu" href="/meroshare" title="Import share from meroshare">
+                <a class="link_menu" href="/import/meroshare" title="Import share from meroshare">
                     Import from MeroShare account</li>
                 </a>
             </div>
@@ -56,22 +56,25 @@
                 <div class="c_instructions">
                     <ul>
                         <li>
-                            Download our sample excel file.
-                            <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE FILE</a> file
+                            Download the
+                            <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE EXCEL FILE</a>.
                         </li>
-                        <li>Update the list with your stocks.</li>
-                        <li>In the Symbol column, use valid and standard names for stock. (Symbol only no full name)</li>
-                        <li>For offering types, ONLY use the codes defined in the downloaded file.</li>
-                        <li>Upload the updated file.</li>
+                        <li>Open and update the file with your stocks. <mark>Stock symbol, quantity and offering type are mandatory.</mark></li>
+                        <li>Use valid and standard names for stock symbol. Use only symbol not the full name.</li>
+                        <li>For offering types, ONLY USE THE CODES DEFINED IN THE DOWNLOADED FILE.</li>
+                        <li>Upload the updated file using the form below.</li>
+                        <li>Choose a shareholder. Use separate file for different shareholder.</li>
+                        <li>Click on Import.</li>
+                        <li>Once imported, you can save the stocks to your portfolio.</li>
                     </ul>  
                 </div>
                
 
                 <div class="c_band">                    
-                    <h2>Import transaction</h2>
+                    <h2>Import file</h2>
                 </div>
 
-                <form method="POST" action="/share/store-portfolio" enctype="multipart/form-data">
+                <form method="POST" action="/import/share/store" enctype="multipart/form-data">
 
                     <div class="block-left">
 
@@ -106,10 +109,8 @@
                         @csrf()
 
                         <div class="form-field">
-                            <label for="file"><strong>Select a transaction file to import.</strong> <br>
-                                Click on <em>Choose file</em> or 
-                                <em>drag and drop</em> a transaction file inside the box below.
-                                <br><mark>only CSV and excel files</mark> <br>
+                            <label for="file"><strong>Select a file</strong> <br>
+                            Please update the file downloaded above as per the instructions.<br>
                             </label>
                             <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                             @error('file')
@@ -162,10 +163,13 @@
 
                 @php
                     $row = $transactions->first();
-                    $shareholder = $row->shareholder;
-                    
-                    if($shareholder){
-                        echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                    if( !empty($row) ){
+
+                        $shareholder = $row->shareholder;
+                        
+                        if($shareholder){
+                            echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                        }
                     }
                 @endphp
 
@@ -217,7 +221,8 @@
                     <th class="c_digit">Quantity</th>
                     <th class="c_digit">Unit cost</th>
                     <th class="c_digit">Effective rate</th>
-                    <th class="c_digit">Offer</th>
+                    <th class="c_digit">Total Cost</th>
+                    <th class="c_digit">Offering type</th>
                     <th class="c_digit">Purchase date</th>
                     <th>Shareholder</th>
                     <th>Remarks</th>
@@ -251,15 +256,16 @@
                         <!-- <td>{{ $stock_id }}</td> -->
                         <td class="c_digit">{{ $trans->quantity }}</td>
                         <td class="c_digit">{{ $trans->unit_cost }}</td>
-                        <td class="c_digit">{{ $trans->effective_rate }}</td>
+                        <td class="c_digit">{{ number_format($trans->effective_rate, 2) }}</td>
+                        <td class="c_digit">{{ number_format($trans->effective_rate * $trans->quantity, 1) }}</td>
                         <td class="c_digit">{{ $trans->offer_code }}</td>
-                        <td class="c_digit">{{ $trans->transaction_date }}</td>
+                        <td class="c_digit">{{ $trans->purchase_date }}</td>
                         <td>
                             @if( !empty($trans->shareholder) )
                                 {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
                             @endif
                         </td>
-                        <td>{{ $trans->remarks }}</td>
+                        <td>{{ $trans->description }}</td>
                     </tr>
                 @endforeach            
             </table>

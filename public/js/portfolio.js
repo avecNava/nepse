@@ -30,7 +30,6 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
 
 });
 
-
 //handle quantity change
 document.getElementById('quantity').addEventListener('change',function(){
     updateTotalPrice();

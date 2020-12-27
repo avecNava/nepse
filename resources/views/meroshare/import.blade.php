@@ -10,16 +10,16 @@
 
 @section('content')
 
-    <div id="loading-message" style="display:none">Importing... Please wait...</div>
+    <div id="loading-message" style="display:none">Working... Please wait...</div>
     <section class="transaction-history">
         
         <div class="import__header">
             <div>
-                <h1 class="c_title">Import Stocks</h1>
+                <h1 class="c_title">Import via MeroShare</h1>
                 <a class="link_menu" onClick="openForm('meroshare-import-form')" href="#">+ Import data</a>
             </div>
             <div id="import-shares-links">
-                <a class="link_menu" href="/share/import" title="Import share from your custom list">
+                <a class="link_menu" href="/import/share" title="Import share from your custom list">
                 Import share from your custom list</li>
                 </a>
             </div>
@@ -59,7 +59,7 @@
                     <h2>Import transaction from Meroshare</h2>
                 </div>
 
-                <form method="POST" action="/meroshare/import" enctype="multipart/form-data">
+                <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
 
                     <div class="block-left">
 

@@ -307,6 +307,9 @@ nav.c-nav__list li {
     background: #fafafa;
     margin-bottom: 10px;
 }
+.c_instructions li {
+    padding: 5px 0;
+}
 #shareholder_filter {
     margin: 0 5px;
     width: 180px;
