@@ -61,8 +61,8 @@ class MeroShareController extends Controller
    {
 
           $validator = $request->validate([
-          'shareholder' => 'required',
-          'file' => 'required'
+               'shareholder' => 'required',
+               'file' => 'required'
           ]);
 
           // $destinationPath = base_path('public/menu');
@@ -88,28 +88,28 @@ class MeroShareController extends Controller
 
           $transactions = collect();
           $shareholder_id = $request->input('shareholder');
-          $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
-
+          
           try {
+          
+               $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
 
+               $rows->each(function(array $row) use ($transactions, $shareholder_id) {
 
-          $rows->each(function(array $row) use ($transactions, $shareholder_id) {
-
-               $remarks = $row['History Description'];
-               
-               $transactions->push( 
-                    array(
-                         'symbol' => $row['Scrip'], 
-                         'transaction_date' => $row['Transaction Date'],
-                         'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
-                         'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
-                         'transaction_mode' => $this->getTransactionMode($remarks),
-                         'offer_type' => $this->getOfferType($remarks),
-                         'remarks' => $remarks,
-                         'shareholder_id' =>$shareholder_id
-                    )
-               );
-          });
+                    $remarks = $row['History Description'];
+                    
+                    $transactions->push( 
+                         array(
+                              'symbol' => $row['Scrip'], 
+                              'transaction_date' => $row['Transaction Date'],
+                              'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
+                              'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
+                              'transaction_mode' => $this->getTransactionMode($remarks),
+                              'offer_type' => $this->getOfferType($remarks),
+                              'remarks' => $remarks,
+                              'shareholder_id' =>$shareholder_id
+                         )
+                    );
+               });
 
           //remove existing records with the given shareholder_id
           MeroShare::where('shareholder_id', $shareholder_id)->delete();
@@ -124,7 +124,7 @@ class MeroShareController extends Controller
                     'file' => $th->getFile(),
                     ];
                     Log::error('Import error',$error);
-                    return redirect()->back()->with('error', "Import error! Did you use the right document? <br>Error message: " . $error['message']);
+                    return redirect()->back()->with('error', "ERROR: Did you use the right document? <hr>" . $error['message']);
           }
 
           return redirect()->back()->with('success', 'Selected records have been imported successfully 👌');   

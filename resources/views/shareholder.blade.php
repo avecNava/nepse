@@ -141,7 +141,7 @@
     <article class="c_shareholder_list">
     
         <header>
-        <div class="c_band_right" id="c_band01">
+        <div class="c_band apart" id="c_band01">
             <div id="message" class="message">
             
             </div>

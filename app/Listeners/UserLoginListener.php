@@ -41,7 +41,7 @@ class UserLoginListener
             Log::error('Could not create session shareholder_id. Shareholder not found', [$shareholder]);
         }
         
-        //create sample record for the user
-        event(new \App\Events\CreateSampleRecordsEvent(session()->get('shareholder_id')));
+        // //create sample record for the user
+        // event(new \App\Events\CreateSampleRecordsEvent(session()->get('shareholder_id')));
     }
 }

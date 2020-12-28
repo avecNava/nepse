@@ -36,6 +36,13 @@ div#app, div#container {
     margin: 0 auto;
     width: 1024px;
 }
+#message .message{
+    background: beige;
+    padding: 25px;
+    border-radius: 10px;
+    line-height: 30px;
+    margin: 30px 0;
+}
 .band-tall { height: 50px;}
 .no-border {border: none !important;}
 .txt_right {text-align:right;}
@@ -59,9 +66,20 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
 .negative {
     background: #e60f05 !important;
 }
-
-/* ul.thin {margin:0; padding: 0;} */
-
+hr {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #f7f7f7;
+}
+.is-invalid {
+    color: #fb0000;
+}
+.form-field .buttons {
+    background: #f0f8ff85;
+    border-radius: 5px;
+    text-align: right;
+    padding: 5px 0;
+}
 
 /* login */
 .c-nav__user {
@@ -127,19 +145,20 @@ container for message or buttons
 */
 .c_band {
     background: var(--form-band);
-    padding: 5px;
+    padding: 5px 10px;
     color: #fff;
     min-height: 2em;
     display: flex;
+    border-radius: 5px;
+    margin:2px 0;
 }
-.c_band_right {
-    background: var(--form-band);
-    padding: 5px;
-    display: flex;
+.apart {
     justify-content: space-between;
-    min-height: 2em;
 }
-.c_band .error, .c_band_right .error {
+.c_band>#info {
+    display: flex;
+}
+.c_band .error{
     color: red !important;
     background: #fff;
     padding: 10px;
@@ -174,12 +193,14 @@ tr:hover {
 }
 /* tr:nth-child(even) { background: var(--color-black-light90);} */
 tr:nth-child(odd) { background: var(--color-orange-light95);}
+tr:last-child td {border-bottom: 1px solid #ebeeef;}
 .c_digit {text-align: right;padding: 0 5px;}
 tr.separator {
     background: none;
     height: 30px;
 }
 /* form input elements*/
+.form-field {margin: 10px 0;}
 input {
     padding: 5px;
     width: 200px;
@@ -193,9 +214,13 @@ input[type="checkbox"], input[type="radio"] {
     vertical-align: middle;
     margin: 5px;
 }
-.buttons {
-    align-self: center;
-    margin: 0 5px;
+input[type="file"] {
+    border: 1px dotted #214b25;
+    width: 400px;
+    padding: 20px;
+    margin: 5px 0;
+    height: 50px;
+    font-family: 'Cutive';
 }
 select {
     height: 2.4em;
@@ -208,6 +233,12 @@ textarea {
     margin: 5px 0;
     width: 400px;
     height: 100px;
+}
+.c_buttons {
+    margin: 5px;
+}
+.c_shareholder {
+    padding: 0 6px;
 }
 button {
     min-width: 100px;
@@ -278,15 +309,6 @@ nav.c-nav__list li {
     text-align: right;
 }
 /* end of layout */
-/* form validation css */
-
-
-.is-invalid {
-    color: #fb0000;
-    font-weight: bold;
-    /* font-family: monospace; */
-}
-/* end of form validation css */
 
 /*meroshare*/
 #import-shares-links {
@@ -302,10 +324,16 @@ nav.c-nav__list li {
     justify-content: space-around;
     align-items: center;
 }
-.instruction {
-    padding: 10px;
-    background: #fafafa;
-    margin-bottom: 10px;
+#share-import-form{
+    display: flex;
+}    
+
+.c_instructions {
+    flex-basis: 50%;
+    margin-right: 20px;
+}
+.c_instructions ul {
+    padding: 0 15px;
 }
 .c_instructions li {
     padding: 5px 0;
@@ -315,6 +343,7 @@ nav.c-nav__list li {
     width: 180px;
     height: 2.6em;
 }
+
 .c_transaction_list td:last-child {
     /* max-width: 250px; */
     font-size: 12px;
@@ -327,56 +356,6 @@ nav.c-nav__list li {
     border-right: 1px solid #d6dcde7d;
 }
 .c_transaction_list article { padding: 10px 0;}
-main .meroshare-import-form {
-    margin-bottom: 50px 0;
-}
-.transaction-history .import__header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-.import__header h1 {
-    margin-bottom: 20px;
-}
-
- .meroshare-import-form mark {
-    padding: 5px 6px;
-    border-radius: 10px;
-    margin: 10px 0;
-    display: inline-block;
-}
- .meroshare-import-form .form-field {padding: 10px 0;}
- .meroshare-import-form input[type="file"] {
-    border: 1px dotted #214b25;
-    width: 100%;
-    padding: 20px;
-    margin: 5px 0;
-    height: 50px;
-}
-.meroshare-import-form .block-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-.meroshare-import-form  select#category {
-    min-width: 200px;
-    padding: 5px;
-    border: 1px solid #f7f7f7;
-}
- .meroshare-import-form form {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-around;
-    background: #e5ede6;
-}
-section.transaction-history button#new { margin: 20px 0; }
-article.c_transaction_list header {
-    margin: 20px 0;
-    display: block;
-}
-.form-message {
-    margin: 10px 0;
-}
 
 /*end of meroshare*/
 
@@ -474,6 +453,9 @@ details>div {
 }
 details {
     margin: 5px 0;
+}
+details:nth-child(odd) {
+    background:#fafafa;
 }
 details summary::before {
     content: '🎅';
@@ -687,19 +669,14 @@ section.contact-us {
     font-size: 18px;
     width: 80%;
 }
-.contact-us__form .form-field {
-    margin: 10px 0;
-}
+
 .contact-us__form label {
     width: 200px;
     display: inline-block;
 }
 .contact-us__form input[type="file"] {
-    width: 594px;
-    height: 70px;
-    padding-top: 50px;
-    border: 1px dashed #d1d3d1;
-    background: #f7f7f7;
+    width: 570px;
+  
 }
 .contact-us__form .buttons {
     display: flex;
@@ -716,14 +693,10 @@ section.contact-us {
     height: 300px;
     padding: 10px;
     font-size: 18px;
+    margin-left: 10px;
+    border-radius: 5px;
 }
-div#message .message{
-    background: beige;
-    padding: 25px;
-    border-radius: 10px;
-    line-height: 30px;
-    margin: 30px 0;
-}
+
 
 /* verification */
 .card-body button {

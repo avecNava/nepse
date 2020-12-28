@@ -29,9 +29,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             UserVerifyNotification::class,
         ],
-        // when verified send welcome mail
+        // when verified send welcome mail, also create sample records
         Verified::class => [
             SendWelcomeMailListener::class,
+            CreateSampleRecordsListener::class,
         ],
         /*set session for the current tenant_id when logged in*/
         Login::class => [
@@ -42,13 +43,13 @@ class EventServiceProvider extends ServiceProvider
             UserLogoutListener::class,
         ],
         /*create sample records*/
-        CreateSampleRecordsEvent::class => [
-            CreateSampleRecordsListener::class,
-        ],
+        // CreateSampleRecordsEvent::class => [
+        //     CreateSampleRecordsListener::class,
+        // ],
         /*test only*/
-        UserRegisteredEvent::class => [
-            SendVerificationMailListener::class,
-        ],
+        // UserRegisteredEvent::class => [
+        //     SendVerificationMailListener::class,
+        // ],
     ];
 
     /**

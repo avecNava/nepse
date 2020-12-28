@@ -294,7 +294,7 @@
 
                     <div class="a_portfolio_main">
     
-                        <div class="c_band_right">
+                        <div class="c_band apart">
 
                             <div id="message" class="message">                            
                                 

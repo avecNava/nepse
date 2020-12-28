@@ -14,15 +14,7 @@
     <section class="transaction-history">
         
         <div class="import__header">
-            <div>
-                <h1 class="c_title">Import via MeroShare</h1>
-                <a class="link_menu" onClick="openForm('meroshare-import-form')" href="#">+ Import data</a>
-            </div>
-            <div id="import-shares-links">
-                <a class="link_menu" href="/import/share" title="Import share from your custom list">
-                Import share from your custom list</li>
-                </a>
-            </div>
+            <h1 class="c_title">Import via MeroShare</h1>
         </div>
         
         <section id="meroshare">
@@ -30,17 +22,12 @@
             <header class="c_message">
 
             </header>
-            @php
-                $hidden = 'hidden';
-                if ($errors->any() || session()->has('error') || session()->has('message')  || session()->has('success')) {
-                    $hidden = '';
-                } 
-            @endphp 
-            <main id="meroshare-import-form" class="meroshare-import-form" {{$hidden}}>
+            
+            <main id="share-import-form" >
                 
-                <h2>Instructions</h2>
-               
+                
                 <div class="c_instructions">
+                    <h2>Instructions</h2>
                     <ul>
                         <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
                         <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
@@ -54,28 +41,20 @@
                     </ul>  
                 </div>
                
-
-                <div class="c_band">                    
-                    <h2>Import transaction from Meroshare</h2>
-                </div>
+                <div>
+                <h2>Import file</h2>
 
                 <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
 
-                    <div class="block-left">
 
                         <div class="form-field">
-                            <button type="submit">Import</button>
-                            <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
+                            <div class="c_btn">
+                                <button type="submit">Import</button>
+                                <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
+                            </div>
                         </div>
 
-                        <div class="context-link">
-                            <a href="{{url('shareholders')}}">+ Add a new shareholder</a>
-                        </div>
-                        
-                    </div>
-
-                    <div class="block-right">
-                        
+                  
                         <div class="form-message">
 
                             @if (\Session::has('success'))
@@ -94,11 +73,10 @@
                         @csrf()
 
                         <div class="form-field">
-                            <label for="file"><strong>Select a transaction file to import.</strong> <br>
-                                Click on <em>Choose file</em> or 
-                                <em>drag and drop</em> a transaction file inside the box below.
-                                <br><mark>only CSV and excel files</mark> <br>
+                            <label for="file">
+                                <mark>only CSV and excel files</mark>
                             </label>
+                            
                             <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
                             @error('file')
                                 <div class="is-invalid">
@@ -114,7 +92,7 @@
                         </div>
 
                         <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                            <label for="shareholder"><strong>Shareholder</strong></label>   
+                            <label for="shareholder"><strong>Shareholder</strong></label>   <br/>
                             <select name="shareholder" id="shareholder">
                                 <option value="">Shareholder name</option>
                                 @if (!empty($shareholders))
@@ -138,6 +116,7 @@
                     </div>
 
                 </form>
+                </div>
             
             </main>
             <footer></footer>
@@ -147,27 +126,32 @@
         <article class="c_transaction_list">
         
             <header>
+                
+                <div class="c_band apart">
 
-                @php
-                    $row = $transactions->first();
-                    if( !empty($row) ){
-
-                        $shareholder = $row->shareholder;
+                    <div id="info">
                         
-                        if($shareholder){
-                            echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
-                        }
-                    }
-                @endphp
+                        @php
+                            $row = $transactions->first();
+                            if( !empty($row) ){
 
-                <div class="c_band_right">
+                                $shareholder = $row->shareholder;
+                                
+                                if($shareholder){
+                                    echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                                }
+                            }
+                        @endphp
 
-                    <div id="message" class="message">
-                        @if(count($transactions)>0)
-                            {{count($transactions)}} records
-                        @else
-                            No records
-                        @endif
+
+                        <div id="message" class="message">
+                            @if(count($transactions)>0)
+                                {{count($transactions)}} records
+                            @else
+                                No records
+                            @endif
+                        </div>
+
                     </div>
                     
                     <div class="c_band__components">

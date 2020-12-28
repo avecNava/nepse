@@ -12,6 +12,7 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
+use App\Models\MyShare;
 use App\Models\User;
 
 Auth::routes([
@@ -20,11 +21,19 @@ Auth::routes([
     ]);
     
     
-Auth::loginUsingId(1);
+Auth::loginUsingId(4);
 
 Route::get('test',function(){
-    $count = Shareholder::where('parent_id', Auth::id())->withCount('portfolio as total')->first();
-    return $count->total;
+    MyShare::create([
+        'symbol' => 'CHCL',
+        'purchase_date' => '2020-12-27',
+        'description' => 100,
+        'offer_code' => 'IPO',
+        'quantity' => 100,
+        'unit_cost' => 100,
+        'shareholder_id' => 1,
+        'effective_rate' => 100,
+    ]);
 });
 
 

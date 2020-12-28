@@ -217,17 +217,17 @@
             const html_head = `
                 <table>
                     <tr>
-                        <th>SN</th>
+                        <th class="c_digit">SN</th>
                         <th>Symbol</th>
-                        <th>Qty</th>
-                        <th title="Effective rate">Eff. rate</th>
-                        <th>Investment</th>
-                        <th>LTP</th>
-                        <th>Net worth</th>
-                        <th>Gain</th>
-                        <th title="Previous price">Prev. price</th>
-                        <th title="Previous worth">Prev. worth</th>
-                        <th>Change</th>
+                        <th class="c_digit">Qty</th>
+                        <th class="c_digit" title="Effective rate">Eff. rate</th>
+                        <th class="c_digit">Investment</th>
+                        <th class="c_digit">LTP</th>
+                        <th class="c_digit">Net worth</th>
+                        <th class="c_digit">Gain</th>
+                        <th class="c_digit" title="Previous price">Prev. price</th>
+                        <th class="c_digit" title="Previous worth">Prev. worth</th>
+                        <th class="c_digit">Change</th>
                     </tr>`;
 
             const html_foot = 

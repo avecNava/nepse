@@ -26,15 +26,7 @@
     <section class="transaction-history">
 
         <div class="import__header">
-            <div>
-                <h1 class="c_title">Import Stocks</h1>
-                <a class="link_menu"  onClick="openForm('myshare-import-form')" href="#">+ Import data</a>
-            </div>
-            <div id="import-shares-links">
-                <a class="link_menu" href="/import/meroshare" title="Import share from meroshare">
-                    Import from MeroShare account</li>
-                </a>
-            </div>
+            <h1 class="c_title">Import Stocks</h1>
         </div>
  
 
@@ -43,17 +35,13 @@
             <header class="c_message">
 
             </header>
-            @php
-                $hidden = 'hidden';
-                if ($errors->any() || session()->has('error') || session()->has('message')  || session()->has('success')) {
-                    $hidden = '';
-                } 
-            @endphp 
-            <main id="myshare-import-form" class="meroshare-import-form" {{$hidden}}>
+            
+            <main id="share-import-form">
                 
-                <h2>Instructions : </h2>
+               
                
                 <div class="c_instructions">
+                    <h2>Instructions : </h2>
                     <ul>
                         <li>
                             Download the
@@ -69,88 +57,78 @@
                     </ul>  
                 </div>
                
+                <div>
 
-                <div class="c_band">                    
                     <h2>Import file</h2>
-                </div>
 
-                <form method="POST" action="/import/share/store" enctype="multipart/form-data">
-
-                    <div class="block-left">
-
-                        <div class="form-field">
-                            <button type="submit">Import</button>
-                            <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
-                        </div>
-
-                        <div class="context-link">
-                            <a href="{{url('shareholders')}}">+ Add a new shareholder</a>
-                        </div>
-                        
-                    </div>
-
-                    <div class="block-right">
-                        
-                        <div class="form-message">
-
-                            @if (\Session::has('success'))
-                                <div class="message success">
-                                    {!! \Session::get('success') !!}
+                    <form method="POST" action="/import/share/store" enctype="multipart/form-data">
+                            <div class="form-field">
+                                <div class="c_btn">
+                                    <button type="submit">Import</button>
+                                    <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
                                 </div>
-                                @endif
-
-                                @if (\Session::has('error'))
-                                <div class="message error">
-                                    <!-- {!! \Session::get('error') !!}</li> -->
-                                </div>
-                            @endif
-                        </div>
-
-                        @csrf()
-
-                        <div class="form-field">
-                            <label for="file"><strong>Select a file</strong> <br>
-                            Please update the file downloaded above as per the instructions.<br>
-                            </label>
-                            <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
-                            @error('file')
-                                <div class="is-invalid">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                            @if (\Session::has('error'))
-                            <div class="is-invalid">
-                                {!! \Session::get('error') !!}</li>
                             </div>
-                            @endif
                             
-                        </div>
+                            <div class="form-message">
 
-                        <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                            <label for="shareholder"><strong>Shareholder</strong></label>   
-                            <select name="shareholder" id="shareholder" onChange="">
-                                <option value="">Shareholder name</option>
-                                @if (!empty($shareholders))
-                                    @foreach($shareholders as $member)
-                                        <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
-                                            {{ $member->first_name }} {{ $member->last_name }} 
-                                            @if (!empty($member->relation))
-                                                ({{ $member->relation }})
-                                            @endif
-                                        </option>
-                                    @endforeach
+                                @if (\Session::has('success'))
+                                    <div class="message success">
+                                        {!! \Session::get('success') !!}
+                                    </div>
+                                    @endif
+
+                                    @if (\Session::has('error'))
+                                    <div class="message error">
+                                        <!-- {!! \Session::get('error') !!}</li> -->
+                                    </div>
                                 @endif
-                            </select> 
+                           
 
-                            @error('shareholder')
-                                <div class="is-invalid">{{ $message }}</div>
-                            @enderror
+                            @csrf()
+
+                            <div class="form-field">
+                                
+                                <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
+                                @error('file')
+                                    <div class="is-invalid">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                @if (\Session::has('error'))
+                                <div class="is-invalid">
+                                    {!! \Session::get('error') !!}</li>
+                                </div>
+                                @endif
+                                
+                            </div>
+
+                            <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
+                                <label for="shareholder"><strong>Shareholder</strong></label><br/>
+                                <select name="shareholder" id="shareholder" onChange="">
+                                    <option value="">Shareholder name</option>
+                                    @if (!empty($shareholders))
+                                        @foreach($shareholders as $member)
+                                            <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
+                                                {{ $member->first_name }} {{ $member->last_name }} 
+                                                @if (!empty($member->relation))
+                                                    ({{ $member->relation }})
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select> 
+
+                                @error('shareholder')
+                                    <div class="is-invalid">{{ $message }}</div>
+                                @enderror
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    </form>
 
-                </form>
+                </div>
             
             </main>
             <footer></footer>
@@ -161,26 +139,31 @@
         
             <header>
 
-                @php
-                    $row = $transactions->first();
-                    if( !empty($row) ){
+                <div class="c_band apart">
 
-                        $shareholder = $row->shareholder;
+                    <div id="info">
                         
-                        if($shareholder){
-                            echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
-                        }
-                    }
-                @endphp
+                        @php
+                            $row = $transactions->first();
+                            if( !empty($row) ){
 
-                <div class="c_band_right">
+                                $shareholder = $row->shareholder;
+                                
+                                if($shareholder){
+                                    echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                                }
+                            }
+                        @endphp
 
-                    <div id="message" class="message">
-                        @if(count($transactions)>0)
-                            {{count($transactions)}} records
-                        @else
-                            No records
-                        @endif
+
+                        <div id="message" class="message">
+                            @if(count($transactions)>0)
+                                {{count($transactions)}} records
+                            @else
+                                No records
+                            @endif
+                        </div>
+
                     </div>
                     
                     <div class="c_band__components">

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class MyShare extends Model
 {
@@ -29,24 +30,33 @@ class MyShare extends Model
 
     public static function importTransactions($transactions)
     {
-        $transactions->whenNotEmpty(function() use($transactions){
-            
-            foreach ($transactions as $trans ) {
-                $date = $trans['purchase_date'];
-                
-                MyShare::create([
-                    'symbol' => $trans['symbol'],
-                    'purchase_date' => empty($trans['purchase_date']) ? null : $date->format('Y-m-d'),
-                    'description' => $trans['description'],
-                    'offer_code' => $trans['offer_code'],
-                    'quantity' => $trans['quantity'],
-                    'unit_cost' => $trans['unit_cost'],
-                    'shareholder_id' => $trans['shareholder_id'],
-                    'effective_rate' => $trans['effective_rate'],
-                ]);
+        
+        $transactions->each(function($item){
+
+            $date = Carbon::now();
+            $date_str = $date->format('Y-m-d');
+   
+            try {
+                $date = $item['purchase_date'];
+                $date_str = $date->format('Y-m-d');
+            } catch (\Throwable $th) {
+                //throw $th;
             }
+         
+            MyShare::create([
+                'symbol' => $item['symbol'],
+                'purchase_date' => $date_str,
+                'description' => $item['description'],
+                'offer_code' => $item['offer_code'],
+                'quantity' => $item['quantity'],
+                'unit_cost' => $item['unit_cost'],
+                'shareholder_id' => (int)$item['shareholder_id'],
+                'effective_rate' => $item['effective_rate'],
+            ]);
+    
 
         });
+
     }
     
 }

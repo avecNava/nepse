@@ -42,36 +42,40 @@ class MyShareController extends Controller
  
     public function store(Request $request)
     {
-        $validator = $request->validate([
-                'shareholder' => 'required',
-                'file' => 'required|mimes:xls,xlsx'
-            ]);
-  
-            // $destinationPath = base_path('public/menu');
-            $destinationPath = storage_path('app/meroshare');
-            $file_name = $request->file('file')->getClientOriginalName();
-            $extension = $request->file('file')->extension();      //retuns txt for html , sql files...
- 
-  
+          $validator = $request->validate([
+               'shareholder' => 'required',
+               'file' => 'required'
+          //  'file' => 'required|mimes:xls,xlsx'
+          ]);
+
+          // $destinationPath = base_path('public/menu');
+          $destinationPath = storage_path('app/meroshare');
+          $file_name = $request->file('file')->getClientOriginalName();
+          //   $extension = $request->file('file')->extension();      //retuns txt for html , sql files...
+
+          //get the file extension from filename manually
+          $tmp = explode('.', $file_name);
+          $extension = $tmp[ sizeof($tmp)-1 ];
+
           //   // Valid File Extensions
-          //   $valid_extension = ["txt","csv","xls","xlsx"];
-  
-          //   // Check file extension
-          //   if( !in_array(strtolower($extension),$valid_extension, true)){
-          //   return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
-          //   }
-  
-            $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
-            $request->file('file')->move($destinationPath, $new_name);
-            $pathToCSV = $destinationPath .'/'. $new_name;
-  
-            $transactions = collect();
-            $shareholder_id = $request->input('shareholder');
-            $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
+          $valid_extension = ["csv","xlsx"];
+
+          // Check file extension
+          if( !in_array(strtolower($extension),$valid_extension, true)){
+               return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
+          }
+
+          $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
+          $request->file('file')->move($destinationPath, $new_name);
+          $pathToCSV = $destinationPath .'/'. $new_name;
+
+          $transactions = collect();
+          $shareholder_id = $request->input('shareholder');
+          $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
                
-            try {
-    
-                $rows->each(function(array $row) use ($transactions, $shareholder_id) {
+          try {
+
+               $rows->each(function(array $row) use ($transactions, $shareholder_id) {
                     $transactions->push( 
                          array(
                               'symbol' => $row['Symbol'], 
@@ -82,26 +86,27 @@ class MyShareController extends Controller
                               'offer_code' => $row['Offering type'],
                               'shareholder_id' => $shareholder_id,
                               'description' => $row['Description']
-                         )
-                    );
-
+                              )
+                         );
                });
-               //remove existing records with the given shareholder_id
-               $x = MyShare::where('shareholder_id', $shareholder_id)->delete();
                
-               //add new records
-               MyShare::importTransactions($transactions);
-               
+          } 
+          catch (\Throwable $th) {
+               $error = 
+                    [
+                         'message' => $th->getMessage(),
+                         'line' => $th->getLine(),
+                         'file' => $th->getFile(),
+                    ];
+               Log::error('Import error',$error);
+               return redirect()->back()->with('error', "ERRROR : " . $error['message']);
+          }
 
-                } catch (\Throwable $th) {
-                    $error = [
-                        'message' => $th->getMessage(),
-                        'line' => $th->getLine(),
-                        'file' => $th->getFile(),
-                        ];
-                        Log::error('Import error',$error);
-                        return redirect()->back()->with('error', "ERRROR : " . $error['message']);
-                }
+          //remove existing records with the given shareholder_id
+          MyShare::where('shareholder_id', $shareholder_id)->delete();
+               
+          //add new records
+          MyShare::importTransactions($transactions);
     
         return redirect()->back()->with('success', 'Selected records have been imported successfully 👌');
 
