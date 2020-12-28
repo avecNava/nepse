@@ -77,4 +77,14 @@ class Shareholder extends Model
         });
         return $shareholder;
     }
+
+    public static function getShareholderIds($user_id)
+    {
+        $records = Shareholder::where('parent_id', Auth::id())->select('id')->get();
+        $shareholders = $records->map(function($item){
+            return $item->id;
+        });
+
+        return $shareholders;
+    }
 }

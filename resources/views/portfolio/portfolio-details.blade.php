@@ -53,47 +53,51 @@
             if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
         @endphp
             
-        <section class="c_info_band">
+        <section class="info_band_top apart">
 
-            <div class="info_band_top">
                 <div class="block-left">
 
-                <section class="shareholder nav">
-                    <h2>
-                        <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
-                            {{ $info['shareholder'] }}
-                        </a>
-                    </h2>
-                </section>
+                    <section class="shareholder nav">
+                        <h2>
+                            <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
+                                {{ $info['shareholder'] }}
+                            </a>
+                        </h2>
+                    </section>
 
                     <div class="stock">
                         <h2 class='highlight'>{{$info['security_name']}}</h2>
                         <h3>{{$info['sector']}}</h3>
-                        <h3><label>Total quantity </label>
-                            <span class="value">
+                        <div class="item">
+                            <label>Total quantity </label>
+                            <span class="value" id="total_quantity">
                                 {{number_format($qty)}}
                             </span>
-                        </h3>
-                        <h3><label>WACC (Weighted avg.) </label>
-                            <span class="value">
+                        </div>
+                        <div class="item">
+                            <label>WACC (Weighted avg.) </label>
+                            <span class="value" id="wacc">
                                 {{number_format($wacc,2)}}
                             </span>
-                        </h3>
-                        <h3><label>Last price (LTP) </label>
+                        </div>
+                        <div class="item">
+                            <label>Last price (LTP) </label>
                             <span class="value">
                                 {{number_format($ltp)}}
                             </span>
-                        </h3>
-                        <h3><label>Previous day price </label>
+                        </div>
+                        <div class="item">
+                            <label>Previous day price </label>
                             <span class="value">
                                 {{number_format($ltp_prev)}}
                             </span>
-                        </h3>
-                        <h3><label>Change </label>
+                        </div>
+                        <div class="item">
+                            <label>Change </label>
                             <span class="value {{$change_class}}">
                                 {{number_format($change)}} ({{number_format($change_per,2)}}%)
                             </span>
-                        </h3>  
+                        </div>  
                     </div>
 
                 </div>
@@ -101,59 +105,69 @@
                 <div class="block-right">
                    
                     <div class="stock">
-                        <h3><label>Total investment </label>
+                        <div class="item">
+                            <label>Total investment </label>
                             <span class="value">
                                 {{ number_format($investment)}}
                             </span>
-                        </h3>
-                        <h3><label>Current worth </label>
+                        </div>
+                        <div class="item">
+                            <label>Current worth </label>
                             <span class="value">
                                 {{number_format($worth)}}
                             </span>
-                        </h3>
-                        <h3><label>Gain </label>
+                        </div>
+                        <div class="item">
+                            <label>Gain </label>
                             <span class="value {{$gain_class}}">
                             {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
                             </span>
-                        </h3>  
-                        <h3><label>High </label>
+                        </div>  
+                        <div class="item">
+                            <label>High </label>
                             <span class="value"> 
                                 {{number_format($price_high)}}
                             </span>
-                        </h3>
-                        <h3><label>Low </label>
+                        </div>
+                        <div class="item">
+                            <label>Low </label>
                             <span class="value"> 
                                 {{number_format($price_low)}}
                             </span>
-                        </h3>
-                        <h3><label>52 weeks high</label>
+                        </div>
+                        <div class="item">
+                            <label>52 weeks high</label>
                             <span class="value">
                                 {{number_format($price_high_52)}}
                             </span>
-                        </h3>
-                        <h3><label>52 weeks low</label>
+                        </div>
+                        <div class="item">
+                            <label>52 weeks low</label>
                             <span class="value">
                                 {{number_format($price_low_52)}}
                             </span>
-                        </h3>
+                        </div>
+                        <div class="item basket">
+                            <h3>Sales</h3>
+                            <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                                <input type="number" name="sell_quantity" id="sell_quantity" 
+                                data-shareholder-id="{{  $info['shareholder_id'] }}"
+                                data-stock-id="{{  $info['stock_id'] }}">
+                            </label>
+                            <button onClick="addToBasket()">Add to basket</button>
+                            @csrf()
+                            <div id="sell_message"></div>
+                        </div>
                     </div>
 
                 </div>
-            </div>
-        
+
         </section>
 
         @php 
             $hidden = 'hidden';
             if($errors->any()){
                 $hidden = '';
-            }
-            $stock_id = 0;
-            $shareholder_id = 0;
-            $stock = $portfolios->first();
-            if(!empty($stock)){
-                $stock_id = $stock->stock_id;
-                $shareholder_id = $stock->shareholder_id;
             }
         @endphp
 
@@ -163,8 +177,8 @@
                 
                 @csrf()
                 <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $shareholder_id) }}">
-                <input type="hidden" name="stock_id" value="{{ old('stock_id', $stock_id) }}">
+                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['shareholder_id']) }}">
+                <input type="hidden" name="stock_id" value="{{ old('stock_id', $info['stock_id']) }}">
 
                 <section>
                     <div class="display-label">
@@ -447,22 +461,6 @@
             hideForm('portfolio-form');
             resetInputFields();
         });
-
-        //when offer is changed, recalcualte commission and effective rate
-        // const el_offer = document.querySelector('#offer');
-        // el_offer.addEventListener('change', function(e){
-        
-        //     //show hide secondary section in the form
-        //     const el_offer = document.querySelector('#offer');
-            
-        //     const i = el_offer.selectedIndex;            
-        //     let tag = el_offer.options[i].dataset.tag;
-
-        //     if(tag==='SECONDARY'){
-        //         document.getElementById('secondary').classList.remove('hide');
-        //     }
-
-        // });
 
         // handle Edit button clicked
         document.getElementById("edit").addEventListener("click", function() {

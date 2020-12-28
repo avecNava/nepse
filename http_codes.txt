@@ -1,6 +1,13 @@
 200, OK
+201, created
 204, Resource deleted
 
 
 401, Not authorized
 
+
+label {
+    color: darkslategrey;
+    width: 200px;
+    display: inline-block;
+}

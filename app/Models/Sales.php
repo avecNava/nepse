@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+use App\Traits\BelongsToTenant;
 
 class Sales extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
     protected $guarded = [];
 
     public function share()
@@ -31,11 +33,11 @@ class Sales extends Model
             [
                 'stock_id' => $row['stock_id'], 
                 'shareholder_id' => $row['shareholder_id'],
-                'offer_id' => $row['offer_id'],
                 'quantity' => $row['quantity'], 
                 'sales_date' => $row['transaction_date'],
             ],
             [
+                'offer_id' => $row['offer_id'],
                 'last_modified_by' => Auth::id(),
                 'remarks' => $row['remarks'],
             ]);

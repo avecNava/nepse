@@ -50,7 +50,11 @@
                             <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('/portfolio/new') }}">New</a></li>
                             <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                            <li><a href="{{ url('import/share') }}">Import Share</a></li>
+                            <li><a href="{{ url('feedbacks') }}">Feedback</a></li>
+                            <li><a href="{{ url('sales') }}">Sales</a></li>
+                            <li><a href="{{ url('basket/add') }}">Plan Sales</a></li>
+                            <li><a href="{{ url('basket') }}">Cart</a></li>
+                            <li><a href="{{ url('import/share') }}">Import</a></li>
                             <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
                         </ul>
                     </nav>
@@ -211,6 +215,7 @@
         
         <!-- <script src="{{asset('assets/js/shareholder.js')}}"></script> -->
         <script src="{{ URL::to('js/app.js') }}"></script>
+        <script src="{{ URL::to('js/basket.js') }}"></script>
         @yield('js')
     
 

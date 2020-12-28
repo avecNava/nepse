@@ -74,6 +74,9 @@ hr {
 .is-invalid {
     color: #fb0000;
 }
+.form-field span {
+    text-transform: capitalize;
+}
 .form-field .buttons {
     background: #f0f8ff85;
     border-radius: 5px;
@@ -422,9 +425,6 @@ section.c_score_cards article {
     width: 20px;
     background-repeat: no-repeat;
 }
-section.c_info_band {    
-    background: beige;    
-}
 
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;
@@ -439,15 +439,8 @@ section.c_info_band {
     color: var(--color-black-light30);
     min-width: 40px;
 }
-h3 span {
-    min-width: 100px;
-    display: inline-block;
-}
-h3 label {
-    color: darkslategrey;
-    width: 200px;
-    display: inline-block;
-}
+
+
 details>div {
     margin: 5px 0;
 }
@@ -522,9 +515,6 @@ section.sales summary {
     margin: 20px 50px;
     line-height: 35px;
 }
-section.c_info_band {
-    margin: 20px 0;
-}
 
 /* portfolio-summary*/
 .a_portfolio h3 {
@@ -539,13 +529,7 @@ section.c_info_band {
     outline: none;
     background: beige;
 }
-/* .a_portfolio summary {
-    padding-left: 10px;
-    padding-top: 10px;
-    border-bottom: 1px dashed #d6f6f6;
-    margin-bottom: 5px;
-    border-radius: 5px;
-} */
+
 .a_portfolio tr,
 .a_portfolio tr {
     height: 50px;
@@ -559,11 +543,33 @@ section.c_info_band {
     max-width: 200px;
     display: block;
 }
+.item {font-weight: bold;}
+.item label {
+    color: darkslategrey;
+    width: 200px;
+    display: inline-block;
+}
+.item.basket {
+    width: 350px;
+    padding: 7px;
+    background: #ff000014;
+    border-radius: 5px;
+}
+.basket h3 {margin:2px}
+.item input {
+    width: 80px;
+    color:red;
+    font-weight: bold;
+}
+.c_info_band {
+    margin: 20px 0;
+}
 .info_band_top {
     display: flex;
-    justify-content: space-around;
+    margin: 10px 0;
     line-height: 35px;
-    padding: 20px 0;
+    padding: 20px;
+    background: beige;
 }
 .value {
     width: 200px;
@@ -587,20 +593,14 @@ section.c_info_band {
     display: block;
 }
 .info_band_bottom {
-    margin: 20px 0;
+    margin: 10px 0;
     background: #cacaa8;
     padding: 10px 0;
+    border-radius: 5px;
 }
 .info_band_bottom li {
     color: #ee0000;
 }
-
-/*portfolio new*/
-.fields.form-field span {
-    text-transform: capitalize;
-}
-
-/* end of portfolio */
 
 /* shareholders */
 .c_shareholder_list .action {

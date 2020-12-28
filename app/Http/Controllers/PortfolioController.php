@@ -355,6 +355,7 @@ class PortfolioController extends Controller
             'shareholder' => $item ?  "$item->first_name $item->last_name" : '-',
             'shareholder_str' => $item ?  UtilityService::serializeString( $item->first_name . ' ' . $item->last_name, '-' ) : '-',
             'shareholder_id' => $item ?  $item->shareholder_id : 0,
+            'stock_id' => $item ?  $item->stock_id : '',
             'sector' => $item ?  $item->sector : '',
             'security_name' => $item ? $item->security_name : '-',
             'relation' => $item ? $item->relation : '-',

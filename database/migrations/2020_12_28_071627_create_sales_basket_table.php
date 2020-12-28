@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePortfolioSummariesTable extends Migration
+class CreateSalesBasketTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreatePortfolioSummariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('portfolio_summaries', function (Blueprint $table) {
+        Schema::create('sales_basket', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shareholder_id')->constrained('shareholders')->onDelete('cascade');
-            $table->foreignId('stock_id')->constrained('stocks');
+            $table->foreignId('stock_id')->constrained('stocks')->onDelete('cascade');
+            $table->datetime('basket_date')->nullable();
             $table->integer('quantity');
-            $table->float('investment',12,2);
-            $table->float('wacc',8,2)->nullable();
             $table->integer('tenant_id')->index();
-            $table->foreignId('last_modified_by')->nullable();
+            $table->float('wacc', 8, 2)->nullable();
+            $table->float('sales_amount', 12, 2)->nullable();
+            $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ class CreatePortfolioSummariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portfolio_summaries');
+        Schema::dropIfExists('sales_basket');
     }
 }

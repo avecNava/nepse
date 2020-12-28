@@ -14,7 +14,7 @@
     <section class="contact-us">
         
         <p> <strong>Thanks for showing up here.</strong> </p>
-        <p>Please use the form below to contact us, submit complaints, suggestions or just even a Thank You note 👀 </p>
+        <p>Please use the form below to contact us, submit complaints, suggestions</p>
         
         <div class="contact-us__form">
 

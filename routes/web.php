@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StockPriceController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\MyShareController;
 use App\Http\Controllers\ShareholderController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
 use App\Models\MyShare;
+use Carbon\Carbon;
 use App\Models\User;
 use Jenssegers\Agent\Agent;
 
@@ -26,6 +28,8 @@ Auth::routes([
 
 Route::get('test', function(Request $request){
 
+    $date = Carbon::now();
+    return $date->toDateString();
     
     // $agent = new Agent();
 
@@ -100,6 +104,13 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('hom
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 Route::get('portfolio/{username}/{id}', [PortfolioController::class, 'shareholderPortfolio']);
+
+Route::get('sales',[SalesController::class,'view']);
+Route::post('sales/store',[SalesController::class,'store']);
+
+Route::get('basket',[SalesController::class,'viewBasket']);
+Route::get('basket/add',[SalesController::class,'addToBasket']);
+Route::post('basket/store',[SalesController::class,'storeToBasket']);
 
 Route::get('guidelines', [HomeController::class, 'guideline']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
