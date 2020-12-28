@@ -43,5 +43,7 @@ class UserLoginListener
         
         // //create sample record for the user
         // event(new \App\Events\CreateSampleRecordsEvent(session()->get('shareholder_id')));
+
+        
     }
 }

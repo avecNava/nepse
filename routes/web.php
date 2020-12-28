@@ -14,26 +14,33 @@ use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
 use App\Models\MyShare;
 use App\Models\User;
+use Jenssegers\Agent\Agent;
 
 Auth::routes([
     'verify' => true,
     'register' => true,
-    ]);
+]);
     
     
-Auth::loginUsingId(4);
+// Auth::loginUsingId(4);
 
-Route::get('test',function(){
-    MyShare::create([
-        'symbol' => 'CHCL',
-        'purchase_date' => '2020-12-27',
-        'description' => 100,
-        'offer_code' => 'IPO',
-        'quantity' => 100,
-        'unit_cost' => 100,
-        'shareholder_id' => 1,
-        'effective_rate' => 100,
-    ]);
+Route::get('test', function(Request $request){
+
+    
+    // $agent = new Agent();
+
+    // $objAgent = [
+    //     'ip' => \Request::ip(),
+    //     'device'=> $agent->device(),
+    //     'desktop'=>$agent->isDesktop(),
+    //     'phone'=>$agent->isPhone(),
+    //     'robot'=>$agent->isRobot(),
+    //     'browser'=> $agent->browser(),
+    //     'browser_version'=> $agent->version($agent->browser()),
+    //     'platform'=> $agent->platform(),
+    //     'platform_version'=> $agent->version($agent->platform()),
+    // ];
+    // dd($objAgent);
 });
 
 

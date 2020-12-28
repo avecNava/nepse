@@ -13,9 +13,11 @@ use App\Notifications\UserVerifyNotification;
 use App\Listeners\UserLoginListener;
 use App\Listeners\UserLogoutListener;
 use App\Listeners\SendWelcomeMailListener;
+use App\Listeners\RecordLoginDetailsListener;
 use App\Listeners\SendVerificationMailListener;
 use App\Events\CreateSampleRecordsEvent;
 use App\Listeners\CreateSampleRecordsListener;
+use Illuminate\Http\Request;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,7 @@ class EventServiceProvider extends ServiceProvider
         /*set session for the current tenant_id when logged in*/
         Login::class => [
             UserLoginListener::class,
+            RecordLoginDetailsListener::class,
         ],
         /*set session for the current tenant_id when logged out*/
         Logout::class => [
