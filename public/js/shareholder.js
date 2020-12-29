@@ -205,18 +205,6 @@ btnDelete.addEventListener("click", function() {
   }
 });
 
-// function updateStyle(id, status){
-//   var ele = document.querySelector('#'+ id);
-//   if(status){
-//     ele.classList.remove('c_band__error');
-//     ele.classList.add('c_band__success');
-//     // ele.className = 'success';
-//   }else{
-//     ele.classList.remove('c_band__success');
-//     ele.classList.add('c_band__error');
-//   }
-// }
-
 function hideSelectedRow(id){
   let rowid = 'row' + id;
   document.getElementById(rowid).setAttribute('style','display:none');

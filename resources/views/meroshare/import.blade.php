@@ -8,13 +8,17 @@
     <script src="{{ URL::to('js/meroshare.js') }}"></script>
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">Import Stocks</h1>
+@endsection
+
 @section('content')
 
     <div id="loading-message" style="display:none">Working... Please wait...</div>
     <section class="transaction-history">
         
         <div class="import__header">
-            <h1 class="c_title">Import via MeroShare</h1>
+            <h2 class="c_title">Import (MeroShare)</h2>
         </div>
         
         <section id="meroshare">
@@ -27,7 +31,7 @@
                 
                 
                 <div class="c_instructions">
-                    <h2>Instructions</h2>
+                    <h3>Instructions</h3>
                     <ul>
                         <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
                         <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
@@ -125,7 +129,7 @@
 
         <article class="c_transaction_list">
         
-            <header>
+            <header class="info">
                 
                 <div class="c_band apart">
 
@@ -138,7 +142,7 @@
                                 $shareholder = $row->shareholder;
                                 
                                 if($shareholder){
-                                    echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                                    echo "<h2 class='title'>$shareholder->first_name $shareholder->last_name</h2>";
                                 }
                             }
                         @endphp
@@ -146,7 +150,7 @@
 
                         <div id="message" class="message">
                             @if(count($transactions)>0)
-                                {{count($transactions)}} records
+                                <div class="notification">({{count($transactions)}} records)</div>
                             @else
                                 No records
                             @endif

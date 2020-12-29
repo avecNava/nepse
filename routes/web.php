@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StockPriceController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SalesBasketController;
 use App\Http\Controllers\MeroShareController;
 use App\Http\Controllers\MyShareController;
 use App\Http\Controllers\ShareholderController;
@@ -108,9 +109,12 @@ Route::get('portfolio/{username}/{id}', [PortfolioController::class, 'shareholde
 Route::get('sales',[SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);
 
-Route::get('basket',[SalesController::class,'viewBasket']);
-Route::get('basket/add',[SalesController::class,'addToBasket']);
-Route::post('basket/store',[SalesController::class,'storeToBasket']);
+Route::get('basket',[SalesBasketController::class,'view']);
+Route::get('basket/add',[SalesBasketController::class,'create']);
+Route::post('basket/store',[SalesBasketController::class,'store']);
+Route::post('basket/update',[SalesBasketController::class,'update']);
+Route::get('basket/delete/{id}',[SalesBasketController::class,'delete']);
+Route::get('basket/{username}/{id?}',[SalesBasketController::class,'view']);
 
 Route::get('guidelines', [HomeController::class, 'guideline']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');

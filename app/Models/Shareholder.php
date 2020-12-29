@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\BelongsToTenant;
+use App\Services\UtilityService;
 
 class Shareholder extends Model
 {
@@ -66,6 +67,7 @@ class Shareholder extends Model
         $shareholder = $shareholders->map(function($item, $key){
             return collect([
                 'name' => "$item->first_name $item->last_name",
+                '_name' => UtilityService::serializeString("$item->first_name $item->last_name","-"),
                 'relationF' => !empty($item->relation) ? "($item->relation)":'(Self)',
                 'relation' => $item->relation, 
                 'date_of_birth' => $item->date_of_birth,

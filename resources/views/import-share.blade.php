@@ -8,6 +8,10 @@
     <script src="{{ URL::to('js/meroshare.js') }}"></script>
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">Import Stocks</h1>
+@endsection
+
 @section('content')
 
 <style>
@@ -26,7 +30,7 @@
     <section class="transaction-history">
 
         <div class="import__header">
-            <h1 class="c_title">Import Stocks</h1>
+            <h2 class="c_title">Import (Custom list)</h2>
         </div>
  
 
@@ -37,11 +41,9 @@
             </header>
             
             <main id="share-import-form">
-                
-               
                
                 <div class="c_instructions">
-                    <h2>Instructions : </h2>
+                    <h3>Instructions : </h3>
                     <ul>
                         <li>
                             Download the
@@ -137,7 +139,7 @@
 
         <article class="c_transaction_list">
         
-            <header>
+            <header class="info">
 
                 <div class="c_band apart">
 
@@ -150,7 +152,7 @@
                                 $shareholder = $row->shareholder;
                                 
                                 if($shareholder){
-                                    echo "<h2>$shareholder->first_name $shareholder->last_name</h2>";
+                                    echo "<h2 class='title'>$shareholder->first_name $shareholder->last_name</h2>";
                                 }
                             }
                         @endphp
@@ -158,7 +160,7 @@
 
                         <div id="message" class="message">
                             @if(count($transactions)>0)
-                                {{count($transactions)}} records
+                            <div class="notification">({{count($transactions)}} records)</div>
                             @else
                                 No records
                             @endif

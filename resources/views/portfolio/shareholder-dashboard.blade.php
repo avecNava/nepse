@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">{{ $shareholder }}</h1>
+<h1 class="c_title">Portfolio ({{ $first_name }})</h1>
 @endsection
 
 <style>
@@ -72,9 +72,10 @@
         
         <section class="a_portfolio">
         
-            <header>
-                <div class="portfolio__message">
-                    {{count($portfolios)}} records
+            <header class="info">
+                <h2 class="title">{{ $shareholder }}</h2>
+                <div class="notification">
+                    ({{count($portfolios)}} scripts)
                 </div>
             </header>
 

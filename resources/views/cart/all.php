@@ -39,28 +39,6 @@
         font-weight: bold;
         font-size: 15px;
     }
-    li::marker {
-        content: '🧑🏻';
-    }
-    ul.shareholders {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding: 30px 15px;
-        background: var(--color-black-light95);
-        border-radius: 5px;
-    }
-    ul.shareholders li {
-        margin-right: 25px;
-        padding: 5px;
-    }
-    ul.shareholders li:hover {
-        background:beige;
-    }
-    ul.shareholders li a{
-        font-weight: bold;
-        color: #3F51B5;
-    }
 </style>
 
 <div id="loading-message" style="display:none">Working... Please wait...</div>
@@ -73,33 +51,21 @@
 
         <article>
         
-            <header class="">
-                <ul class="shareholders">
-                    <li>
-                        <a href="{{url('basket') }}" title="All records">Everyone</a>
-                    </li>
-                    @foreach($shareholders as $shareholder)
-                        <li>
-                            <a href="{{url('basket', [$shareholder['_name'], $shareholder['id']]) }}" title="{{$shareholder['relation']}}">
-                                {{$shareholder['name']}}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+            <header class="info">
+                <h2 class="title">Carts</h2>
+                <div class="notification">
+                    @if(count($baskets)>0)
+                        ({{count($baskets)}} shareholders)
+                    @endif
+                </div>
             </header>
 
             <main id="carts">
 
-                @if(count($basket)<=0)
-                    
-                    <div class="message error">
-                        No records
-                    </div>
-
-                @else
                 @csrf()
+                @foreach($baskets as $index => $basket)
+                <section id="user-{{$index}}" class="carts__cart">
                 
-
                     <table>
                         <thead>
                             <tr>
@@ -107,12 +73,12 @@
                                     $data = $basket->first();
                                 @endphp
                                 <th colspan="8" class="info">
-                                <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                                <div class="notification">
-                                    @if(count($basket)>0)
-                                        ({{count($basket)}} entries)
-                                    @endif
-                                </div> 
+                                    <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+                                    <div class="notification">
+                                        @if(count($basket)>0)
+                                            ({{count($basket)}} records)
+                                        @endif
+                                    </div>
                                 </th>
                             </tr>
                             <tr>
@@ -121,8 +87,8 @@
                                 <th class="c_digit">Quantity</th>
                                 <th class="c_digit">Weighted average</th>
                                 <th class="c_digit">Sales amount</th>
-                                <th class="c_digit">Added on</th>
                                 <th>Shareholder</th>
+                                <th class="c_digit">Added on</th>
                                 <th class="c_digit">Update</th>
                             </tr>
                         </thead>
@@ -133,34 +99,32 @@
                         
                         @foreach ($basket as $index => $row)
 
-                        <tr id="row-{{$row->id}}">
+                        <tr>
                             <td class="c_digit">{{ $index + 1 }}</td>
                             <td>
-                                <abbr for="{{ $row->id }}" title="{{$row->share->id}}-{{ $row->share->security_name }}">
+                                <abbr for="{{ $row->id }}" title="{{ $row->share->security_name }}">
                                     {{ $row->share->symbol }}
                                 </abbr>
                             </td>
 
                             <td class="c_digit">
-                                <input type="number" name="quantity" id="qty-{{$row->id}}" value="{{ $row->quantity }}">
+                                <input type="number" name="quantity" id="quantity-{{$row->id}}" value="{{ $row->quantity }}">
                             </td>
                             <td class="c_digit wide">
                                 <input type="number" name="wacc" id="wacc-{{$row->id}}" value="{{ $row->wacc }}">
                             </td>
                             <td class="c_digit wide">
-                                <input type="number" name="sales_amount" id="amt-{{$row->id}}" value="{{ $row->quantity * $row->wacc }}">
+                                <input type="number" name="sales_amount" id="amount-{{$row->id}}" value="{{ $row->quantity * $row->wacc }}">
                             </td>
-                            <td class="c_digit">{{ $row->basket_date }}</td>
                             <td>
                                 @if( !empty($row->shareholder) )
-                                    <div id="{{$row->shareholder->id}}">
-                                        {{ $row->shareholder->first_name }} {{ $row->shareholder->last_name }}
-                                    </div>
+                                {{ $row->shareholder->first_name }} {{ $row->shareholder->last_name }}
                                 @endif
                             </td>
+                            <td class="c_digit">{{ $row->basket_date }}</td>
                             <td class="c_digit small-buttons">
-                                <button id="u-{{$row->id}}" onClick="updateBasket('{{$row->id}}')" data-shareholder_id="{{$row->shareholder->id}}" data-stock_id="{{$row->share->id}}">Update</button>
-                                <button d="d-{{$row->id}}" onClick="deleteBasket('{{$row->id}}')">Remove</button>
+                                <button onClick="updateBasket()">Update</button>
+                                <button onClick="deleteBasket()">Remove</button>
                             </td>
                         </tr>
 
@@ -180,9 +144,9 @@
                             </td>
                         </tr>          
                     </table>
-                
-                @endif
-
+                    
+                </section>
+                @endforeach
             </main>
         
             <footer></footer>

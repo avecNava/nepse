@@ -36,7 +36,7 @@
             <form method="POST" action="feedbacks" enctype="multipart/form-data">
                 @csrf()
             
-                <div class="form-field buttons">
+                <div class="form-field buttons" style="margin:50px 0">
                     <button type="submit">Submit</button>
                     <button id="cancel" type="reset">Reset</button>
                 </div>

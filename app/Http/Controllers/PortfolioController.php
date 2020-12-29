@@ -87,6 +87,7 @@ class PortfolioController extends Controller
             return  view(
                 'portfolio.shareholder-dashboard', 
                 [
+                    'first_name' => optional($row)->first_name,
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
                     'scorecard' => $data,

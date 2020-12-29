@@ -8,13 +8,20 @@
     <script src="{{ URL::to('js/shareholder.js') }}"></script>
 @endsection
 
+@section('header_title')
+<h1 class="c_title">My Shareholders</h1>
+@endsection
+
 @section('content')
 
     <div id="loading-message" style="display:none">Loading... Please wait...</div>
     <section class="c_shareholders">
 
-        <header>
-            <h1 class="c_title">Shareholders</h1>            
+        <header class="info">
+            <h2 class="title">Shareholders</h2>
+            <div class="notification">
+                ({{count($shareholders)}} scripts)
+            </div>
         </header>
 
         <main>  

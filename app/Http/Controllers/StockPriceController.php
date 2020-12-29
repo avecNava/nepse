@@ -37,7 +37,7 @@ class StockPriceController extends Controller
 
         // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
         $date_string =  $time_start->toDateString();
-        // $date_string =  '2020-12-17';
+        // $date_string =  '2020-12-28';
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
