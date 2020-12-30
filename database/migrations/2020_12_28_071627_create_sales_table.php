@@ -27,10 +27,12 @@ class CreateSalesTable extends Migration
             $table->float('broker_commission',8,2)->nullable();
             $table->float('sebon_commission',8,2)->nullable();
             $table->float('dp_amount', 5, 2)->default(25);
-            $table->string('remarks',500)->nullable();
+            $table->float('payable_amount', 12, 2)->nullable();
+            $table->string('receipt_number')->nullable();
+            $table->string('receipt')->nullable();
+            $table->string('remarks')->nullable();
             $table->integer('tenant_id')->index();
-            // $table->foreignId('portfolio_id')->nullable()->constrained('portfolios')->onDelete('cascade');
-            // $table->foreignId('offer_id')->nullable()->constrained('stock_offerings');
+            $table->foreignId('broker_no')->nullable()->constrained('brokers')->onDelete('cascade');
             $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });

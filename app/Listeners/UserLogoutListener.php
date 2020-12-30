@@ -24,7 +24,8 @@ class UserLogoutListener
      * @return void
      */
     public function handle($event)
-    {
+    {   
+        session()->forget('tenant_id');
         info('User log out', [session()->get('tenant_id')]),
     }
 }

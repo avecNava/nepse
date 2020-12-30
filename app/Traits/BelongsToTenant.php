@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Scopes\TenantScope;
+use Illuminate\Support\Facades\Auth;
 
 trait  BelongsToTenant
 {
@@ -11,8 +12,13 @@ trait  BelongsToTenant
     //https://laravel.com/docs/8.x/eloquent#applying-global-scopes
     protected static function bootBelongsToTenant()                 //boot + name of tenant
     {
-        if (auth()->user()->id != 1) {
-            static::addGlobalScope(new TenantScope);
+        //if the user is logged in
+        if(Auth::check()){
+
+            if (session()->get('shareholder_id') != 1) {
+                static::addGlobalScope(new TenantScope);
+            }
+
         }
 
         //or using closure
@@ -25,7 +31,6 @@ trait  BelongsToTenant
         if(session()->has('tenant_id')){
             static::creating(function ($model) {
                 $model->tenant_id = session()->get('tenant_id');
-                info('Tenant added ', [$model]);
             });
         }
         

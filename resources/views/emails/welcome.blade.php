@@ -34,13 +34,13 @@
         </p>
         <p>
             <mark>
-                Since it is your first time using this application, some random records has been created for you. You can navigate around and experience the application without much effort. <strong>PLEASE DELETE THE SAMPLE RECORDS</strong> once you start adding your own records.
+                Since it is your first time using this application, some random records have been created for you. You can navigate around and experience the application without much effort. <strong>PLEASE DELETE THE SAMPLE RECORDS</strong> once you start adding your own records.
             </mark>
         </p>
         <p>
             Best regards, <br><br>
-            <strong>{{config('app.signature')}}</strong><br/>
-            {{ config('app.signature-title')}}
+            <strong>{{config('app.signature-founder')}}</strong><br/>
+            {{ config('app.signature-title-founder')}}
         </p>
 
     </body>

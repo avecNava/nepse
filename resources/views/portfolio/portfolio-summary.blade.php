@@ -114,13 +114,13 @@
                                 <div class="c_change">
                                     <div>
                                         <div>{{ number_format( $row['change'] ) }} </div>
-                                        <span class="{{ $row["change_css"] }}"">
+                                        <span class="{{ $row['change_css'] }}">
                                             @if($row['change_pc'])
                                                 {{ $row['change_pc'] }}%
                                             @endif
                                         </span>
                                     </div>
-                                    <div class="{{ $row["change_css"]  }}_icon"></div>
+                                    <div class="{{ $row['change_css']  }}_icon"></div>
                                 </div>
                             </div>
 

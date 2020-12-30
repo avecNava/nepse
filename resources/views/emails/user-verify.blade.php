@@ -15,7 +15,7 @@
     </head>
 
     <body>
-        <p>Dear {{$user->name}},</p>
+        <p>Hi {{optional($user)->name}},</p>
         <p>
             Please click the button below to verify your email address.
         </p>

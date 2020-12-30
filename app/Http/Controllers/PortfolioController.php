@@ -47,12 +47,14 @@ class PortfolioController extends Controller
             ->select(
                 'p.*','s.*', 
                 'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
-                'm.first_name','m.last_name'
+                'm.first_name','m.last_name',
             )
             ->where('p.shareholder_id', $id)
             ->orderBy('s.symbol')
             ->get();
             
+            //todo: sort records by worth
+
             $row = $stocks->first();
             $scripts =  $stocks->count('stock_id');
             $quantity =  $stocks->sum('quantity');

@@ -28,7 +28,7 @@ class SalesBasketController extends Controller
             $ids = Shareholder::getShareholderIds(Auth::id());
 
         $basket = SalesBasket::whereIn('shareholder_id', $ids )
-            ->with(['share','shareholder'])
+            ->with(['share','shareholder','price:stock_id,close_price,last_updated_price'])
             ->orderByDesc('basket_date')
             ->get();
         
@@ -131,12 +131,27 @@ class SalesBasketController extends Controller
         ], 201);
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {   
-        SalesBasket::destroy($id);
-        return response()->json([
-            'message' => 'Item removed from the cart',
-        ]);
+        
+        if( empty($request->trans_id) ){
+
+            return response()->json([
+                 'status' => 'error',
+                 'message' => 'Confused 👀 Did you select any record at all?',
+             ]);
+
+       }
+
+       // /id is comma separated (eg, 1,2,3,4,5), explode into array 
+       $ids = Str::of($request->ids)->explode(',');
+       
+       $count  =  SalesBasket::whereIn('id', $ids->toArray())->delete();
+       $records = $count > 1 ? ' records' : ' record';
+       return response()->json([
+            'message' => "$count $records deleted. Refreshing the page ⌚ . . .",
+            'count' => $count,
+       ]);
     }
 
 }

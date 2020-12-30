@@ -12,12 +12,15 @@ use App\Http\Controllers\MyShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
+use App\Models\PortfolioSummary;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
 use App\Models\MyShare;
 use Carbon\Carbon;
 use App\Models\User;
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Auth;
+// use Illuminate\Notifications\Notifiable;
 
 Auth::routes([
     'verify' => true,
@@ -25,12 +28,13 @@ Auth::routes([
 ]);
     
     
-// Auth::loginUsingId(4);
+// Auth::loginUsingId(38);
 
 Route::get('test', function(Request $request){
 
-    $date = Carbon::now();
-    return $date->toDateString();
+
+   $t = PortfolioSummary::where('tenant_id', Auth::id())->count('id');
+   return $t;
     
     // $agent = new Agent();
 
@@ -57,7 +61,8 @@ Route::get('sample-record', function(){
 
 Route::get('mail', function(){
     $user = User::find(1);
-    event(new \App\Events\UserRegisteredEvent($user));
+    $user->notify(new \App\Notifications\UserVerifyNotification($user));
+    // event(new \App\Events\UserRegisteredEvent($user));
     // event(new \App\Events\UserRegisteredEvent($user));
     //$user->notify(new \App\Notifications\UserRegistrationNotification($user));
     // Notification::send($user,new \App\Notifications\UserRegistrationNotification($user));

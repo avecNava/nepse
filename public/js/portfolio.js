@@ -103,7 +103,6 @@ function updateTotalPrice() {
             if (this.status >= 200 && this.status < 400) {
                 
                 const data = JSON.parse(this.response);
-                console.log(data);
 
                 let broker = parseFloat(data.broker);
                 let sebon = parseFloat(data.sebon);

@@ -39,9 +39,17 @@ div#app, div#container {
 .c_content__wrapper {
     margin: 40px 0;
 }
+input[readonly] {
+    background: #dde3eb;
+    border: 0px;
+}
 abbr {
     font-weight: bold;
     color: #3c3f40;
+}
+.flex {
+    display: flex;
+    justify-content: space-around;
 }
 #message .message{
     background: beige;

@@ -93,7 +93,6 @@ function importMeroShareTransactions(){
             showImportMessage(message);
             return;
         }
-        showLoadingMessage();
 
         //call ajax 
         let _token = document.getElementsByName('_token')[0].value;
@@ -110,6 +109,7 @@ function importMeroShareTransactions(){
         }
 
         request.send(`_token=${_token}&trans_id=${selected.toString()}`);
+        showLoadingMessage();
 
 }
 

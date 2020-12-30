@@ -205,8 +205,11 @@ class Portfolio extends Model
             $portfolio->stock_id = $item->stock_id;
             $portfolio->quantity = $quantity;
             $portfolio->unit_cost = 100;
+            $portfolio->effective_rate = 100;
             $portfolio->total_amount = $quantity*100;
             $portfolio->offer_id = 1;
+            $portfolio->tags = 'sample';
+            $portfolio->remarks = "sample record";
             $portfolio->purchase_date = $date_str->toDateString();
             $portfolio->last_modified_by = Auth::id();
             $portfolio->save();

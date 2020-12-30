@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -78,6 +79,13 @@ class RegisterController extends Controller
         $first_name = $splitName[0];
         $last_name = !empty($splitName[1]) ? $splitName[1] : ''; // If last name doesn't exist, make it empty
         
+        //Perform login so that we can send customized email  for verification (user model)
+        //or create a session for the new user, and use in user model sendEmailVerificationNotification()
+        Auth::login($user);
+
+        //create session record for the tenant_id (otherwise tenant_id will not be created for Shareholder)
+        session()->put('tenant_id', $user->id);
+
         //insert the user as shareholder
         Shareholder::create([
             'parent_id' => $user->id,
@@ -87,8 +95,10 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'last_modified_by' => $user->id,
         ]);
-
-
+        
+        //destroy the tenant_id session, only needed for adding shareholders data
+        // session()->forget('tenant_id');
+        
         return $user;
     }
 }

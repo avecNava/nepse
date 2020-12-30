@@ -23,5 +23,10 @@ class SalesBasket extends Model
     {
         return $this->belongsTo('App\Models\Stock', 'stock_id');
     }
+    
+    public function price()
+    {
+        return $this->belongsTo('App\Models\StockPrice', 'stock_id','stock_id')->where('latest', true);
+    }
 
 }

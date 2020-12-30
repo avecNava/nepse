@@ -23,7 +23,7 @@ class UserVerifyNotification extends VerifyEmail implements ShouldQueue
      */
     public function __construct($user='')
     {
-        $this->user =  $user ?: Auth::user();
+        $this->user =  $user ?: Auth::user();        
     }
 
     /**
@@ -45,6 +45,7 @@ class UserVerifyNotification extends VerifyEmail implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        
         $actionUrl  = $this->verificationUrl($notifiable);
         $actionText  = 'Click here to verify your email';
         return (new MailMessage)->subject('Verify your account')->view(

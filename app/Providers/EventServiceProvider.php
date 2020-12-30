@@ -9,7 +9,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Events\CurrentDeviceLogout;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use App\Notifications\UserVerifyNotification;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use App\Listeners\UserLoginListener;
 use App\Listeners\UserLogoutListener;
 use App\Listeners\SendWelcomeMailListener;
@@ -28,8 +28,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         // when registered send verification link
+        //uses UserVerifyNotification() notification method via User model
         Registered::class => [
-            UserVerifyNotification::class,
+            SendEmailVerificationNotification::class,
         ],
         // when verified send welcome mail, also create sample records
         Verified::class => [
