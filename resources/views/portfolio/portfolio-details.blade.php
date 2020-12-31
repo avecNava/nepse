@@ -597,5 +597,5 @@
         }
 
     </script>
-
+<script src="{{ URL::to('js/basket.js') }}"></script>
 @endsection

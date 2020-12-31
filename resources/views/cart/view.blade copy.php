@@ -51,16 +51,13 @@
     section#basket td {
         padding: 0 3px;
     }
- 
-    button.sell {
+    button.focus {
         background: #305063;
         color: #fff;
         font-weight: bold;
         text-transform: uppercase;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        min-width: 50px;
+        letter-spacing: 2px;
+        font-size: 15px;
     }
     li::marker {
         content: '🧑🏻';
@@ -115,7 +112,7 @@
         height: 1.3em;
         font-family: 'Cutive';
     }
-    input#net_receivable {
+    input#net_payable {
         outline: 2px solid #FF9800;
         font-weight: bold;
     }
@@ -145,6 +142,8 @@
 
         <article>
             
+        <form action="{{url('sales/store')}}" method="POST">
+
             <header>
                 @if(count($basket)<=0)
                     <div class="info" style="text-align:center">
@@ -162,7 +161,7 @@
                                 @php
                                     $data = $basket->first();
                                 @endphp
-                                <th colspan="12" class="info">
+                                <th colspan="11" class="info">
                                     <div style="display:flex;justify-content:flex-start;">
                                         <div>
                                             <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
@@ -176,8 +175,8 @@
                                     </div>
                                 </th>
                                 <th colspan="2" class="info icon-buttons" style="text-align:right">
-                                    <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
-                                    <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
+                                    <button id="edit" onClick="updateBasket()" title="update records">💾</button>
+                                    <button id="delete" onClick="deleteBasket()" title="delete records">❌</button>
                                 </th>
                             </tr>
                             
@@ -185,7 +184,7 @@
                                 <th>&nbsp;Symbol</th>
                                 <th class="c_digit">Quantity</th>
                                 <th class="c_digit"><abbr title="Weighted average (Effective rate)">WACC</abbr></th>
-                                <th class="c_digit">Cost Price</th>
+                                <th class="c_digit">Investment</th>
                                 <th class="c_digit"><abbr title="Last trade price">LTP</abbr></th>
                                 <th class="c_digit">Sales amount</th>
                                 <th class="c_digit">Gain</th>
@@ -193,9 +192,8 @@
                                 <th class="c_digit" title="Broker commission">Comm.</th>
                                 <th class="c_digit" title="SEBON commission">SEBON</th>
                                 <th class="c_digit">Effective rate</th>
-                                <th class="c_digit" title="Sell Price">Net amount</th>
+                                <th class="c_digit">Net amount</th>
                                 <th>Shareholder</th>
-                                <th>Sell</th>
                             </tr>
 
                         </thead>
@@ -207,13 +205,13 @@
                             $quantity = $row->quantity;
                             $ltp = $row->price->close_price ?: $row->price->last_updated_price;
                             $wacc = $row->wacc;
-                            $cost_price = $wacc * $quantity;
+                            $investment = $wacc * $quantity;
                             $worth = $ltp * $quantity;
                             $sales_amount = $ltp * $quantity;
-                            $gain = $worth - $cost_price;
+                            $gain = $worth - $investment;
                             $gain_pc = '';
-                            if($cost_price>0)
-                                $gain_pc = round(($gain/$cost_price)*100, 2);
+                            if($investment>0)
+                                $gain_pc = round(($gain/$investment)*100, 2);
                             $gain_class = '';
                             if($gain > 0){
                                 $gain_class = 'increase';
@@ -245,8 +243,8 @@
                             </td>
                          
                             <td class="c_digit">
-                                <!-- <input value="{{ number_format($cost_price) }}" type="text"> -->
-                                <div name="cost_price" id="cost-{{$row->id}}">{{ ($cost_price) }}
+                                <!-- <input value="{{ number_format($investment) }}" type="text"> -->
+                                <div name="investment" id="invest-{{$row->id}}">{{ ($investment) }}
                                 </div>
                             </td>
                             
@@ -254,7 +252,7 @@
                                 <div name="ltp" id="ltp-{{$row->id}}">{{ $ltp }}</div>
                             </td>
                             <td class="c_digit wide">
-                                <input type="text" name="sell_price" id="sell-{{$row->id}}" value="{{ $sales_amount }}">
+                                <input type="number" name="sales_amount" id="amt-{{$row->id}}" value="{{ $sales_amount }}">
                             </td>
                             <td>
                                 <div class="c_change">
@@ -269,11 +267,8 @@
                             <td class="c_digit"><div id="comm-{{$row->id}}"></td>
                             <td class="c_digit"><div id="sebon-{{$row->id}}"></td>
                             <td class="c_digit"><div id="rate-{{$row->id}}"></td>
-                            <td class="c_digit"><div id="net_amount-{{$row->id}}"></td>
+                            <td class="c_digit"><div id="net_pay-{{$row->id}}"></td>
                             <td>{{ $row->shareholder->first_name }}</td>
-                            <td>
-                                <button class="sell" title="Mark as SOLD" onClick="fnSell({{$row->id}})"><span class="cart">🛒</span><span>Sell</span></button>
-                            </td>
                         </tr>
 
                         @endforeach  
@@ -284,8 +279,13 @@
 
             </main>
         
-            <footer></footer>
+            <footer>
+            @if(count($basket) > 0)
+                <button class="focus">Mark as SOLD</button>
+            @endif
+            </footer>
             
+        </form>        
         </article>
 
         @if(count($basket)>0)
@@ -335,8 +335,8 @@
                         <input type="text" name="dp_amount" id="dp_amount" readonly>
                     </div>
                     <div class="block net_pay">
-                        <label for="net_receivable">Net Receivable </label>
-                        <input type="text" name="net_receivable" id="net_receivable" readonly>
+                        <label for="net_payable">Net Receivable </label>
+                        <input type="text" name="net_payable" id="net_payable" readonly>
                     </div>
 
                 </div>
@@ -349,5 +349,5 @@
         @endif
 
 </section>
-<script src="{{ URL::to('js/basket.js') }}"></script>
+        
 @endsection

@@ -18,7 +18,7 @@ class SalesController extends Controller
         
     }
 
-    public function viewBasket()
+    public function view()
     {
         $shareholders = Shareholder::getShareholderIds(Auth::id());
 
@@ -34,64 +34,31 @@ class SalesController extends Controller
 
     }
 
-    public function storeToBasket(Request $request)
+    //called when marked as Sold is called via Shopping basket
+    public function store(Request $request)
     {
+        //todo: update dp_amount for unique transactions shareholder_stock_day
+        //todo: deduct sold qty from portfolio summary
+        //todo: add a flag in portfolio table called wacc_updated (to only update such records into the portfolio summary during CRUD)
         try {
-
-            $shareholder = $request->shareholder_id;
-            $stock = $request->stock_id;
-
-            $quantity = $request->quantity;
-            
-            //check existing quantity
-            $total_quantity =  PortfolioSummary::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->sum('quantity');
-            
-            $wacc =  PortfolioSummary::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->average('wacc');
-            
-            $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->sum('quantity');
-            
-            $new_quantity = $existing_basket_quantity + $quantity;
-            $sales_amount =  round($wacc * $quantity, 2);
-
-            $exceeded = false;
-            //check if existing  basket quantity and current quantity exceeds the total quantity
-            if($new_quantity > $total_quantity){
-                $new_quantity = $existing_basket_quantity;
-                $exceeded = true;                
-            }
-
-            //update or create the basket
-            SalesBasket::updateOrCreate(
-                [
+                Sales::create([
                     'stock_id' => $request->stock_id,
                     'shareholder_id' => $request->shareholder_id,
-                ],
-                [
-                    'quantity' => $new_quantity,
-                    'wacc' => $wacc,
-                    'sales_amount' => $sales_amount,
+                    'quantity' => $request->quantity,
+                    'wacc' => $request->wacc,
+                    'sales_date' => Carbon::today(),
+                    'broker_commission' => $request->broker,
+                    'sebon_commission' => $request->sebon,
+                    'capital_gain_tax' => $request->cgt,
+                    'cost_price' => $request->cost_price,
+                    'sell_price' => $request->sell_price,
+                    'net_receivable' => $request->net_receivable,
                     'last_modified_by' => Auth::id(),
-                    'basket_date' => Carbon::now(),
-                ]
-            );
+                ]);
 
-            $message = "$quantity units added to the basket. <div class='basket_total'>Basket total : $new_quantity</div>";
-            if($exceeded){
-                $message = "Sum of current and existing quantites in the basket exceeds total quantity. Cart quantity updated to : $new_quantity";  
-            }
-            
+                SalesBasket::destroy($request->record_id);
+
+                //update cascade portfolio summary (only records with updated_wacc)
             
         } catch (\Throwable $th) {
             return response()->json([
@@ -102,17 +69,9 @@ class SalesController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => $message,
+            'message' => 'Record marked as sold',
+            'row' => $request->record_id,
         ], 201);
     }
 
-    public function view()
-    {
-        
-    }
-
-    public function store(Request $request)
-    {
-        # code...
-    }
 }

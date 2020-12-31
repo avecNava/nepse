@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\BelongsToTenant;
+use App\Models\Portfolio;
 use App\Services\UtilityService;
 
 class PortfolioSummary extends Model
@@ -49,10 +50,20 @@ class PortfolioSummary extends Model
         //get aggregate purchases, aggregate sales and average rates. Calculate net quantity, Add to the summary table
         
         $quantity =  Portfolio::where('shareholder_id', $shareholder_id)
+                    ->whereNotNull('wacc_updated_at')
                     ->where('stock_id', $stock_id)
                     ->sum('quantity');
-        
-        $effective_rate = PortfolioSummary::calculateWACC($shareholder_id, $stock_id);
+
+        if($quantity <= 0){
+            info('Portfolio Summary not updated', [
+                'shareholder_id' => $shareholder_id, 
+                'stock_id' => $stock_id, 
+                'quantity' => $quantity, 
+            ]);
+            return;
+        }
+
+        $effective_rate = Portfolio::calculateWACC($shareholder_id, $stock_id);
         
         $investment = Portfolio::where('shareholder_id',$shareholder_id)
                         ->where('stock_id', $stock_id)
@@ -77,28 +88,4 @@ class PortfolioSummary extends Model
         }
     }
 
-    public static function calculateWACC(int $shareholder, int $stock)
-    {
-        
-        $portfolios = Portfolio::where('shareholder_id', $shareholder)
-                    ->where('stock_id', $stock)->get();
-        
-        if(!empty($portfolios)){
-
-            $investment = $portfolios->sum(function($item){
-                return $item->quantity * $item->effective_rate;
-            });
-
-            $quantity = $portfolios->sum('quantity');
-
-            if($quantity>0)
-                return round($investment / $quantity, 2);
-            else {
-                return 0;
-            }
-        }
-        
-        return 0;
-    }
-    
 }

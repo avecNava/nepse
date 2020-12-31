@@ -29,6 +29,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('broker_no')->nullable();
             $table->string('receipt_number')->nullable();
             $table->string('tags')->nullable();
+            $table->datetime('wacc_updated_at')->nullable();
             $table->varchar('remarks',500)->nullable();
             $table->integer('tenant_id')->index();
             $table->foreignId('last_modified_by')->constrained('users')->nullable();

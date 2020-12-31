@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
+    <script src="{{ URL::to('js/app.js') }}"></script>
 </head>
 <body>
     <div id="container">
@@ -214,8 +215,6 @@
         </footer>
         
         <!-- <script src="{{asset('assets/js/shareholder.js')}}"></script> -->
-        <script src="{{ URL::to('js/app.js') }}"></script>
-        <script src="{{ URL::to('js/basket.js') }}"></script>
         @yield('js')
     
 

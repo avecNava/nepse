@@ -1,13 +1,39 @@
-function __showMessage(message, flag){
-    const msg = document.querySelector('#sell_message')
-    if(flag){
-        msg.classList.add('success');
+function fnRefreshBasket(){
+    const msg = document.querySelector('#sell_message');
+    msg.innerHTML ='Refreshing the basket ⌚ ... ';
+    url = `${window.location.origin}/basket`;
+    setTimeout(function(){ 
+        window.location.replace(url);
+    }, 2000);
+}
+
+function __showMessage(message, error = false, temp = true, refresh=false){
+
+    const msg = document.querySelector('#sell_message');
+    
+    //which class to apply
+    if(error){
+        msg.classList.add('error');
     }else{
-        msg.classList.add('error');        
+        msg.classList.add('success');        
     }
     msg.innerHTML = message;
-    setTimeout(function () {  msg.innerHTML=''; }, 1000 ); 
+
+    //reset message that are marked temp
+    if(temp){
+        setTimeout(function () {  
+            msg.innerHTML='';             
+        }, 1000 ); 
+    }
+
+    if(refresh){
+        setTimeout(function () {  
+            fnRefreshBasket();
+        }, 1000 );  
+   }
+
 }
+
 function resetSellError(){
     const msg = document.querySelector('#sell_message')
     msg.classList.remove('error');
@@ -63,7 +89,7 @@ function saveToBasket(sell_quantity, shareholder_id, stock_id){
     request.onload = function() {
         const data = JSON.parse(this.response);
         if (this.status >= 200 && this.status < 400) {
-            __showMessage(data.message, true);
+            __showMessage(data.message);
         }
         else{
             __showMessage(data.message, false);            
@@ -95,10 +121,10 @@ document.querySelectorAll('[name="quantity"]').forEach(function(el){
         const investment_amount = parseFloat(quantity) * parseFloat(wacc);
         
         //update sales amount
-        document.querySelector(`#amt-${id}`).value = (sales_amount.toFixed(1));
+        document.querySelector(`#sell-${id}`).value = (sales_amount.toFixed(1));
         
         //update investment amount
-        document.querySelector(`#invest-${id}`).innerText = (investment_amount.toFixed(1));
+        document.querySelector(`#cost-${id}`).innerText = (investment_amount.toFixed(1));
         
         calculateOthers(id);
         
@@ -117,7 +143,7 @@ document.querySelectorAll('[name="wacc"]').forEach(function(el){
         
         const quantity = document.querySelector(`#qty-${id}`).value;
         const $total_investment_amount = parseFloat(wacc) * parseFloat(quantity);
-        document.querySelector(`#invest-${id}`).innerText = $total_investment_amount.toFixed(1);
+        document.querySelector(`#cost-${id}`).innerText = $total_investment_amount.toFixed(1);
         
         calculateOthers(id);
 
@@ -125,7 +151,29 @@ document.querySelectorAll('[name="wacc"]').forEach(function(el){
 
 });
   
-    
+//POST the records to the appropriate routes
+function fnPOST(action_url, querystring){
+
+    let request = new XMLHttpRequest();
+    request.open('POST', action_url, true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onload = function() {
+
+        const data = JSON.parse(this.response);
+        if (this.status >= 200 && this.status < 400) {
+            __showMessage(data.message,false,false,true);
+        }
+        else{
+            __showMessage(data.message, false);
+        }
+        hideLoadingMessage();
+    }
+
+    request.send(querystring);
+    showLoadingMessage();
+
+}
+
 function updateBasket(){
     
     let selected = [];
@@ -137,22 +185,26 @@ function updateBasket(){
     });
 
     if(!selected.length){
-        __showMessage('You did not select any records');
+        __showMessage('🍺 Please select some records', true);
         return false;
     }
-
+    
+    const url = `${window.location.origin}/basket/update`;
     //for each ids, get the quantity, sales_amount, wacc, shareholder/stock id, 
     //then process ajax record to update record
     selected.forEach(function(id){
 
         const obj = document.querySelector(`#chk-${id}`).dataset;    
         const shareholder_id = obj.user;
-        const stock_id = obj.stock;
-        
+        const stock_id = obj.stock;        
         const quantity = document.querySelector(`#qty-${id}`).value;
         const wacc = document.querySelector(`#wacc-${id}`).value;
-        const sales_amount = document.querySelector(`#amt-${id}`).value;
-        // console.log(quantity, wacc, sales_amount);
+        const broker_comm = document.querySelector(`#comm-${id}`).textContent;
+        const sebon_comm = document.querySelector(`#sebon-${id}`).textContent;
+        const cgt = document.querySelector(`#cgt-${id}`).textContent;
+        const sell_price = document.querySelector(`#sell-${id}`).value;
+        const cost_price = document.querySelector(`#cost-${id}`).textContent;
+        const net_receivable = document.querySelector(`#net_amount-${id}`).textContent;
 
         let _token = document.getElementsByName('_token')[0].value;
         const querystring = `_token=${_token}
@@ -161,34 +213,53 @@ function updateBasket(){
                                 &shareholder_id=${shareholder_id}
                                 &quantity=${quantity}
                                 &wacc=${wacc}
-                                &sales_amount=${sales_amount}`;
-        saveBasket(querystring);
+                                &broker=${broker_comm}
+                                &sebon=${sebon_comm}
+                                &cgt=${cgt}
+                                &cost_price=${cost_price}
+                                &sell_price=${sell_price}
+                                &net_receivable=${net_receivable}`;
+        
+        fnPOST(url, querystring);
+        
     });
 }
+
+function fnSell(id){
     
-function saveBasket(querystring){
+    const url = `${window.location.origin}/sales/store`;
 
-    const url = `${window.location.origin}/basket/update`;
-    console.log(url);
-    let request = new XMLHttpRequest();
-    request.open('POST', url, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.onload = function() {
+    if(confirm(`Ths will mark the current record as SOLD. Please confirm.`)) {
+        
+        const obj = document.querySelector(`#chk-${id}`).dataset;    
+        const shareholder_id = obj.user;
+        const stock_id = obj.stock;        
+        const quantity = document.querySelector(`#qty-${id}`).value;
+        const wacc = document.querySelector(`#wacc-${id}`).value;
+        const broker_comm = document.querySelector(`#comm-${id}`).textContent;
+        const sebon_comm = document.querySelector(`#sebon-${id}`).textContent;
+        const cgt = document.querySelector(`#cgt-${id}`).textContent;
+        const sell_price = document.querySelector(`#sell-${id}`).value;
+        const cost_price = document.querySelector(`#cost-${id}`).textContent;
+        const net_receivable = document.querySelector(`#net_amount-${id}`).textContent;
 
-        const data = JSON.parse(this.response);
-        if (this.status >= 200 && this.status < 400) {
-            __showMessage(data.message, true);
+        let _token = document.getElementsByName('_token')[0].value;
+        const querystring = `_token=${_token}
+            &record_id=${id}
+            &stock_id=${stock_id}
+            &shareholder_id=${shareholder_id}
+            &quantity=${quantity}
+            &wacc=${wacc}
+            &broker=${broker_comm}
+            &sebon=${sebon_comm}
+            &cgt=${cgt}
+            &cost_price=${cost_price}
+            &sell_price=${sell_price}
+            &net_receivable=${net_receivable}`;
 
-        }
-        else{
+        fnPOST(url, querystring);
 
-            __showMessage(data.message, false);     
-
-        }
-        hideLoadingMessage();
     }
-    request.send(querystring);
-
 }
 
 function deleteBasket(){
@@ -202,7 +273,7 @@ function deleteBasket(){
     });
 
     if(!selected.length){
-        __showMessage('You did not select any records');
+        __showMessage('🍺 Please select some records', true);
         return false;
     }
 
@@ -225,18 +296,12 @@ function deleteBasket(){
                 const data = JSON.parse(this.response);
             
                 if (this.status >= 200 && this.status < 400) {
-                    __showMessage(data.message, true);    
+                    __showMessage(data.message,false,false,true);    
                 }
                 else{    
-                    __showMessage(data.message, false);    
+                    __showMessage(data.message, true);    
                 }
                 hideLoadingMessage();
-                
-                //refresh the page
-                url = `${window.location.origin}/basket`;
-                setTimeout(function(){ 
-                    window.location.replace(url);
-                }, 1000);
 
             }
         }
@@ -250,19 +315,14 @@ function deleteBasket(){
     }
 }
 
-// function hideSelectedRow(id){
-//     let rowid = 'row-' + id;
-//     document.getElementById(rowid).setAttribute('style','display:none');
-// }
-
 //calculaet commission
 function calculateOthers(id)
 {
     const CGT = 0.05;
     const DP = 25;
 
-    const sales_amount = document.querySelector(`#amt-${id}`).value;
-    const investment_amount = document.querySelector(`#invest-${id}`).innerText;
+    const sales_amount = document.querySelector(`#sell-${id}`).value;
+    const investment_amount = document.querySelector(`#cost-${id}`).innerText;
     const quantity = document.querySelector(`#qty-${id}`).value;
 
     const num_scripts = 1;
@@ -277,7 +337,7 @@ function calculateOthers(id)
     if(parseFloat(investment_amount)>0){
         gain_per = parseFloat(gain)/parseFloat(investment_amount)*100;
     }
-    console.info(id, '( invest:', investment_amount,' sales: ', sales_amount,') = ', gain,'(', gain_per,')');
+    // console.info(id, '( invest:', investment_amount,' sales: ', sales_amount,') = ', gain,'(', gain_per,')');
     
     const sebon_comm = 0;
     const broker_comm = 0;
@@ -314,15 +374,20 @@ function calculateOthers(id)
             sebon_commission = (sebon_rate/100) * sales_amount;
             
             payable_amount = parseFloat(sales_amount) - (parseFloat(broker_commission) + parseFloat(sebon_commission) + parseFloat(gain_tax) + parseInt(dp_amount) );
-            document.querySelector(`#net_pay-${id}`).innerText =  (payable_amount.toFixed(1));
+            document.querySelector(`#net_amount-${id}`).innerText =  (payable_amount.toFixed(1));
             effective_rate = parseFloat(payable_amount)/parseInt(quantity);
             
             document.querySelector(`#rate-${id}`).innerText =  formatNumber(effective_rate.toFixed(1));
 
-            if(broker_commission)
+            if(broker_commission){
                 document.querySelector(`#comm-${id}`).innerText =  formatNumber(broker_commission.toFixed(1));
-            if(sebon_commission) 
+                document.querySelector(`#comm-${id}`).setAttribute('data-rate', broker_rate);
+            }
+            
+            if(sebon_commission) {
                 document.querySelector(`#sebon-${id}`).innerText =  formatNumber(sebon_commission.toFixed(1));
+                document.querySelector(`#sebon-${id}`).setAttribute('data-rate', sebon_rate);
+            }
             
             setTimeout(
                 'calculateSummary()',
@@ -337,13 +402,13 @@ function calculateOthers(id)
 
 //trigger change in quantity for all records
 document.querySelectorAll('input[name=quantity').forEach(element => {
-    console.log('qty change envent global');
+    // console.log('qty change envent global');
     document.querySelector(`#${element.id}`).dispatchEvent(new Event('change'));
 });
 
 //trigger change in wacc for all records
 document.querySelectorAll('input[name=wacc').forEach(element => {
-    console.log('wacc change envent global');
+    // console.log('wacc change envent global');
     document.querySelector(`#${element.id}`).dispatchEvent(new Event('change'));
 });
 
@@ -356,7 +421,7 @@ function calculateSummary(){
     var sum_gain_tax = 0;
     var sum_broker_comm = 0;
     var sum_sebon_comm = 0;
-    var sum_net_payable= 0;
+    var sum_net_receivable= 0;
     var unique_scripts= new Set();
     
     document.querySelectorAll('[name="s_id"]').forEach( function(el){
@@ -364,18 +429,18 @@ function calculateSummary(){
         const user_symbol = el.dataset.userSymbol;
         unique_scripts.add(user_symbol);
         sum_quantity += parseFloat(document.querySelector(`#qty-${id}`).value);
-        sum_amount += parseFloat(document.querySelector(`#amt-${id}`).value);
-        sum_investment += parseFloat(document.querySelector(`#invest-${id}`).textContent);
+        sum_amount += parseFloat(document.querySelector(`#sell-${id}`).value);
+        sum_investment += parseFloat(document.querySelector(`#cost-${id}`).textContent);
         sum_gain += parseFloat(document.querySelector(`#gain-${id}`).textContent);
         sum_gain_tax += parseFloat(document.querySelector(`#cgt-${id}`).textContent);
         sum_broker_comm += parseFloat(document.querySelector(`#comm-${id}`).textContent);
         sum_sebon_comm += parseFloat(document.querySelector(`#sebon-${id}`).textContent);
-        sum_net_payable += parseFloat(document.querySelector(`#net_pay-${id}`).textContent);
+        sum_net_receivable += parseFloat(document.querySelector(`#net_amount-${id}`).textContent);
         // console.log(sum_gain_tax, sum_broker_comm, sum_sebon_comm);
     });
 
     const dp_amount = unique_scripts.size * DP;
-    const total_payable = parseFloat(sum_net_payable)-dp_amount;
+    const total_payable = parseFloat(sum_net_receivable)-dp_amount;
     document.querySelector('#total_quantity').value = formatNumber(sum_quantity.toFixed(2));
     document.querySelector('#total_investment').value = formatNumber(sum_investment.toFixed(2));
     document.querySelector('#total_amount').value = formatNumber(sum_amount.toFixed(2));
@@ -384,5 +449,5 @@ function calculateSummary(){
     document.querySelector('#total_broker_comm').value = formatNumber(sum_broker_comm.toFixed(2));
     document.querySelector('#total_sebon_comm').value = formatNumber(sum_sebon_comm.toFixed(2));
     document.querySelector('#dp_amount').value = formatNumber(dp_amount);
-    document.querySelector('#net_payable').value = formatNumber(total_payable.toFixed(2));
+    document.querySelector('#net_receivable').value = formatNumber(total_payable.toFixed(2));
 }

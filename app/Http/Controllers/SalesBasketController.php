@@ -13,6 +13,11 @@ use Illuminate\Support\Str;
 
 class SalesBasketController extends Controller
 {
+    protected $dp = 25;
+
+    public function __construct(){
+        // $this->dp = 25;
+    }
 
     public function create()
     {
@@ -72,7 +77,7 @@ class SalesBasketController extends Controller
                                 ->sum('quantity');
             
             $new_quantity = $existing_basket_quantity + $quantity;
-            $sales_amount =  round($wacc * $quantity, 2);
+            $sell_price =  round($wacc * $quantity, 2);
 
             $exceeded = false;
             //check if existing  basket quantity and current quantity exceeds the total quantity
@@ -90,7 +95,7 @@ class SalesBasketController extends Controller
                 [
                     'quantity' => $new_quantity,
                     'wacc' => $wacc,
-                    'sales_amount' => $sales_amount,
+                    'sell_price' => $sell_price,
                     'last_modified_by' => Auth::id(),
                     'basket_date' => Carbon::now(),
                 ]
@@ -122,7 +127,13 @@ class SalesBasketController extends Controller
         $record->shareholder_id = $request->shareholder_id;
         $record->quantity = $request->quantity;
         $record->wacc = $request->wacc;
-        $record->sales_amount = $request->sales_amount;
+        $record->broker_commission = $request->broker;                                
+        $record->sebon_commission = $request->sebon;                                        
+        $record->capital_gain_tax = $request->cgt;
+        $record->dp_amount =$this->dp;
+        $record->net_receivable = $request->net_receivable - $this->dp;
+        $record->sell_price = $request->sell_price;
+        $record->cost_price = $request->cost_price;
         $record->last_modified_by = Auth::id();
         $record->basket_date = Carbon::now();
         $record->save();

@@ -19,9 +19,15 @@ class CreateSalesBasketTable extends Migration
             $table->foreignId('stock_id')->constrained('stocks')->onDelete('cascade');
             $table->datetime('basket_date')->nullable();
             $table->integer('quantity');
-            $table->integer('tenant_id')->index();
             $table->float('wacc', 8, 2)->nullable();
-            $table->float('sales_amount', 12, 2)->nullable();
+            $table->float('sebon_commission', 8, 2)->nullable();
+            $table->float('broker_commission', 8, 2)->nullable();
+            $table->integer('dp_amount')->default(25);
+            $table->float('capital_gain_tax', 8, 2)->nullable();
+            $table->float('cost_price', 14, 2)->nullable();
+            $table->float('sell_price', 14, 2)->nullable();
+            $table->float('net_receivable', 14, 2)->nullable();
+            $table->integer('tenant_id')->index();
             $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });

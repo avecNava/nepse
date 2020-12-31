@@ -121,6 +121,8 @@ Route::post('basket/update',[SalesBasketController::class,'update']);
 Route::post('basket/delete',[SalesBasketController::class,'delete']);
 Route::get('basket/{username}/{id?}',[SalesBasketController::class,'view']);
 
+Route::post('sales/store',[SalesController::class,'store']);
+
 Route::get('guidelines', [HomeController::class, 'guideline']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);

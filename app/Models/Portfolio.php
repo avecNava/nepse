@@ -88,6 +88,7 @@ class Portfolio extends Model
             $portfolio->broker_no = $request->broker;
             $portfolio->offer_id = $request->offer;
             $portfolio->purchase_date = $request->purchase_date;
+            $portfolio->wacc_updated_at = Carbon::now();
             $portfolio->last_modified_by = Auth::id();
             $portfolio->save();         //returns true on success
             
@@ -127,6 +128,7 @@ class Portfolio extends Model
                 $portfolio->receipt_number = $request->receipt_number;
                 $portfolio->broker_no = $request->broker;
                 $portfolio->offer_id = $request->offer;
+                $portfolio->wacc_updated_at = Carbon::now();
                 $portfolio->purchase_date = $request->purchase_date ? $request->purchase_date : Carbon::now();
                 $portfolio->last_modified_by = Auth::id();
                 $portfolio->save();
@@ -223,6 +225,30 @@ class Portfolio extends Model
                 $item->stock_id
             );
         });
+    }
+
+    public static function calculateWACC(int $shareholder, int $stock)
+    {
+        
+        $portfolios = Portfolio::where('shareholder_id', $shareholder)
+                    ->where('stock_id', $stock)->get();
+        
+        if(!empty($portfolios)){
+
+            $investment = $portfolios->sum(function($item){
+                return $item->quantity * $item->effective_rate;
+            });
+
+            $quantity = $portfolios->sum('quantity');
+
+            if($quantity>0)
+                return round($investment / $quantity, 2);
+            else {
+                return 0;
+            }
+        }
+        
+        return 0;
     }
 
 }

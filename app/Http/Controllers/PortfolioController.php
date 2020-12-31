@@ -226,7 +226,8 @@ class PortfolioController extends Controller
         $result = Portfolio::updatePortfolio($request);
 
         //CALCULATE total_quantity and wacc_rate ; update in summary table
-        $data = $portfolio = Portfolio::find($request->id);        
+        
+        $data = $portfolio = Portfolio::find($request->id);  
         PortfolioSummary::updateCascadePortfoliSummaries($data->shareholder_id, $data->stock_id);
 
         $result = $result->getData();
