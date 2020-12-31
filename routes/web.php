@@ -28,7 +28,7 @@ Auth::routes([
 ]);
     
     
-// Auth::loginUsingId(38);
+Auth::loginUsingId(1);
 
 Route::get('test', function(Request $request){
 
@@ -118,7 +118,7 @@ Route::get('basket',[SalesBasketController::class,'view']);
 Route::get('basket/add',[SalesBasketController::class,'create']);
 Route::post('basket/store',[SalesBasketController::class,'store']);
 Route::post('basket/update',[SalesBasketController::class,'update']);
-Route::get('basket/delete/{id}',[SalesBasketController::class,'delete']);
+Route::post('basket/delete',[SalesBasketController::class,'delete']);
 Route::get('basket/{username}/{id?}',[SalesBasketController::class,'view']);
 
 Route::get('guidelines', [HomeController::class, 'guideline']);

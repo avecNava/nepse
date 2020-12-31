@@ -14,6 +14,11 @@ class SalesBasket extends Model
     protected $table = 'sales_basket';
     protected $guarded = [];
 
+    // public function portfolio()
+    // {
+    //     return $this->hasMany('App\Models\PortfolioSummary', 'stock_id','stock_id');
+    // }
+    
     public function shareholder()
     {
         return $this->belongsTo('App\Models\Shareholder', 'shareholder_id');

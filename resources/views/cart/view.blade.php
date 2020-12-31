@@ -54,7 +54,7 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        padding: 30px 15px;
+        padding: 5px;
         background: var(--color-black-light95);
         border-radius: 5px;
     }
@@ -77,15 +77,33 @@
         font-size: 15px;
         text-align: right;
     }
-    article.summary {
-        margin: 25px 0;
+    td.symbol {
+        min-width: 100px;
     }
 
-    article.summary th {
-        font-weight: bold;
-        text-align: right;
-        background:unset;
+    article.summary main {
+        display: flex;
+        justify-content: space-around;
     }
+    article.summary .block>label {
+        display: inline-block;
+        width: 150px;
+        font-weight: bold;
+        padding: 5px;
+    }
+    article.summary header{
+        margin: 25px 0;
+    }
+    article.summary footer {
+        text-align: right;
+        margin: 25px 0;
+    }
+    article.summary h2 {
+        background: beige;
+        padding: 10px;
+        text-align: center;
+    }
+    
     article.summary input {
         width: 130px;
         background: #f7f7f7;
@@ -94,23 +112,13 @@
         height: 1.3em;
         font-family: 'Cutive';
     }
-    article.summary tr:nth-child(odd),
-    article.summary tr:nth-child(even) {
-        background: unset;
-    }  
-    article.summary h2 {
-        text-align: center;
-    }
-        td.symbol {
-        min-width: 100px;
+    input#net_payable {
+        outline: 2px solid #FF9800;
+        font-weight: bold;
     }
 </style>
 
 <div id="loading-message" style="display:none">Working... Please wait...</div>
-
-<section class="message">
-    <div id="sell_message"></div> 
-</section>
 
 <section id="basket">
 
@@ -135,8 +143,12 @@
 
                 @if(count($basket)<=0)
                     
-                    <div class="message error">
-                        The cart is empty.
+                    <div style="text-align:center">
+                        <br>
+                        <br>
+                        <br>    
+                        <h2 class="message error">The cart is empty.<h2>
+                        <h3 class="message success">💡 You can to to <strong>Portfolio details</strong> and add items to the cart.</h3>
                     </div>
 
                 @else
@@ -149,17 +161,22 @@
                                 @php
                                     $data = $basket->first();
                                 @endphp
-                                <th colspan="10" class="info">
-                                    <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                                    <div class="notification">
-                                        @if(count($basket)>0)
-                                            ({{count($basket)}} entries)
-                                        @endif
-                                    </div> 
+                                <th colspan="11" class="info">
+                                    <div style="display:flex;justify-content:flex-start;">
+                                        <div>
+                                            <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+                                            <div class="notification">
+                                                @if(count($basket)>0)
+                                                ({{count($basket)}} entries)
+                                                @endif
+                                            </div> 
+                                        </div>
+                                        <div id="sell_message" style="margin-left:15px;align-self:center"></div>
+                                    </div>
                                 </th>
-                                <th colspan="4" class="info small-buttons" style="text-align:right">
-                                    <button id="edit" onClick="updateBasket()">✔</button>
-                                    <button id="delete" onClick="deleteBasket()">❌</button>
+                                <th colspan="2" class="info icon-buttons" style="text-align:right">
+                                    <button id="edit" onClick="updateBasket()" title="update records">💾</button>
+                                    <button id="delete" onClick="deleteBasket()" title="delete records">❌</button>
                                 </th>
                             </tr>
                             <tr>
@@ -208,8 +225,10 @@
                             <td class="symbol">
                                 <input type="checkbox" name="s_id" 
                                     id="chk-{{ $row->id }}" 
+                                    data-id="{{ $row->id }}" 
                                     data-stock="{{$row->share->id}}" 
-                                    data-user="{{$row->shareholder->id}}">
+                                    data-user="{{$row->shareholder->id}}"
+                                    data-user-symbol="{{$row->shareholder->first_name}}-{{$row->share->symbol}}">
                                     <label for="chk-{{ $row->id }}">
                                         <abbr for="{{ $row->id }}" title="{{$row->share->id}}-{{ $row->share->security_name }}">
                                             {{ $row->share->symbol }}
@@ -224,7 +243,9 @@
                             </td>
                          
                             <td class="c_digit">
-                                <div name="investment" id="invest-{{$row->id}}">{{$investment}}</div>
+                                <!-- <input value="{{ number_format($investment) }}" type="text"> -->
+                                <div name="investment" id="invest-{{$row->id}}">{{ ($investment) }}
+                                </div>
                             </td>
                             
                             <td class="c_digit">
@@ -236,10 +257,10 @@
                             <td>
                                 <div class="c_change">
                                     <div class="gain_label">
-                                        <div>{{ $gain }}</div>
-                                        <div class="{{$gain_class}}">&nbsp;({{$gain_pc}}%)</div>
+                                        <div id="gain-{{ $row->id }}">{{ $gain }}</div>
+                                        <div id="g_per-{{ $row->id }}" class="{{$gain_class}}">&nbsp;({{$gain_pc}}%)</div>
                                     </div>
-                                    <div class="{{$gain_class}}_icon"></div>
+                                    <div id="g_img-{{ $row->id }}" class="{{$gain_class}}_icon"></div>
                                 </div>
                             </td>
                             <td class="c_digit"><div id="cgt-{{$row->id}}"></div></td>
@@ -251,26 +272,7 @@
                         </tr>
 
                         @endforeach  
-                        <tr>
-                            <td></td>
-                            <td colspan="2" class="c_digit"><strong>Grand total</strong></td>
-                            <td class="c_digit wide">
-                                <input class="grand-total" type="number" id="total_investment_amount" readonly>
-                            </td>
-                            <td></td>
-                            <td class="c_digit wide">
-                                <input class="grand-total" type="number" id="total_sales_amount" readonly>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td style="padding:5px 10px">
-                                <button class="focus">Sell</button>
-                            </td>
-                        </tr>          
+                        
                     </table>
                 
                 @endif
@@ -287,67 +289,56 @@
                 <h2>Summary</h2>
             </header>
             <main>
-                <table>
-                    <tr>
-                        <th>
-                            Total quantity
-                        </th>
-                        <td>
-                            <input type="number" name="total_quantity" id="total_quantity" readonly>
-                        </td>
-                        <th>
-                            Total share amount
-                        </th>
-                        <td>
-                            <input type="number" name="total_amount" id="total_amount" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            SEBON Commission
-                        </th>
-                        <td>
-                          <input type="number" name="sebon_commission" id="sebon_commission" readonly>
-                        </td>
-                        <th>
-                            Broker Commission
-                        </th>
-                        <td>
-                            <input type="number" name="borker_commission" id="borker_commission" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Net Gain
-                        </th>
-                        <td>
-                            <input type="number" name="net_gain" id="net_gain" readonly>
-                        </td>
-                        <th>
-                            Gain tax
-                        </th>
-                        <td>
-                            <input type="number" name="gain_tax" id="gain_tax" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            DP amount
-                        </th>
-                        <td>
-                            <input type="number" name="dp_amount" id="dp_amount" readonly>
-                        </td>
-                        <th>
-                            Net Payable amount
-                        </th>
-                        <td>
-                            <input type="number" name="net_payable" id="net_payable" readonly>
-                        </td>
-                    </tr>
-                </table>
+
+                <div class="col">
+                    <div class="block">
+                        <label for="total_quantity">Total quantity</label>
+                        <input type="text" name="total_quantity" id="total_quantity" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="total_investment">Total Investment</label>
+                        <input type="text" name="total_investment" id="total_investment" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="total_amount">Total sales </label>
+                        <input type="text" name="total_amount" id="total_amount" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="total_gain">Net Gain</label>
+                        <input type="text" name="total_gain" id="total_gain" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="total_gain_tax">Gain tax</label>
+                        <input type="text" name="total_gain_tax" id="total_gain_tax" readonly>
+                    </div>
+
+                </div>
+
+                <div class="col">
+
+                    <div class="block">
+                        <label for="total_sebon_comm">SEBON Commission</label>                
+                        <input type="text" name="total_sebon_comm" id="total_sebon_comm" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="total_broker_comm">Broker Commission</label>       
+                        <input type="text" name="total_broker_comm" id="total_broker_comm" readonly>
+                    </div>
+                    
+                    <div class="block">
+                        <label for="dp_amount">DP amount</label>
+                        <input type="text" name="dp_amount" id="dp_amount" readonly>
+                    </div>
+                    <div class="block net_pay">
+                        <label for="net_payable">Net Receivable </label>
+                        <input type="text" name="net_payable" id="net_payable" readonly>
+                    </div>
+
+                </div>
+
             </main>
             <footer>
-
+                <button class="focus">Sell</button>
             </footer>
         </article>
         @endif

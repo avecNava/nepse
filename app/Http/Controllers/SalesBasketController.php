@@ -9,6 +9,7 @@ use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SalesBasketController extends Controller
 {
@@ -23,13 +24,13 @@ class SalesBasketController extends Controller
         $shareholders = Shareholder::getShareholderNames(Auth::id());
         
         $ids = [$id];
-
+        
         if(empty($id))
             $ids = Shareholder::getShareholderIds(Auth::id());
 
         $basket = SalesBasket::whereIn('shareholder_id', $ids )
             ->with(['share','shareholder','price:stock_id,close_price,last_updated_price'])
-            ->orderByDesc('basket_date')
+            ->orderByDesc('created_at')
             ->get();
         
         // $grouped = $basket->groupBy('shareholder_id');
@@ -134,7 +135,7 @@ class SalesBasketController extends Controller
     public function delete(Request $request)
     {   
         
-        if( empty($request->trans_id) ){
+        if( empty($request->ids) ){
 
             return response()->json([
                  'status' => 'error',

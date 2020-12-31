@@ -98,6 +98,16 @@ hr {
     text-align: right;
     padding: 5px 0;
 }
+.icon-buttons button {
+    border: 0px;
+    min-width: 45px !important;
+    font-size: 16px;
+    padding: 3px;
+    height: 2em;
+    box-shadow: 1px 1px 3px;
+    margin: 0;
+    margin-left: 5px;
+}
 .small-buttons button {
     padding: 0 10px;
     color: #607D8B;
@@ -438,7 +448,6 @@ section.c_score_cards article {
 }
 .decrease {
     color: #ff0000;
-    width: 20px;
 }
 .increase_icon {
     background-image: url(//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
