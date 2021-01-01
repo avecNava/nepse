@@ -53,8 +53,8 @@
     }
  
     button.sell {
-        background: #305063;
-        color: #fff;
+        background: #efefef;
+        color: black;
         font-weight: bold;
         text-transform: uppercase;
         font-size: 12px;
@@ -62,7 +62,8 @@
         align-items: center;
         min-width: 50px;
     }
-    li::marker {
+    
+    ul.shareholders li::marker {
         content: '🧑🏻';
     }
     ul.shareholders {
@@ -275,7 +276,7 @@
                             <td class="c_digit"><div id="net_amount-{{$row->id}}"></td>
                             <td>{{ $row->shareholder->first_name }}</td>
                             <td>
-                                <button class="sell" title="Mark as SOLD" onClick="fnSell({{$row->id}})"><span class="cart">🛒</span><span>Sell</span></button>
+                                <button class="sell" title="Mark as SOLD" onClick="fnSell({{$row->id}})"><span class="cart">🛒</span>&nbsp;<span>Sell</span></button>
                             </td>
                         </tr>
 

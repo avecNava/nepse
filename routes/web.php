@@ -118,8 +118,9 @@ Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't su
 Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 Route::get('portfolio/{username}/{id}', [PortfolioController::class, 'shareholderPortfolio']);
 
-Route::get('sales',[SalesController::class,'view']);
+Route::get('sales', [SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);
+Route::get('sales/{username}/{id?}',[SalesController::class,'view']);
 
 Route::get('basket',[SalesBasketController::class,'view']);
 Route::get('basket/add',[SalesBasketController::class,'create']);

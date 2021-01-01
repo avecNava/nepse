@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sales;
-use App\Models\SalesBasket;
+// use App\Models\SalesBasket;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
@@ -20,17 +20,30 @@ class SalesController extends Controller
         
     }
 
-    public function view()
+    public function view($username, $id = null)
     {
-        $shareholders = Shareholder::getShareholderIds(Auth::id());
-
-        $basket = SalesBasket::whereIn('shareholder_id', $shareholders )
-            ->with(['share','shareholder'])
-            ->orderByDesc('basket_date')
-            ->get();
+        $shareholders = Shareholder::getShareholderNames(Auth::id());
         
-        return view('cart.view',[
-                'basket' => $basket,
+        $user_ids = [ $id ];        
+        if(empty($id)){
+            $user_ids = $shareholders->map(function($item){
+                return ($item['id']);
+            });
+        }
+        
+        
+        $sales = Sales::whereIn('shareholder_id', $user_ids)
+                ->with(['shareholder','share:id,symbol,security_name'])
+                ->orderByDesc('sales_date')
+                ->get();
+        
+        // $sales = $sales->filter(function($item, $key){
+        //     return $item->share->symbol == $symbol;
+        // });
+
+        return view('sales.view',[
+                'sales' => $sales,
+                'shareholders' => $shareholders,
             ]
         ); 
 
@@ -54,8 +67,8 @@ class SalesController extends Controller
                 ->sum('quantity');
                 
             //check if sell_quantity > $available quantity
-            if($sell_quantity > $available_quantity)){
-                $msg = "Sell quantity '$sell_quantity' exceeds the available quantity '$available_quantity'");
+            if($sell_quantity > $available_quantity){
+                $msg = "Sell quantity '$sell_quantity' exceeds the available quantity '$available_quantity'";
                 $error = true;
             }
 

@@ -14,9 +14,19 @@ class Sales extends Model
     use HasFactory, BelongsToTenant;
     protected $guarded = [];
 
+    public function shareholder()
+    {
+        return $this->belongsTo('App\Models\Shareholder', 'shareholder_id');
+    }
+
     public function share()
     {
-        return $this->belongsTo(Stock::class, 'stock_id');
+        return $this->belongsTo('App\Models\Stock', 'stock_id');
+    }
+    
+    public function price()
+    {
+        return $this->belongsTo('App\Models\StockPrice', 'stock_id','stock_id')->where('latest', true);
     }
 
      /**
