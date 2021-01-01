@@ -1,102 +1,25 @@
 function fnRefreshBasket(){
     const msg = document.querySelector('#sell_message');
-    msg.innerHTML ='Refreshing the basket ⌚ ... ';
+    // msg.innerHTML ='Refreshing the basket ⌚ ... ';
     url = `${window.location.origin}/basket`;
-    setTimeout(function(){ 
-        window.location.replace(url);
-    }, 2000);
+    // setTimeout(function(){ 
+    //     window.location.replace(url);
+    // }, 2000);
 }
 
-function __showMessage(message, error = false, temp = true, refresh=false){
+function __showMessage(message, error = false,  clear_message = false, refresh = false){
 
     const msg = document.querySelector('#sell_message');
-    
-    //which class to apply
-    if(error){
-        msg.classList.add('error');
-    }else{
-        msg.classList.add('success');        
-    }
     msg.innerHTML = message;
-
-    //reset message that are marked temp
-    if(temp){
-        setTimeout(function () {  
-            msg.innerHTML='';             
-        }, 1000 ); 
-    }
-
-    if(refresh){
-        setTimeout(function () {  
-            fnRefreshBasket();
-        }, 1000 );  
-   }
+    if(error){ msg.classList.add('error'); }else{ msg.classList.add('success'); }
+    //reset message that are marked clear_message
+    if(clear_message){ setTimeout(function () {  msg.innerHTML=''; }, 2000 ); }
+    if(refresh){ setTimeout(function () {   fnRefreshBasket(); }, 1000 ); }
 
 }
 
-function resetSellError(){
-    const msg = document.querySelector('#sell_message')
-    msg.classList.remove('error');
-    msg.classList.remove('success');
-    msg.innerHTML = '';
-}
 function parseString(input_str, delim=","){
     return input_str.replaceAll(delim, "");
-}
-
-function addToBasket(){
-
-    const ele = document.querySelector('#sell_quantity');
-    const shareholder_id = ele.dataset.shareholderId;
-    const stock_id = ele.dataset.stockId;
-    const sell_quantity = ele.value;
-
-    if(!sell_quantity){
-        __showMessage('Enter sell quantity', false);
-        return false;
-    }
-
-    const quantity_str = document.getElementById('total_quantity');
-    const total_quantity = parseString(quantity_str.innerText);
-    
-    const diff = parseInt(total_quantity) - parseInt(sell_quantity);
-
-    if( parseInt(sell_quantity) >   (total_quantity)){
-        __showMessage('Sell quantity can not exceed the total quantity', false);
-        return false;
-    }
-
-    const wacc_str = document.getElementById('wacc');
-    const wacc = parseString(wacc_str.innerText);
-    if(!wacc){
-        __showMessage('Weighted average not found', false);
-        return false;
-    }
-
-    resetSellError();
-    
-    saveToBasket(sell_quantity, shareholder_id, stock_id);
-}
-
-function saveToBasket(sell_quantity, shareholder_id, stock_id){
-    
-    showLoadingMessage();
-    const url = `${window.location.origin}/basket/store`;
-    let _token = document.getElementsByName('_token')[0].value;
-    let request = new XMLHttpRequest();
-    request.open('POST', url, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.onload = function() {
-        const data = JSON.parse(this.response);
-        if (this.status >= 200 && this.status < 400) {
-            __showMessage(data.message);
-        }
-        else{
-            __showMessage(data.message, false);            
-        }
-        hideLoadingMessage();
-    }
-    request.send(`_token=${_token}&stock_id=${stock_id}&shareholder_id=${shareholder_id}&quantity=${sell_quantity}`);
 }
 
 /**
@@ -159,14 +82,17 @@ function fnPOST(action_url, querystring){
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onload = function() {
 
+        hideLoadingMessage();
         const data = JSON.parse(this.response);
+
         if (this.status >= 200 && this.status < 400) {
-            __showMessage(data.message,false,false,true);
+            __showMessage(data.message,false,true);
+            return true;
         }
         else{
-            __showMessage(data.message, false);
+            __showMessage(data.message, true, false);
+            return false;
         }
-        hideLoadingMessage();
     }
 
     request.send(querystring);
@@ -185,7 +111,7 @@ function updateBasket(){
     });
 
     if(!selected.length){
-        __showMessage('🍺 Please select some records', true);
+        __showMessage('🍺 Please select some records', true, true);
         return false;
     }
     
@@ -208,17 +134,17 @@ function updateBasket(){
 
         let _token = document.getElementsByName('_token')[0].value;
         const querystring = `_token=${_token}
-                                &record_id=${id}
-                                &stock_id=${stock_id}
-                                &shareholder_id=${shareholder_id}
-                                &quantity=${quantity}
-                                &wacc=${wacc}
-                                &broker=${broker_comm}
-                                &sebon=${sebon_comm}
-                                &cgt=${cgt}
-                                &cost_price=${cost_price}
-                                &sell_price=${sell_price}
-                                &net_receivable=${net_receivable}`;
+            &record_id=${id}
+            &stock_id=${stock_id}
+            &shareholder_id=${shareholder_id}
+            &quantity=${quantity}
+            &wacc=${wacc}
+            &broker=${broker_comm}
+            &sebon=${sebon_comm}
+            &cgt=${cgt}
+            &cost_price=${cost_price}
+            &sell_price=${sell_price}
+            &net_receivable=${net_receivable}`;
         
         fnPOST(url, querystring);
         
@@ -257,7 +183,9 @@ function fnSell(id){
             &sell_price=${sell_price}
             &net_receivable=${net_receivable}`;
 
-        fnPOST(url, querystring);
+        if(fnPOST(url, querystring)){
+            fnRefreshBasket();
+        }
 
     }
 }
@@ -301,8 +229,8 @@ function deleteBasket(){
                 else{    
                     __showMessage(data.message, true);    
                 }
-                hideLoadingMessage();
-
+                fnRefreshBasket();
+                // hideLoadingMessage();
             }
         }
 

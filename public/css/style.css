@@ -583,13 +583,6 @@ section.sales summary {
     width: 200px;
     display: inline-block;
 }
-.item.basket {
-    width: 350px;
-    padding: 7px;
-    background: #ff000014;
-    border-radius: 5px;
-}
-.basket h3 {margin:2px}
 .item input {
     width: 80px;
     color:red;
@@ -602,8 +595,26 @@ section.sales summary {
     display: flex;
     margin: 10px 0;
     line-height: 35px;
+}
+.info_band { 
     padding: 20px;
     background: beige;
+}
+.item.basket {
+    padding: 0 10px;
+    background: #ededd7;
+    border-radius: 5px;
+}
+item.basket header {
+    display: flex;
+    align-items: center;
+}
+.item.basket header {
+    display: flex;
+    align-items: center;
+}
+.item.basket h2 {
+    margin-right: 30px;
 }
 .value {
     width: 200px;

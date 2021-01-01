@@ -23,6 +23,7 @@ return [
     'facebook' => env('CONTACT_FACEBOOK', 'nepse.today'),
     'log' => env('APP_LOG', 'daily'),           //or single
     'log_max_files' => 30,
+    'buy-sell-limit' => env('BUY_SELL_LIMIT', 10),
 
 
 

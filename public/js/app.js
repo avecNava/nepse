@@ -34,6 +34,10 @@ function hideForm(form_id) {
 function showMessage(msg) {
     document.getElementById('message').innerHTML=msg;
 }
+function showMessage(element, msg) {
+    document.getElementById(element).innerHTML=msg;
+    document.getElementById(element).classList.add('error');
+}
 
 function clearMessage() {
     document.getElementById('message').innerHTML='';

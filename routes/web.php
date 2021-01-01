@@ -32,9 +32,12 @@ Auth::loginUsingId(1);
 
 Route::get('test', function(Request $request){
 
+    $portfolio = PortfolioSummary::where('shareholder_id', 1)->where('stock_id', 104)->first();
+    
+    $portfolio->quantity = 200;
+    $portfolio->save();                
+    return $portfolio;
 
-   $t = PortfolioSummary::where('tenant_id', Auth::id())->count('id');
-   return $t;
     
     // $agent = new Agent();
 

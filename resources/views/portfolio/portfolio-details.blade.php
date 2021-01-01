@@ -52,115 +52,123 @@
             if($change > 0) { $change_class='increase'; } else if($change < 0) { $change_class='decrease'; }
             if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
         @endphp
-            
-        <section class="info_band_top apart">
+        
+        <section class="info_band">
 
-                <div class="block-left">
+            <div class="info_band_top apart">
 
-                    <section class="shareholder nav">
-                        <h2>
-                            <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
-                                {{ $info['shareholder'] }}
-                            </a>
-                        </h2>
-                    </section>
+                    <div class="block-left">
 
-                    <div class="stock">
-                        <h2 class='highlight'>{{$info['security_name']}}</h2>
-                        <h3>{{$info['sector']}}</h3>
-                        <div class="item">
-                            <label>Total quantity </label>
-                            <span class="value" id="total_quantity">
-                                {{number_format($qty)}}
-                            </span>
+                        <section class="shareholder nav">
+                            <h2>
+                                <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
+                                    {{ $info['shareholder'] }}
+                                </a>
+                            </h2>
+                        </section>
+
+                        <div class="stock">
+                            <h2 class='highlight'>{{$info['security_name']}}</h2>
+                            <h3>{{$info['sector']}}</h3>
+                            <div class="item">
+                                <label>Total quantity </label>
+                                <span class="value" data-quantity="{{$qty}}" id="total_quantity">
+                                    {{number_format($qty)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>WACC (Weighted avg.) </label>
+                                <span class="value" id="wacc" data-rate="{{$wacc}}">
+                                    {{number_format($wacc,2)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Last price (LTP) </label>
+                                <span class="value">
+                                    {{number_format($ltp)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Previous day price </label>
+                                <span class="value">
+                                    {{number_format($ltp_prev)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Change </label>
+                                <span class="value {{$change_class}}">
+                                    {{number_format($change)}} ({{number_format($change_per,2)}}%)
+                                </span>
+                            </div>  
                         </div>
-                        <div class="item">
-                            <label>WACC (Weighted avg.) </label>
-                            <span class="value" id="wacc">
-                                {{number_format($wacc,2)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Last price (LTP) </label>
-                            <span class="value">
-                                {{number_format($ltp)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Previous day price </label>
-                            <span class="value">
-                                {{number_format($ltp_prev)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Change </label>
-                            <span class="value {{$change_class}}">
-                                {{number_format($change)}} ({{number_format($change_per,2)}}%)
-                            </span>
-                        </div>  
+
                     </div>
 
-                </div>
+                    <div class="block-right">
+                    
+                        <div class="stock">
+                            <div class="item">
+                                <label>Total investment </label>
+                                <span class="value">
+                                    {{ number_format($investment)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Current worth </label>
+                                <span class="value">
+                                    {{number_format($worth)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Gain </label>
+                                <span class="value {{$gain_class}}">
+                                {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
+                                </span>
+                            </div>  
+                            <div class="item">
+                                <label>High </label>
+                                <span class="value"> 
+                                    {{number_format($price_high)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>Low </label>
+                                <span class="value"> 
+                                    {{number_format($price_low)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>52 weeks high</label>
+                                <span class="value">
+                                    {{number_format($price_high_52)}}
+                                </span>
+                            </div>
+                            <div class="item">
+                                <label>52 weeks low</label>
+                                <span class="value">
+                                    {{number_format($price_low_52)}}
+                                </span>
+                            </div>
+                        </div>
 
-                <div class="block-right">
-                   
-                    <div class="stock">
-                        <div class="item">
-                            <label>Total investment </label>
-                            <span class="value">
-                                {{ number_format($investment)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Current worth </label>
-                            <span class="value">
-                                {{number_format($worth)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Gain </label>
-                            <span class="value {{$gain_class}}">
-                            {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
-                            </span>
-                        </div>  
-                        <div class="item">
-                            <label>High </label>
-                            <span class="value"> 
-                                {{number_format($price_high)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>Low </label>
-                            <span class="value"> 
-                                {{number_format($price_low)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>52 weeks high</label>
-                            <span class="value">
-                                {{number_format($price_high_52)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>52 weeks low</label>
-                            <span class="value">
-                                {{number_format($price_low_52)}}
-                            </span>
-                        </div>
-                        <div class="item basket">
-                            <h3>Sales</h3>
-                            <label for="sell_quantity">Quantity &nbsp;&nbsp;
-                                <input type="number" name="sell_quantity" id="sell_quantity" 
-                                data-shareholder-id="{{  $info['shareholder_id'] }}"
-                                data-stock-id="{{  $info['stock_id'] }}">
-                            </label>
-                            <button onClick="addToBasket()">Add to basket</button>
-                            @csrf()
-                            <div id="sell_message"></div>
-                        </div>
                     </div>
 
+            </div>
+            <div class="item basket">
+                <header>
+                    <h2>Sales</h2>
+                    @csrf()
+                    <div id="basket_message"></div>
+                </header>
+                <div>
+                    <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                        <input type="number" name="sell_quantity" id="sell_quantity" 
+                        data-shareholder-id="{{  $info['shareholder_id'] }}"
+                        data-stock-id="{{  $info['stock_id'] }}">
+                    </label>
+                    <button onClick="addToBasket()">Add to basket</button>
                 </div>
+            </div>
 
         </section>
 
@@ -447,7 +455,7 @@
 
     </div> <!-- end of portfolio_container -->
 
-    <script>
+<script>
 
         // handle New button clicked
         document.getElementById("new").addEventListener("click", function() {
@@ -596,6 +604,65 @@
             document.getElementById('row-'+id).classList.add('hide');
         }
 
-    </script>
-<script src="{{ URL::to('js/basket.js') }}"></script>
+        function resetSellError(){
+            const msg = document.querySelector('#basket_message')
+            msg.classList.remove('error');
+            msg.classList.remove('success');
+            msg.innerHTML = '';
+        }
+        
+        function saveToBasket(sell_quantity, shareholder_id, stock_id){
+            
+            showLoadingMessage();
+            const url = `${window.location.origin}/basket/store`;
+            let _token = document.getElementsByName('_token')[0].value;
+            let request = new XMLHttpRequest();
+            request.open('POST', url, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function() {
+                const data = JSON.parse(this.response);
+                if (this.status >= 200 && this.status < 400) {
+                    showMessage('basket_message', data.message);
+                }
+                else{
+                    showMessage('basket_message', data.message);            
+                }
+                hideLoadingMessage();
+            }
+            request.send(`_token=${_token}&stock_id=${stock_id}&shareholder_id=${shareholder_id}&quantity=${sell_quantity}`);
+        }
+
+        function addToBasket(){
+
+            const ele = document.querySelector('#sell_quantity');
+            const shareholder_id = ele.dataset.shareholderId;
+            const stock_id = ele.dataset.stockId;
+            const sell_quantity = ele.value;
+
+            if(!sell_quantity){
+                showMessage('basket_message', 'Enter sell quantity');
+                return false;
+            }
+
+            const total_quantity = document.querySelector('#total_quantity').dataset.quantity;
+
+            const diff = parseInt(total_quantity) - parseInt(sell_quantity);
+
+            if( parseInt(sell_quantity) >  (total_quantity)){
+                showMessage('basket_message',`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`);
+                return false;
+            }
+
+           const wacc = document.querySelector('#wacc').dataset.rate;
+            if(!wacc){
+                showMessage('basket_message','Weighted average not updated for this stock.');
+                return false;
+            }
+
+            resetSellError();
+            saveToBasket(sell_quantity, shareholder_id, stock_id);
+
+        }
+
+</script>
 @endsection

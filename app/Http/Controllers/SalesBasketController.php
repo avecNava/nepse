@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sales;
 use App\Models\SalesBasket;
+use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
 use Carbon\Carbon;
@@ -51,41 +52,64 @@ class SalesBasketController extends Controller
     public function store(Request $request)
     {
         try {
-
-            $shareholder = $request->shareholder_id;
+            
+            $error = false;
             $stock = $request->stock_id;
+            $basket_quantity = $request->quantity;
+            $shareholder = $request->shareholder_id;
 
-            $quantity = $request->quantity;
+            //check if the sales is within limit
+            if( $basket_quantity < config('app.buy-sell-limit')){
+                $msg = 'Minimim Sell limit is ' . config('app.buy-sell-limit');
+                $error = true;
+            }
             
-            //check existing quantity
-            $total_quantity =  PortfolioSummary::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->sum('quantity');
-            
-            $wacc =  PortfolioSummary::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->average('wacc');
-            
-            $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder, $stock){
-                                return $q->where('shareholder_id', $shareholder)
-                                    ->where('stock_id', $stock);
-                                })
-                                ->sum('quantity');
-            
-            $new_quantity = $existing_basket_quantity + $quantity;
-            $sell_price =  round($wacc * $quantity, 2);
+            if(! $error ) {
 
-            $exceeded = false;
-            //check if existing  basket quantity and current quantity exceeds the total quantity
-            if($new_quantity > $total_quantity){
-                $new_quantity = $existing_basket_quantity;
-                $exceeded = true;                
+                // check if the stock has wacc updated in portfolio table, stocks without wacc can't be sold
+                //when wacc is updated, it'll update the portfolio summary table too
+                $available_quantity = Portfolio::where('shareholder_id', $shareholder)
+                    ->whereNotNull('wacc_updated_at')
+                    ->where('stock_id', $stock)
+                    ->sum('quantity');
+                if($available_quantity < 1){
+                    $error = true;
+                    $msg = 'Weighted average (WACC) has not been updated for the stock';
+                }
             }
 
+            if(! $error ) {
+                //get wacc from portfolio summary
+                $wacc =  PortfolioSummary::where(function($q) use($shareholder, $stock){
+                        return $q->where('shareholder_id', $shareholder)
+                            ->where('stock_id', $stock);
+                        })
+                        ->average('wacc');
+                
+                $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder, $stock){
+                        return $q->where('shareholder_id', $shareholder)
+                            ->where('stock_id', $stock);
+                        })
+                        ->sum('quantity');
+                
+                $new_quantity = $existing_basket_quantity + $basket_quantity;
+                $sell_price =  round($wacc * $basket_quantity, 2);
+
+                //check if existing  basket quantity and current quantity exceeds the total quantity
+                if($new_quantity > $available_quantity){
+                    $msg = "Sum of current '$basket_quantity' and existing quantites '$existing_basket_quantity' in the basket exceeds total '$new_quantity'";  
+                    $error = true;
+                }
+            }
+            
+            //todo: update status code
+            if($error){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $msg,
+                ], 401);
+            }
+            
             //update or create the basket
             SalesBasket::updateOrCreate(
                 [
@@ -101,23 +125,20 @@ class SalesBasketController extends Controller
                 ]
             );
 
-            $message = "$quantity units added to the basket. <div class='basket_total'>Basket total : $new_quantity</div>";
-            if($exceeded){
-                $message = "Sum of current and existing quantites in the basket exceeds total quantity. Cart quantity updated to : $new_quantity";  
-            }
-            
+            $message = "$basket_quantity units added to the basket. <span class='basket_total'>Basket total : $new_quantity</span>";
+                return response()->json([
+                'status' => 'success',
+                'message' => $message,
+            ], 201);
             
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => $th->getMessage(),
+                'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
             ], 500);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => $message,
-        ], 201);
+        
     }
 
     public function update(Request $request)
