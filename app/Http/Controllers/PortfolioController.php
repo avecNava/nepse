@@ -21,13 +21,12 @@ use Illuminate\Support\Collection;
 use App\Services\UtilityService;
 
 
-
 class PortfolioController extends Controller
 {
-
-    public function __constructor()
+    
+    public function __construct()
     {
-        $this->middleware(['auth','verify']);
+        $this->middleware(['auth', 'verified']); 
     }
 
     public function shareholderPortfolio($username, $id)

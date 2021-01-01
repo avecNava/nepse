@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
-
-    public function addToBasket()
+    
+    public function __construct()
     {
-        
+        $this->middleware(['auth', 'verified']); 
     }
 
     public function view($username, $id = null)

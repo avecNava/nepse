@@ -66,7 +66,7 @@ btnEdit.addEventListener("click", function() {
   let request = new XMLHttpRequest();
   request.open('GET', '/shareholder/'+id, true);
 
-  request.onload = function(ele_success, ele_loading) {
+  request.onload = function() {
       if (this.status >= 200 && this.status < 400) {
           $data = JSON.parse(this.response);
           updateInputFields($data);

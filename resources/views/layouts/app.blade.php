@@ -79,8 +79,40 @@
             </div>
         </main>
 
-        <footer>
-            <div class="wlnz-footer">
+        <footer class="page-footer">
+        
+            <!-- <section class="links" style="display:none">
+
+                <div class="contact-us nav">          
+                    <h3>Contact us</h3>
+                    <ul>
+                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
+                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>
+                    </ul>
+                </div>
+
+                <div class="sales nav">
+                    <h3>Sales</h3>
+                    <ul>
+                        <li><a href="{{ url('sales') }}">Sales</a></li>
+                        <li><a href="{{ url('basket') }}">Cart</a></li>
+                    </ul>
+                </div>
+
+                <div class="portfolio nav">
+                    <h3>Portfolio</h3>
+                    <ul>
+                        <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                        <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
+                        <li><a href="{{ url('/import/share') }}">Import</a></li>
+                        <li><a href="{{ url('/import/meroshare') }}">Import (MeroShare)</a></li>
+                        <li><a href="{{ url('/shareholders') }}">Shareholders</a></li>
+                    </ul>
+                </div>
+
+            </section> -->
+            
+            <div class="copyright">
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
         </footer>

@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.app')
 
 @section('title')
     Your stock portfolio management application over the browser
@@ -12,10 +12,10 @@
     <div id="loading-message" style="display:none">Importing... Please wait...</div>
     <h1>Contact us</h1>
     <section class="contact-us">
-        
-        <p> <strong>Thanks for showing up here.</strong> </p>
-        <p>Please use the form below to contact us, submit complaints, suggestions</p>
-        
+        <div class="description">
+            <p> <strong>Thanks for showing up here.</strong> </p>
+            <p>Please use the form below to contact us, submit complaints, suggestions</p>
+        </div>
         <div class="contact-us__form">
 
             <div id="message">            

@@ -30,7 +30,7 @@
 
                 <form method="POST" action="/shareholders">
 
-                    <div class="c_band">                    
+                    <div class="message">                    
 
                         @if(session()->has('message'))
                             <div class="message">
@@ -45,8 +45,6 @@
                         <div class="block-left">
                 
                             @csrf()
-                            <!-- @method('DELETE') -->
-
 
                             <div class="form-field">
                                 <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
@@ -64,7 +62,7 @@
 
                             <div class="form-field">
                                 <label for="email">Email</label>
-                                <input type="email" value="{{old('email')}}" name="email" id="email" required 
+                                <input type="email" value="{{old('email')}}" name="email" id="email" 
                                 class="@error('email') is-invalid @enderror" />
                             </div>
 

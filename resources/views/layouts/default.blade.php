@@ -49,13 +49,10 @@
                     <nav class="c-nav__list">
                         <ul class="navbar-nav">
                             <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="{{ url('/portfolio/new') }}">New</a></li>
-                            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                            <li><a href="{{ url('feedbacks') }}">Feedback</a></li>
+                            <li><a href="{{ url('portfolio/new') }}">New Portfolio</a></li>
+                            <li><a href="{{ url('import/share') }}">Import Share</a></li>
                             <li><a href="{{ url('sales') }}">Sales</a></li>
-                            <li><a href="{{ url('basket/add') }}">Plan Sales</a></li>
-                            <li><a href="{{ url('basket') }}">Cart</a></li>
-                            <li><a href="{{ url('import/share') }}">Import</a></li>
+                            <li><a href="{{ url('basket') }}">My Cart</a></li>
                             <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
                         </ul>
                     </nav>
@@ -146,77 +143,45 @@
         </main>
 
        
-        <footer class="page-footer" style="display:none">
+        <footer class="page-footer">
         
-            <div class="feedback">        
-                <h5>Feedbacks</h5>       
-                
-                If you have any feedbacks, suggestions or ideas, why not share with us ?
-                <div class="input-field">
-                    <textarea id="feedback" class="materialize-textarea"></textarea>                        
-                </div>                      
-                <button disabled type="submit" class="btn #8bc34a light-green" id="send-feedback">Send feedback</button>
-            </div>
-
             <section class="links">
 
-                <div class="articles">          
-                    <h5>Articles</h5>
+                <div class="contact-us nav">          
+                    <h3>Contact us</h3>
                     <ul>
-                        <li>
-                            <a href="article">Show article</a>
-                        </li>  
-                        <li>
-                            <a href="article/add">Add article</a>
-                        </li>  
+                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
+                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>
                     </ul>
                 </div>
 
-                <div class="links">
-                    <h5>Links</h5>
+                <div class="sales nav">
+                    <h3>Sales</h3>
                     <ul>
-                        <li>
-                            <a href="portfolio">Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#!Shareholder">Watchlist</a>
-                        </li>
-                        <li>
-                            <a href="#!Shareholder">Companies</a>
-                        </li>
-                        <li>
-                            <a href="main/stockprice">Market rate <span class="new_release">new</span></a>                      
-                        </li>  
+                        <li><a href="{{ url('sales') }}">Sales</a></li>
+                        <li><a href="{{ url('basket') }}">My Cart</a></li>
                     </ul>
                 </div>
 
-                <div class="accounts">
-                    <h5>Account</h5>
+                <div class="portfolio nav">
+                    <h3>Portfolio</h3>
                     <ul>
-                        <li>
-                        <a href="account/shareholder">Shareholder</a>
-                        </li>
-                        <li>
-                            <a href="account/sharegroup">Share group</a>
-                        </li>                          
-                        <li>
-                            <a href="account/change_password">Change password</a>
-                        </li>
-                        <li>
-                            <a href="account/logout">Log Out</a>
-                        </li>
+                        <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                        <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
+                        <li><a href="{{ url('/import/share') }}">Import</a></li>
+                        <li><a href="{{ url('/import/meroshare') }}">Import (MeroShare)</a></li>
+                        <li><a href="{{ url('/shareholders') }}">Shareholders</a></li>
                     </ul>
                 </div>
 
             </section>
-            <div>
+            <div class="copyright">
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
         </footer>
         
         <!-- <script src="{{asset('assets/js/shareholder.js')}}"></script> -->
         @yield('js')
-    
 
 </body>
 </html>

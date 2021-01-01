@@ -15,9 +15,10 @@ use Illuminate\Support\Str;
 class SalesBasketController extends Controller
 {
     protected $dp = 25;
-
-    public function __construct(){
-        // $this->dp = 25;
+    
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']); 
     }
 
     public function create()

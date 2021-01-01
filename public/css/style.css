@@ -58,6 +58,39 @@ abbr {
     line-height: 30px;
     margin: 30px 0;
 }
+.main__content footer {
+    padding: 10px 0;
+    text-align: right;
+    font-family: monospace;
+}
+footer.page-footer ul {
+    padding: 0;
+}
+footer.page-footer li {
+    list-style-type: none;
+}
+.portfolio.nav * {
+    text-align: right;
+}
+footer.page-footer .links .nav {
+    padding:0 50px;
+}
+footer.page-footer .links {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    background: #fafafa;
+    padding: 10px;
+}
+.contact-us .description {
+    background: #fafafa;
+    padding: 10px;
+}
+.copyright {
+    padding: 10px;
+    text-align: center;
+}
 .band-tall { height: 50px;}
 .no-border {border: none !important;}
 .txt_right {text-align:right;}
@@ -156,7 +189,7 @@ header.info {
     display: inline;
 }
 .info .notification {
-    display: inline-block;
+    align-self:center;
 }
 th.info {
     background: beige;
@@ -166,16 +199,16 @@ th.info {
 /* form with two columns */
 .two-col-form {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     margin: 20px 0;
 }
-.form_container {
+/* .form_container {
     background: #fafafa;
     margin: 20px 0;
     border: 1px solid #6b64a0;
     border-top-width: 0;
     border-radius: 5px;
-}
+} */
 
 /* .form-container  label:first-of-type { */
     
@@ -426,13 +459,13 @@ section.c_score_cards article {
     margin: 5px;
     color: #fff;
 }
-.a_portfolio .message {
+.main__content .message {
     padding-left: 10px;
 }
-.a_portfolio_main h1 {display: inline-block;}
-.a_portfolio_header {align-self: center; }
+.main__content_main h1 {display: inline-block;}
+.main__content_header {align-self: center; }
 
-.a_portfolio_main {
+.main__content_main {
     background: #b9b300;
     padding-top: 6px;
     border-radius: 5px;
@@ -551,7 +584,7 @@ section.sales summary {
 }
 
 /* portfolio-summary*/
-.a_portfolio h3 {
+.main__content h3 {
     display: inline-block;
     min-width: 200px;
     font-size: 18px;
@@ -559,13 +592,13 @@ section.sales summary {
     margin-left:20px;
 }
 
-.a_portfolio summary:focus {
+.main__content summary:focus {
     outline: none;
     background: beige;
 }
 
-.a_portfolio tr,
-.a_portfolio tr {
+.main__content tr,
+.main__content tr {
     height: 50px;
 }
 

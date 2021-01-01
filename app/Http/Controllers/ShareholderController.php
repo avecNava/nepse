@@ -7,11 +7,14 @@ use App\Models\Relation;
 use App\Models\Shareholder;
 use Illuminate\Support\Facades\Auth;
 
+
+
 class ShareholderController extends Controller
 {
+    
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']); 
     }
     
     public function index()
@@ -40,7 +43,7 @@ class ShareholderController extends Controller
         
         $shareholder = Shareholder::where('id', $id)->first();
         // dd($shareholder->toJson(JSON_PRETTY_PRINT));
-        return $shareholder->toJson();
+        return response()->json($shareholder);
     }
 
     public function create(Request $request)
@@ -49,7 +52,7 @@ class ShareholderController extends Controller
             'first_name' => 'required|max:25|min:3',
             'last_name' => 'required|max:25|min:3',
             'date_of_birth' => 'nullable|date',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'gender' => 'nullable|in:male,female,other',
             'relation' => 'required',
         ]);

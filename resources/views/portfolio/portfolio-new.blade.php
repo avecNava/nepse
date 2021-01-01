@@ -9,42 +9,43 @@
     <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">Add new Portfolio</h1>
+@endsection
+
 @section('content')
 
-    <section class="c_shareholders">
+    <section>
 
-        <header>
-            <h1 class="c_title">Add new Portfolio</h1>            
-        </header>
+        <header><h3>Enter the following details for the new Stock</h3></header>
 
         <main class="form_container">  
 
             <form method="POST" action="/portfolio/create">
-
-                <div class="c_band @if(session()->has('message')) c_band_success @endif">                    
-
-                    @if(session()->has('message'))
-                    <div class="message">
-                        {{ session()->get('message') }}
-                    </div>
-                    @endif     
-
-                    @if(session()->has('error'))
-                    <div class="message">
-                        {{ session()->get('error') }}
-                    </div>
-                    @endif                   
-
-                </div>          
-                                                                                                                                                        
-                <div class="c_portfolio_new">
-                    
+            
+            <div class="c_portfolio_new">
+ 
                     @csrf()
                     <input type="hidden" value="{{old('id')}}" name="id">  
                     
                     <div class="two-col-form">
 
                         <div class="block-left">
+
+                            <div class="message">
+                            @if(session()->has('message'))
+                            <div class="success">
+                                {{ session()->get('message') }}
+                            </div>
+                            @endif     
+
+                            @if(session()->has('error'))
+                            <div class="error">
+                                {{ session()->get('error') }}
+                            </div>
+                            @endif           
+
+                        </div>
 
                         <div class="fields form-field">
                                 <label for="shareholder" class="@error('shareholder') is-invalid @enderror" >Shareholder</label>

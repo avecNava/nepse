@@ -136,9 +136,9 @@
             <footer></footer>
         
         </section>
-
+        <div id="message" class="message error"></div>
         <article class="c_transaction_list">
-        
+            
             <header class="info">
 
                 <div class="c_band apart">
@@ -156,16 +156,15 @@
                                 }
                             }
                         @endphp
-
-
-                        <div id="message" class="message">
+                        
+                        <div class="notification">
                             @if(count($transactions)>0)
-                            <div class="notification">({{count($transactions)}} records)</div>
+                                ({{count($transactions)}} records)
                             @else
                                 No records
                             @endif
                         </div>
-
+                        
                     </div>
                     
                     <div class="c_band__components">

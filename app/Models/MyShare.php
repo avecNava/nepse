@@ -10,7 +10,7 @@ class MyShare extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
+    
     public function share()
     {
         //related model, foreign_key in current model (meroshare_transactions), related column in the related model

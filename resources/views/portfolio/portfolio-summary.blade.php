@@ -54,7 +54,7 @@
             
         @if( !empty($portfolio_summary) )
         
-        <section class="a_portfolio">
+        <section class="main__content">
         
             <header>
                 @if(count($portfolio_summary)>1)
@@ -128,13 +128,13 @@
                                 <div class="c_change">
                                     <div>
                                         <div>{{ number_format( $row['gain'] ) }} </div>
-                                        <span class={{ $row["gain_css"] }}>
+                                        <span class="{{ $row['gain_css'] }}">
                                             @if($row['gain_pc'])
                                                 {{ $row['gain_pc'] }}%
                                             @endif
                                         </span>
                                     </div>
-                                    <div class="{{ $row["gain_css"]  }}_icon"></div>
+                                    <div class="{{ $row['gain_css']  }}_icon"></div>
                                 </div>
 
                             </div>
@@ -153,7 +153,7 @@
             
             </main>
             
-            <footer><span class="c_info">Last transaction date : {{ $transaction_date }}</span></footer>
+            <footer><span class="c_info">Last transaction : <mark>{{ $transaction_date }}</mark></span></footer>
         
         </section>
             
