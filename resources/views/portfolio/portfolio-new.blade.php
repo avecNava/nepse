@@ -15,9 +15,22 @@
 
 @section('content')
 
+    <section id="top-nav">
+        <div class="label">Import shares in bulk</div>
+        <div class="links">
+            <div class="link">
+                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import</a>
+            </div>
+            <div class="link">
+                <a href="{{url('import/meroshare')}}" title="Import Share from MeroShare">Import from MeroShare</a>
+            </div>
+        </div>
+    </section>
     <section>
 
-        <header><h3>Enter the following details for the new Stock</h3></header>
+        <header>
+            <h3>Enter the following details for the new Stock</h3>
+        </header>
 
         <main class="form_container">  
 

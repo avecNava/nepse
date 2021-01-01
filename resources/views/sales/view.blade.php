@@ -46,7 +46,15 @@
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
-        
+        <section id="top-nav">
+            <div class="label">See what's inside the cart</div>
+            <div class="links">
+                <div class="link">
+                    <a href="{{url('basket')}}" title="See what's inside the cart">View Cart</a>
+                </div>
+            </div>
+        </section>
+
             <article id="shareholders">
 
             <header class="">
@@ -66,7 +74,7 @@
 
             </article>
                 
-            
+            <div id="message" style="margin-left:15px;align-self:center"></div>
             @if( !empty($sales) )
             <article class="sales_list">
          
@@ -85,15 +93,12 @@
                     $data = $sales->first();
                 @endphp
                 <div style="display:flex;justify-content:flex-start;">
-                    <div>
-                        <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                        <div class="notification">
-                            @if(count($sales)>0)
-                            ({{count($sales)}} entries)
-                            @endif
-                        </div> 
-                    </div>
-                    <div id="message" style="margin-left:15px;align-self:center"></div>
+                    <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+                    <div class="notification">
+                        @if(count($sales)>0)
+                        ({{count($sales)}} entries)
+                        @endif
+                    </div> 
                 </div>
                 </header>
 

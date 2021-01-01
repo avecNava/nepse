@@ -19,7 +19,7 @@ return [
     'signature-founder' => env('MAIL_SIGNATURE_FOUNDER', 'Admin'),
     'signature-title-founder' => env('MAIL_TITLE_FOUNDER', 'Founder'),
     'email' => env('CONTACT_EMAIL', 'nava.bogatee@gmail.com'),
-    'twitter' => env('CONTACT_TWITTER', 'avecNava'),
+    'twitter' => env('CONTACT_TWITTER', '@NepseToday'),
     'facebook' => env('CONTACT_FACEBOOK', 'nepse.today'),
     'log' => env('APP_LOG', 'daily'),           //or single
     'log_max_files' => 30,

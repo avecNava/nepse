@@ -63,26 +63,46 @@ abbr {
     text-align: right;
     font-family: monospace;
 }
-footer.page-footer ul {
-    padding: 0;
-}
-footer.page-footer li {
-    list-style-type: none;
-}
-.portfolio.nav * {
-    text-align: right;
-}
 footer.page-footer .links .nav {
-    padding:0 50px;
+    padding:0 40px;
 }
 footer.page-footer .links {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     background: #fafafa;
     padding: 10px;
 }
+footer.page-footer ul {
+    padding: 0;
+}
+footer.page-footer li {
+    list-style-type: none;
+    padding: 3px 0;
+}
+footer p {
+    font-size: 15px;
+}footer.flex p {
+    font-size: 15px;
+}
+footer.flex p.strong {
+    font-weight: bold;
+    width: 100px;
+}
+main.transactions td:last-child {
+    font-size: 13px;
+    text-align: right;
+}
+main.transactions td {
+    line-height: 25px;
+}
+.portfolio.nav ul {
+    margin: 0;
+}
+.portfolio.nav * {
+    text-align: right;
+}
+
 .contact-us .description {
     background: #fafafa;
     padding: 10px;
@@ -194,6 +214,26 @@ header.info {
 th.info {
     background: beige;
     padding: 5px 10px;
+}
+
+#top-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: bold;
+    margin: 10px 0;
+}
+section#top-nav .label {
+    padding: 0 10px;
+}
+#top-nav .links {
+    display: flex;
+}
+#top-nav .link {
+    padding: 10px 15px;
+    background: beige;
+    margin: 2px;
+    border-radius: 5px;
 }
 
 /* form with two columns */
@@ -389,11 +429,15 @@ nav.c-nav__list li {
 }
 /* end of layout */
 
-/*meroshare*/
-#import-shares-links {
-    font-size: 20px;
+/*share import*/
+#share-import-form main{
+    display: flex;
+    justify-content: space-around;
+}   
+#share-import-form .form {
+    background: #fafafa;
+    padding: 5px 10px;
 }
-
 .link_menu {
     font-size: 20px;
     font-weight: bold;
@@ -403,10 +447,6 @@ nav.c-nav__list li {
     justify-content: space-around;
     align-items: center;
 }
-#share-import-form{
-    display: flex;
-}    
-
 .c_instructions {
     flex-basis: 50%;
     margin-right: 20px;
@@ -423,20 +463,6 @@ nav.c-nav__list li {
     height: 2.6em;
 }
 
-.c_transaction_list td:last-child {
-    /* max-width: 250px; */
-    font-size: 12px;
-}
-
-.c_transaction_list td:first-child {
-    background-color: #d1d6691a;
-}
-.c_transaction_list td {
-    border-right: 1px solid #d6dcde7d;
-}
-.c_transaction_list article { padding: 10px 0;}
-
-/*end of meroshare*/
 
 /*portfolio css*/
 
@@ -720,12 +746,6 @@ item.basket header {
     display: flex;
     flex-direction: column;
 }
-
-article>div {
-    padding: 20px;
-    background: beige;
-    margin:10px 0;
-}   
 
 article p {
     margin: 10px 0;

@@ -24,178 +24,184 @@
 }
 </style>
 <div id="loading-message" style="display:none">Working... Please wait...</div>
+<section class="share_import__wrapper">
 
-<section id="import-my-share">
-
-    <section class="transaction-history">
-
-        <div class="import__header">
-            <h2 class="c_title">Import (Custom list)</h2>
+    <div class="import__header">
+        <h2 class="c_title">Import (Excel File)</h2>
+    </div>
+    
+    <section id="top-nav">
+        <div class="label">Import shares from MeroShare instead?</div>
+        <div class="links">
+            <div class="link">
+                <a href="{{url('import/meroshare')}}" title="Import share from MeroShare">Import Share (MeroShare)</a>
+            </div>
         </div>
- 
+    </section>
 
-        <section id="myshare">
+    <section id="share-import-form">
 
-            <header class="c_message">
+        <header class="c_message">
 
-            </header>
-            
-            <main id="share-import-form">
-               
-                <div class="c_instructions">
-                    <h3>Instructions : </h3>
-                    <ul>
-                        <li>
-                            Download the
-                            <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE EXCEL FILE</a>.
-                        </li>
-                        <li>Open and update the file with your stocks. <mark>Stock symbol, quantity and offering type are mandatory.</mark></li>
-                        <li>Use valid and standard names for stock symbol. Use only symbol not the full name.</li>
-                        <li>For offering types, ONLY USE THE CODES DEFINED IN THE DOWNLOADED FILE.</li>
-                        <li>Upload the updated file using the form below.</li>
-                        <li>Choose a shareholder. Use separate file for different shareholder.</li>
-                        <li>Click on Import.</li>
-                        <li>Once imported, you can save the stocks to your portfolio.</li>
-                    </ul>  
-                </div>
-               
-                <div>
-
-                    <h2>Import file</h2>
-
-                    <form method="POST" action="/import/share/store" enctype="multipart/form-data">
-                            <div class="form-field">
-                                <div class="c_btn">
-                                    <button type="submit">Import</button>
-                                    <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
-                                </div>
-                            </div>
-                            
-                            <div class="form-message">
-
-                                @if (\Session::has('success'))
-                                    <div class="message success">
-                                        {!! \Session::get('success') !!}
-                                    </div>
-                                    @endif
-
-                                    @if (\Session::has('error'))
-                                    <div class="message error">
-                                        <!-- {!! \Session::get('error') !!}</li> -->
-                                    </div>
-                                @endif
-                           
-
-                            @csrf()
-
-                            <div class="form-field">
-                                
-                                <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
-                                @error('file')
-                                    <div class="is-invalid">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                @if (\Session::has('error'))
-                                <div class="is-invalid">
-                                    {!! \Session::get('error') !!}</li>
-                                </div>
-                                @endif
-                                
-                            </div>
-
-                            <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                                <label for="shareholder"><strong>Shareholder</strong></label><br/>
-                                <select name="shareholder" id="shareholder" onChange="">
-                                    <option value="">Shareholder name</option>
-                                    @if (!empty($shareholders))
-                                        @foreach($shareholders as $member)
-                                            <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
-                                                {{ $member->first_name }} {{ $member->last_name }} 
-                                                @if (!empty($member->relation))
-                                                    ({{ $member->relation }})
-                                                @endif
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select> 
-
-                                @error('shareholder')
-                                    <div class="is-invalid">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                </div>
-            
-            </main>
-            <footer></footer>
+        </header>
         
-        </section>
-        <div id="message" class="message error"></div>
-        <article class="c_transaction_list">
+        <main>
+            <div class="c_instructions">
+                <h3>Instructions : </h3>
+                <ul>
+                    <li>
+                        Download the
+                        <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE EXCEL FILE</a>.
+                    </li>
+                    <li>Open and update the file with your stocks. <mark>Stock symbol, quantity and offering type are mandatory.</mark></li>
+                    <li>Use valid and standard names for stock symbol. Use only symbol not the full name.</li>
+                    <li>For offering types, ONLY USE THE CODES DEFINED IN THE DOWNLOADED FILE.</li>
+                    <li>Upload the updated file using the form below.</li>
+                    <li>Choose a shareholder. Use separate file for different shareholder.</li>
+                    <li>Click on Import.</li>
+                    <li>Once imported, you can save the stocks to your portfolio.</li>
+                </ul>  
+            </div>
             
-            <header class="info">
+            <div class="form">
 
-                <div class="c_band apart">
+                <h2>Import file</h2>
 
-                    <div id="info">
-                        
-                        @php
-                            $row = $transactions->first();
-                            if( !empty($row) ){
-
-                                $shareholder = $row->shareholder;
-                                
-                                if($shareholder){
-                                    echo "<h2 class='title'>$shareholder->first_name $shareholder->last_name</h2>";
-                                }
-                            }
-                        @endphp
-                        
-                        <div class="notification">
-                            @if(count($transactions)>0)
-                                ({{count($transactions)}} records)
-                            @else
-                                No records
-                            @endif
+                <form method="POST" action="/import/share/store" enctype="multipart/form-data">
+                        <div class="form-field">
+                            <div class="c_btn">
+                                <button type="submit">Import</button>
+                                <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
+                            </div>
                         </div>
                         
-                    </div>
-                    
-                    <div class="c_band__components">
-                    
-                        <div class="c_shareholder">
-                            <!-- <label for="shareholder">Shareholder name</label>    -->
-                            <select id="myshare-shareholder_filter" onChange="myShareShareholderRefresh()">
-                                <option value="">Choose a Shareholder</option>
+                        <div class="form-message">
+
+                            @if (\Session::has('success'))
+                                <div class="message success">
+                                    {!! \Session::get('success') !!}
+                                </div>
+                                @endif
+
+                                @if (\Session::has('error'))
+                                <div class="message error">
+                                    <!-- {!! \Session::get('error') !!}</li> -->
+                                </div>
+                            @endif
+                        
+
+                        @csrf()
+
+                        <div class="form-field">
+                            
+                            <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
+                            @error('file')
+                                <div class="is-invalid">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            @if (\Session::has('error'))
+                            <div class="is-invalid">
+                                {!! \Session::get('error') !!}</li>
+                            </div>
+                            @endif
+                            
+                        </div>
+
+                        <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
+                            <label for="shareholder"><strong>Shareholder</strong></label><br/>
+                            <select name="shareholder" id="shareholder" onChange="">
+                                <option value="">Shareholder name</option>
                                 @if (!empty($shareholders))
                                     @foreach($shareholders as $member)
-                                        <option value="{{ $member->id }}"
-                                        @if($shareholder_id == $member->id) SELECTED @endif>
-                                        {{ $member->first_name }} {{ $member->last_name }} 
+                                        <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
+                                            {{ $member->first_name }} {{ $member->last_name }} 
                                             @if (!empty($member->relation))
                                                 ({{ $member->relation }})
                                             @endif
                                         </option>
                                     @endforeach
                                 @endif
-                            </select>
+                            </select> 
+
+                            @error('shareholder')
+                                <div class="is-invalid">{{ $message }}</div>
+                            @enderror
+
                         </div>
-                        <div class="buttons">
-                            <button id="import-myshare-portfolio" onClick="importMyShareTransactions()">Save to Portfolio</button>
-                            <button id="delete-myshare" onClick="deleteMyShareTransactions()">Delete</button>
-                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        
+        </main>
+        <footer></footer>
+    
+    </section>
+
+    <div id="message" class="message error"></div>
+    <article>
+        
+        <header class="info">
+            <div class="c_band apart">
+
+                <div id="info">
+                    
+                    @php
+                        $row = $transactions->first();
+                        if( !empty($row) ){
+
+                            $shareholder = $row->shareholder;
+                            
+                            if($shareholder){
+                                echo "<h2 class='title'>$shareholder->first_name $shareholder->last_name</h2>";
+                            }
+                        }
+                    @endphp
+                    
+                    <div class="notification">
+                        @if(count($transactions)>0)
+                            ({{count($transactions)}} records)
+                        @else
+                            No records
+                        @endif
                     </div>
 
                 </div>
-            </header>
+                
+                <div class="c_band__components">
+                
+                    <div class="c_shareholder">
+                        <!-- <label for="shareholder">Shareholder name</label>    -->
+                        <select id="myshare-shareholder_filter" onChange="myShareShareholderRefresh()">
+                            <option value="">Choose a Shareholder</option>
+                            @if (!empty($shareholders))
+                                @foreach($shareholders as $member)
+                                    <option value="{{ $member->id }}"
+                                    @if($shareholder_id == $member->id) SELECTED @endif>
+                                    {{ $member->first_name }} {{ $member->last_name }} 
+                                        @if (!empty($member->relation))
+                                            ({{ $member->relation }})
+                                        @endif
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
 
-            <main>
+                    <div class="buttons">
+                        <button id="import-myshare-portfolio" onClick="importMyShareTransactions()">Save to Portfolio</button>
+                        <button id="delete-myshare" onClick="deleteMyShareTransactions()">Delete</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </header>
+
+        <main class="transactions">
             <table>
                 <tr>
                     <th style="text-align:left"><label for="select_all">
@@ -222,49 +228,41 @@
                         $security_name = $trans->share->security_name;
                         $stock_id = $trans->share->id;
                     }
-                   
+                
                 @endphp
 
-                    <tr>
-                        
-                        <td>
-                            @if ( !empty($stock_id) )
-                                <input type="checkbox" name="t_id" id="{{ $trans->id }}">
-                            @endif
-                            &nbsp;
-                            <label for="{{ $trans->id }}" title="{{ $security_name }}">
-                                {{ $trans->symbol }}
-                            </label>
-                        </td>
+                <tr>
+                    
+                    <td>
+                        @if ( !empty($stock_id) )
+                            <input type="checkbox" name="t_id" id="{{ $trans->id }}">
+                        @endif
+                        &nbsp;
+                        <label for="{{ $trans->id }}" title="{{ $security_name }}">
+                            {{ $trans->symbol }}
+                        </label>
+                    </td>
 
-                        <!-- <td>{{ $stock_id }}</td> -->
-                        <td class="c_digit">{{ $trans->quantity }}</td>
-                        <td class="c_digit">{{ $trans->unit_cost }}</td>
-                        <td class="c_digit">{{ number_format($trans->effective_rate, 2) }}</td>
-                        <td class="c_digit">{{ number_format($trans->effective_rate * $trans->quantity, 1) }}</td>
-                        <td class="c_digit">{{ $trans->offer_code }}</td>
-                        <td class="c_digit">{{ $trans->purchase_date }}</td>
-                        <td>
-                            @if( !empty($trans->shareholder) )
-                                {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
-                            @endif
-                        </td>
-                        <td>{{ $trans->description }}</td>
-                    </tr>
+                    <!-- <td>{{ $stock_id }}</td> -->
+                    <td class="c_digit">{{ $trans->quantity }}</td>
+                    <td class="c_digit">{{ $trans->unit_cost }}</td>
+                    <td class="c_digit">{{ number_format($trans->effective_rate, 2) }}</td>
+                    <td class="c_digit">{{ number_format($trans->effective_rate * $trans->quantity, 1) }}</td>
+                    <td class="c_digit">{{ $trans->offer_code }}</td>
+                    <td class="c_digit">{{ $trans->purchase_date }}</td>
+                    <td>
+                        @if( !empty($trans->shareholder) )
+                            {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
+                        @endif
+                    </td>
+                    <td>{{ $trans->description }}</td>
+                </tr>
                 @endforeach            
             </table>
-        </main>
-        
-        <footer>
-            <p class="note">
-                <strong>Note : </strong>If you do not see a checkbox to select some of the transactions, chances are that they might be new and have not been updated into our system yet.
-            </p>
-            <p>
-                If you wish to notify us of this incident, you can do it via the 
-                <a href="{{url('contact-us')}}">Contact us</a> page.
-            </p>
-        </footer>
-        
+        </main>    
+
+        <footer></footer>
+    
     </article>
 
 </section>

@@ -124,6 +124,15 @@
 
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 
+<section id="top-nav">
+    <div class="label">View the sales</div>
+    <div class="links">
+        <div class="link">
+            <a href="{{url('sales')}}" title="Sales">View sales</a>
+        </div>
+    </div>
+</section>
+
 <section id="basket">
 
         <article>
@@ -154,8 +163,8 @@
                     </div>
                 @endif
             </header>
+            <div id="sell_message"></div>
             <main id="carts">
-
                 @if(count($basket) > 0)
                     <table>
                         <thead>
@@ -165,7 +174,7 @@
                                 @endphp
                                 <th colspan="12" class="info">
                                     <div style="display:flex;justify-content:flex-start;">
-                                        <div>
+                                        <div style="display:flex">
                                             <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                                             <div class="notification">
                                                 @if(count($basket)>0)
@@ -173,7 +182,7 @@
                                                 @endif
                                             </div> 
                                         </div>
-                                        <div id="sell_message" style="margin-left:15px;align-self:center"></div>
+                                        
                                     </div>
                                 </th>
                                 <th colspan="2" class="info icon-buttons" style="text-align:right">

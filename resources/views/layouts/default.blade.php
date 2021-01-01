@@ -48,11 +48,9 @@
 
                     <nav class="c-nav__list">
                         <ul class="navbar-nav">
-                            <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="{{ url('portfolio/new') }}">New Portfolio</a></li>
-                            <li><a href="{{ url('import/share') }}">Import Share</a></li>
+                            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                            <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
                             <li><a href="{{ url('sales') }}">Sales</a></li>
-                            <li><a href="{{ url('basket') }}">My Cart</a></li>
                             <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
                         </ul>
                     </nav>
@@ -146,17 +144,27 @@
         <footer class="page-footer">
         
             <section class="links">
-
-                <div class="contact-us nav">          
-                    <h3>Contact us</h3>
+                
+                <div class="feedbacks nav">  
+                    <h3>Feedbacks</h3>
                     <ul>
-                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
-                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>
+                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
+                        <li>Twitter: <a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
+                        <li>Facebook: <a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
                     </ul>
                 </div>
 
+                <div class="support nav">  
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="{{ url('guidelines') }}"><mark>Guidelines</mark></a></li>
+                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
+                    </ul>
+                </div>
+                
+                
                 <div class="sales nav">
-                    <h3>Sales</h3>
+                    <h3>Manage sales</h3>
                     <ul>
                         <li><a href="{{ url('sales') }}">Sales</a></li>
                         <li><a href="{{ url('basket') }}">My Cart</a></li>
@@ -164,7 +172,7 @@
                 </div>
 
                 <div class="portfolio nav">
-                    <h3>Portfolio</h3>
+                    <h3>Manage portfolio</h3>
                     <ul>
                         <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                         <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
