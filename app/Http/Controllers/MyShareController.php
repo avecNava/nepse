@@ -12,6 +12,7 @@ use App\Services\UtilityService;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class MyShareController extends Controller
 {
@@ -132,7 +133,7 @@ class MyShareController extends Controller
                ->get();
           
           //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
-          $offers =['IPO','RIGHTS'];
+          $offers =['IPO','RIGHTS','BONUS'];
 
           $portfolios->each(function($item) use($offers){
                
@@ -151,10 +152,7 @@ class MyShareController extends Controller
                     'unit_cost' => $item->unit_cost,
                     'effective_rate' => $item->effective_rate,
                     'total_amount' => $item->effective_rate ?: round($item->quantity * $item->effective_rate, 2),
-
-               //     'unit_cost' => in_array($item->offer_code, $offers) ? 100 : 0,
-               //     'effective_rate' => in_array($item->offer_code, $offers) ? 100 : 0,
-               //     'total_amount' => in_array($item->offer_code, $offers) ? $row['quantity']*100 : 0, 
+                    'wacc_updated_at' => in_array($item->offer_code, $offers) ? Carbon::now() : null,
 
           ]);
 

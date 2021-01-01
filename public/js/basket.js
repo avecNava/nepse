@@ -18,10 +18,6 @@ function __showMessage(message, error = false,  clear_message = false, refresh =
 
 }
 
-function parseString(input_str, delim=","){
-    return input_str.replaceAll(delim, "");
-}
-
 /**
  * monitor change in quantity, update wacc and sales_amount as required
  */
@@ -30,26 +26,26 @@ document.querySelectorAll('[name="quantity"]').forEach(function(el){
 
         el.addEventListener('change', function(e){
 
-        const id = parseID('qty-', e.target.id);
-        
-        const wacc = document.querySelector(`#wacc-${id}`).value;
-        const ltp = document.querySelector(`#ltp-${id}`).innerText;
-        const quantity = e.target.value;
-        if(e.target.value < 0) {
-            document.querySelector(`#qty-${id}`).value = 1;
-            return false;
-        }
-        
-        const sales_amount = parseFloat(quantity) * parseFloat(ltp);
-        const investment_amount = parseFloat(quantity) * parseFloat(wacc);
-        
-        //update sales amount
-        document.querySelector(`#sell-${id}`).value = (sales_amount.toFixed(1));
-        
-        //update investment amount
-        document.querySelector(`#cost-${id}`).innerText = (investment_amount.toFixed(1));
-        
-        calculateOthers(id);
+            const id = parseID('qty-', e.target.id);
+            
+            const wacc = document.querySelector(`#wacc-${id}`).value;
+            const ltp = document.querySelector(`#ltp-${id}`).innerText;
+            const quantity = e.target.value;
+            if(e.target.value < 0) {
+                document.querySelector(`#qty-${id}`).value = 1;
+                return false;
+            }
+            
+            const sales_amount = parseFloat(quantity) * parseFloat(ltp);
+            const investment_amount = parseFloat(quantity) * parseFloat(wacc);
+            
+            //update sales amount
+            document.querySelector(`#sell-${id}`).value = (sales_amount.toFixed(1));
+            
+            //update investment amount
+            document.querySelector(`#cost-${id}`).innerText = (investment_amount.toFixed(1));
+            
+            calculateOthers(id);
         
     });
 
@@ -68,6 +64,18 @@ document.querySelectorAll('[name="wacc"]').forEach(function(el){
         const $total_investment_amount = parseFloat(wacc) * parseFloat(quantity);
         document.querySelector(`#cost-${id}`).innerText = $total_investment_amount.toFixed(1);
         
+        calculateOthers(id);
+
+    });
+
+});
+/**
+ * monitor change in wacc, update wacc and sales_amount as required
+ */
+document.querySelectorAll('[name="sell_price"]').forEach(function(el){
+    el.addEventListener('change', function(e){
+
+        const id = parseID('sell-', e.target.id);        
         calculateOthers(id);
 
     });

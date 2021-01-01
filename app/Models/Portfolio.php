@@ -164,6 +164,7 @@ class Portfolio extends Model
 
             //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
             $offers =['IPO','RIGHTS'];
+            $offers1 =['IPO','RIGHTS','BONUS'];
 
             Portfolio::updateOrCreate(
             [
@@ -179,7 +180,8 @@ class Portfolio extends Model
                 'remarks' => $row['remarks'],
                 'unit_cost' => in_array($row['offer_code'], $offers) ? 100 : 0,
                 'effective_rate' => in_array($row['offer_code'], $offers) ? 100 : 0,
-                'total_amount' => in_array($row['offer_code'], $offers) ? $row['quantity']*100 : 0,                
+                'total_amount' => in_array($row['offer_code'], $offers) ? $row['quantity']*100 : 0,
+                'wacc_updated_at' => in_array($row['offer_code'], $offers1) ? Carbon::now() : null,
             ]);
         }
     }
@@ -196,11 +198,9 @@ class Portfolio extends Model
         $record = DB::table('stock_prices')->where('latest',true)->select('stock_id','close_price')->inRandomOrder()->take(2)->get();
         $qty = collect([10, 20, 30, 40, 50, 100]);
         $quantity = $qty->random();
-
-        $date_str = Carbon::now();
         
         //2. add to the portfolio table
-        $record->each(function($item) use($quantity, $date_str, $shareholder) {
+        $record->each(function($item) use($quantity, $shareholder) {
 
             $portfolio = new Portfolio;
             $portfolio->shareholder_id = $shareholder;
@@ -212,7 +212,8 @@ class Portfolio extends Model
             $portfolio->offer_id = 1;
             $portfolio->tags = 'sample';
             $portfolio->remarks = "sample record";
-            $portfolio->purchase_date = $date_str->toDateString();
+            $portfolio->purchase_date = Carbon::now();
+            $portfolio->wacc_updated_at = Carbon::now();
             $portfolio->last_modified_by = Auth::id();
             $portfolio->save();
         

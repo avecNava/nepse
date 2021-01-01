@@ -205,7 +205,10 @@
                         
                         @php
                             $quantity = $row->quantity;
-                            $ltp = $row->price->close_price ?: $row->price->last_updated_price;
+                            $ltp = 0;
+                            if( !empty($row->price)){
+                                $ltp = $row->price->close_price ?: $row->price->last_updated_price;
+                            }
                             $wacc = $row->wacc;
                             $cost_price = $wacc * $quantity;
                             $worth = $ltp * $quantity;

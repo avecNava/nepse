@@ -28,16 +28,16 @@ class StockPriceController extends Controller
         // $time_start = $time_start->sub('3 days');
      
         //stop request during non working days
-        if(!UtilityService::tradingDay($time_start)){
-            return response()->json([
-                'message' => 'NEPSE is closed during Saturdays and Fridays',
-                'date' => $time_start->toDayDateTimeString(),
-            ]);
-        }
+        // if(!UtilityService::tradingDay($time_start)){
+        //     return response()->json([
+        //         'message' => 'NEPSE is closed during Saturdays and Fridays',
+        //         'date' => $time_start->toDayDateTimeString(),
+        //     ]);
+        // }
 
         // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
         $date_string =  $time_start->toDateString();
-        // $date_string =  '2020-12-28';
+        $date_string =  '2020-12-31';
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
@@ -73,9 +73,10 @@ class StockPriceController extends Controller
         //         "lastUpdatedPrice" => 563.0,"totalTrades" => 1153,"averageTradedPrice" => 549.52]);
         // StockPrice::updateOrCreateStockPrice($data);        
 
-        Log::notice('Started scraping from nepalstock',['date'=>$date_string]);
+        Log::notice('Started scraping from nepalstock',['date' => $date_string]);
+
         Stock::addOrUpdateStock($data_array['content']);
-        StockPrice::updateOrCreateStockPrice($data_array['content']);        
+        StockPrice::updateOrCreateStockPrice( $data_array['content'] );        
         StockPrice::updateStockIDs();
         $time_finish = Carbon::now();
         $time_elapsed = $time_start->diffInSeconds($time_finish);

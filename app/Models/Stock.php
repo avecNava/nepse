@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Stock extends Model
 {
@@ -32,8 +33,8 @@ class Stock extends Model
             
             Stock::updateOrCreate(
                 [
-                    'symbol' => $data['symbol'],
-                    'security_name' => $data['securityName'] 
+                    'symbol' => Str::of($data['symbol'])->trim(),
+                    'security_name' => Str::of($data['securityName'])->trim(),
                 ]
             );
                 

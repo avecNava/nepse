@@ -31,8 +31,7 @@ class StockPrice extends Model
         if(empty($stock_prices)) return;
         
         $symbols = collect([]);
-        $date_str =  $stock_prices[0]['businessDate'];
-        
+        $trade_date =  $stock_prices[0]['businessDate'];        
 
         //task-1 : save new price, set latest=true
         DB::transaction(function() use($stock_prices, $symbols){
@@ -73,10 +72,12 @@ class StockPrice extends Model
         //set latest to false
 
         StockPrice::whereIn('symbol', $symbols->toArray())
-            ->where('transaction_date','<>', $date_str)
+            ->where('transaction_date','<>', $trade_date)                 //or use != instead
             ->where('latest',true)
             ->update(['latest' => false]);
-        
+
+        //update `stock_prices` set `latest` = 0, `stock_prices`.`updated_at` = '2021-01-01 05:44:44' 
+        //where `symbol` in ('NSEWA') and `transaction_date` <> '2020-12-31' and `latest` = 1
         
     }
 

@@ -16,6 +16,7 @@ use App\Models\PortfolioSummary;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
 use App\Models\MyShare;
+use App\Models\StockPrice;
 use Carbon\Carbon;
 use App\Models\User;
 use Jenssegers\Agent\Agent;
@@ -28,15 +29,17 @@ Auth::routes([
 ]);
     
     
-Auth::loginUsingId(1);
+// Auth::loginUsingId(54);
 
 Route::get('test', function(Request $request){
+    $symbols =collect(['NSEWA']);
+    $date_str='2020-12-31';
+    $sp = StockPrice::whereIn('symbol', $symbols->toArray())
+            ->where('transaction_date','<>', $date_str)
+            ->where('latest',true)
+            ->update(['latest' => false]);
 
-    $portfolio = PortfolioSummary::where('shareholder_id', 1)->where('stock_id', 104)->first();
-    
-    $portfolio->quantity = 200;
-    $portfolio->save();                
-    return $portfolio;
+    dd($sp);
 
     
     // $agent = new Agent();
@@ -57,7 +60,8 @@ Route::get('test', function(Request $request){
 
 
 Route::get('sample-record', function(){
-    $shareholder = Shareholder::find(19);
+    $shareholder = Shareholder::find(53);
+    // dd($shareholder->id);
     event(new \App\Events\CreateSampleRecordsEvent($shareholder->id));
     return "Sample record created for Shareholder<br/>" . $shareholder->toJson(JSON_PRETTY_PRINT) ;
 });

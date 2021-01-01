@@ -47,9 +47,9 @@ class EventServiceProvider extends ServiceProvider
             UserLogoutListener::class,
         ],
         /*create sample records*/
-        // CreateSampleRecordsEvent::class => [
-        //     CreateSampleRecordsListener::class,
-        // ],
+        CreateSampleRecordsEvent::class => [
+            CreateSampleRecordsListener::class,
+        ],
         /*test only*/
         // UserRegisteredEvent::class => [
         //     SendVerificationMailListener::class,
