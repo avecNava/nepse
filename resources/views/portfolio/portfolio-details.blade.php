@@ -16,6 +16,8 @@
 
     <div class="c_portfolio_container">
     
+    @if(count($portfolios)>0 )
+
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
         @php
@@ -294,50 +296,54 @@
 
         </div>
 
-        <div class="message error">
+        <div class="message">
+            
             @if ($errors->any())
-                <div class="error">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                    <div class="error">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            @endif 
+
+            <div id="message" class="message">                            
+                                    
+                @if(session()->has('message'))
+                    {{ session()->get('message') }}
+                @else
+                    @if(count($portfolios)>0)
+                        {{count($portfolios)}} @if(count($portfolios)>1)scripts @else script @endif
+                    @endif
+                @endif
+
+            </div>
+
         </div>
 
-        <section class="portfolio">
+        @if( count($portfolios)==0 )
+        <div class="info" style="text-align:center">
+            <h2 class="message error">Nothing in here<h2>
+            <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
+        </div>
+        @endif
+
+        <section class="form">
             
-            @if( !empty($portfolios) )
+            @if(count($portfolios)>0 )
         
-            <article class="a_portfolio_details">
-         
                 <header>
 
-                    <div class="a_portfolio_main">
+                    <div></div>
     
-                        <div class="c_band apart">
+                    <div class="buttons">
 
-                            <div id="message" class="message">                            
-                                
-                                @if(session()->has('message'))
-                                    {{ session()->get('message') }}
-                                @else
-                                    @if(count($portfolios)>0)
-                                        {{count($portfolios)}} records
-                                    @else
-                                        😟OOpsy! There are not any records to display. Click `New` button to add some.
-                                    @endif
-                                @endif
-
-                            </div>
-                            
-                            <div class="action-buttons">
-                                <button id="new">New</button>
-                                <button id="edit">Edit</button>
-                                <button id="delete">Delete</button>
-                            </div>
-
+                        <div class="action-buttons">
+                            <button id="new">New</button>
+                            <button id="edit">Edit</button>
+                            <button id="delete">Delete</button>
                         </div>
 
                     </div>
@@ -411,9 +417,7 @@
                 </main>
             
                 <footer></footer>
-            
-            </article>
-
+       
             @endif
 
         </section>
@@ -422,7 +426,7 @@
             @php
                 $count = count($sales);
                 $quantity = $sales->sum('quantity');
-                $count_str = ($count <= 2) ? ' record' :' records';
+                $count_str = ($count <= 2) ? ' script' :' scripts';
             @endphp
             @if($count)
             <details>
@@ -479,7 +483,7 @@
 
             if(!id_string){
                 msg = 'Please select a record to edit';
-                showMessage(msg); return;
+                showMessage(msg, 'message', 'error'); return;
             }
 
             showLoadingMessage();
@@ -500,8 +504,7 @@
 
                 if (this.status >= 200 && this.status < 400) {
                     data = JSON.parse(this.response);
-                    console.log(data);
-                    updateInputFields(data);
+                    updateInputFields(data, 'message');
                     document.querySelector('#offer').dispatchEvent(new Event("change"));
                     hideLoadingMessage();
                 }
@@ -564,7 +567,7 @@
 
             if(!id_string){
                 msg = 'Please select a record to delete';
-                showMessage(msg); return;
+                showMessage(msg, 'message', 'error'); return;
             }
 
             //parse the id from the given string
@@ -581,9 +584,14 @@
 
                 request.onload = function(ele_success, ele_loading) {
                     if (this.status >= 200 && this.status < 400) {
-                        $data = JSON.parse(this.response);
-                        showMessage($data.message);
+                        data = JSON.parse(this.response);
                         hideLoadingMessage();
+                        showMessage(data.message,'message');
+                        //if no records remain, redirect to main page
+                        if(data.quantity == 0){
+                            let url = `${window.location.origin}/portfolio`;
+                            window.location.replace(url);
+                        }
                         hideDeletedRow();
                     }
                 }  
@@ -622,10 +630,10 @@
             request.onload = function() {
                 const data = JSON.parse(this.response);
                 if (this.status >= 200 && this.status < 400) {
-                    showMessage('basket_message', data.message);
+                    showMessage(data.message, 'basket_message');
                 }
                 else{
-                    showMessage('basket_message', data.message);            
+                    showMessage(data.message,'basket_message', 'error');            
                 }
                 hideLoadingMessage();
             }
@@ -640,7 +648,7 @@
             const sell_quantity = ele.value;
 
             if(!sell_quantity){
-                showMessage('basket_message', 'Enter sell quantity');
+                showMessage( 'Enter sell quantity','basket_message', 'error');
                 return false;
             }
 
@@ -649,13 +657,13 @@
             const diff = parseInt(total_quantity) - parseInt(sell_quantity);
 
             if( parseInt(sell_quantity) >  (total_quantity)){
-                showMessage('basket_message',`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`);
+                showMessage(`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`,'basket_message', 'error');
                 return false;
             }
 
            const wacc = document.querySelector('#wacc').dataset.rate;
             if(!wacc){
-                showMessage('basket_message','Weighted average not updated for this stock.');
+                showMessage('Weighted average not updated for this stock.','basket_message', 'error');
                 return false;
             }
 

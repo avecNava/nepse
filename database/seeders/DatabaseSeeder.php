@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             StockOfferingsTableSeeder::class,
             StockSectorsTableSeeder::class,
             RelationsTableSeeder::class,
+            BrokerTableSeeder::class,
             // ShareholderTableSeeder::class,
             // StockTableSeeder::class,
         ]);

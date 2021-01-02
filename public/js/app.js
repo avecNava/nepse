@@ -31,12 +31,12 @@ function hideForm(form_id) {
     // el.classList.add('hide');
 }
 
-function showMessage(msg) {
-    document.getElementById('message').innerHTML=msg;
-}
-function showMessage(element, msg) {
-    document.getElementById(element).innerHTML=msg;
-    document.getElementById(element).classList.add('error');
+function showMessage(msg, el=null, flag='success') {
+    if(!el){
+        el = document.getElementById('message');
+    }
+    document.getElementById(el).innerHTML=msg;
+    document.getElementById(el).classList.add(flag);
 }
 
 function clearMessage() {

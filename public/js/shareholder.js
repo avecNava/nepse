@@ -56,7 +56,7 @@ btnEdit.addEventListener("click", function() {
 
   if(!id){
     let msg = 'Please select a record to edit';
-    showMessage(msg);    return;
+    showMessage(msg,'message');    return;
   }
 
   showLoadingMessage(); 
@@ -161,8 +161,8 @@ btnDelete.addEventListener("click", function() {
 
   if(record.dataset.parent==true)
   {
-    let msg = 'Can not delete a parent Shareholder 🙄';
-    showMessage(msg);
+    let msg = 'Can not delete a Parent Shareholder 🙄';
+    showMessage(msg,'message');
     return;
   }
 

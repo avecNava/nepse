@@ -14,7 +14,7 @@ class BrokerTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('brokers')->truncate();
+        // \DB::table('brokers')->truncate();
         $brokers = [
             ['broker_no'=>'3','name'=>'Arun Securities Pvt. Limited','address'=>'Dillibazar, Kathmandu','phone'=>'01-4239567',],
             ['broker_no'=>'4','name'=>'Stock Broker Opal Securities Investment Pvt. Limited','address'=>'Putalisadak, Kathmandu','phone'=>'01-4420313',],

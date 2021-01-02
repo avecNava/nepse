@@ -47,17 +47,30 @@ abbr {
     font-weight: bold;
     color: #3c3f40;
 }
+
+/*flex attribute css*/
 .flex {
     display: flex;
-    justify-content: space-around;
 }
+.apart {
+    justify-content: space-between;
+}
+.together {
+    justify-content: flex-start;
+}
+
+.message {
+    padding: 5px 0;
+    font-weight: bold;
+}
+/* 
 #message .message{
     background: beige;
     padding: 25px;
     border-radius: 10px;
     line-height: 30px;
     margin: 30px 0;
-}
+} */
 footer.page-footer {
     margin-top: 200px;
 }
@@ -125,6 +138,7 @@ h3 {font-size: 1em;}
 mark {padding: 0px 3px;border-radius: 8px;}
 img.c-logo__img {height: 130px;padding: 20px 0;}
 .error {color:red !important;}
+.error ul {padding: 0 15px;}
 .success {color:green !important;}
 .context-link {
     color: darkred;
@@ -145,6 +159,14 @@ hr {
 .is-invalid {
     color: #fb0000;
 }
+/*form related css*/
+.form header {
+    background: #f7f7f7;
+    padding: 5px 10px;display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
 .form-field span {
     text-transform: capitalize;
 }
@@ -274,9 +296,7 @@ container for message or buttons
     border-radius: 5px;
     margin:2px 0;
 }
-.apart {
-    justify-content: space-between;
-}
+
 .c_band>#info {
     display: flex;
 }
@@ -370,9 +390,9 @@ button {
     height: 2.5em;
     padding: 0 20px;
 }
-div.remarks {
+/* div.remarks {
     display: flex;
-}
+} */
 /* end of form input elements*/
 .loading {
     padding: 10px 60px;
@@ -389,15 +409,8 @@ div.remarks {
     top: 0;
     right: 0;
 }
-.message {
-    align-self: center;
-    margin-right: 10px;
-    font-weight: bold;
-    background-size: 30px;
-    background-repeat: no-repeat;    
-    background-position: left center;
-    color:#fff;
-}
+
+
 .c_shareholders .form-field.c_gender {
     display: inline-block;
 }
@@ -488,9 +501,7 @@ section.c_score_cards article {
     margin: 5px;
     color: #fff;
 }
-.main__content .message {
-    padding-left: 10px;
-}
+
 .main__content_main h1 {display: inline-block;}
 .main__content_header {align-self: center; }
 

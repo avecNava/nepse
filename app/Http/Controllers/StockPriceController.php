@@ -28,16 +28,16 @@ class StockPriceController extends Controller
         // $time_start = $time_start->sub('3 days');
      
         //stop request during non working days
-        if(!UtilityService::tradingDay($time_start)){
-            return response()->json([
-                'message' => 'NEPSE is closed during Saturdays and Fridays',
-                'date' => $time_start->toDayDateTimeString(),
-            ]);
-        }
+        // if(!UtilityService::tradingDay($time_start)){
+        //     return response()->json([
+        //         'message' => 'NEPSE is closed during Saturdays and Fridays',
+        //         'date' => $time_start->toDayDateTimeString(),
+        //     ]);
+        // }
 
         // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
         $date_string =  $time_start->toDateString();
-        // $date_string =  '2020-12-31';
+        $date_string =  '2020-12-31';
         
         $client = new client([
             'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'

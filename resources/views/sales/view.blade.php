@@ -92,7 +92,7 @@
                 @php
                     $data = $sales->first();
                 @endphp
-                <div style="display:flex;justify-content:flex-start;">
+                <div class="flex together">
                     <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                     <div class="notification">
                         @if(count($sales)>0)

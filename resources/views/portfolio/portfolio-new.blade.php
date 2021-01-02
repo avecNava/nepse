@@ -15,6 +15,11 @@
 
 @section('content')
 
+    <style>
+        textarea{
+            width:100%;
+        }
+    </style>
     <section id="top-nav">
         <div class="label">Import shares in bulk</div>
         <div class="links">
@@ -26,16 +31,52 @@
             </div>
         </div>
     </section>
-    <section>
+
+    <section class="message">
+        <div class="message">
+            @if(session()->has('message'))
+            <div class="success">
+                {{ session()->get('message') }}
+            </div>
+            @endif     
+
+            @if(session()->has('error'))
+            <div class="error">
+                {{ session()->get('error') }}
+            </div>
+            @endif
+        </div>
+        <div class="validation-error">
+            @if ($errors->any())
+            <div class="error">
+                <h3>Validation errors</h3>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    <section class="form">
+
+    <form method="POST" action="/portfolio/create">
 
         <header>
-            <h3>Enter the following details for the new Stock</h3>
+            <div>
+                <h2>Add new stock</h2>
+                <h3>Enter the following details</h3>
+            </div>
+            <section class="buttons">
+                <button type="submit">Save</button>
+                <button type="reset">Reset</button>
+            </section>
         </header>
 
         <main class="form_container">  
 
-            <form method="POST" action="/portfolio/create">
-            
             <div class="c_portfolio_new">
  
                     @csrf()
@@ -44,21 +85,6 @@
                     <div class="two-col-form">
 
                         <div class="block-left">
-
-                            <div class="message">
-                            @if(session()->has('message'))
-                            <div class="success">
-                                {{ session()->get('message') }}
-                            </div>
-                            @endif     
-
-                            @if(session()->has('error'))
-                            <div class="error">
-                                {{ session()->get('error') }}
-                            </div>
-                            @endif           
-
-                        </div>
 
                         <div class="fields form-field">
                                 <label for="shareholder" class="@error('shareholder') is-invalid @enderror" >Shareholder</label>
@@ -122,18 +148,20 @@
                             <div class="fields form-field">
                                 <label for="quantity" class="@error('quantity') is-invalid @enderror" >Quantity</label>
                                 <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" />
-                            </div>
-                            
-
-                            <div class="fields form-field" title="Bill amount">
-                                <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                                <input type="text" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
-                                <span id="total_amount_label"></span>
-                            </div>
+                            </div> 
 
                             <section id="secondary">
 
-                                <div class="fields form-field">
+                            <div>
+                                <label for="broker_commission">Broker Commission</label>
+                                <input type="text" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
+                            </div>
+                            <div>
+                                <label for="sebon_commission">Sebon Commission</label>
+                                <input type="text" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
+                            </div>
+
+                            <div class="fields form-field">
                                     <label for="broker" class="@error('broker') is-invalid @enderror">Broker</label>
                                     <select name="broker">
                                         <option value="0">Select</option>
@@ -147,22 +175,25 @@
                                 </select>
                                 <span id="broker_label"></span>
                             </div>
-                            <div>
-                                <label for="broker_commission">Broker Commission</label>
-                                <input type="text" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
-                            </div>
-                            <div>
-                                <label for="sebon_commission">Sebon Commission</label>
-                                <input type="text" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
-                            </div>
+
                             </section>
+
+                            <div class="fields form-field" title="Bill amount">
+                                <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
+                                <input type="text" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                                <span id="total_amount_label"></span>
+                            </div>      
                             
                             <div class="fields form-field">
                                 <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
                                 <input type="text" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
                                 <span id="effective_rate_label"></span>
                             </div> 
-                            
+
+                        </div>
+
+                        <div class="block-right">
+
                             <div class="fields form-field">
                                 <label for="purchase_date" class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
                                 <input type="date" value="{{old('purchase_date')}}" name="purchase_date"/>
@@ -181,28 +212,9 @@
                             
                             <div class="fields form-field remarks">
                                 <label for="remarks" class="@error('remarks') is-invalid @enderror">Remarks</label>
-                                <textarea name="remarks" rows="5" cols="30"> {{old('remarks')}} </textarea>
                             </div> 
-                    
-                        </div>
-
-                        <div class="block-right">
-
-                            <div class="buttons">
-                                <button type="submit">Save</button>
-                                <button type="reset">Reset</button>
-                            </div>
-
-                            <div class="validation-error">
-                                @if ($errors->any())
-                                    <div class="error">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
+                            <div>
+                                <textarea name="remarks" rows="5" cols="30"> {{old('remarks')}} </textarea>
                             </div>
 
                         </div>
@@ -211,11 +223,11 @@
                     
                 </div>  
 
-            </form> 
-
         </main>
         
         <footer></footer>
+
+    </form> 
 
     </section>
 

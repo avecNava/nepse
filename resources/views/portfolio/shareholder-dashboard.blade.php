@@ -72,7 +72,7 @@
         
         <section class="a_portfolio">
         
-            <header class="info">
+            <header class="info flex together">
                 <h2 class="title">{{ $shareholder }}</h2>
                 <div class="notification">
                     ({{count($portfolios)}} scripts)

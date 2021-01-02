@@ -131,7 +131,8 @@ class SalesController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
+                // 'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
+                'message' => 'An unexpected error occured. Please ensure that Effective rate is updated for the stock.',
             ], 500);
         }
 

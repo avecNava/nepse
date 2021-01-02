@@ -1,13 +1,6 @@
 200, OK
 201, created
-204, Resource deleted
+204, Resource deleted (no Content)  similar to response()->noContent()
 
 
 401, Not authorized
-
-
-label {
-    color: darkslategrey;
-    width: 200px;
-    display: inline-block;
-}

@@ -232,7 +232,7 @@
 
             const html_foot = 
                 `<tr class="separator">
-                    <td colspan="11"><hr/></td>
+                    <td colspan="11"></td>
                 </tr>
                 </table>`;
 

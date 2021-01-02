@@ -28,11 +28,11 @@ class StorePortfolio extends FormRequest
             'stock' => 'required|numeric|gt:0', 
             'offer' => 'required|numeric|gt:0', 
             'quantity' => 'required|numeric|gt:0', 
-            'unit_cost' => 'required|numeric|gt:0', 
-            'effective_rate' => 'required|numeric|gt:0', 
+            'unit_cost' => 'required|numeric', 
+            'effective_rate' => 'required|numeric', 
             'purchase_date' => 'nullable|date', 
-            'total_amount' => 'required|numeric|gt:0', 
-            // 'broker_no' => 'nullable|numeric', 
+            'total_amount' => 'required|numeric', 
+            'broker_no' => 'nullable|numeric', 
         ];
     }
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\PortfolioSummaryController;
 use App\Models\PortfolioSummary;
 use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
+use App\Models\Portfolio;
 use App\Models\MyShare;
 use App\Models\StockPrice;
 use Carbon\Carbon;
@@ -28,40 +29,15 @@ Auth::routes([
     'register' => true,
 ]);
     
-    
-// Auth::loginUsingId(54);
+Auth::loginUsingId(6);
 
-Route::get('test', function(Request $request){
-    $symbols =collect(['NSEWA']);
-    $date_str='2020-12-31';
-    $sp = StockPrice::whereIn('symbol', $symbols->toArray())
-            ->where('transaction_date','<>', $date_str)
-            ->where('latest',true)
-            ->update(['latest' => false]);
+Route::get('test', function(){
 
-    dd($sp);
-
-    
-    // $agent = new Agent();
-
-    // $objAgent = [
-    //     'ip' => \Request::ip(),
-    //     'device'=> $agent->device(),
-    //     'desktop'=>$agent->isDesktop(),
-    //     'phone'=>$agent->isPhone(),
-    //     'robot'=>$agent->isRobot(),
-    //     'browser'=> $agent->browser(),
-    //     'browser_version'=> $agent->version($agent->browser()),
-    //     'platform'=> $agent->platform(),
-    //     'platform_version'=> $agent->version($agent->platform()),
-    // ];
-    // dd($objAgent);
 });
 
 
 Route::get('sample-record', function(){
     $shareholder = Shareholder::find(53);
-    // dd($shareholder->id);
     event(new \App\Events\CreateSampleRecordsEvent($shareholder->id));
     return "Sample record created for Shareholder<br/>" . $shareholder->toJson(JSON_PRETTY_PRINT) ;
 });
@@ -69,14 +45,7 @@ Route::get('sample-record', function(){
 Route::get('mail', function(){
     $user = User::find(1);
     $user->notify(new \App\Notifications\UserVerifyNotification($user));
-    // event(new \App\Events\UserRegisteredEvent($user));
-    // event(new \App\Events\UserRegisteredEvent($user));
-    //$user->notify(new \App\Notifications\UserRegistrationNotification($user));
-    // Notification::send($user,new \App\Notifications\UserRegistrationNotification($user));
-    // Notification::send($user,new \App\Notifications\UserVerifyNotification($user));
-    // $feedback = Feedback::find(1);
-    // return new App\Mail\FeedbackMail($feedback);
-    // return new App\Mail\WelcomeMail($user);
+
 });
 
 Route::get('/', [PortfolioSummaryController::class, 'index']);

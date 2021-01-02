@@ -188,7 +188,8 @@ class PortfolioController extends Controller
     {
         if($id){
             
-            $portfolio = Portfolio::where('id', $id)->first();
+            $portfolio = Portfolio::find($id);
+            
             return response()
                 ->json($portfolio,200);             //200 OK
         }
@@ -262,31 +263,44 @@ class PortfolioController extends Controller
         }
         
         $portfolio = Portfolio::find($id);
+        $shareholder_id = $portfolio->shareholder_id;
+        $stock_id = $portfolio->stock_id;
+
+        //step 1: delete records from Portfolio
         $deleted = Portfolio::destroy($id);
-        //CALCULATE total_quantity and wacc_rate ; update in summary table
-        if(!empty($portfolio)){
+
+        //step 2 : CALCULATE total_quantity and wacc_rate ; update in summary table
+        PortfolioSummary::updateCascadePortfoliSummaries($shareholder_id, $stock_id);
+        
+        
+        if( $portfolio ){
             
-            PortfolioSummary::updateCascadePortfoliSummaries($portfolio->shareholder_id, $portfolio->stock_id);
-            
+            $remaining = Portfolio::where('shareholder_id', $portfolio->shareholder_id)->where('stock_id',$portfolio->stock_id)->sum('quantity');
+
             //remove from summaries where quantity is zero
             PortfolioSummary::where('quantity', '<=', 0)->delete();
-
-        }
-        
-        
-        if($deleted > 0){
             
-            $message = "Portfolio deleted. Record id : $id";
-            return response()->json(
-                [
-                    'action'=>'delete', 
-                    'message'=> $message, 
-                    'status'=>'success',
-                ], 
-                201
-            );
+            if($deleted > 0){
+                
+                $message = "Portfolio deleted. Remaining units $remaining";
+                return response()->json(
+                    [
+                        'quantity'=>$remaining,
+                        'message'=> $message, 
+                        'status'=>'success',
+                    ], 
+                    201
+                );
 
+            }
         }
+        return response()->json(
+            [
+                'quantity'=> 0,
+                'message'=> 'Nothing to delete', 
+            ], 
+            201
+        );
 
     }
 
@@ -404,7 +418,7 @@ class PortfolioController extends Controller
             // ->where('p.quantity','>',0)
             ->orderBy('s.symbol')
             ->get();
-        // dd($stocks);
+        
         if(!empty($stocks)){
             return  response()->json([
                'status' => 'success',

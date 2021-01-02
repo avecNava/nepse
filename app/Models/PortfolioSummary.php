@@ -69,25 +69,32 @@ class PortfolioSummary extends Model
      */
     public static function updateCascadePortfoliSummaries(int $shareholder_id, int $stock_id)
     {
-        //get aggregate purchases, aggregate sales and average rates. Calculate net quantity, Add to the summary table
         
+        //get aggregate purchases, aggregate sales and average rates. Calculate net quantity, Add to the summary table
         $quantity =  Portfolio::where('shareholder_id', $shareholder_id)
                     ->whereNotNull('wacc_updated_at')
                     ->where('stock_id', $stock_id)
                     ->sum('quantity');
 
+        //if not recourd found in portfolio table, delete the corresponding record in the summary table
         if($quantity <= 0){
+
+            PortfolioSummary::where('shareholder_id', $shareholder_id)
+                    ->where('stock_id', $stock_id)
+                    ->delete();
+
             info('Portfolio Summary not updated', [
                 'shareholder_id' => $shareholder_id, 
                 'stock_id' => $stock_id, 
                 'quantity' => $quantity, 
             ]);
+
             return;
         }
 
         $effective_rate = Portfolio::calculateWACC($shareholder_id, $stock_id);
         
-        $investment = Portfolio::where('shareholder_id',$shareholder_id)
+        $investment = Portfolio::where('shareholder_id', $shareholder_id)
                         ->where('stock_id', $stock_id)
                         ->sum('total_amount');
         
@@ -104,10 +111,12 @@ class PortfolioSummary extends Model
                     'wacc' => $effective_rate,
                     'last_modified_by' => Auth::id(),
                 ]);
+        
                     
         } catch (\Throwable $th) {
             UtilityService::createLog('updateCascadePortfoliSummaries', $th);
         }
+        
     }
 
 }

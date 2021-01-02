@@ -49,7 +49,8 @@
         width: 80px;
     }
     section#basket td {
-        padding: 0 3px;
+        padding: 10px 5px;
+        height:50px;
     }
  
     button.sell {
@@ -163,7 +164,11 @@
                     </div>
                 @endif
             </header>
-            <div id="sell_message"></div>
+            <div class="info">
+                <h3>
+                    <div id="sell_message"></div>
+                </h3>
+            </div>
             <main id="carts">
                 @if(count($basket) > 0)
                     <table>
@@ -173,16 +178,13 @@
                                     $data = $basket->first();
                                 @endphp
                                 <th colspan="12" class="info">
-                                    <div style="display:flex;justify-content:flex-start;">
-                                        <div style="display:flex">
-                                            <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                                            <div class="notification">
-                                                @if(count($basket)>0)
-                                                ({{count($basket)}} entries)
-                                                @endif
-                                            </div> 
-                                        </div>
-                                        
+                                    <div class="info flex together">
+                                        <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+                                        <div class="notification">
+                                            @if(count($basket)>0)
+                                            ({{count($basket)}} entries)
+                                            @endif
+                                        </div> 
                                     </div>
                                 </th>
                                 <th colspan="2" class="info icon-buttons" style="text-align:right">
@@ -285,7 +287,8 @@
                             <td class="c_digit"><div id="net_amount-{{$row->id}}"></td>
                             <td>{{ $row->shareholder->first_name }}</td>
                             <td>
-                                <button class="sell" title="Mark as SOLD" onClick="fnSell({{$row->id}})"><span class="cart">🛒</span>&nbsp;<span>Sell</span></button>
+                                <button class="sell" title="Mark Sold" onClick="fnSell({{$row->id}})">
+                                    <span class="cart">🛒</button>
                             </td>
                         </tr>
 

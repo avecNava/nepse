@@ -15,147 +15,165 @@
 @section('content')
 
     <div id="loading-message" style="display:none">Loading... Please wait...</div>
-    <section class="c_shareholders">
 
-        <header class="info">
-            <h2 class="title">Shareholders</h2>
-            <div class="notification">
-                ({{count($shareholders)}} scripts)
+    <section class="message">
+
+        <div class="message">                    
+
+        @if(session()->has('message'))
+            <div class="message">
+                {{ session()->get('message') }}
             </div>
-        </header>
+        @endif
 
-        <main>  
-
-            <div id="shareholder-form" class="form_container" @if (!$errors->any()) hidden @endif>
-
-                <form method="POST" action="/shareholders">
-
-                    <div class="message">                    
-
-                        @if(session()->has('message'))
-                            <div class="message">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
-
-                    </div>
-
-                    <div class="two-col-form">
-
-                        <div class="block-left">
-                
-                            @csrf()
-
-                            <div class="form-field">
-                                <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
-                                <input type="hidden" name="parent_id" id="parent_id"> 
-                                <label for="first_name">First name</label>
-                                <input type="text" value="{{old('first_name')}}" name="first_name" id="first_name" required 
-                                class="@error('first_name') is-invalid @enderror" />
-                            </div>
-
-                            <div class="form-field">
-                                <label for="last_name">Last name</label>
-                                <input type="text" value="{{old('last_name')}}" name="last_name" id="last_name" 
-                                class="@error('last_name') is-invalid @enderror" />
-                            </div>
-
-                            <div class="form-field">
-                                <label for="email">Email</label>
-                                <input type="email" value="{{old('email')}}" name="email" id="email" 
-                                class="@error('email') is-invalid @enderror" />
-                            </div>
-
-                            <div class="form-field">
-                                <label for="date_of_birth">Date of birth</label>
-                                <input type="date" value="{{old('date_of_birth')}}" name="date_of_birth" id="date_of_birth"
-                                class="@error('date_of_birth') is-invalid @enderror" />
-                            </div>       
-
-                            <div class="form-field">
-
-                                <label>Gender</label>
-
-                                <div class="form-field c_gender">
-
-                                    <label for="male">
-                                        <input type="radio" name="gender" value="male" id="male" {{ old('gender') == "male" ? 'checked' : '' }}>Male
-                                    </label>
-
-                                    <label for="female">                                
-                                        <input type="radio" name="gender" value="female" id="female" {{ old('gender') == "female" ? 'checked' : '' }}>Female
-                                    </label>
-                                    
-                                    <label for="other">
-                                        <input type="radio" name="gender" value="other" id="other" {{ old('gender') == "other" ? 'checked' : '' }}>Other
-                                    </label>
-
-                                </div>
-                            </div>
-                        
-                            <div class="form-field c_relation">
-                                <label for="relation">Relation</label>
-                                <select name="relation" id="relation">
-                                    @if (!empty($relationships))
-                                        @foreach($relationships as $record)
-                                            <option value="{{ $record->relation }}"
-                                            @if(strcasecmp( old('relation'), $record->relation ) == 0)
-                                                SELECTED
-                                            @endif
-                                            >{{$record->relation}}</option>
-                                        @endforeach
-                                    @endif
-                                </select> 
-                            </div>
-
-                        </div>
-
-                        <div class="block-right">
-
-                            <div class="form-field button">
-                                <button type="submit">Save</button>
-                                <button type="reset" id="cancel">Cancel</button>
-                            </div>
-
-                            <div class="validation-error">
-                                @if ($errors->any())
-                                    <div class="error">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </form>
-                
-            </div>
-
-        </main>
-        <footer></footer>
+        </div>
 
     </section>
 
-    @if( $shareholders->isNotEmpty() )
-    <article class="c_shareholder_list">
-    
-        <header>
-        <div class="c_band apart" id="c_band01">
-            <div id="message" class="message">
-            
+    <section class="c_shareholders">
+
+        <main>  
+
+        <div id="shareholder-form" class="form_container" @if (!$errors->any()) hidden @endif>
+
+        <form class="form" method="POST" action="/shareholders">
+
+            <header class="flex apart">
+                <div>
+                    <h2>Add new stock</h2>
+                    <h3>Enter the following details</h3>
+                </div>
+                <section class="buttons">
+                    <button type="submit">Save</button>
+                    <button type="reset">Reset</button>
+                    <button type="reset" id="cancel">Cancel</button>
+                </section>
+
+<!-- 
+                <div class="form-field button">
+                    <button type="submit">Save</button>
+                </div> -->
+
+
+
+            </header>
+
+            <div class="two-col-form">
+
+                <div class="block-left">
+        
+                    @csrf()
+
+                    <div class="form-field">
+                        <input type="hidden" value="{{old('id')}}" name="id" id="id"> 
+                        <input type="hidden" name="parent_id" id="parent_id"> 
+                        <label for="first_name">First name</label>
+                        <input type="text" value="{{old('first_name')}}" name="first_name" id="first_name" required 
+                        class="@error('first_name') is-invalid @enderror" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="last_name">Last name</label>
+                        <input type="text" value="{{old('last_name')}}" name="last_name" id="last_name" 
+                        class="@error('last_name') is-invalid @enderror" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input type="email" value="{{old('email')}}" name="email" id="email" 
+                        class="@error('email') is-invalid @enderror" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="date_of_birth">Date of birth</label>
+                        <input type="date" value="{{old('date_of_birth')}}" name="date_of_birth" id="date_of_birth"
+                        class="@error('date_of_birth') is-invalid @enderror" />
+                    </div>       
+
+                    <div class="form-field">
+
+                        <label>Gender</label>
+
+                        <div class="form-field c_gender">
+
+                            <label for="male">
+                                <input type="radio" name="gender" value="male" id="male" {{ old('gender') == "male" ? 'checked' : '' }}>Male
+                            </label>
+
+                            <label for="female">                                
+                                <input type="radio" name="gender" value="female" id="female" {{ old('gender') == "female" ? 'checked' : '' }}>Female
+                            </label>
+                            
+                            <label for="other">
+                                <input type="radio" name="gender" value="other" id="other" {{ old('gender') == "other" ? 'checked' : '' }}>Other
+                            </label>
+
+                        </div>
+                    </div>
+                
+                    <div class="form-field c_relation">
+                        <label for="relation">Relation</label>
+                        <select name="relation" id="relation">
+                            @if (!empty($relationships))
+                                @foreach($relationships as $record)
+                                    <option value="{{ $record->relation }}"
+                                    @if(strcasecmp( old('relation'), $record->relation ) == 0)
+                                        SELECTED
+                                    @endif
+                                    >{{$record->relation}}</option>
+                                @endforeach
+                            @endif
+                        </select> 
+                    </div>
+
+                </div>
+
+                <div class="block-right">
+                    <div class="validation-error">
+                        @if ($errors->any())
+                            <div class="error">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
             </div>
+
+        </form>
+                
+        </div>
+
+    </main>
+
+    </section>
+
+    <section class="message">
+        <div id="message" class="message">
+    </section>
+
+    @if( !empty($shareholders) )
+    <article class="form c_shareholder_list">
+
+        <header class="info">  
+
+            <div class="info flex together">
+                <h2 class="title">Shareholders</h2>
+                <div class="notification">
+                    ({{count($shareholders)}} scripts)
+                </div>
+            </div>
+
             <div class="buttons">
                 <button id="new">New</button>
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
             </div>
-        </div>            
+
         </header>
 
         <main>
