@@ -16,16 +16,17 @@ class CreateShareholderTable extends Migration
         Schema::create('shareholders', function (Blueprint $table) {
             $table->id();
             $table->integer('parent_id')->nullable();
+            $table->boolean('group')->nullable();
             $table->string('title')->nullable();
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('alias')->nullable();
             $table->string('gender')->nullable();
             $table->string('email')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('relation')->nullable();
             $table->boolean('parent')->default(false);
-            $table->integer('tenant_id')->nullable()->index();
+            $table->integer('tenant_id')->index();
             // $table->foreignId('user_id');
             // $table->foreignIdFor(model: \App\Models\User::class);
             //https://laravel.com/docs/8.x/migrations#foreign-key-constraints

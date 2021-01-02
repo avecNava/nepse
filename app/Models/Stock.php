@@ -34,7 +34,9 @@ class Stock extends Model
             Stock::updateOrCreate(
                 [
                     'symbol' => Str::of($data['symbol'])->trim(),
-                    'security_name' => Str::of($data['securityName'])->trim(),
+                ],
+                [
+                    'security_name' => Str::of($data['securityName'])->trim(),                    
                 ]
             );
                 

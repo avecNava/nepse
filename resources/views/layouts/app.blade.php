@@ -28,50 +28,54 @@
 <body>
     <div id="app">
 
-        <header>
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-                <div class="container">
-                    <div class="c-header__wrapper">
+    <header class="c-header">
 
-                        <a href="/" class="c-logo">
-                            <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
-                        </a>
+<div class="c-header__wrapper">
 
-                        <ul class="navbar-nav">
-                            <!-- Authentication Links -->
-                            @guest
-                                
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif
+    <div class="c-logo">
+        <a href="/">
+            <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
+        </a>
+    </div>                
 
-                            @else
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }}
-                                    </a>
+    <div class="c-nav">
+        
+        @if(Auth::check())
+        <div class="c-nav__user__wrapper">
+            <span class="c-nav__user">
+                {{ optional(Auth::user())->name }}
+            </span>
+            <span class="c_nav__logout">
+                <a href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                </a>
+            </span>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
+        @endif
+        
+        <div class="a_page_header">
+            @yield('header_title')
+        </div>
+        @auth
+        <nav class="c-nav__list">
+            <ul class="navbar-nav">
+                <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
+                <li><a href="{{ url('sales') }}">Sales</a></li>
+                <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
+            </ul>
+        </nav>
+        @endauth
+    </div>
 
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                        document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endguest
-                        </ul>
-
-                    </div>
-                </div>
-            </nav>
-        </header>
+</div>
+ 
+</header>
 
         <main class="c-main">
             <div class="c_content__wrapper">
@@ -81,26 +85,36 @@
 
         <footer class="page-footer">
         
-            <!-- <section class="links" style="display:none">
+            <section class="links" style="display:@guest none @endguest">
 
-                <div class="contact-us nav">          
-                    <h3>Contact us</h3>
+            <div class="feedbacks nav">  
+                    <h3>Feedbacks</h3>
                     <ul>
-                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
-                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>
+                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
+                        <li>Twitter: <a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
+                        <li>Facebook: <a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
                     </ul>
                 </div>
 
+                <div class="support nav">  
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="{{ url('guidelines') }}"><mark>Guidelines</mark></a></li>
+                        <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
+                    </ul>
+                </div>
+                
+                
                 <div class="sales nav">
-                    <h3>Sales</h3>
+                    <h3>Manage sales</h3>
                     <ul>
                         <li><a href="{{ url('sales') }}">Sales</a></li>
-                        <li><a href="{{ url('basket') }}">Cart</a></li>
+                        <li><a href="{{ url('basket') }}">My Cart</a></li>
                     </ul>
                 </div>
 
                 <div class="portfolio nav">
-                    <h3>Portfolio</h3>
+                    <h3>Manage portfolio</h3>
                     <ul>
                         <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                         <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
@@ -110,7 +124,7 @@
                     </ul>
                 </div>
 
-            </section> -->
+            </section>
             
             <div class="copyright">
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.

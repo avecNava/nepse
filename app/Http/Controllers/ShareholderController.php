@@ -50,7 +50,7 @@ class ShareholderController extends Controller
     {
         $request->validate([
             'first_name' => 'required|max:25|min:3',
-            'last_name' => 'required|max:25|min:3',
+            'last_name' => 'nullable|max:25|min:3',
             'date_of_birth' => 'nullable|date',
             'email' => 'nullable|email',
             'gender' => 'nullable|in:male,female,other',

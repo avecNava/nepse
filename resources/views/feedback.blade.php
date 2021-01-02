@@ -13,6 +13,13 @@
     <h1>Contact us</h1>
     <section class="contact-us">
         <div class="description">
+            <h2>Hello
+                @guest Guest @endguest
+                @php
+                $name = explode(' ', optional(Auth::user())->name);
+                @endphp
+                @auth{{ $name[0] }} ,@endauth
+            </h2>
             <p> <strong>Thanks for showing up here.</strong> </p>
             <p>Please use the form below to contact us, submit complaints, suggestions</p>
         </div>

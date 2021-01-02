@@ -42,6 +42,7 @@
                         </form>
                     </div>
                     @endif
+                    
                     <div class="a_page_header">
                         @yield('header_title')
                     </div>

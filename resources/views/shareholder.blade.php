@@ -56,7 +56,7 @@
 
                             <div class="form-field">
                                 <label for="last_name">Last name</label>
-                                <input type="text" value="{{old('last_name')}}" name="last_name" id="last_name" required 
+                                <input type="text" value="{{old('last_name')}}" name="last_name" id="last_name" 
                                 class="@error('last_name') is-invalid @enderror" />
                             </div>
 

@@ -57,9 +57,33 @@ class Shareholder extends Model
                 'date_of_birth' => $request->date_of_birth,
                 'gender' => Str::title(Str::substr($request->gender,0,1)),
                 'relation' => (Auth::id() == $request->id) ? null : Str::title($request->relation), //relation is null for main a/c holders
+                'parent' => false,
             ]
         );
     }
+  
+    public static function createSampleRecord($shareholder_id)
+    {
+        Shareholder::updateOrCreate(
+            [
+            'last_modified_by' => $shareholder_id,
+            'parent_id' => $shareholder_id,
+            'first_name' => 'Long term',
+            'last_name' => 'Investment',
+            'relation' => 'Group',
+            'parent' => false,
+        ]);
+            
+        Shareholder::updateOrCreate([
+            'last_modified_by' => $shareholder_id,
+            'parent_id' => $shareholder_id,
+            'first_name' => 'Short term',
+            'last_name' => 'Investment',
+            'relation' => 'Group',
+            'parent' => false,
+        ]);
+    }
+
 
     public static function getShareholderNames($parent_id)
     {

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PortfolioSummary;
+use App\Models\Shareholder;
 
 class CreateSampleRecordsListener
 {
@@ -27,9 +28,13 @@ class CreateSampleRecordsListener
     public function handle($event)
     {
         if (session()->has('shareholder_id')){
+            
+            $shareholder = session()->get('shareholder_id');
+            
+            //create a default shareholder (group)
+            Shareholder::createSampleRecord($shareholder);
 
             //check if the user has any records in PortfolioSummary table
-            $shareholder = session()->get('shareholder_id');
             $records = PortfolioSummary::where('shareholder_id', $shareholder)->count('id');
             if($records == 0){
                 \App\Models\Portfolio::createRandomRecord($shareholder);
