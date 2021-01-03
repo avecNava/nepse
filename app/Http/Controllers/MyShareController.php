@@ -138,7 +138,7 @@ class MyShareController extends Controller
                ->get();
           
           //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
-          $offers =['IPO','RIGHTS','BONUS'];
+          $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
 
           $portfolios->each(function($item) use($offers){
                

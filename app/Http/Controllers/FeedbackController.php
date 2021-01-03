@@ -45,7 +45,7 @@ class FeedbackController extends Controller implements ShouldQueue
             'feedback' => 'required|min:10',
             'attachment' => 'nullable|mimes:jpeg,jpg,png',
         ],
-        [ 'category.*' => 'Please choose a valid category']);
+        [ 'category.*' => 'Please choose a category for the message']);
         
         $file_name_str='';
 
@@ -73,10 +73,13 @@ class FeedbackController extends Controller implements ShouldQueue
         $feedback->attachment = $file_name_str;
         $feedback->save();
 
-        $user = \App\Models\User::where('email','nava.bogatee@gmail.com')->first();
-        Mail::to($user)->send(new FeedbackMail($feedback));
-
-        return redirect()->back()->with('message', 'Your message has been recorded.');
+        try {
+            $user = \App\Models\User::where('email','nava.bogatee@gmail.com')->first();
+            Mail::to($user)->send(new FeedbackMail($feedback));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return redirect()->back()->with('message', 'Thank you for your time 🙏. Your message has been recorded.');
     }
 
     public function feedback(int $id)

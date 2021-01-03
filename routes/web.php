@@ -29,10 +29,15 @@ Auth::routes([
     'register' => true,
 ]);
     
-Auth::loginUsingId(6);
+// Auth::loginUsingId(6);
+Auth::loginUsingId(171);
 
 Route::get('test', function(){
 
+    
+    //$feedback = \App\Models\Feedback::first();
+    // dd($feedback->description);
+    //Mail::to($user)->send(new \App\Mail\FeedbackMail($feedback));
 });
 
 
@@ -101,6 +106,7 @@ Route::get('basket/{username}/{id?}',[SalesBasketController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);
 
 Route::get('guidelines', [HomeController::class, 'guideline']);
+Route::get('faq', [HomeController::class, 'faq']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);
 Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);

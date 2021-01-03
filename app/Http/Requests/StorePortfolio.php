@@ -30,8 +30,12 @@ class StorePortfolio extends FormRequest
             'quantity' => 'required|numeric|gt:0', 
             'unit_cost' => 'required|numeric', 
             'effective_rate' => 'required|numeric', 
+            'broker_commission' => 'nullable|numeric', 
+            'sebon_commission' => 'nullable|numeric', 
+            'dp_amount' => 'nullable|numeric', 
             'purchase_date' => 'nullable|date', 
             'total_amount' => 'required|numeric', 
+            'base_amount' => 'required|numeric', 
             'broker_no' => 'nullable|numeric', 
         ];
     }

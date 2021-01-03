@@ -82,7 +82,9 @@ class Portfolio extends Model
             $portfolio->effective_rate = $request->effective_rate;
             $portfolio->broker_commission = $request->broker_commission;
             $portfolio->sebon_commission = $request->sebon_commission;
+            $portfolio->dp_amount = $request->dp_amount;
             $portfolio->total_amount = $request->total_amount;
+            $portfolio->dp_amount = $request->dp_amount;
             $portfolio->receipt_number = $request->receipt_number;
             $portfolio->tags = $request->tags;
             $portfolio->broker_no = $request->broker;
@@ -123,7 +125,9 @@ class Portfolio extends Model
                 $portfolio->effective_rate = $request->effective_rate;
                 $portfolio->broker_commission = $request->broker_commission;
                 $portfolio->sebon_commission = $request->sebon_commission;
+                $portfolio->dp_amount = $request->dp_amount;
                 $portfolio->total_amount = $request->total_amount;
+                $portfolio->base_amount = $request->base_amount;
                 $portfolio->tags = $request->tags;
                 $portfolio->receipt_number = $request->receipt_number;
                 $portfolio->broker_no = $request->broker;
@@ -164,7 +168,7 @@ class Portfolio extends Model
 
             //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
             $offers =['IPO','RIGHTS'];
-            $offers1 =['IPO','RIGHTS','BONUS'];
+            $offers1 =['IPO','RIGHTS','BONUS','OTHERS','OTHER'];
 
             Portfolio::updateOrCreate(
             [

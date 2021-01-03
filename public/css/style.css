@@ -6,31 +6,9 @@ body {
     --scorecard : #1d1c25;
     --form-band : #6b64a0;
     --color-orange-light95:#fff5e6;
-    --color-orange-light90:#ffebcc;
     --color-orange-light70:#ffc266;
-    --color-orange-light50:#ff9900;
-    --color-blue-light95:#e6f0ff;
-    --color-blue-light90:#cce0ff;
-    --color-blue-light70:#66a3ff;
-    --color-blue-light50:#0066ff;
-    --color-brown-light95:#ffece6;
-    --color-brown-light90:#ffd9cc;
-    --color-brown-light70:#ff8c66;
-    --color-brown-light50:#cc3300;
-    --color-green-light95:#e6ffe6;
-    --color-green-light90:#ccffcc;
-    --color-green-light70:#66ff66;
-    --color-green-light50:#00cc00;
     --color-green-light30:#009900;
-    --color-green-light20:#006600;
-    --color-black-light95:#f2f2f2;
-    --color-black-light90:#e6e6e6;
-    --color-black-light70:#b3b3b3;
-    --color-black-light50:#808080;
     --color-black-light30:#4d4d4d;
-    --color-black-light20:#333333;
-    --color-black-light10:#1a1a1a;
-    --color-black-light5:#0d0d0d;
 }
 div#app, div#container {
     margin: 0 auto;
@@ -38,6 +16,13 @@ div#app, div#container {
 }
 .c_content__wrapper {
     margin: 40px 0;
+}
+.notice {
+    background: #e3e3b8;
+    padding: 5px 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #e11818;
 }
 input[readonly] {
     background: #dde3eb;
@@ -47,7 +32,16 @@ abbr {
     font-weight: bold;
     color: #3c3f40;
 }
-
+section.header {
+    margin: 15px 0;
+}
+#basket-notify:before {
+    content: '🛒';
+}
+#basket-notify {
+    text-align: right;
+    padding: 2px;
+}
 /*flex attribute css*/
 .flex {
     display: flex;
@@ -119,10 +113,6 @@ main.transactions td {
     text-align: right;
 }
 
-.contact-us .description {
-    background: #fafafa;
-    padding: 10px;
-}
 .copyright {
     padding: 10px;
     text-align: center;
@@ -523,16 +513,36 @@ section.c_score_cards article {
     color: #ff0000;
 }
 .increase_icon {
-    background-image: url(//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
+    background-image: url(https//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
     width: 20px;
     background-repeat: no-repeat;
 }
 .decrease_icon {
-    background-image: url(//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
+    background-image: url(https//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
     width: 20px;
     background-repeat: no-repeat;
 }
-
+.social .facebook{
+    background:url(https://s.svgbox.net/materialui.svg?ic=facebook&fill=000);
+    width:20px;
+    background-repeat: no-repeat;
+    display:inline-block;
+    padding-right: 6px;
+}
+.social .twitter{
+    background:url(https://s.svgbox.net/social.svg?ic=twitter&fill=000);
+    width:20px;
+    background-repeat: no-repeat;
+    display:inline-block;
+    padding-right: 6px;
+}
+.social .email{
+    background:url(https://s.svgbox.net/materialui.svg?ic=email&fill=000);
+    width:20px;
+    background-repeat: no-repeat;
+    display:inline-block;
+    padding-right: 6px;
+}
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;
 }
@@ -548,35 +558,36 @@ section.c_score_cards article {
 }
 
 
+#summary 
 details>div {
     margin: 5px 0;
 }
-details {
+#summary details {
     margin: 5px 0;
 }
-details:nth-child(odd) {
+#summary details:nth-child(odd) {
     background:#fafafa;
 }
-details summary::before {
+#summary details summary::before {
     content: '🎅';
     margin-left:5px;
 }
-details[open] summary::before {
+#summary details[open] summary::before {
     content: '🎁';
     margin-left:5px;
 }
-details summary::-webkit-details-marker {
+#summary details summary::-webkit-details-marker {
     padding:10px 0;
     color: white;
 }
-details[open] summary::-webkit-details-marker {
+#summary details[open] summary::-webkit-details-marker {
     padding:10px 0;
     color: beige;
 }
-details summary:hover {
+#summary details summary:hover {
     background:beige;
 }
-details summary:hover::-webkit-details-marker {
+#summary details summary:hover::-webkit-details-marker {
     color: beige;
 }
 section.shareholder-group {
@@ -801,14 +812,13 @@ section.contact-us {
     width: 400px;
 }
 .contact-us__form textarea {
-    width: 600px;
     height: 300px;
-    padding: 10px;
     font-size: 18px;
     margin-left: 10px;
     border-radius: 5px;
+    padding: 5px;
 }
-
+/*end of feedback*/
 
 /* verification */
 .card-body button {

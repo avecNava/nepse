@@ -70,6 +70,7 @@ function updateTotalPrice() {
     document.getElementById('broker_commission').value =  '';
     document.getElementById('sebon_commission').value =  '';
     document.getElementById('total_amount').value =  '';
+    document.getElementById('base_amount').value =  '';
     document.getElementById('effective_rate').value =  '';
 
     var quantity = document.getElementById('quantity').value;
@@ -84,6 +85,7 @@ function updateTotalPrice() {
     var eff_rate = unit_cost;
     var total_amount = sub_total;
 
+    document.getElementById('base_amount').value =  sub_total;
     document.getElementById('total_amount').value =  total_amount;
     document.getElementById('effective_rate').value =  eff_rate;
     

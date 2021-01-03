@@ -2,9 +2,9 @@ function fnRefreshBasket(){
     const msg = document.querySelector('#sell_message');
     // msg.innerHTML ='Refreshing the basket ⌚ ... ';
     url = `${window.location.origin}/basket`;
-    // setTimeout(function(){ 
-    //     window.location.replace(url);
-    // }, 2000);
+    setTimeout(function(){ 
+        window.location.replace(url);
+    }, 2000);
 }
 
 function __showMessage(message, error = false,  clear_message = false, refresh = false){

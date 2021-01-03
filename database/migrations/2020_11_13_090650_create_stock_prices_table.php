@@ -17,7 +17,7 @@ class CreateStockPricesTable extends Migration
 
             $table->id();
             $table->foreignId('stock_id')->nullable();
-            $table->string('symbol');
+            $table->string('symbol')->index();
 
             $table->unsignedMediumInteger('open_price')->nullable();
             $table->unsignedMediumInteger('high_price')->nullable();

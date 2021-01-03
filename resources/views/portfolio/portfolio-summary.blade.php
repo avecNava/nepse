@@ -64,7 +64,7 @@
             @endif
             </header>
 
-            <main>
+            <main id="summary">
                 <section class='header-row'>
                     <div></div>
                     <div class='header-labels header-items'>

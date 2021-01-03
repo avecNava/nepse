@@ -196,7 +196,6 @@ class MeroShareController extends Controller
      */
      public function exportPortfolio(Request $request)
      {
-          
           if( empty($request->trans_id) ){
 
                return response()->json([
@@ -216,6 +215,9 @@ class MeroShareController extends Controller
                'FPO',
                'IPO',
                'SECONDARY',
+               'MERGER',
+               'OTHER',
+               'OTHERS',
           ];
 
           $purchases = $portfolios->filter(function($item, $key) use($purchase_arr){
@@ -231,9 +233,6 @@ class MeroShareController extends Controller
           $sales_arr = [
                'SALES',
                'SALE',
-               'MERGER',
-               'OTHER',
-               'OTHERS',
           ];
 
           $sales = $portfolios->filter(function($item, $key) use($sales_arr){
@@ -304,8 +303,8 @@ class MeroShareController extends Controller
                          'shareholder_id' => $value->shareholder_id,
                          'symbol' =>  empty($value->share) ? null : $value->share->symbol,
                          'stock_id' =>  empty($value->share) ? null : $value->share->id,
-                         'offer_id' =>  empty($value->offer) ? null : $value->offer->id,                      //get from related table
-                         'offer_code' =>  empty($value->offer) ? null : $value->offer->offer_code,            //get from related table
+                         'offer_id' =>  empty($value->offer) ? 12 : $value->offer->id,                                       //get from related table; if null 12=Others
+                         'offer_code' =>  empty($value->offer) ? 'OTHERS' : $value->offer->offer_code,                        //get from related table
                          'transaction_date' => $value->transaction_date,
                          'remarks' => $value->remarks,
                     );  

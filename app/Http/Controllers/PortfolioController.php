@@ -217,6 +217,7 @@ class PortfolioController extends Controller
                 'quantity' => 'required|regex:/^[0-9]+$/',
                 'unit_cost' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
                 'total_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+                'base_amount' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
                 'effective_rate' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
                 'purchase_date' => 'nullable|date',
             ],

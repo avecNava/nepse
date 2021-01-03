@@ -40,6 +40,14 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
+                        @php
+                        $basket = \App\Models\SalesBasket::where('shareholder_id', session()->get('shareholder_id'))->count('id');
+                        @endphp
+                        @if($basket > 0) 
+                        <div id="basket-notify">
+                            <a href="{{url('basket')}}" title="View Cart">View cart</a>
+                        </div>
+                        @endif
                     </div>
                     @endif
                     
@@ -64,6 +72,9 @@
         <main class="c_content">
 
             <div class="c_content__wrapper">
+                <div class="notice">
+                    Please verify your stocks manually as there might have been some errors during import from the old system.<br/>Pay special attention to quantity, unit price, effective rate.
+                </div>
                 @yield('content')
             </div>
             
@@ -148,10 +159,10 @@
                 
                 <div class="feedbacks nav">  
                     <h3>Feedbacks</h3>
-                    <ul>
-                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
-                        <li>Twitter: <a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
-                        <li>Facebook: <a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
+                    <ul class="social">
+                        <li><span class="email">&nbsp;</span><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
+                        <li><span class="twitter">&nbsp;</span><a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
+                        <li><span class="facebook">&nbsp;</span><a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
                     </ul>
                 </div>
 
@@ -159,6 +170,7 @@
                     <h3>Help & Support</h3>
                     <ul>
                         <li><a href="{{ url('guidelines') }}"><mark>Guidelines</mark></a></li>
+                        <li><a href="{{ url('faq') }}"><mark>FAQs</mark></a></li>
                         <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
                     </ul>
                 </div>

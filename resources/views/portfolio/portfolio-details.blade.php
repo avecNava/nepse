@@ -230,7 +230,13 @@
                         value="{{ old('quantity') }}"/>
                     </div>
                     <div>
-                        <label for="total_amount" title="bill amount"
+                        <label for="base_amount" title="Base price * Quantity"
+                        class="@error('base_amount') is-invalid @enderror">Base amount</label>
+                        <input type="text" name="base_amount" id="base_amount" required 
+                        value="{{ old('base_amount') }}"/>
+                    </div>
+                    <div>
+                        <label for="total_amount" title="Bill amount inclusive commissions"
                         class="@error('total_amount') is-invalid @enderror">Total amount</label>
                         <input type="text" name="total_amount" id="total_amount" required 
                         value="{{ old('total_amount') }}"/>
@@ -265,6 +271,10 @@
                     <div>
                         <label for="sebon_commission">SEBON commission<label>
                         <input type="text" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
+                    </div> 
+                    <div>
+                        <label for="dp_amount">DP amount<label>
+                        <input type="text" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
                     </div> 
                 </section>
 
@@ -315,7 +325,7 @@
                     {{ session()->get('message') }}
                 @else
                     @if(count($portfolios)>0)
-                        {{count($portfolios)}} @if(count($portfolios)>1)scripts @else script @endif
+                        {{count($portfolios)}} @if(count($portfolios)>1)records @else record @endif
                     @endif
                 @endif
 
@@ -426,7 +436,7 @@
             @php
                 $count = count($sales);
                 $quantity = $sales->sum('quantity');
-                $count_str = ($count <= 2) ? ' script' :' scripts';
+                $count_str = ($count <= 2) ? ' records' :' recordss';
             @endphp
             @if($count)
             <details>
@@ -487,7 +497,6 @@
             }
 
             showLoadingMessage();
-            clearMessage();
             showForm('portfolio-form');
             
             document.querySelector('.message').innerHTML='';
@@ -525,12 +534,14 @@
             document.getElementById('quantity').value = $record.quantity;
             document.getElementById('unit_cost').value = $record.unit_cost;
             document.getElementById('total_amount').value = $record.total_amount;
+            document.getElementById('base_amount').value = $record.base_amount;
             document.getElementById('effective_rate').value = $record.effective_rate;
             document.getElementById('receipt_number').value = $record.receipt_number;
             document.getElementById('tags').value = $record.tags;
             document.getElementById('purchase_date').value = $record.purchase_date;
             document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
             document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
+            document.getElementById('dp_amount').value = ($record.dp_amount) ? $record.dp_amount : '';
             setOption(document.getElementById('broker'), $record.broker_no);
             setOption(document.getElementById('offer'), $record.offer_id);
             setOption(document.getElementById('broker'), $record.broker_id);
@@ -545,9 +556,11 @@
             document.getElementById('quantity').value = '';
             document.getElementById('unit_cost').value = '';
             document.getElementById('total_amount').value = '';
+            document.getElementById('base_amount').value = '';
             document.getElementById('effective_rate').value = '';
             document.getElementById('broker_commission').value = '';
             document.getElementById('sebon_commission').value = '';
+            document.getElementById('dp_amount').value = '';
             document.getElementById('receipt_number').value = '';
             document.getElementById('tags').value = '';
             document.getElementById('purchase_date').value = date_str;
@@ -575,8 +588,7 @@
 
             if(confirm('Please confirm the delete operation')) {
 
-                clearMessage();
-                showLoadingMessage();
+                    showLoadingMessage();
 
                 let request = new XMLHttpRequest();
                 const url = `${window.location.origin}/portfolio/delete/${record_id}`;

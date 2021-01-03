@@ -150,6 +150,11 @@
                                 <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" />
                             </div> 
 
+                            <div class="fields form-field">
+                                <label for="base_amount" class="@error('base_amount') is-invalid @enderror" >Base amount</label>
+                                <input type="number" name="base_amount" id='base_amount' required value="{{ old('base_amount') }}" />
+                            </div> 
+
                             <section id="secondary">
 
                             <div>
@@ -159,6 +164,10 @@
                             <div>
                                 <label for="sebon_commission">Sebon Commission</label>
                                 <input type="text" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
+                            </div>
+                            <div>
+                                <label for="dp_amount">DP amount</label>
+                                <input type="text" name="dp_amount" id="dp_amount" value="{{old('dp_amount')}}" />
                             </div>
 
                             <div class="fields form-field">

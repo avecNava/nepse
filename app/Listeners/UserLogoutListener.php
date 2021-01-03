@@ -26,6 +26,7 @@ class UserLogoutListener
     public function handle($event)
     {   
         session()->forget('tenant_id');
+        session()->forget('basket');
         info('User log out', [session()->get('tenant_id')]),
     }
 }

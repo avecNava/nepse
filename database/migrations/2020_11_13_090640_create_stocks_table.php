@@ -19,7 +19,7 @@ class CreateStocksTable extends Migration
               
        Schema::create('stocks', function (Blueprint $table) {
             $table->id()->from(100);
-            $table->string('symbol');
+            $table->string('symbol')->index();
             $table->string('security_name');
             $table->boolean('active')->default(true);
             $table->foreignId('sector_id')->nullable()->constrained('stock_sectors');

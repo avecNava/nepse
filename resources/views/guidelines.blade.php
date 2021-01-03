@@ -4,13 +4,28 @@
     Your stock portfolio management application over the browser
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">Guidelines</h1>
+@endsection
+
+
 @section('js')
    
 @endsection
 
 @section('content')
-    <h1>Guidelines</h1>
+
+    <section id="top-nav">
+        <div class="label">You may also be interested in our FAQ</div>
+        <div class="links">
+            <div class="link">
+                <a href="{{url('faq')}}" title="Frequently asked questions">Frequently asked questions</a>
+            </div>
+        </div>
+    </section>
+
     <section class="guidelines">
+    <h2>Guidelines</h2>
         <p>
             Now you have created an account with us, we thought the following guidelines would be benefical for you.
         </p>

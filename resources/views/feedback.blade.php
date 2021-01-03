@@ -4,13 +4,17 @@
     Your stock portfolio management application over the browser
 @endsection
 
+@section('header_title')
+    <h1 class="c_title">Contact us</h1>
+@endsection
+
 @section('js')
     
 @endsection
 
 @section('content')
     <div id="loading-message" style="display:none">Importing... Please wait...</div>
-    <h1>Contact us</h1>
+    
     <section class="contact-us">
         <div class="description">
             <h2>Hello
@@ -23,46 +27,48 @@
             <p> <strong>Thanks for showing up here.</strong> </p>
             <p>Please use the form below to contact us, submit complaints, suggestions</p>
         </div>
-        <div class="contact-us__form">
-
-            <div id="message">            
-
-                @if (\Session::has('message'))
-                    <div class="message success">
-                        Thank you for your time 🙏 <br>
-                        {!! \Session::get('message') !!}
-                    </div>
-                    @endif
-
-                    @if (\Session::has('error'))
-                    <div class="message error"> </div>
-                @endif
-
+    </section>
+    
+    <section class="message">
+        <div class="message">
+            @if(session()->has('message'))
+            <div class="success">
+                {{ session()->get('message') }}
             </div>
-                
-            <form method="POST" action="feedbacks" enctype="multipart/form-data">
-                @csrf()
-            
-                <div class="form-field buttons" style="margin:50px 0">
-                    <button type="submit">Submit</button>
-                    <button id="cancel" type="reset">Reset</button>
-                </div>
+            @endif     
 
+            @if(session()->has('error'))
+            <div class="error">
+                {{ session()->get('error') }}
+            </div>
+            @endif
+        </div>
+    </section>
+
+    <section class="contact-us__form">
+    <div class="form">
+    <form method="POST" action="feedbacks" enctype="multipart/form-data">
+    <header>
+        <div><h2>Contact us</h2></div>
+        <div class="buttons">
+            <button type="submit">Submit</button>
+            <button id="cancel" type="reset">Reset</button>
+        </div>
+    </header>
+    <section class="two-col-form">
+        <div class="block-left">
+                
+                @csrf()
+                
                 <div class="form-field">
                     <label for="name">Name</label>
                     <input type="hidden" name="user_id" value="{{old('id', optional($user)->id)}}">
                     <input type="text" name="name" value="{{old('name', optional($user)->name)}}" required class="@error('name') is-invalid @enderror">
-                    @error('name')
-                        <div class="is-invalid">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <div class="form-field">
                     <label for="email">Email</label>
                     <input type="email" name="email" value="{{old('email', optional($user)->email)}}" required class="@error('email') is-invalid @enderror">
-                    @error('email')
-                        <div class="is-invalid">{{ $message }}</div>
-                    @enderror
                 </div>
                 
                 <div class="form-field" title="Choose a category">
@@ -77,52 +83,44 @@
                             @endforeach
                         @endif
                     </select> 
-
-                    @error('category')
-                        <div class="is-invalid">{{ $message }}</div>
-                    @enderror
-
                 </div>
 
                 <div class="form-field">
                     <label for="title">Title</label>
                     <input type="title" name="title" value="{{old('title', '')}}" required class="@error('title') is-invalid @enderror">
-                    @error('title')
-                        <div class="is-invalid">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <div class="form-field" style="display:flex">
                     <label for="feedback">Feedback</label>
-                    <textarea name="feedback" id="feedback" cols="80" rows="20" class="@error('feedback') is-invalid @enderror">
-                        {{old('feedback','')}}
-                    </textarea>
-                    @error('feedback')
-                        <div class="is-invalid">{{ $message }}</div>
-                    @enderror
+                    <textarea name="feedback" id="feedback" cols="80" rows="20" class="@error('feedback') is-invalid @enderror">{{old('feedback','')}}</textarea>
                 </div>
 
                 <div class="form-field">
-
                     <label for="attachment">Attachment</label>
-
                     <input type="file" name="attachment"  class="@error('attachment') is-invalid @enderror" />
-                    @error('attachment')
-                        <div class="is-invalid">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                        
                 </div>
-
-            </form>
 
         </div>
 
-    </section>    
+        <div class="block-right message">
+            <div class="validation-error">
+                @if ($errors->any())
+                <div class="error">
+                    <h3>Attention :</h3>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
 
-    <script>
-        
-    </script>
+    </form>
+    </div> 
+
+</section>
 
 @endsection
