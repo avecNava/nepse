@@ -22,6 +22,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StockSector;
+
 // use Illuminate\Notifications\Notifiable;
 
 Auth::routes([
@@ -30,10 +32,12 @@ Auth::routes([
 ]);
     
 // Auth::loginUsingId(6);
-Auth::loginUsingId(171);
+// Auth::loginUsingId(171);
 
 Route::get('test', function(){
 
+    $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
+    return (count($sectors[0]->price));
     
     //$feedback = \App\Models\Feedback::first();
     // dd($feedback->description);
@@ -53,7 +57,7 @@ Route::get('mail', function(){
 
 });
 
-Route::get('/', [PortfolioSummaryController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}',[ShareholderController::class, 'delete']);
@@ -85,7 +89,7 @@ Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
 Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
 
-Route::get('portfolio', [PortfolioSummaryController::class, 'index'])->name('home');
+Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
 
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode

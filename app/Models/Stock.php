@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\StockPrice;
+use App\Models\StockNews;
+use App\Models\StockSector;
 
 class Stock extends Model
 {
@@ -13,12 +16,17 @@ class Stock extends Model
 
     public function news()
     {
-        return $this->hasMany('App\Models\StockNews');
+        return $this->hasMany(StockNews::class);
     }
 
+    public function prices()
+    {
+        return $this->hasMany(StockPrice::class);
+    }
+    
     public function sector()
     {
-        //todo: get stock category 
+        return $this->belongsTo(StockSector::class);
     }
 
     /**

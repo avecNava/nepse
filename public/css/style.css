@@ -10,6 +10,11 @@ body {
     --color-green-light30:#009900;
     --color-black-light30:#4d4d4d;
 }
+/* *, :after, :before {
+    box-sizing: border-box;
+    border: 6px solid #e2e8f0;
+    box-sizing: content-box;
+} */
 div#app, div#container {
     margin: 0 auto;
     width: 1024px;
@@ -17,12 +22,17 @@ div#app, div#container {
 .c_content__wrapper {
     margin: 40px 0;
 }
+.c-nav a {
+    font-weight: bold;
+    padding: 0 10px;
+}
 .notice {
-    background: #e3e3b8;
+    background: #e3e3b830;
     padding: 5px 10px;
     text-align: center;
     font-weight: bold;
     color: #e11818;
+    margin: 1px 0;
 }
 input[readonly] {
     background: #dde3eb;
@@ -51,6 +61,12 @@ section.header {
 }
 .together {
     justify-content: flex-start;
+}
+.align-end {
+    align-items: flex-end;
+}
+.align-center {
+    align-items: center;
 }
 
 .message {

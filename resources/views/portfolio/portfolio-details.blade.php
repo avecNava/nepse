@@ -471,218 +471,218 @@
 
 <script>
 
-        // handle New button clicked
-        document.getElementById("new").addEventListener("click", function() {
-            const url = `${window.location.origin}/portfolio/new`;
-            //redirect to the mian form
-            window.location.replace(url);
-        });
+    // handle New button clicked
+    document.getElementById("new").addEventListener("click", function() {
+        const url = `${window.location.origin}/portfolio/new`;
+        //redirect to the mian form
+        window.location.replace(url);
+    });
 
-        // handle Cancel button
-        document.getElementById("cancel").addEventListener("click", function() {
-            hideForm('portfolio-form');
-            resetInputFields();
-        });
+    // handle Cancel button
+    document.getElementById("cancel").addEventListener("click", function() {
+        hideForm('portfolio-form');
+        resetInputFields();
+    });
 
-        // handle Edit button clicked
-        document.getElementById("edit").addEventListener("click", function() {
+    // handle Edit button clicked
+    document.getElementById("edit").addEventListener("click", function() {
 
-            //retrieve the data-id attribute from the edit button
-            let el = document.getElementById('edit');
-            let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
+        //retrieve the data-id attribute from the edit button
+        let el = document.getElementById('edit');
+        let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
 
-            if(!id_string){
-                msg = 'Please select a record to edit';
-                showMessage(msg, 'message', 'error'); return;
+        if(!id_string){
+            msg = 'Please select a record to edit';
+            showMessage(msg, 'message', 'error'); return;
+        }
+
+        showLoadingMessage();
+        showForm('portfolio-form');
+        
+        document.querySelector('.message').innerHTML='';
+
+
+        //parse the id from the given string
+        let record_id = parseID('chk_', id_string);
+
+        let request = new XMLHttpRequest();
+        const url = `${window.location.origin}/portfolio/get/${record_id}`;
+        request.open('GET', url, true);
+
+        request.onload = function() {
+
+            if (this.status >= 200 && this.status < 400) {
+                data = JSON.parse(this.response);
+                updateInputFields(data, 'message');
+                document.querySelector('#offer').dispatchEvent(new Event("change"));
+                hideLoadingMessage();
             }
+        }  
 
-            showLoadingMessage();
-            showForm('portfolio-form');
-            
-            document.querySelector('.message').innerHTML='';
+        request.onerror = function() {
+            // There was a connection error of some sort
+            hideLoadingMessage();
+        };
 
+        request.send();
 
-            //parse the id from the given string
-            let record_id = parseID('chk_', id_string);
+    });
+
+    function updateInputFields($record) {
+        document.getElementById('id').value = $record.id;
+        // document.getElementById('shareholder_id').value = $record.shareholder_id;
+        document.getElementById('quantity').value = $record.quantity;
+        document.getElementById('unit_cost').value = $record.unit_cost;
+        document.getElementById('total_amount').value = $record.total_amount;
+        document.getElementById('base_amount').value = $record.base_amount;
+        document.getElementById('effective_rate').value = $record.effective_rate;
+        document.getElementById('receipt_number').value = $record.receipt_number;
+        document.getElementById('tags').value = $record.tags;
+        document.getElementById('purchase_date').value = $record.purchase_date;
+        document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
+        document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
+        document.getElementById('dp_amount').value = ($record.dp_amount) ? $record.dp_amount : '';
+        setOption(document.getElementById('broker'), $record.broker_no);
+        setOption(document.getElementById('offer'), $record.offer_id);
+        setOption(document.getElementById('broker'), $record.broker_id);
+
+    }
+
+    function resetInputFields() {
+        let date = Date.now();
+        let date_str = date.getFullYear() + '-' + date.getMonth() + 1 + '-' + getDate();
+
+        document.getElementById('id').value = '';
+        document.getElementById('quantity').value = '';
+        document.getElementById('unit_cost').value = '';
+        document.getElementById('total_amount').value = '';
+        document.getElementById('base_amount').value = '';
+        document.getElementById('effective_rate').value = '';
+        document.getElementById('broker_commission').value = '';
+        document.getElementById('sebon_commission').value = '';
+        document.getElementById('dp_amount').value = '';
+        document.getElementById('receipt_number').value = '';
+        document.getElementById('tags').value = '';
+        document.getElementById('purchase_date').value = date_str;
+        setOption(document.getElementById('broker'), 0);
+        setOption(document.getElementById('offer'), 0);
+        setOption(document.getElementById('broker'), 0);
+
+    }
+
+    // handle Delete button clicked
+    document.getElementById("delete").addEventListener("click", function() {
+
+        //retrieve the data-id attribute from the delete button
+        //the data-id attirbute is the id of the row
+        const  el = document.getElementById('delete');
+        let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
+
+        if(!id_string){
+            msg = 'Please select a record to delete';
+            showMessage(msg, 'message', 'error'); return;
+        }
+
+        //parse the id from the given string
+        let record_id = parseID('chk_', id_string);
+
+        if(confirm('Please confirm the delete operation')) {
+
+                showLoadingMessage();
 
             let request = new XMLHttpRequest();
-            const url = `${window.location.origin}/portfolio/get/${record_id}`;
+            const url = `${window.location.origin}/portfolio/delete/${record_id}`;
             request.open('GET', url, true);
 
-            request.onload = function() {
-
+            request.onload = function(ele_success, ele_loading) {
                 if (this.status >= 200 && this.status < 400) {
                     data = JSON.parse(this.response);
-                    updateInputFields(data, 'message');
-                    document.querySelector('#offer').dispatchEvent(new Event("change"));
                     hideLoadingMessage();
+                    showMessage(data.message,'message');
+                    //if no records remain, redirect to main page
+                    if(data.quantity == 0){
+                        let url = `${window.location.origin}/portfolio`;
+                        window.location.replace(url);
+                    }
+                    hideDeletedRow();
                 }
             }  
-
             request.onerror = function() {
-                // There was a connection error of some sort
-                hideLoadingMessage();
+            // There was a connection error of some sort
+            hideLoadingMessage();
             };
 
-            request.send();
-
-        });
-
-        function updateInputFields($record) {
-            document.getElementById('id').value = $record.id;
-            // document.getElementById('shareholder_id').value = $record.shareholder_id;
-            document.getElementById('quantity').value = $record.quantity;
-            document.getElementById('unit_cost').value = $record.unit_cost;
-            document.getElementById('total_amount').value = $record.total_amount;
-            document.getElementById('base_amount').value = $record.base_amount;
-            document.getElementById('effective_rate').value = $record.effective_rate;
-            document.getElementById('receipt_number').value = $record.receipt_number;
-            document.getElementById('tags').value = $record.tags;
-            document.getElementById('purchase_date').value = $record.purchase_date;
-            document.getElementById('broker_commission').value = ($record.broker_commission) ? $record.broker_commission : '';
-            document.getElementById('sebon_commission').value = ($record.sebon_commission) ? $record.sebon_commission : '';
-            document.getElementById('dp_amount').value = ($record.dp_amount) ? $record.dp_amount : '';
-            setOption(document.getElementById('broker'), $record.broker_no);
-            setOption(document.getElementById('offer'), $record.offer_id);
-            setOption(document.getElementById('broker'), $record.broker_id);
+            request.send(); 
 
         }
+    
+    });
 
-        function resetInputFields() {
-            let date = Date.now();
-            let date_str = date.getFullYear() + '-' + date.getMonth() + 1 + '-' + getDate();
+    function hideDeletedRow($id) {
+        const tag = document.getElementById('delete').dataset.id;
+        const id = parseID('chk-', tag);
+        document.getElementById('row-'+id).classList.add('hide');
+    }
 
-            document.getElementById('id').value = '';
-            document.getElementById('quantity').value = '';
-            document.getElementById('unit_cost').value = '';
-            document.getElementById('total_amount').value = '';
-            document.getElementById('base_amount').value = '';
-            document.getElementById('effective_rate').value = '';
-            document.getElementById('broker_commission').value = '';
-            document.getElementById('sebon_commission').value = '';
-            document.getElementById('dp_amount').value = '';
-            document.getElementById('receipt_number').value = '';
-            document.getElementById('tags').value = '';
-            document.getElementById('purchase_date').value = date_str;
-            setOption(document.getElementById('broker'), 0);
-            setOption(document.getElementById('offer'), 0);
-            setOption(document.getElementById('broker'), 0);
-
-        }
-
-        // handle Delete button clicked
-        document.getElementById("delete").addEventListener("click", function() {
-
-            //retrieve the data-id attribute from the delete button
-            //the data-id attirbute is the id of the row
-            const  el = document.getElementById('delete');
-            let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
-
-            if(!id_string){
-                msg = 'Please select a record to delete';
-                showMessage(msg, 'message', 'error'); return;
-            }
-
-            //parse the id from the given string
-            let record_id = parseID('chk_', id_string);
-
-            if(confirm('Please confirm the delete operation')) {
-
-                    showLoadingMessage();
-
-                let request = new XMLHttpRequest();
-                const url = `${window.location.origin}/portfolio/delete/${record_id}`;
-                request.open('GET', url, true);
-
-                request.onload = function(ele_success, ele_loading) {
-                    if (this.status >= 200 && this.status < 400) {
-                        data = JSON.parse(this.response);
-                        hideLoadingMessage();
-                        showMessage(data.message,'message');
-                        //if no records remain, redirect to main page
-                        if(data.quantity == 0){
-                            let url = `${window.location.origin}/portfolio`;
-                            window.location.replace(url);
-                        }
-                        hideDeletedRow();
-                    }
-                }  
-                request.onerror = function() {
-                // There was a connection error of some sort
-                hideLoadingMessage();
-                };
-
-                request.send(); 
-
-            }
+    function resetSellError(){
+        const msg = document.querySelector('#basket_message')
+        msg.classList.remove('error');
+        msg.classList.remove('success');
+        msg.innerHTML = '';
+    }
+    
+    function saveToBasket(sell_quantity, shareholder_id, stock_id){
         
-        });
+        showLoadingMessage();
+        const url = `${window.location.origin}/basket/store`;
+        let _token = document.getElementsByName('_token')[0].value;
+        let request = new XMLHttpRequest();
+        request.open('POST', url, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.onload = function() {
+            const data = JSON.parse(this.response);
+            if (this.status >= 200 && this.status < 400) {
+                showMessage(data.message, 'basket_message');
+            }
+            else{
+                showMessage(data.message,'basket_message', 'error');            
+            }
+            hideLoadingMessage();
+        }
+        request.send(`_token=${_token}&stock_id=${stock_id}&shareholder_id=${shareholder_id}&quantity=${sell_quantity}`);
+    }
 
-        function hideDeletedRow($id) {
-            const tag = document.getElementById('delete').dataset.id;
-            const id = parseID('chk-', tag);
-            document.getElementById('row-'+id).classList.add('hide');
+    function addToBasket(){
+
+        const ele = document.querySelector('#sell_quantity');
+        const shareholder_id = ele.dataset.shareholderId;
+        const stock_id = ele.dataset.stockId;
+        const sell_quantity = ele.value;
+
+        if(!sell_quantity){
+            showMessage( 'Enter sell quantity','basket_message', 'error');
+            return false;
         }
 
-        function resetSellError(){
-            const msg = document.querySelector('#basket_message')
-            msg.classList.remove('error');
-            msg.classList.remove('success');
-            msg.innerHTML = '';
-        }
-        
-        function saveToBasket(sell_quantity, shareholder_id, stock_id){
-            
-            showLoadingMessage();
-            const url = `${window.location.origin}/basket/store`;
-            let _token = document.getElementsByName('_token')[0].value;
-            let request = new XMLHttpRequest();
-            request.open('POST', url, true);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            request.onload = function() {
-                const data = JSON.parse(this.response);
-                if (this.status >= 200 && this.status < 400) {
-                    showMessage(data.message, 'basket_message');
-                }
-                else{
-                    showMessage(data.message,'basket_message', 'error');            
-                }
-                hideLoadingMessage();
-            }
-            request.send(`_token=${_token}&stock_id=${stock_id}&shareholder_id=${shareholder_id}&quantity=${sell_quantity}`);
+        const total_quantity = document.querySelector('#total_quantity').dataset.quantity;
+
+        const diff = parseInt(total_quantity) - parseInt(sell_quantity);
+
+        if( parseInt(sell_quantity) >  (total_quantity)){
+            showMessage(`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`,'basket_message', 'error');
+            return false;
         }
 
-        function addToBasket(){
-
-            const ele = document.querySelector('#sell_quantity');
-            const shareholder_id = ele.dataset.shareholderId;
-            const stock_id = ele.dataset.stockId;
-            const sell_quantity = ele.value;
-
-            if(!sell_quantity){
-                showMessage( 'Enter sell quantity','basket_message', 'error');
-                return false;
-            }
-
-            const total_quantity = document.querySelector('#total_quantity').dataset.quantity;
-
-            const diff = parseInt(total_quantity) - parseInt(sell_quantity);
-
-            if( parseInt(sell_quantity) >  (total_quantity)){
-                showMessage(`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`,'basket_message', 'error');
-                return false;
-            }
-
-           const wacc = document.querySelector('#wacc').dataset.rate;
-            if(!wacc){
-                showMessage('Weighted average not updated for this stock.','basket_message', 'error');
-                return false;
-            }
-
-            resetSellError();
-            saveToBasket(sell_quantity, shareholder_id, stock_id);
-
+        const wacc = document.querySelector('#wacc').dataset.rate;
+        if(!wacc){
+            showMessage('Weighted average not updated for this stock.','basket_message', 'error');
+            return false;
         }
+
+        resetSellError();
+        saveToBasket(sell_quantity, shareholder_id, stock_id);
+
+    }
 
 </script>
 @endsection

@@ -1,0 +1,42 @@
+.welcome__wrapper {
+    display: flex;
+    align-items: flex-start;
+}
+table {
+    border-collapse:separate; 
+    border-spacing: 0 0.1em;
+}
+#sectors {
+    /* background: #f7f7f7; */
+    padding: 10px;
+    margin: 10px 0;
+}
+#sectors h3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#sectors main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items:stretch;
+    justify-content: space-between;
+}
+#sectors .sector {
+    margin: 2px;
+    padding: 5px 15px;
+    background: beige;
+    border: 1px solid #CDDC39;
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.sector label {
+    display: none;
+}
+
+section#top10items>article {
+    margin: 10px;
+}
+

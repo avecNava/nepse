@@ -9,10 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'NEPSE.TODAY') }}</title>
-    
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 
 
     <!-- Scripts -->
@@ -21,9 +17,10 @@
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
-    <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+    @yield('custom_css')
 </head>
 <body>
     <div id="app">
@@ -56,6 +53,16 @@
                 @csrf
             </form>
         </div>
+        @else
+        <div>
+            <a href="{{url('feedbacks')}}">Feedbacks</a>
+            @if (Route::has('login'))
+                    <a href="{{ route('login') }}">Login</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}">Register</a>
+                @endif
+                @endif
+        </div>
         @endif
         
         <div class="a_page_header">
@@ -71,6 +78,7 @@
             </ul>
         </nav>
         @endauth
+
     </div>
 
 </div>

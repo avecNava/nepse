@@ -61,7 +61,8 @@ class StockPrice extends Model
                         'avg_traded_price' => $record['averageTradedPrice'],
                         'fifty_two_week_high_price' => $record['fiftyTwoWeekHigh'],
                         'fifty_two_week_low_price' => $record['fiftyTwoWeekLow'],
-                        'last_updated_time' => empty($record['lastUpdatedTime']) ? null : $record['lastUpdatedTime']
+                        'last_updated_time' => empty($record['lastUpdatedTime']) ? null : $record['lastUpdatedTime'],
+                        'created_at' => Carbon::now(),
                     ]
                 );
             }
@@ -104,12 +105,8 @@ class StockPrice extends Model
      */
     public static function getLastDate()
     {
-        $date = StockPrice::select('transaction_date')->orderBy('transaction_date','desc')->first();
-        
-        if(empty($date))
-            return null;
+        return StockPrice::max('transaction_date');
 
-        return $date->transaction_date;
     }
     
     public function scopeLastTradePrice($query)

@@ -10,12 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
     <script src="{{ URL::to('js/app.js') }}"></script>
+    @yield('custom_css')
 </head>
 <body>
     <div id="container">
         
         <header class="c-header">
-
+        <div class="notice">
+            Please verify your stocks manually as there might have been some errors during import from the old system.<br/>Pay special attention to quantity, unit price, effective rate.
+        </div>
             <div class="c-header__wrapper">
 
                 <div class="c-logo">
@@ -57,6 +60,7 @@
 
                     <nav class="c-nav__list">
                         <ul class="navbar-nav">
+                            <li><a href="{{ url('/') }}">Home</a></li>
                             <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                             <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
                             <li><a href="{{ url('sales') }}">Sales</a></li>
@@ -72,9 +76,6 @@
         <main class="c_content">
 
             <div class="c_content__wrapper">
-                <div class="notice">
-                    Please verify your stocks manually as there might have been some errors during import from the old system.<br/>Pay special attention to quantity, unit price, effective rate.
-                </div>
                 @yield('content')
             </div>
             
