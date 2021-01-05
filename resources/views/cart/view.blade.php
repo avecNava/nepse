@@ -159,7 +159,7 @@
             
             <header>
                 @if(count($basket)<=0)
-                    <div class="info" style="text-align:center">
+                <div class="info center-box error-box">
                         <h2 class="message error">The cart is empty.<h2>
                         <h3 class="message success">💡 You can go to <strong>Portfolio details</strong> and add items to the cart.</h3>
                     </div>

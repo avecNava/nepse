@@ -13,12 +13,13 @@
     @yield('custom_css')
 </head>
 <body>
+    <div id="notice">
+        @yield('notice')
+    </div> 
     <div id="container">
         
         <header class="c-header">
-        <div class="notice">
-            Please verify your stocks manually as there might have been some errors during import from the old system.<br/>Pay special attention to quantity, unit price, effective rate.
-        </div>
+        
             <div class="c-header__wrapper">
 
                 <div class="c-logo">
@@ -55,7 +56,7 @@
                     @endif
                     
                     <div class="a_page_header">
-                        @yield('header_title')
+                        <h1>@yield('header_title')</h1>
                     </div>
 
                     <nav class="c-nav__list">

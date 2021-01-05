@@ -23,11 +23,14 @@
     @yield('custom_css')
 </head>
 <body>
+    <div id="notice">
+        @yield('notice')
+    </div>
     <div id="app">
 
     <header class="c-header">
 
-<div class="c-header__wrapper">
+    <div class="c-header__wrapper">
 
     <div class="c-logo">
         <a href="/">
@@ -54,7 +57,7 @@
             </form>
         </div>
         @else
-        <div>
+        <div class="links">
             <a href="{{url('feedbacks')}}">Feedbacks</a>
             @if (Route::has('login'))
                     <a href="{{ route('login') }}">Login</a>
@@ -66,9 +69,11 @@
         @endif
         
         <div class="a_page_header">
-            @yield('header_title')
+            <h1>@yield('header_title')</h1>
         </div>
+
         @auth
+
         <nav class="c-nav__list">
             <ul class="navbar-nav">
                 <li><a href="{{ url('portfolio') }}">Portfolio</a></li>

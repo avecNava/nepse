@@ -77,9 +77,10 @@ class MyShareController extends Controller
 
           $transactions = collect();
           $shareholder_id = $request->input('shareholder');
-          $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
-               
+
           try {
+
+          $rows = SimpleExcelReader::create($pathToCSV)->getRows();        // $rows is an instance of Illuminate\Support\LazyCollection
 
                $rows->each(function(array $row) use ($transactions, $shareholder_id) {
                     $transactions->push( 

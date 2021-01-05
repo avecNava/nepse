@@ -30,6 +30,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $notice = [
+            'title' => 'Some good news',
+            'message' => 'We are coming up with an updated application. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
+        ];
         // $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
         $transactions = DB::table('stock_prices as pr')
             ->join('stocks as s', function($join){
@@ -90,6 +94,7 @@ class HomeController extends Controller
             'loosers' => $top10Loosers,
             'transactions' => $transactions,
             'last_updated_time' => $last_updated_time,
+            'notice' => $notice,
         ]);
     }
 

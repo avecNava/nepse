@@ -122,5 +122,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::fallback(function() {
-    return 'Ouch 🙄';
+    echo '<center><h2>Ouch! You seemeed to be lost<h2>';
+    echo '<h3>Country roads take me <a href=' . url('/') .'>HOME</h3>';
+    echo '</center>';
 });

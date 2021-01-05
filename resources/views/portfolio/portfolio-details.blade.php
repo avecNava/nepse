@@ -12,6 +12,15 @@
     <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
+@section('notice')
+@if($notice)
+    <div class="notice_wrapper" data-title="{{$notice['title']}}">
+        <p class='title'>{{$notice['title']}}</p>
+        <p class='notice'>{!!$notice['message']!!}</p>
+    </div>
+@endif
+@endsection
+
 @section('content')
 
     <div class="c_portfolio_container">

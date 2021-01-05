@@ -45,7 +45,6 @@
                 </div>
                 <section class="buttons">
                     <button type="submit">Save</button>
-                    <button type="reset">Reset</button>
                     <button type="reset" id="cancel">Cancel</button>
                 </section>
 

@@ -31,7 +31,11 @@ class PortfolioController extends Controller
 
     public function shareholderPortfolio($username, $id)
     {
-        // dd('shareholderPortfolio');
+        $notice = [
+            'title' => 'Attention',
+            'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
+        ];
+
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($id){
                 $join->on('m.id', '=', 'p.shareholder_id')
@@ -92,6 +96,7 @@ class PortfolioController extends Controller
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
                     'scorecard' => $data,
+                    'notice' => $notice,
                 ]
             );
         }
@@ -320,6 +325,11 @@ class PortfolioController extends Controller
         // dd('showPortfolioDetails');
         $user_id = Auth::id();                                      //find shareholder info when null
         
+        $notice = [
+            'title' => 'Attention',
+            'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
+        ];
+
         $offers = StockOffering::all()->sortBy('offer_code');
 
         $sales = Sales::where('shareholder_id', $shareholder_id)
@@ -388,6 +398,7 @@ class PortfolioController extends Controller
             'portfolios' => $portfolios,
             'offers' => $offers,
             'brokers' => $brokers,
+            'notice' => $notice,
         ]);
 
     }

@@ -80,7 +80,7 @@
     
     <header>
         @if(count($sales)<=0)
-            <div class="info" style="text-align:center">
+            <div class="info center-box error-box" style="text-align:center">
                 <h2 class="message error">No Sales record yet<h2>
                 <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
             </div>

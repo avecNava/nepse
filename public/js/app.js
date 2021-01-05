@@ -1,3 +1,16 @@
+setTimeout(() => {
+    const el = document.querySelector('#notice');
+    if(el.firstElementChild){
+        const exists = el.firstElementChild.dataset.title.length > 0;
+        if(exists){
+            // el.classList.add('show');
+            // el.setAttribute('display','block');
+            el.removeAttribute('style');
+        }
+    }
+}, 1000);
+
+
 //select an option in a list
 function setOption(selectElement, value) {
     var options = selectElement.options;

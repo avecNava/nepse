@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The site has been moved to the new location</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Scope One', serif; 
+        box-sizing: border-box;
+    }
+    .container {
+        height: 100vh;
+        width:100vw;
+        margin: 0 auto;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .flex {
+        border: 30px solid #00BCD4;
+        padding: 150px;
+        box-shadow: inset 0px 0px 18px 5px #9E9E9E;
+        text-align: center;
+        border-radius: 10px;
+    }
+    h1 {
+        font-size: 60px;
+        margin: 30px;
+        color: brown;
+        text-shadow: -1px 0px 10px #CDDC39;
+    }
+    mark {
+        padding: 5px;
+    }
+    mark:before {
+        content: '🥂';
+    }
+    h3.newyear:hover {
+        transform: rotate(1turn);
+        transition: 2s;
+    }
+    h1:hover {
+        transition: 1s;
+        transform: scale(1.2);
+        text-shadow: -1px 0px 10px #00bcd4;
+    }
+    a:hover {
+        transition: 2s;
+        transform: matrix(2, 0, 0, 2, 25, 0);
+        display: inline-block;
+        color: red;
+    }
+        h3.newyear {
+        display: inline-block;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="flex">
+
+            <h1>New Year, New Ideas</h1>
+            <h2>We are coming up with something new</h2>
+            <h3>The site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a></h3>
+            <h3 class="newyear"><mark>Happy #2021</mark></h3>
+        </div>
+    </div>
+</body>
+</html>

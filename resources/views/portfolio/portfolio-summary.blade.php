@@ -9,6 +9,15 @@
     <span class="c_info"><label>as of</label> {{ $transaction_date }}</span>
 @endsection
 
+@section('notice')
+@if($notice)
+    <div class="notice_wrapper" data-title="{{$notice['title']}}">
+        <p class='title'>{{$notice['title']}}</p>
+        <p class='notice'>{!!$notice['message']!!}</p>
+    </div>
+@endif
+@endsection
+
 <style>
 
 </style>

@@ -34,6 +34,10 @@ class PortfolioSummaryController extends Controller
         $scripts ='';
         $members = '';
 
+        $notice = [
+            'title' => 'Attention',
+            'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
+        ];
 
         $transaction_date = StockPrice::getLastDate();
 
@@ -150,6 +154,7 @@ class PortfolioSummaryController extends Controller
                 'portfolio_summary' => $portfolio_agg->sortByDesc('total_investment'),
                 'transaction_date' => $transaction_date,
                 'scorecard' => $score_card,
+                'notice' => $notice,
             ]);
         
     }

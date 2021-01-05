@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-    <!-- <h1 class="c_title">Hello</h1> -->
+    Stock today
 @endsection
 @section('js')
     <link rel="stylesheet" href="{{ URL::to('css/welcome.css') }}">    
@@ -13,12 +13,20 @@
 @section('custom_css')
     <link rel="stylesheet" href="{{ URL::to('css/welcome.css') }}">    
 @endsection
+@section('notice')
+@if($notice)
+    <div class="notice_wrapper" data-title="{{$notice['title']}}">
+        <p class='title'>{{$notice['title']}}</p>
+        <p class='notice'>{!!$notice['message']!!}</p>
+    </div>
+@endif
+@endsection
 
 @section('content')
 <div class="welcome__wrapper">
 
     <section class="transactions">
-        <header class="flex align-center">
+        <header class="flex al-cntr">
             <h2>NEPSE stock data</h2>
             <div>as of <mark>{{$last_updated_time}}</mark></div>
         </header>
