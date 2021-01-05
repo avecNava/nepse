@@ -55,9 +55,9 @@
             </div>
         </section>
 
+        @if(count($sales)>0)
             <article id="shareholders">
-
-            <header class="">
+            <header>
                 <ul class="shareholders">
                     <li>
                         <a href="{{url('basket') }}" title="All records">Everyone</a>
@@ -71,96 +71,96 @@
                     @endforeach
                 </ul>
             </header>
-
             </article>
+        @endif
                 
-            <div id="message" style="margin-left:15px;align-self:center"></div>
-            @if( !empty($sales) )
-            <article class="sales_list">
-         
-            <header>
-                @if(count($sales)<=0)
-                    <div class="info" style="text-align:center">
-                        <h2 class="message error">No Sales record yet<h2>
-                        <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
-                    </div>
+    <div id="message" style="margin-left:15px;align-self:center"></div>
+    @if( !empty($sales) )
+    <article class="sales_list">
+    
+    <header>
+        @if(count($sales)<=0)
+            <div class="info" style="text-align:center">
+                <h2 class="message error">No Sales record yet<h2>
+                <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
+            </div>
+        @endif
+    </header>
+    @if(count($sales)>0)
+        
+        <header class="info">
+        @php
+            $data = $sales->first();
+        @endphp
+        <div class="flex together">
+            <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+            <div class="notification">
+                @if(count($sales)>0)
+                ({{count($sales)}} entries)
                 @endif
-            </header>
-            @if(count($sales)>0)
+            </div> 
+        </div>
+        </header>
+
+        <main>
+            <table>
+            <thead>
                 
-                <header class="info">
-                @php
-                    $data = $sales->first();
-                @endphp
-                <div class="flex together">
-                    <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                    <div class="notification">
-                        @if(count($sales)>0)
-                        ({{count($sales)}} entries)
-                        @endif
-                    </div> 
-                </div>
-                </header>
-
-                <main>
-                    <table>
-                    <thead>
+                <tr>
+                    <th>Sales date</th>
+                    <th>Symbol</th>
+                    <th class="c_digit">Qty</th>
+                    <th class="c_digit">Cost Price</th>
+                    <th class="c_digit">Sell Price</th>
+                    <th class="c_digit" title="Broker commission">Broker</th>
+                    <th class="c_digit" title="SEBON commission">SEBON</th>
+                    <th class="c_digit">Gain</th>
+                    <th class="c_digit">Gain Tax</th>
+                    <th class="c_digit">WACC</th>
+                    <th class="c_digit">Net Receiveable</th>
+                    <th class="c_digit">Amount received</th>
+                    <th>Shareholder</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                @foreach ($sales as $record)
+                    
+                    <tr>
                         
-                        <tr>
-                            <th>Sales date</th>
-                            <th>Symbol</th>
-                            <th class="c_digit">Qty</th>
-                            <th class="c_digit">Cost Price</th>
-                            <th class="c_digit">Sell Price</th>
-                            <th class="c_digit" title="Broker commission">Broker</th>
-                            <th class="c_digit" title="SEBON commission">SEBON</th>
-                            <th class="c_digit">Gain</th>
-                            <th class="c_digit">Gain Tax</th>
-                            <th class="c_digit">WACC</th>
-                            <th class="c_digit">Net Receiveable</th>
-                            <th class="c_digit">Amount received</th>
-                            <th>Shareholder</th>
-                            <th>Update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        @foreach ($sales as $record)
-                            
-                            <tr>
-                                
-                                <td class="c_digit">{{ $record->sales_date }}</td>
-                                <td title="{{ $record->share->id }}-{{ $record->share->security_name }}">
-                                    {{ $record->share->symbol }}
-                                </td>
-                                <td class="c_digit">{{ number_format($record->quantity) }}</td>
-                                <td class="c_digit">{{ number_format($record->cost_price) }}</td>
-                                <td class="c_digit">{{ number_format($record->sell_price, 2) }}</td>
-                                <td class="c_digit">{{ number_format($record->broker_commission) }}</td>
-                                <td class="c_digit">{{ number_format($record->sebon_commission) }}</td>
-                                <td class="c_digit">{{ number_format($record->gain) }}</td>
-                                <td class="c_digit">{{ number_format($record->capital_gain_tax) }}</td>
-                                <td class="c_digit">{{ number_format($record->wacc) }}</td>
-                                <td class="c_digit">{{ number_format($record->net_receivable) }}</td>
-                                <td></td>
-                                <td>{{$record->shareholder->first_name}}</td>
-                                <td title="Update" class="icon-buttons button">
-                                    <button>💾</button>
-                                </td>
-                            </tr>
+                        <td class="c_digit">{{ $record->sales_date }}</td>
+                        <td title="{{ $record->share->id }}-{{ $record->share->security_name }}">
+                            {{ $record->share->symbol }}
+                        </td>
+                        <td class="c_digit">{{ number_format($record->quantity) }}</td>
+                        <td class="c_digit">{{ number_format($record->cost_price) }}</td>
+                        <td class="c_digit">{{ number_format($record->sell_price, 2) }}</td>
+                        <td class="c_digit">{{ number_format($record->broker_commission) }}</td>
+                        <td class="c_digit">{{ number_format($record->sebon_commission) }}</td>
+                        <td class="c_digit">{{ number_format($record->gain) }}</td>
+                        <td class="c_digit">{{ number_format($record->capital_gain_tax) }}</td>
+                        <td class="c_digit">{{ number_format($record->wacc) }}</td>
+                        <td class="c_digit">{{ number_format($record->net_receivable) }}</td>
+                        <td></td>
+                        <td>{{$record->shareholder->first_name}}</td>
+                        <td title="Update" class="icon-buttons button">
+                            <button>💾</button>
+                        </td>
+                    </tr>
 
-                        @endforeach   
-                    </tbody>
-                    </table>
-                @endif
-                </main>
-            
-                <footer></footer>
-            
-            </article>
+                @endforeach   
+            </tbody>
+            </table>
+        @endif
+        </main>
+    
+        <footer></footer>
+    
+    </article>
 
-            @endif
+    @endif
 
-        </section>
+</section>
         
 @endsection

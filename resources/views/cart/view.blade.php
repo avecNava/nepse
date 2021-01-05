@@ -137,7 +137,7 @@
 <section id="basket">
 
         <article>
-        
+        @if(count($basket) > 0)
             <header class="">
                 <ul class="shareholders">
                     <li>
@@ -152,6 +152,7 @@
                     @endforeach
                 </ul>
             </header>
+        @endif
         </article>
 
         <article>
@@ -160,7 +161,7 @@
                 @if(count($basket)<=0)
                     <div class="info" style="text-align:center">
                         <h2 class="message error">The cart is empty.<h2>
-                        <h3 class="message success">💡 You can to to <strong>Portfolio details</strong> and add items to the cart.</h3>
+                        <h3 class="message success">💡 You can go to <strong>Portfolio details</strong> and add items to the cart.</h3>
                     </div>
                 @endif
             </header>

@@ -7,8 +7,10 @@
         <style>
             .c-header__wrapper {
                 display: flex;
-                justify-content: space-between;
                 margin-bottom: 40px;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: flex-start;
             }
             h1 {
                 align-self: center;
@@ -33,13 +35,8 @@
                 font-weight: bold;
                 color: #3f51b5d6;
             }
-            
-            
-            footer div {
-                font-size: 18px;
-            }
             .social-links>div {
-                    padding-right: 10px;
+                padding-right: 10px;
             }
             .social-links {
                 display: flex;
@@ -49,7 +46,6 @@
             }
             .label {
                 color: #9E9E9E;
-                /* font-weight: bold; */
             }
             .copyright.footer {
                 align-self: center;
@@ -61,12 +57,13 @@
             }
             footer {
                 margin-top: 100px;
-            }
-
-            footer {
                 display: flex;
                 justify-content: space-between;
             }
+            footer div {
+                font-size: 14px;
+            }
+            .signature {padding:10px 0}
         </style>
     </head>
     <body>
