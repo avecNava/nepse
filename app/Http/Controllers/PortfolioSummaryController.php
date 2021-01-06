@@ -56,7 +56,7 @@ class PortfolioSummaryController extends Controller
 
                     })
                     ->selectRaw(
-                        's.id as shareholder_id, s.relation,
+                        's.id as shareholder_id, s.relation, s.uuid,
                         CONCAT(s.first_name," ", s.last_name) as shareholder, 
                         st.symbol, 
                         p.*,
@@ -131,7 +131,7 @@ class PortfolioSummaryController extends Controller
                 
                     collect([
 
-                        'shareholder_id' => $row->shareholder_id,
+                        'uuid' => $row->uuid,
                         'shareholder' => $row->shareholder,
                         'relation' => $row->relation,
                         'total_scripts' => $total_scripts,

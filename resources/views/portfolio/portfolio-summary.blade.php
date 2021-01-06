@@ -89,16 +89,13 @@
 
                 @foreach ($portfolio_summary as $row)
                 
-                <details id="row-{{$row['shareholder_id']}}" class='summary'>
+                <details id="row-{{$row['uuid']}}" class='summary'>
 
                     <summary>
                     <section class='shareholder-group'>
                         
-                        @php
-                            $shareholder = App\Services\UtilityService::serializeString($row['shareholder'],'-');
-                        @endphp
                         <div class="shareholder" title="Click to see portfolio for '{{$row['shareholder']}}'">
-                            <h3><a href={{url("portfolio/$shareholder", [ $row['shareholder_id'] ]) }}>
+                            <h3><a href="{{url('portfolio',[ $row['uuid'] ]) }}">
                                 {{ $row['shareholder']}} 
                                 </a>
                             </h3>
@@ -154,7 +151,7 @@
 
                     </summary>
 
-                    <div id="detail-{{$row['shareholder_id']}}"></div> 
+                    <div id="detail-{{$row['uuid']}}"></div> 
 
                 </details>
 
@@ -176,7 +173,6 @@
         var elements = document.getElementsByClassName("summary");
 
         var getUserStocks = function() {
-
             
             var attribute = this.getAttribute("id");
             const id = parseID('row-',attribute);
@@ -193,7 +189,7 @@
             let request = new XMLHttpRequest();
 
             //todo: get symbols by shareholder and display
-            request.open('GET', '/summary/stocks/'+ id, true);
+            request.open('GET', '/summary/'+ id, true);
 
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400) {
@@ -291,15 +287,15 @@
                 
                 const effective_rate = item.effective_rate ? item.effective_rate : '';
                 const l_name = item.last_name.length>0 ? `-${item.last_name}` :'';
-                const full_name = `${item.first_name}${l_name}`;
-                const shareholder_name = serializeString(full_name);
+                // const full_name = `${item.first_name}${l_name}`;
+                // const shareholder_name = serializeString(full_name);
                 
                 const url = window.location.origin;
                 html_body += 
                 `<tr>
                     <td class="c_digit">${ ++$row }</td>
                     <td title="${ item.stock_id }-${ item.security_name }">
-                        <a href="${url}/portfolio/${shareholder_name}/${item.symbol}/${item.shareholder_id }">
+                        <a href="${url}/portfolio/${item.symbol}/${item.uuid }">
                             ${ item.symbol }
                         </a>
                     </td>
@@ -349,20 +345,20 @@
 
         }
 
-        // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
-        function loadShareholder(){
+        // // redirect the user to the selected sharehodler's poftfolio (ie, /portfolio/7)
+        // function loadShareholder(){
             
-            let url = "{{url('portfolio')}}";
-            const shareholder = document.getElementById('shareholder');
-            const options = shareholder.options[shareholder.selectedIndex];
-            let username = options.text.split(" ")[0];
-            username = username.toLowerCase();
-            //append shareholder_id to the url (ie, /portfolio/username/7)
-            if(shareholder.selectedIndex > 0)
-                url = `${url}/${username}/${options.value}`;
+        //     let url = "{{url('portfolio')}}";
+        //     const shareholder = document.getElementById('shareholder');
+        //     const options = shareholder.options[shareholder.selectedIndex];
+        //     let username = options.text.split(" ")[0];
+        //     username = username.toLowerCase();
+        //     //append shareholder_id to the url (ie, /portfolio/username/7)
+        //     if(shareholder.selectedIndex > 0)
+        //         url = `${url}/${options.value}`;
             
-            window.location.replace(url);
-        }
+        //     window.location.replace(url);
+        // }
 
     </script>
 

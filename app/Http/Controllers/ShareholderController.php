@@ -41,7 +41,7 @@ class ShareholderController extends Controller
             $id = $request->id;
         }
         
-        $shareholder = Shareholder::where('id', $id)->first();
+        $shareholder = Shareholder::where('uuid', $id)->first();
         // dd($shareholder->toJson(JSON_PRETTY_PRINT));
         return response()->json($shareholder);
     }

@@ -35,9 +35,7 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-
-    $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
-    return (count($sectors[0]->price));
+    return Str::length(Str::uuid());
     
     //$feedback = \App\Models\Feedback::first();
     // dd($feedback->description);
@@ -77,7 +75,7 @@ Route::post('import/meroshare/delete', [MeroShareController::class, 'delete']);
 Route::post('share/export/portfolio', [MyShareController::class, 'exportPortfolio']);
 Route::post('meroshare/export/portfolio', [MeroShareController::class, 'exportPortfolio']);
 
-Route::get('summary/stocks/{id}', [PortfolioController::class, 'getUserStocks']);
+Route::get('summary/{id}', [PortfolioController::class, 'getUserStocks']);
 
 Route::get('commission/{amount}', [PortfolioController::class, 'commission']);
 Route::get('portfolio/get/{id}', [PortfolioController::class, 'getPortfolioByID']);
@@ -93,8 +91,8 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
 
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode
-Route::get('portfolio/{username}/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
-Route::get('portfolio/{username}/{id}', [PortfolioController::class, 'shareholderPortfolio']);
+Route::get('portfolio/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
+Route::get('portfolio/{id}', [PortfolioController::class, 'shareholderPortfolio']);
 
 Route::get('sales', [SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);

@@ -92,7 +92,7 @@ class MyShareController extends Controller
                               'effective_rate' => $row['Effective rate'],
                               'offer_code' => $row['Offering type'],
                               'shareholder_id' => $shareholder_id,
-                              'description' => $row['Description']
+                              'description' => $row['Remarks']
                               )
                          );
                });

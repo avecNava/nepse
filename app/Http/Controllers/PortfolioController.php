@@ -29,7 +29,7 @@ class PortfolioController extends Controller
         $this->middleware(['auth', 'verified']); 
     }
 
-    public function shareholderPortfolio($username, $id)
+    public function shareholderPortfolio($id)
     {
         $notice = [
             'title' => 'Attention',
@@ -39,7 +39,7 @@ class PortfolioController extends Controller
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($id){
                 $join->on('m.id', '=', 'p.shareholder_id')
-                    ->where('m.id', $id)
+                    ->where('m.uuid', $id)
                     ->where('m.tenant_id', session()->get('tenant_id'));
             })
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
@@ -48,11 +48,9 @@ class PortfolioController extends Controller
                     ->where('pr.latest',TRUE);
             })
             ->select(
-                'p.*','s.*', 
+                'p.*','s.*', 'm.*',
                 'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
-                'm.first_name','m.last_name',
             )
-            ->where('p.shareholder_id', $id)
             ->orderBy('s.symbol')
             ->get();
             
@@ -92,6 +90,7 @@ class PortfolioController extends Controller
             return  view(
                 'portfolio.shareholder-dashboard', 
                 [
+                    'uuid' => optional($row)->uuid,
                     'first_name' => optional($row)->first_name,
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
@@ -320,11 +319,14 @@ class PortfolioController extends Controller
      * $all (include SALES record from sales table)
      */
 
-    public function showPortfolioDetails($username, $symbol, $shareholder_id)
+    public function showPortfolioDetails($symbol, $uuid)
     {
-        // dd('showPortfolioDetails');
-        $user_id = Auth::id();                                      //find shareholder info when null
         
+        $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
+        
+        if(!$shareholder_id){
+            return response()->json(['message'=>'Incorect id'],501);
+        }
         $notice = [
             'title' => 'Attention',
             'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
@@ -348,12 +350,11 @@ class PortfolioController extends Controller
         $portfolios = DB::table('portfolios as p')
         ->join('shareholders as sh', function($join) use($shareholder_id){
             $join->on('sh.id', '=', 'p.shareholder_id')
-                ->where('sh.id', $shareholder_id)
-                ->where('sh.tenant_id', session()->get('tenant_id'));
+                ->where('sh.id', $shareholder_id);
         })
         ->leftJoin('stock_prices as pr', function($join){
             $join->on('pr.stock_id','=', 'p.stock_id')
-            ->where('pr.latest',true);
+            ->where('pr.latest', 1);
         })
         ->leftJoin('stock_offerings as o', 'o.id', '=', 'p.offer_id')
         ->join('stocks as s', 's.id', '=', 'p.stock_id')
@@ -362,14 +363,13 @@ class PortfolioController extends Controller
                 'pr.close_price','pr.previous_day_close_price', 'pr.last_updated_price',
                 'ss.sector',
                 's.symbol', 's.security_name', 
-                'sh.first_name', 'sh.last_name','sh.relation', 'sh.id as shareholder_id',
+                'sh.*',
                 'o.offer_code','o.offer_name'
                 )
-        ->where(function($query) use($shareholder_id, $symbol){
+        ->where(function($query) use($symbol){
             $query->where('s.symbol','=', $symbol);
         })->orderBy('purchase_date', 'DESC')->get();
 
-        
         //summary data to display in the top band
         $item = $portfolios->first();
         
@@ -382,7 +382,7 @@ class PortfolioController extends Controller
                             }),
             'shareholder' => $item ?  "$item->first_name $item->last_name" : '-',
             'shareholder_str' => $item ?  UtilityService::serializeString( $item->first_name . ' ' . $item->last_name, '-' ) : '-',
-            'shareholder_id' => $item ?  $item->shareholder_id : 0,
+            'uuid' => $item ?  $item->uuid : 0,
             'stock_id' => $item ?  $item->stock_id : '',
             'sector' => $item ?  $item->sector : '',
             'security_name' => $item ? $item->security_name : '-',
@@ -406,15 +406,14 @@ class PortfolioController extends Controller
     /**
      * returns stocks for the given user (user_id) in JSON format
      */
-    public function getUserStocks(int $id)
+    public function getUserStocks($id)
     {
-        // dd('here');
+        
         // $stocks = Portfolio::where('shareholder_id', $id)->get();
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($id){
                 $join->on('m.id', '=', 'p.shareholder_id')
-                    ->where('m.id', $id)
-                    ->where('m.tenant_id', session()->get('tenant_id'));
+                    ->where('m.uuid', $id);
             })
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
             ->leftJoin('stock_prices as pr', function($join){
@@ -424,10 +423,8 @@ class PortfolioController extends Controller
             ->select(
                 'p.*','s.*', 
                 'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
-                'm.first_name','m.last_name'
+                'm.first_name','m.last_name','m.uuid',
             )
-            ->where('p.shareholder_id', $id)
-            // ->where('p.quantity','>',0)
             ->orderBy('s.symbol')
             ->get();
         

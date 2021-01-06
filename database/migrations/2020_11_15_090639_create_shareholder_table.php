@@ -27,6 +27,8 @@ class CreateShareholderTable extends Migration
             $table->string('relation')->nullable();
             $table->boolean('parent')->default(false);
             $table->integer('tenant_id')->index();
+            $table->uuid('uuid')->index();
+
             // $table->foreignId('user_id');
             // $table->foreignIdFor(model: \App\Models\User::class);
             //https://laravel.com/docs/8.x/migrations#foreign-key-constraints

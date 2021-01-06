@@ -81,7 +81,7 @@ tfoot td {
 
                         <section class="shareholder nav">
                             <h2>
-                                <a href="{{ url('portfolio',[ $info['shareholder_str'], $info['shareholder_id'] ]) }}">
+                                <a href="{{ url('portfolio',[ $info['uuid'] ]) }}">
                                     {{ $info['shareholder'] }}
                                 </a>
                             </h2>
@@ -183,7 +183,7 @@ tfoot td {
                 <div>
                     <label for="sell_quantity">Quantity &nbsp;&nbsp;
                         <input type="number" name="sell_quantity" id="sell_quantity" 
-                        data-shareholder-id="{{  $info['shareholder_id'] }}"
+                        data-shareholder-id="{{  $info['uuid'] }}"
                         data-stock-id="{{  $info['stock_id'] }}">
                     </label>
                     <button onClick="addToBasket()">Add to basket</button>&nbsp;
@@ -206,7 +206,7 @@ tfoot td {
                 
                 @csrf()
                 <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['shareholder_id']) }}">
+                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['uuid']) }}">
                 <input type="hidden" name="stock_id" value="{{ old('stock_id', $info['stock_id']) }}">
 
                 <section>

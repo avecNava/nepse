@@ -127,9 +127,8 @@
                         <a href="{{ 
                                     url('portfolio',
                                         [
-                                            App\Services\UtilityService::serializeString($record->first_name . ' ' . $record->last_name, '-'), 
                                             $record->symbol, 
-                                            $record->shareholder_id,
+                                            $record->uuid,
                                         ]
                                     )
                                 }}">

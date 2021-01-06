@@ -125,7 +125,7 @@ footer.page-footer .links .nav {
 footer.page-footer .links {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     background: #fafafa;
     padding: 10px;
 }
@@ -484,7 +484,7 @@ section.c_score_cards article {
     width: 20px;
     background-repeat: no-repeat;
 }
-.social .facebook{
+/* .social .facebook{
     background:url(https://s.svgbox.net/materialui.svg?ic=facebook&fill=000);
     width:20px;
     background-repeat: no-repeat;
@@ -497,14 +497,36 @@ section.c_score_cards article {
     background-repeat: no-repeat;
     display:inline-block;
     padding-right: 6px;
-}
-.social .email{
+} */
+/* .social .email{
     background:url(https://s.svgbox.net/materialui.svg?ic=email&fill=000);
     width:20px;
     background-repeat: no-repeat;
     display:inline-block;
     padding-right: 6px;
+} */
+
+.c-social-nav {
+    display: flex;
+    align-items: center;
+    /* position: relative;
+    z-index: 20; */
 }
+.c-social-nav__item{
+padding-left: 8px;
+}
+
+/* .c-social-nav__link {
+transition: opacity 200ms ease-in-out;
+} */
+
+.c-social-nav__link svg {
+transition: all 200ms ease-in-out;
+}
+.c-social-nav__link svg {
+stroke: #000;
+}
+
 .header-labels>.col7, .header-labels>.col6 {
     width: 110px;
 }
