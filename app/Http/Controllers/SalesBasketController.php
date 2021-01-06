@@ -11,6 +11,7 @@ use App\Models\Shareholder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Services\UtilityService;
 
 class SalesBasketController extends Controller
 {
@@ -28,23 +29,43 @@ class SalesBasketController extends Controller
 
     public function view($username, $id = null)
     {
-        $shareholders = Shareholder::getShareholderNames(Auth::id());
+        // $shareholders = Shareholder::getShareholderNames(Auth::id());
         
         $ids = [$id];
         
         if(empty($id))
             $ids = Shareholder::getShareholderIds(Auth::id());
 
-        $basket = SalesBasket::whereIn('shareholder_id', $ids )
-            ->with(['share','shareholder','price:stock_id,close_price,last_updated_price'])
+        $baskets = SalesBasket::whereIn('shareholder_id', $ids )
+            ->with(['share','shareholder:*','price:stock_id,close_price,last_updated_price'])
             ->orderByDesc('created_at')
             ->get();
         
+        $grouped_shareholders = $baskets->groupBy('shareholer_id')
+            ->map(function($items, $key){
+                
+                //get unique shareholders
+                $unique = $items->unique('shareholder_id');
+                
+                return $unique->map(function($row){
+
+                    $first_name = $row->shareholder->first_name;
+                    $last_name = $row->shareholder->last_name;
+                    
+                    return [
+                        'username' => UtilityService::serializeNames($first_name, $last_name),
+                        'name' => "$first_name $last_name",
+                        'relation' => $row->shareholder->relation,
+                        'id' => $row->shareholder->id,
+                    ];
+                });
+            });
+        
         // $grouped = $basket->groupBy('shareholder_id');
 
-        return view('cart.view',[
-                'basket' => $basket,
-                'shareholders' => $shareholders,
+        return view('cart.cart',[
+                'baskets' => $baskets,
+                'shareholders' => $grouped_shareholders->first(),
             ]
         ); 
 
@@ -61,7 +82,7 @@ class SalesBasketController extends Controller
 
             //check if the sales is within limit
             if( $basket_quantity < config('app.buy-sell-limit')){
-                $msg = 'Minimim Sell limit is ' . config('app.buy-sell-limit');
+                $msg = 'Minimim sell limit is ' . config('app.buy-sell-limit'). ' units';
                 $error = true;
             }
             
@@ -73,9 +94,9 @@ class SalesBasketController extends Controller
                     ->whereNotNull('wacc_updated_at')
                     ->where('stock_id', $stock)
                     ->sum('quantity');
-                if($available_quantity < 1){
+                if($available_quantity < $basket_quantity){
                     $error = true;
-                    $msg = 'Weighted average (WACC) has not been updated for the stock';
+                    $msg = 'Some of the stocks have not been updated. Stocks marked <sup>*</sup> needs to be updated.';
                 }
             }
 
@@ -98,7 +119,7 @@ class SalesBasketController extends Controller
 
                 //check if existing  basket quantity and current quantity exceeds the total quantity
                 if($new_quantity > $available_quantity){
-                    $msg = "Sum of current '$basket_quantity' and existing quantites '$existing_basket_quantity' in the basket exceeds total '$new_quantity'";  
+                    $msg = "Sum of current and existing quantity in the basket exceeds total";
                     $error = true;
                 }
             }
@@ -126,7 +147,8 @@ class SalesBasketController extends Controller
                 ]
             );
 
-            $message = "$basket_quantity units added to the basket. <span class='basket_total'>Basket total : $new_quantity</span>";
+            $message = "$basket_quantity units added to the basket. 
+                        <span class='basket_total'>Basket total : $new_quantity </span>";
                 return response()->json([
                 'status' => 'success',
                 'message' => $message,

@@ -71,6 +71,10 @@ class UtilityService
     {
         return Str::lower(Str::of( $name )->replaceMatches('/[ :_]+/', $delim));    
     }
+    public static function serializeNames($fname, $lname, $delim='-')
+    {
+        return Str::lower($fname) . $delim . Str::lower($lname);
+    }
 
     /**
      * checks if the given day is working day or not

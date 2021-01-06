@@ -14,7 +14,7 @@
 
 @section('notice')
 @if($notice)
-    <div class="notice_wrapper" data-title="{{$notice['title']}}">
+    <div class="message_wrapper" data-title="{{$notice['title']}}">
         <p class='title'>{{$notice['title']}}</p>
         <p class='notice'>{!!$notice['message']!!}</p>
     </div>
@@ -22,6 +22,15 @@
 @endsection
 
 @section('content')
+
+<style>
+    section.info_band div {
+    line-height: 26px;
+}
+tfoot td {
+    background: #fff;
+}
+</style>
 
     <div class="c_portfolio_container">
     
@@ -66,7 +75,7 @@
         
         <section class="info_band">
 
-            <div class="info_band_top apart">
+            <div class="flex js-apart">
 
                     <div class="block-left">
 
@@ -177,7 +186,8 @@
                         data-shareholder-id="{{  $info['shareholder_id'] }}"
                         data-stock-id="{{  $info['stock_id'] }}">
                     </label>
-                    <button onClick="addToBasket()">Add to basket</button>
+                    <button onClick="addToBasket()">Add to basket</button>&nbsp;
+                    <span class='button'><a href="{{url('basket')}}">View basket</span>
                 </div>
             </div>
 
@@ -372,6 +382,7 @@
                 <main>
 
                     <table>
+                        <thead>
                         <tr>
                             <th>Symbol</th>
                             <th>Offering type</th>
@@ -385,7 +396,7 @@
                             <th class="c_digit">Purchase date</th>
                             <th>Tags</th>
                         </tr>
-                        
+                        </thead>
                         @foreach ($portfolios as $record)
                             @php
                                 $ltp = $record->last_updated_price?: $record->close_price;
@@ -396,13 +407,16 @@
                                 $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
                                 $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
                             @endphp
+                        <tbody>
                             
                             <tr id="row-{{ $record->id }}">
                                 
                                 <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
                                     @if( !empty($record))
                                         <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                        <label for="chk-{{ $record->id }}">{{ $record->symbol }}</label>
+                                        <label for="chk-{{ $record->id }}" style="padding:5px">
+                                            {{ $record->symbol }} <sup>@if(!$record->wacc_updated_at)*@endif</sup>
+                                        </label>
                                     @endif
                                 </td>
                                 <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
@@ -428,8 +442,15 @@
                                 <td class="c_digit">{{$record->purchase_date}}</td>
                                 <td>{{$record->tags}}</td>
                             </tr>
-
+                        </tbody>
                         @endforeach   
+                        <tfoot>
+                            <tr>
+                                <td colspan="11">
+                                    <span><sup>*</sup> Stocks needs to be revised and updated</span>
+                                </td>
+                            </tr>
+                        </tfoot>
 
                     </table>
 

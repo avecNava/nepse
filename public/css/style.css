@@ -23,8 +23,8 @@ div#app, div#container {
 
 /*flex attribute css*/
 .flex {display: flex;}
-.jf-apart {justify-content: space-between;}
-.jf-start {justify-content: flex-start;}
+.js-apart {justify-content: space-between;}
+.js-start {justify-content: flex-start;}
 .al-end {align-items: flex-end;}
 .al-cntr {align-items: center;}
 
@@ -38,9 +38,21 @@ div#app, div#container {
     flex-direction: column;
     justify-content: space-around;
 }
+nav.c-nav__list {
+    margin: 10px 0;
+}
 .links a {
     font-weight: bold;
     padding: 0 10px;
+}
+nav.c-nav__list ul {
+    padding: 0;
+}
+nav.c-nav__list li {
+    display: inline;
+    padding: 2px 6px;
+    background: aliceblue;
+    border-radius: 5px;
 }
 abbr {font-weight: bold; color: #3c3f40;}
 .band-tall { height: 50px;}
@@ -65,7 +77,10 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
 .is-invalid {color: #fb0000;}
 .positive {background: var(--color-green-light30) !important;}
 hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
-
+sup {
+    font-weight: bold;
+    color: red;
+}
 /*notice*/
 .error-box{
     height: 100px;
@@ -82,7 +97,15 @@ hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
     justify-content: center;
 }
 #notice .notice_wrapper {
+    transition: display 5s;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     background: #e3e3b830;
+}
+#notice .message_wrapper {
     padding: 5px;
     text-align: center;
     font-weight: bold;
@@ -101,8 +124,8 @@ hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
+#basket ul.shareholders {background: #7955480a;}
 .message {padding: 5px 0; font-weight: bold;}
-
 /*page footer*/
 footer.page-footer {
     margin-top: 200px;
@@ -310,16 +333,18 @@ container for message or buttons
 }
 .c_band a {color: #eef0f7;}
 
-.show {
-    display: block !important;
+.show {display: block !important;}
+#notice {
+    transition: all 5s;
+    /* transform-origin:top; */
+    /* transform: translateY(.09); */
 }
-#notice{
-    transition: display 5s;
+div#notice .btn {
+    padding: 0 10px;
+    font-size: 12px;
 }
-
-.hide {
-    display: none;
-}
+.d-none {display: none !important;}
+.hide {display: none;}
 
 /*table formatting*/
 table {border-spacing: 0px; width:100%;}
@@ -430,15 +455,7 @@ button {
 .c-logo {
     align-self: flex-end;
 }
-nav.c-nav__list ul {
-    padding: 0;
-}
-nav.c-nav__list li {
-    display: inline;
-    padding: 10px 15px;
-    background: aliceblue;
-    border-radius: 5px;
-}
+
 .a_page_header {
     text-align: right;
 }
@@ -684,11 +701,11 @@ section.sales summary {
 .c_info_band {
     margin: 20px 0;
 }
-.info_band_top {
+/* .info_band_top {
     display: flex;
     margin: 10px 0;
     line-height: 35px;
-}
+} */
 .info_band { 
     padding: 20px;
     background: beige;

@@ -23,9 +23,18 @@
     @yield('custom_css')
 </head>
 <body>
-    <div id="notice">
-        @yield('notice')
-    </div>
+
+    <div id="notice" style="display:none">
+        <div class="notice_wrapper">
+            <div>
+                @yield('notice')
+            </div>
+            <div class="btn" onclick="hide_notice()">
+            <a href="#">❌</a>
+            </div>
+        </div>
+    </div> 
+
     <div id="app">
 
     <header class="c-header">

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sales;
-// use App\Models\SalesBasket;
+use App\Models\SalesBasket;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Services\UtilityService;
 
 class SalesController extends Controller
 {
@@ -37,15 +38,32 @@ class SalesController extends Controller
                 ->orderByDesc('sales_date')
                 ->get();
         
-        // $sales = $sales->filter(function($item, $key){
-        //     return $item->share->symbol == $symbol;
-        // });
+        $grouped_shareholders = $sales->groupBy('shareholer_id')
+            ->map(function($items, $key){
+                
+                //get unique shareholders
+                $unique = $items->unique('shareholder_id');
+                
+                return $unique->map(function($row){
 
-        return view('sales.view',[
+                    $first_name = $row->shareholder->first_name;
+                    $last_name = $row->shareholder->last_name;
+                    
+                    return [
+                        'username' => UtilityService::serializeNames($first_name, $last_name),
+                        'name' => "$first_name $last_name",
+                        'relation' => $row->shareholder->relation,
+                        'id' => $row->shareholder->id,
+                    ];
+                });
+            });
+            
+        return 
+            view('sales.sales', 
+            [
                 'sales' => $sales,
-                'shareholders' => $shareholders,
-            ]
-        ); 
+                'shareholders' => $grouped_shareholders->first(),
+            ]); 
 
     }
 
@@ -131,8 +149,8 @@ class SalesController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                // 'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
-                'message' => 'An unexpected error occured. Please ensure that Effective rate is updated for the stock.',
+                'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
+                // 'message' => 'An unexpected error occured. Please ensure that Effective rate is updated for the stock.',
             ], 500);
         }
 

@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         //https://laravel.com/docs/8.x/database#listening-for-query-events
         // receive each SQL query executed by the  application,
         DB::listen(function ($query) {            
-            Log::info("SQL : " . $query->sql);
+            // Log::info("SQL : " . $query->sql);
             // $query->bindings
             // $query->time
         });
@@ -52,15 +52,15 @@ class AppServiceProvider extends ServiceProvider
             // $event->job->payload()
         });
 
-        Queue::after(function (JobProcessed $event) {
-            info(
-                'finished sending mail : ' , 
-                [
-                    $event->connectionName,
-                    $event->job,
-                    // $event->job->payload()
-                ]
-            );
-        });
+        // Queue::after(function (JobProcessed $event) {
+        //     info(
+        //         'finished sending mail : ' , 
+        //         [
+        //             $event->connectionName,
+        //             $event->job,
+        //             // $event->job->payload()
+        //         ]
+        //     );
+        // });
     }
 }

@@ -11,7 +11,7 @@
 
 @section('notice')
 @if($notice)
-    <div class="notice_wrapper" data-title="{{$notice['title']}}">
+    <div class="message_wrapper" data-title="{{$notice['title']}}">
         <p class='title'>{{$notice['title']}}</p>
         <p class='notice'>{!!$notice['message']!!}</p>
     </div>

@@ -13,8 +13,15 @@
     @yield('custom_css')
 </head>
 <body>
-    <div id="notice">
-        @yield('notice')
+    <div id="notice" style="display:none">
+        <div class="notice_wrapper">
+            <div>
+                @yield('notice')
+            </div>
+            <div class="btn" onclick="hide_notice()">
+                <a href="#">❌</a>
+            </div>
+        </div> 
     </div> 
     <div id="container">
         
@@ -56,7 +63,7 @@
                     @endif
                     
                     <div class="a_page_header">
-                        <h1>@yield('header_title')</h1>
+                        @yield('header_title')
                     </div>
 
                     <nav class="c-nav__list">
