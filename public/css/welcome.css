@@ -1,6 +1,8 @@
-.welcome__wrapper {
-    display: flex;
-    align-items: flex-start;
+@media only screen and (min-width:401px){
+    .welcome__wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
 }
 table {
     border-collapse:separate; 

@@ -68,8 +68,8 @@ class Shareholder extends Model
             [
             'last_modified_by' => $shareholder_id,
             'parent_id' => $shareholder_id,
-            'first_name' => 'Long term',
-            'last_name' => 'Investment',
+            'first_name' => 'Long',
+            'last_name' => 'term',
             'relation' => 'Group',
             'parent' => false,
         ]);
@@ -77,8 +77,8 @@ class Shareholder extends Model
         Shareholder::updateOrCreate([
             'last_modified_by' => $shareholder_id,
             'parent_id' => $shareholder_id,
-            'first_name' => 'Short term',
-            'last_name' => 'Investment',
+            'first_name' => 'Short',
+            'last_name' => 'term',
             'relation' => 'Group',
             'parent' => false,
         ]);

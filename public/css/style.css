@@ -1,7 +1,5 @@
 body {
     margin: 0;
-    /* font-family: 'Cutive', serif; */
-    /* font-family: 'Lora', serif; */
     font-family: 'Scope One', serif; 
     --scorecard : #1d1c25;
     --form-band : #6b64a0;
@@ -10,16 +8,6 @@ body {
     --color-green-light30:#009900;
     --color-black-light30:#4d4d4d;
 }
-/* *, :after, :before {
-    box-sizing: border-box;
-    border: 6px solid #e2e8f0;
-    box-sizing: content-box;
-} */
-div#app, div#container {
-    margin: 0 auto;
-    width: 1024px;
-}
-.c_content__wrapper {margin: 40px 0;}
 
 /*flex attribute css*/
 .flex {display: flex;}
@@ -29,10 +17,6 @@ div#app, div#container {
 .al-cntr {align-items: center;}
 
 /*menu links*/
-/* .c-nav {
-    padding: 5px 0;
-    display: inline-block;
-} */
 .c-nav {
     display: flex;
     flex-direction: column;
@@ -81,6 +65,9 @@ sup {
     font-weight: bold;
     color: red;
 }
+footer.page-footer {
+    margin-top: 20px;
+}
 /*notice*/
 .error-box{
     height: 100px;
@@ -99,7 +86,6 @@ sup {
 #notice .notice_wrapper {
     transition: display 5s;
     display: flex;
-    width: 100%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -127,9 +113,7 @@ section.header {margin: 15px 0; }
 #basket ul.shareholders {background: #7955480a;}
 .message {padding: 5px 0; font-weight: bold;}
 /*page footer*/
-footer.page-footer {
-    margin-top: 200px;
-}
+
 .main__content footer {
     padding: 10px 0;
     text-align: right;
@@ -228,7 +212,7 @@ ul.navbar-nav {
     padding: 20px;
 }
 main.c-main {
-    padding: 50px 0;
+    padding: 20px 0;
 }
 ul.navbar-nav {
     padding: 0;
@@ -370,55 +354,7 @@ tr.separator {
     background: none;
     height: 30px;
 }
-/* form input elements*/
-.form-field {margin: 10px 0;}
-input {
-    padding: 5px;
-    width: 200px;
-    height: 1.5em;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #8fa391;
-}
-input[type="checkbox"], input[type="radio"] {
-    width: 20px;
-    vertical-align: middle;
-    margin: 5px;
-}
-input[type="file"] {
-    border: 1px dotted #214b25;
-    width: 400px;
-    padding: 20px;
-    margin: 5px 0;
-    height: 50px;
-    font-family: 'Cutive';
-}
-select {
-    height: 2.4em;
-    border-radius: 5px;
-    padding: 2px 4px;
-    width: 213px;
-    margin: 5px 0;
-}
-textarea {
-    margin: 5px 0;
-    width: 400px;
-    height: 100px;
-}
-.c_buttons {
-    margin: 5px;
-}
-.c_shareholder {
-    padding: 0 6px;
-}
-button {
-    min-width: 100px;
-    border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #214b252e;
-    height: 2.5em;
-    padding: 0 20px;
-}
+
 /* div.remarks {
     display: flex;
 } */
@@ -811,6 +747,27 @@ article p {
     padding: 0 5px;
 }
 
+/* verification */
+.card-body button {
+    margin: 10px 0;
+    font-size: 15px;
+}
+
+.card-body {
+    font-size: 18px;
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media only screen and (min-width: 401px){
+    div#app, div#container {
+        margin: 0 auto;
+        width: 1024px;
+    }
+
 /* feedback */
 section.contact-us {
     font-size: 18px;
@@ -844,17 +801,52 @@ section.contact-us {
 }
 /*end of feedback*/
 
-/* verification */
-.card-body button {
-    margin: 10px 0;
-    font-size: 15px;
+/* form input elements*/
+.form-field {margin: 10px 0;}
+input {
+    padding: 5px;
+    width: 200px;
+    height: 1.5em;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #8fa391;
+}
+input[type="checkbox"], input[type="radio"] {
+    width: 20px;
+    vertical-align: middle;
+    margin: 5px;
+}
+input[type="file"] {
+    border: 1px dotted #214b25;
+    width: 400px;
+    padding: 20px;
+    margin: 5px 0;
+    height: 50px;
+    font-family: 'Cutive';
+}
+select {
+    height: 2.4em;
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: 213px;
+    margin: 5px 0;
+}
+textarea {
+    margin: 5px 0;
+    width: 400px;
+    height: 100px;
 }
 
-.card-body {
-    font-size: 18px;
+.c_shareholder {
+    padding: 0 6px;
+}
+button {
+    min-width: 100px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #214b252e;
+    height: 2.5em;
+    padding: 0 20px;
 }
 
-.card-header {
-    font-weight: bold;
-    font-size: 20px;
 }

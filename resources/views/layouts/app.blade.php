@@ -17,6 +17,7 @@
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
@@ -77,7 +78,7 @@
         </div>
         @endif
         
-        <div class="a_page_header">
+        <div class="a_page_header optional">
             <h1>@yield('header_title')</h1>
         </div>
 
@@ -88,7 +89,7 @@
                 <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                 <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
                 <li><a href="{{ url('sales') }}">Sales</a></li>
-                <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
+                <li class="optional"><a href="{{ url('shareholders') }}">Shareholder</a></li>
             </ul>
         </nav>
         @endauth
@@ -107,14 +108,14 @@
 
         <footer class="page-footer">
         
-            <section class="links" style="display:@guest none @endguest">
-
-            <div class="feedbacks nav">  
+        <section class="links">
+                
+                <div class="feedbacks nav">  
                     <h3>Feedbacks</h3>
-                    <ul>
-                        <li><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
-                        <li>Twitter: <a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
-                        <li>Facebook: <a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
+                    <ul class="social">
+                        <li><span class="email">&nbsp;</span><a href="{{ url('feedbacks') }}">Feedbacks</a></li>                
+                        <li><span class="twitter">&nbsp;</span><a href="https://twitter.com/NepseToday" target="_blank" rel="noopener noreferrer">{{config('app.twitter')}}</a></li>                
+                        <li><span class="facebook">&nbsp;</span><a href="https://www.facebook.com/NEPSE.today" target="_blank" rel="noopener noreferrer">{{config('app.facebook')}}</a></li>                
                     </ul>
                 </div>
 
@@ -122,12 +123,13 @@
                     <h3>Help & Support</h3>
                     <ul>
                         <li><a href="{{ url('guidelines') }}"><mark>Guidelines</mark></a></li>
+                        <li><a href="{{ url('faq') }}"><mark>FAQs</mark></a></li>
                         <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
                     </ul>
                 </div>
                 
                 
-                <div class="sales nav">
+                <div class="sales nav optional">
                     <h3>Manage sales</h3>
                     <ul>
                         <li><a href="{{ url('sales') }}">Sales</a></li>
@@ -135,7 +137,7 @@
                     </ul>
                 </div>
 
-                <div class="portfolio nav">
+                <div class="portfolio nav optional">
                     <h3>Manage portfolio</h3>
                     <ul>
                         <li><a href="{{ url('portfolio') }}">Portfolio</a></li>

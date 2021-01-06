@@ -6,6 +6,7 @@
     <title>{{ config('app.name', "NEPSE.TODAY") }} - @yield('title')</title>
     <meta name="description" content="nepse, nepal stock, portfolio, financial management, finance, money, investment, profit, bull, bullish, bear">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
@@ -185,7 +186,7 @@
                 </div>
                 
                 
-                <div class="sales nav">
+                <div class="sales nav optional">
                     <h3>Manage sales</h3>
                     <ul>
                         <li><a href="{{ url('sales') }}">Sales</a></li>
@@ -193,7 +194,7 @@
                     </ul>
                 </div>
 
-                <div class="portfolio nav">
+                <div class="portfolio nav optional">
                     <h3>Manage portfolio</h3>
                     <ul>
                         <li><a href="{{ url('portfolio') }}">Portfolio</a></li>

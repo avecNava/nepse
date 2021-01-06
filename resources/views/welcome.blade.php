@@ -26,25 +26,25 @@
 <div class="welcome__wrapper">
 
     <section class="transactions">
-        <header class="flex al-cntr">
+        <header class="flex js-apart al-end">
             <h2>NEPSE stock data</h2>
             <div>as of <mark>{{$last_updated_time}}</mark></div>
         </header>
         @if($transactions)
-        <table>
+        <table width="100%">
             <thead>
                 <tr>
-                    <th>SN</th>
+                    <th class="optional">SN</th>
                     <th>Symbol</th>
                     <th>LTP</th>
                     <th>Change</th>
                     <th>% change</th>
-                    <th>Open price</th>
+                    <th class="optional">Open price</th>
                     <th>High price</th>
                     <th>Low Price</th>
-                    <th>Total quantity</th>
-                    <th>Toal value</th>
-                    <th>Previous price</th>
+                    <th class="optional">Total quantity</th>
+                    <th class="optional">Toal value</th>
+                    <th class="optional">Previous price</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,8 +57,8 @@
                     $change_css = \App\Services\UtilityService::gainLossClass1($change);
                 @endphp
                 <tr>
-                    <td>{{$key+1}}</td>
-                    <td title="{{$transaction->symbol}}" class="symbol">{{$transaction->symbol}}</td>
+                    <td class="optional">{{$key+1}}</td>
+                    <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
                     <td>{{$transaction->last_updated_price}}</td>
                     <td class="{{$change_css}}">{{$change}}</td>
                     <td>
@@ -69,12 +69,12 @@
                         <div class="{{$change_css}}_icon">&nbsp;</div>
                         </div>
                     </td>
-                    <td>{{$transaction->open_price}}</td>
+                    <td class="optional">{{$transaction->open_price}}</td>
                     <td>{{$transaction->high_price}}</td>
                     <td>{{$transaction->low_price}}</td>
-                    <td>{{$transaction->total_traded_qty}}</td>
-                    <td>{{$transaction->total_traded_value}}</td>
-                    <td>{{$transaction->previous_day_close_price}}</td>
+                    <td class="optional">{{$transaction->total_traded_qty}}</td>
+                    <td class="optional">{{$transaction->total_traded_value}}</td>
+                    <td class="optional">{{$transaction->previous_day_close_price}}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -100,7 +100,7 @@
                         </tr>
                         @foreach($turnovers as $turnover)
                         <tr>
-                            <td title="{{$turnover->security_name   }}">{{$turnover->symbol}}</td>
+                            <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
                             <td>{{number_format($turnover->total_traded_value)}}</td>
                             <td>{{number_format($turnover->last_updated_price)}}</td>
                         </tr>

@@ -1,0 +1,95 @@
+@media only screen and (max-width: 400px){
+    body{font-size: 14px;}
+    h1,h2,h3,h4,h5,h6{padding: 0;margin: 0;}
+    .welcome__wrapper {
+        display: unset;
+        align-items: unset;
+    }
+    #notice .message_wrapper {
+        padding: 5px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+        display: block;
+    }
+    div#app, div#container {
+        margin: 5px;
+    }    
+    .optional {
+        display: none !important;
+    }
+    div#notice .btn {
+        padding: 10px;
+        font-size: 12px;
+        align-self: flex-start;
+        border: 1px solid aliceblue;
+        border-radius: 5px;
+    }
+    input {
+        padding: 5px;
+        width: 200px;
+        height: 1.5em;
+        margin: 5px 0;
+        border-radius: 5px;
+        border: 1px solid #8fa391;
+    }
+    select {
+        height: 2.4em;
+        border-radius: 5px;
+        padding: 2px 4px;
+        width: 213px;
+        margin: 5px 0;
+    }
+    button {
+        min-width: 100px;
+        border: 1px solid #97c7ce;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px #214b252e;
+        height: 1.5em;
+        padding: 0 20px;
+    }
+    textarea {
+        font-size: 15px;
+    }
+    input[type="file"] {
+        border: 1px dotted #214b25;
+        width: 87%;
+        padding: 20px;
+        margin: 5px 0;
+        height: 50px;
+        font-family: 'Cutive';
+    }
+
+    /*logo*/
+    img.c-logo__img {
+        height: 80px;
+    }
+    
+    .form-field > label {
+        font-weight: bold;
+    }
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        width: 350px;
+        margin: 10px 0;
+    }
+
+    footer.page-footer .links .nav {
+        padding: 0 10px;
+    }
+
+    nav.c-nav__list li {
+        display: inline-block;
+        padding: 3px 5px;
+        background: aliceblue;
+        border-radius: 5px;
+        margin: 0;
+        margin-right: 5px;
+        margin-top: 5px;
+    }
+    main.c-main {
+        padding: 0;
+    }
+    
+}
