@@ -10,16 +10,13 @@
 
 @section('header_title')
     <h1 class="c_title">Import Stocks</h1>
+    <h2>Mero Share</h2>
 @endsection
 
 @section('content')
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 <section class="share_import__wrapper">
 
-    <div class="import__header">
-        <h2 class="c_title">Import (MeroShare)</h2>
-    </div>
-    
     <section id="top-nav">
         <div class="label">Import shares from Excel file</div>
         <div class="links">
@@ -29,12 +26,11 @@
         </div>
     </section>
 
+    <details>
+    <summary><h2>Click here to import new data</h2></summary>
     <section id="share-import-form">
-
-        <header></header>
-        
         <main>
-            
+
             <div class="c_instructions">
                 <h3>Instructions</h3>
                 <ul>
@@ -52,7 +48,6 @@
         
             <div class="form">
                 <h2>Import file</h2>
-
                 <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
 
                     <div class="form-field">
@@ -60,22 +55,6 @@
                             <button type="submit">Import</button>
                             <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
                         </div>
-                    </div>
-
-            
-                    <div class="form-message">
-
-                        @if (\Session::has('success'))
-                            <div class="message success">
-                                {!! \Session::get('success') !!}
-                            </div>
-                            @endif
-
-                            @if (\Session::has('error'))
-                            <div class="message error">
-                                <!-- {!! \Session::get('error') !!}</li> -->
-                            </div>
-                        @endif
                     </div>
 
                     @csrf()
@@ -123,75 +102,81 @@
 
                 </form>
             </div>
-        
         </main>
         <footer></footer>
-    
     </section>
+    </details>
 
-    <div id="message" class="message error"></div>
+    <div id="message" class="message error">
+        @if (\Session::has('success'))
+            <div class="message success">
+                {!! \Session::get('success') !!}
+            </div>
+            @endif
+
+            @if (\Session::has('error'))
+            <div class="message error">
+                {!! \Session::get('error') !!}</li>
+            </div>
+        @endif
+    </div>
+
+    <section class="nav">
+    <!-- shareholder filter -->   
+    @if(count($shareholders)>0)
+    <article id="shareholders"  class="center-box">
+        <header>
+            <ul class="shareholders">
+                @foreach($shareholders as $record)
+                <li>
+                    <a href="{{ url('import/meroshare', [ $record->uuid ]) }}" 
+                        title="{{ $record->relation }}">
+                        {{ $record->first_name }} {{ $record->last_name }}
+                    </a>
+                </li>                    
+                @endforeach
+            </ul>
+        </header>
+    </article>
+    @endif
+    </section>
 
     <article>
     
         <header class="info">
             
-            <div class="c_band apart">
+            <div class="flex js-apart al-cntr">
 
-                <div id="info">
+                <div class="flex js-start al-cntr">
                     
                     @php
                         $row = $transactions->first();
                         if( !empty($row) ){
-
                             $shareholder = $row->shareholder;
-                            
                             if($shareholder){
                                 echo "<h2 class='title'>$shareholder->first_name $shareholder->last_name</h2>";
                             }
                         }
                     @endphp
-
-
+                        
+                    @if( count($transactions)>0 )
                     <div class="notification">
-                        @if(count($transactions)>0)
-                            ({{count($transactions)}} records)
-                        @else
-                            No records
-                        @endif
+                        ({{count($transactions)}} records)
                     </div>
+                    @endif
 
                 </div>
-                
-                <div class="c_band__components">
-                
-                    <div class="c_shareholder">
-                        <!-- <label for="shareholder">Shareholder name</label>    -->
-                        <select id="meroshare-shareholder_filter" onChange="meroShareShareholderRefresh()">
-                            <option value="">Choose a Shareholder</option>
-                            @if(!empty($shareholders))
-                                @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}"
-                                    @if($shareholder_id == $member->id) SELECTED @endif>
-                                    {{ $member->first_name }} {{ $member->last_name }} 
-                                        @if (!empty($member->relation))
-                                            ({{ $member->relation }})
-                                        @endif
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="buttons">
-                        <button id="import-meroshare-portfolio" onClick="importMeroShareTransactions()">Save to Portfolio</button>
-                        <button id="delete-meroshare"  onClick="deleteMeroShareTransactions()">Delete</button>
-                    </div>
-                </div>
 
+                <div class="buttons">
+                    <button id="import-meroshare-portfolio" onClick="importMeroShareTransactions()">Save to Portfolio</button>
+                    <button id="delete-meroshare"  onClick="deleteMeroShareTransactions()">Delete</button>
+                </div>
+               
             </div>
         </header>
 
         <main class="transactions">
-            @if( ! empty($transactions) )
+          
             <table>
                 <tr>
                     <th style="text-align:left"><label for="select_all">
@@ -206,7 +191,18 @@
                     <th>Shareholder</th>
                     <th>Remarks</th>
                 </tr>
-                
+                @if(count($transactions)<=0)
+                    <tr>
+                        <td colspan="8">
+
+                            <div class="info center-box">
+                                <h2 class="message error">No records<h2>
+                                <h3 class="message success">💡 Please click on the shareholder above to view records</h3>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endif
                 @foreach ($transactions as $trans)
                 
                 @php 
@@ -245,9 +241,10 @@
                 </tr>
                 @endforeach            
             </table>
-            @endif
+
         </main>
-    
+
+        @if( count($transactions)>0 )
         <footer class="flex">
             <p class="strong">Note : </p>
             <div>
@@ -257,7 +254,8 @@
                 </p>
             </div>
         </footer>
-    
+        @endif
+
     </article>
         
 </section>

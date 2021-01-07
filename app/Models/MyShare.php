@@ -42,18 +42,25 @@ class MyShare extends Model
             } catch (\Throwable $th) {
                 //throw $th;
             }
-         
+
+         try {
+             
             MyShare::create([
-                'symbol' => $item['symbol'],
-                'purchase_date' => $date_str,
-                'description' => $item['description'],
-                'offer_code' => $item['offer_code'],
-                'quantity' => $item['quantity'],
-                'unit_cost' => $item['unit_cost'],
+                'symbol' => empty($item['symbol']) ? null : $item['symbol'],
+                'purchase_date' => empty($date_str) ? null : $date_str,
+                'description' => empty($item['description']) ? null : $item['description'],
+                'offer_code' => empty($item['offer_code']) ? null : $item['offer_code'],
+                'quantity' => empty($item['quantity']) ? null : $item['quantity'],
+                'unit_cost' => empty($item['unit_cost']) ? null : $item['unit_cost'],
                 'shareholder_id' => (int)$item['shareholder_id'],
-                'effective_rate' => $item['effective_rate'],
+                'effective_rate' => empty($item['effective_rate']) ? null : $item['effective_rate'],
             ]);
-    
+
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+        return true;
 
         });
 

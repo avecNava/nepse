@@ -183,7 +183,7 @@ tfoot td {
                 <div>
                     <label for="sell_quantity">Quantity &nbsp;&nbsp;
                         <input type="number" name="sell_quantity" id="sell_quantity" 
-                        data-shareholder-id="{{  $info['uuid'] }}"
+                        data-uuid="{{  $info['uuid'] }}"
                         data-stock-id="{{  $info['stock_id'] }}">
                     </label>
                     <button onClick="addToBasket()">Add to basket</button>&nbsp;
@@ -249,7 +249,7 @@ tfoot td {
                         value="{{ old('quantity') }}"/>
                     </div>
                     <div>
-                        <label for="base_amount" title="Base price * Quantity"
+                        <label for="    " title="Base price * Quantity"
                         class="@error('base_amount') is-invalid @enderror">Base amount</label>
                         <input type="text" name="base_amount" id="base_amount" required 
                         value="{{ old('base_amount') }}"/>
@@ -318,7 +318,7 @@ tfoot td {
                     </div>
                     <div class='action-buttons'>
                         <button type="submit">Save</button>
-                        <button id="cancel" type="reset" onClick="hideForm()">Cancel</button>
+                        <button id="cancel" type="reset" onClick="hideForm('portfolio-form')">Cancel</button>
                     </div>
                 </section>
             </form> 
@@ -405,7 +405,7 @@ tfoot td {
                             @if( !empty($record))
                                 <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
                                 <label for="chk-{{ $record->id }}" style="padding:5px">
-                                    {{ $record->symbol }} <sup>@if(!$record->wacc_updated_at)*@endif</sup>
+                                    {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
                                 </label>
                             @endif
                         </td>
@@ -564,8 +564,11 @@ tfoot td {
     }
 
     function resetInputFields() {
-        let date = Date.now();
-        let date_str = date.getFullYear() + '-' + date.getMonth() + 1 + '-' + getDate();
+        const MyDate = new Date();
+        // MyDate.setDate(MyDate.getDate() + 20);
+
+        const date_str = MyDate.getFullYear() + '-' + ('0' + MyDate.getMonth()+1).slice(-2) + '-'
+             + ('0' + (MyDate.getDate()+1)).slice(-2);
 
         document.getElementById('id').value = '';
         document.getElementById('quantity').value = '';
@@ -668,13 +671,13 @@ tfoot td {
             }
             hideLoadingMessage();
         }
-        request.send(`_token=${_token}&stock_id=${stock_id}&shareholder_id=${shareholder_id}&quantity=${sell_quantity}`);
+        request.send(`_token=${_token}&stock_id=${stock_id}&uuid=${shareholder_id}&quantity=${sell_quantity}`);
     }
 
     function addToBasket(){
 
         const ele = document.querySelector('#sell_quantity');
-        const shareholder_id = ele.dataset.shareholderId;
+        const uuid = ele.dataset.uuid;
         const stock_id = ele.dataset.stockId;
         const sell_quantity = ele.value;
 
@@ -699,7 +702,7 @@ tfoot td {
         }
 
         resetSellError();
-        saveToBasket(sell_quantity, shareholder_id, stock_id);
+        saveToBasket(sell_quantity, uuid, stock_id);
 
     }
 

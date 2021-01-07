@@ -42,9 +42,10 @@
     ul.shareholders li:hover {
         background:beige;
     }
-    ul.shareholders li a{
+    ul.shareholders li a {
         font-weight: bold;
         color: #3F51B5;
+        margin-right: 25px;
     }
 </style>
 

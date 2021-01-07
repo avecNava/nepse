@@ -24,7 +24,7 @@
         <div class="label">Import shares in bulk</div>
         <div class="links">
             <div class="link">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import</a>
+                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import (Spreadsheet)</a>
             </div>
             <div class="link">
                 <a href="{{url('import/meroshare')}}" title="Import Share from MeroShare">Import from MeroShare</a>

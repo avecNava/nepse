@@ -22,27 +22,28 @@ class MyShareController extends Controller
         $this->middleware(['auth', 'verified']); 
     }
 
-     public function create($shareholder_id = null)
+     public function create($uuid = null)
      {
          $user_id = Auth::id();
- 
-         //if no shareholder-id was supplied, choose parent account as default
-         if(empty($shareholder_id)){
-             $shareholder_id = Shareholder::where('parent_id', $user_id)->pluck('id')->first();
-         }
+         $shareholder_id = '';
+          if(empty($uuid)){
+               $shareholder_id = session()->get('shareholder_id');
+          }
+          else{
+               $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
+          }
  
          //get all the shareholder names to display in the select input
-         $shareholders = Shareholder::where('parent_id', $user_id)->get();
+         $shareholders = Shareholder::where('parent_id', $user_id)->orderBy('first_name')->get();
  
          //get transaction history and its related stock_id, security_name from related (stocks table)
          $transactions = MyShare::where('shareholder_id', $shareholder_id)
                          ->with(['share'])
                          ->get();
  
-         return view('import-share', [
+         return view('import.myshare', [
                  'transactions' => $transactions,
-                 'shareholders' => $shareholders->sortBy('first_name'),
-                 'shareholder_id' => $shareholder_id,
+                 'shareholders' => $shareholders,
          ]);
      }
  
@@ -97,8 +98,7 @@ class MyShareController extends Controller
                          );
                });
                
-          } 
-          catch (\Throwable $th) {
+          } catch (\Throwable $th) {
                $error = 
                     [
                          'message' => $th->getMessage(),
@@ -108,12 +108,23 @@ class MyShareController extends Controller
                Log::error('Import error',$error);
                return redirect()->back()->with('error', "ERRROR : " . $error['message']);
           }
+          
+          try {
+               \File::delete( $pathToCSV );
+               // unlink( $pathToCSV );               //delete the file
+          } catch(\Throwable $th){
 
+          }
+          
           //remove existing records with the given shareholder_id
           MyShare::where('shareholder_id', $shareholder_id)->delete();
-               
+          
           //add new records
-          MyShare::importTransactions($transactions);
+          $success = MyShare::importTransactions($transactions);
+
+          if(!$success){
+               return redirect()->back()->with('error', "Unfortunately, some of the records could not be imported 👀");
+          }
     
         return redirect()->back()->with('success', 'Selected records have been imported successfully 👌');
 
@@ -141,7 +152,7 @@ class MyShareController extends Controller
           //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
           // $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
 
-          $portfolios->each(function($item) use($offers){
+          $portfolios->each(function($item){
                
                Portfolio::updateOrCreate(
                [
@@ -159,6 +170,7 @@ class MyShareController extends Controller
                     'effective_rate' => $item->effective_rate,
                     'total_amount' => $item->effective_rate ?: round($item->quantity * $item->effective_rate, 2),
                     'wacc_updated_at' => Carbon::now(),
+                    'wacc_updated_at' => empty($item->effective_rate) ? null :  Carbon::now(),
                     // 'wacc_updated_at' => in_array(Str::upper($item->offer_code), $offers) ? Carbon::now() : null,
 
           ]);

@@ -20,27 +20,26 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Services\UtilityService;
 
-
 class PortfolioController extends Controller
 {
-    
     public function __construct()
     {
         $this->middleware(['auth', 'verified']); 
     }
 
-    public function shareholderPortfolio($id)
+    public function shareholderPortfolio($uuid)
     {
         $notice = [
             'title' => 'Attention',
             'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
         ];
 
+        $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
+
         $stocks = DB::table('portfolio_summaries as p')
-            ->join('shareholders as m', function($join) use($id){
+            ->join('shareholders as m', function($join) use($shareholder_id){
                 $join->on('m.id', '=', 'p.shareholder_id')
-                    ->where('m.uuid', $id)
-                    ->where('m.tenant_id', session()->get('tenant_id'));
+                    ->where('m.id', $shareholder_id);
             })
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
             ->leftJoin('stock_prices as pr', function($join){
@@ -90,7 +89,7 @@ class PortfolioController extends Controller
             return  view(
                 'portfolio.shareholder-dashboard', 
                 [
-                    'uuid' => optional($row)->uuid,
+                    'uuid' => $uuid,
                     'first_name' => optional($row)->first_name,
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
@@ -208,7 +207,6 @@ class PortfolioController extends Controller
         );            
     }
 
-
     /**
      * update portfolio
      * 
@@ -249,7 +247,6 @@ class PortfolioController extends Controller
 
     }
 
-
     /**
      * delete the portfolio
      * $id is the record id
@@ -266,7 +263,6 @@ class PortfolioController extends Controller
                     'status'=>'error',                
                 ]);
         }
-        
         
         //obtain the shareholder and stock id to update records in portfolio summary
         $portfolio = Portfolio::find($id);
@@ -320,7 +316,6 @@ class PortfolioController extends Controller
         );
 
     }
-
 
     /**
      * Function: showPortfolioDetails

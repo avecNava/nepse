@@ -84,7 +84,7 @@ class Portfolio extends Model
             $portfolio->sebon_commission = $request->sebon_commission;
             $portfolio->dp_amount = $request->dp_amount;
             $portfolio->total_amount = $request->total_amount;
-            $portfolio->dp_amount = $request->dp_amount;
+            $portfolio->base_amount = $request->base_amount;
             $portfolio->receipt_number = $request->receipt_number;
             $portfolio->tags = $request->tags;
             $portfolio->broker_no = $request->broker;

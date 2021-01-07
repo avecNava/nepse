@@ -88,78 +88,6 @@
                 @yield('content')
             </div>
             
-            <!-- side menu -->
-            <section id="side_menu" style="display:none">
-                <ul id="slide-out" class="side-nav">
-                    <li><div class="userView">
-                    <div class="background">
-                    <img src="images/background.jpg">
-                    </div>
-                    <a href="#!user"><img class="circle" src="images/default-avatar.png"></a>
-                    <a href="#!name"><span class="name">
-                        @if (!empty( Auth::user()->name ))
-                            {{ Auth::user()->name }} 
-                        @endif
-                    </span></a>
-                    <a href="#!email"><span class="email">
-                    @if (!empty( Auth::user()->email ))
-                            {{ Auth::user()->email }} 
-                        @endif
-                    </span></a>
-                    </div></li>
-                    <li>
-                    <a href="portfolio" title="Home">
-                        <i class="material-icons">dashboard</i>
-                        Home
-                    </a>
-                    </li>
-                    <li>
-                    <a href="portfolio/addstock" title="Add stock">
-                        <i class="material-icons">note_add</i>
-                        Add stock
-                    </a> 
-                    </li>
-                    <li>
-                    <a href="account/shareholder" title="Shareholders">
-                        <i class="material-icons">note_add</i>
-                        Shareholders
-                    </a> 
-                    </li>
-                    <li>
-                    <a href="account/sharegroup" title="Share groups">
-                        <i class="material-icons">note_add</i>
-                        Share groups
-                    </a> 
-                    </li>
-                    <li>
-                    <a href="article" title="News and events">
-                        <i class="material-icons">subject</i>
-                        News and events
-                    </a> 
-                    </li>
-                    
-                    <li>
-                    <a href="admin/users" title="Users">
-                        <i class="material-icons">supervisor_account</i>
-                        Users
-                    </a> 
-                    </li>
-                    <li>
-                    <a href="admin/companies" title="Companies">
-                        <i class="material-icons">business</i>
-                        Companies
-                    </a> 
-                    </li>
-                    
-                    <li>
-                    <a href="account/logout" title="Log out">
-                        <i class="material-icons prefix">power_settings_new</i>
-                        Log out              
-                    </a>
-                    </li>    
-                </ul>        
-            </section>
-
         </main>
 
        
@@ -231,7 +159,7 @@
                     <ul>
                         <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                         <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
-                        <li><a href="{{ url('/import/share') }}">Import</a></li>
+                        <li><a href="{{ url('/import/share') }}">Import (Spreadsheet)</a></li>
                         <li><a href="{{ url('/import/meroshare') }}">Import (MeroShare)</a></li>
                         <li><a href="{{ url('/shareholders') }}">Shareholders</a></li>
                     </ul>

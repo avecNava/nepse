@@ -29,7 +29,7 @@ class SalesBasketController extends Controller
 
     public function view($username, $id = null)
     {
-        // $shareholders = Shareholder::getShareholderNames(Auth::id());
+        // $shareholder_ids = Shareholder::getShareholderNames(Auth::id());
         
         $ids = [$id];
         
@@ -78,11 +78,12 @@ class SalesBasketController extends Controller
             $error = false;
             $stock = $request->stock_id;
             $basket_quantity = $request->quantity;
-            $shareholder = $request->shareholder_id;
+            $uuid = $request->uuid;
+            $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
 
             //check if the sales is within limit
             if( $basket_quantity < config('app.buy-sell-limit')){
-                $msg = 'Minimim sell limit is ' . config('app.buy-sell-limit'). ' units';
+                $msg = 'Minimum sell limit is ' . config('app.buy-sell-limit'). ' units';
                 $error = true;
             }
             
@@ -90,7 +91,7 @@ class SalesBasketController extends Controller
 
                 // check if the stock has wacc updated in portfolio table, stocks without wacc can't be sold
                 //when wacc is updated, it'll update the portfolio summary table too
-                $available_quantity = Portfolio::where('shareholder_id', $shareholder)
+                $available_quantity = Portfolio::where('shareholder_id', $shareholder_id)
                     ->whereNotNull('wacc_updated_at')
                     ->where('stock_id', $stock)
                     ->sum('quantity');
@@ -102,14 +103,14 @@ class SalesBasketController extends Controller
 
             if(! $error ) {
                 //get wacc from portfolio summary
-                $wacc =  PortfolioSummary::where(function($q) use($shareholder, $stock){
-                        return $q->where('shareholder_id', $shareholder)
+                $wacc =  PortfolioSummary::where(function($q) use($shareholder_id, $stock){
+                        return $q->where('shareholder_id', $shareholder_id)
                             ->where('stock_id', $stock);
                         })
                         ->average('wacc');
                 
-                $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder, $stock){
-                        return $q->where('shareholder_id', $shareholder)
+                $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder_id, $stock){
+                        return $q->where('shareholder_id', $shareholder_id)
                             ->where('stock_id', $stock);
                         })
                         ->sum('quantity');
@@ -136,7 +137,7 @@ class SalesBasketController extends Controller
             SalesBasket::updateOrCreate(
                 [
                     'stock_id' => $request->stock_id,
-                    'shareholder_id' => $request->shareholder_id,
+                    'shareholder_id' => $shareholder_id,
                 ],
                 [
                     'quantity' => $new_quantity,

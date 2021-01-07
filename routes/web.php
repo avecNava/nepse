@@ -66,11 +66,11 @@ Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
 
-Route::get('import/share/{shareholder_id?}', [MyShareController::class, 'create']);
+Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);
 Route::post('import/share/delete', [MyShareController::class, 'delete']);
 
-Route::get('import/meroshare/{shareholder_id?}', [MeroShareController::class, 'create']);
+Route::get('import/meroshare/{uuid?}', [MeroShareController::class, 'create']);
 Route::post('import/meroshare/store', [MeroShareController::class, 'store']);
 Route::post('import/meroshare/delete', [MeroShareController::class, 'delete']);
 
@@ -94,7 +94,7 @@ Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode
 Route::get('portfolio/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
-Route::get('portfolio/{id}', [PortfolioController::class, 'shareholderPortfolio']);
+Route::get('portfolio/{uuid}', [PortfolioController::class, 'shareholderPortfolio']);
 
 Route::get('sales', [SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);

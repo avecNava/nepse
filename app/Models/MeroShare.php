@@ -37,20 +37,30 @@ class MeroShare extends Model
     {
         $transactions->whenNotEmpty(function() use($transactions){
             
-            foreach ($transactions as $trans ) {
-                MeroShare::create([
-                    'symbol' => $trans['symbol'],
-                    'shareholder_id' => $trans['shareholder_id'],
-                    'transaction_date' => $trans['transaction_date'],
-                    'remarks' => $trans['remarks'],
-                    'offer_code' => $trans['offer_type'],
-                    'transaction_mode' => $trans['transaction_mode'],
-                    'credit_quantity' => $trans['credit_quantity'],
-                    'debit_quantity' => $trans['debit_quantity'],
-                ]);
+            try {
+
+                foreach ($transactions as $trans ) {
+                        
+                    MeroShare::create([
+                        'symbol' => $trans['symbol'],
+                        'shareholder_id' => $trans['shareholder_id'],
+                        'transaction_date' => $trans['transaction_date'],
+                        'remarks' => $trans['remarks'],
+                        'offer_code' => $trans['offer_type'],
+                        'transaction_mode' => $trans['transaction_mode'],
+                        'credit_quantity' => $trans['credit_quantity'],
+                        'debit_quantity' => $trans['debit_quantity'],
+                    ]);
+
+                }
+               
+            } catch (\Throwable $th) {
+               return false;
             }
 
         });
+        
+        return true;
     }
 
 }
