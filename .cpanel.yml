@@ -10,7 +10,6 @@ deployment:
     - /bin/cp -R resources $DEPLOYPATH
     - /bin/cp -R routes $DEPLOYPATH
     - /bin/cp -R storage/framework $DEPLOYPATH
-    - /bin/cp .env $DEPLOYPATH
     - /bin/cp .composer.json $DEPLOYPATH
     - /bin/cp .composer.lock $DEPLOYPATH
     - /bin/cp package.json $DEPLOYPATH

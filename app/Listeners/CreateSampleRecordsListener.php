@@ -32,7 +32,7 @@ class CreateSampleRecordsListener
             $shareholder = session()->get('shareholder_id');
             
             //create a default shareholder (group)
-            Shareholder::createSampleRecord($shareholder);
+            Shareholder::createSampleRecord();
 
             //check if the user has any records in PortfolioSummary table
             $records = PortfolioSummary::where('shareholder_id', $shareholder)->count('id');

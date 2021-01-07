@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -85,6 +86,7 @@ class RegisterController extends Controller
 
         //create session record for the tenant_id (otherwise tenant_id will not be created for Shareholder)
         session()->put('tenant_id', $user->id);
+        session()->put('shareholder_id', $user->id);
 
         //insert the user as shareholder
         Shareholder::create([
@@ -93,6 +95,7 @@ class RegisterController extends Controller
             'first_name' => $first_name,
             'last_name' => $last_name,
             'email' => $data['email'],
+            'uuid' => Str::uuid(),
             'last_modified_by' => $user->id,
         ]);
         

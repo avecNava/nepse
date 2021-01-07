@@ -35,15 +35,19 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
-    $result = in_array(Str::upper('other'), $offers);
-    dd($result);
+    $uuid =  (string) Str::uuid();
     
-    //$feedback = \App\Models\Feedback::first();
-    // dd($feedback->description);
-    //Mail::to($user)->send(new \App\Mail\FeedbackMail($feedback));
+    return 
+    Shareholder::create([
+        'parent_id' => 1,
+        'parent' => true,                   //all registered users will be the parent by default
+        'first_name' => 'test',
+        'last_name' => 'testing',
+        'email' => 'test@gmail.com',
+        'uuid' => $uuid,
+        'last_modified_by' => 1,
+    ]);
 });
-
 
 Route::get('sample-record', function(){
     $shareholder = Shareholder::find(53);

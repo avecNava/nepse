@@ -25,6 +25,7 @@ class Shareholder extends Model
         'date_of_birth',
         'last_modified_by',
         'tenant_id',
+        'uuid',
     ];
 
     public function scripts()
@@ -62,25 +63,31 @@ class Shareholder extends Model
         );
     }
   
-    public static function createSampleRecord($shareholder_id)
+    /**
+     * creates sample records for the logged in user 
+     * Groups are also considered as shareholders 
+     */
+    public static function createSampleRecord()
     {
         Shareholder::updateOrCreate(
             [
-            'last_modified_by' => $shareholder_id,
-            'parent_id' => $shareholder_id,
+            'last_modified_by' => Auth::id(),
+            'parent_id' => Auth::id(),
             'first_name' => 'Long',
             'last_name' => 'term',
             'relation' => 'Group',
             'parent' => false,
+            'uuid' => Str::uuid(),
         ]);
             
         Shareholder::updateOrCreate([
-            'last_modified_by' => $shareholder_id,
-            'parent_id' => $shareholder_id,
+            'last_modified_by' => Auth::id(),
+            'parent_id' => Auth::id(),
             'first_name' => 'Short',
             'last_name' => 'term',
             'relation' => 'Group',
             'parent' => false,
+            'uuid' => Str::uuid(),
         ]);
     }
 

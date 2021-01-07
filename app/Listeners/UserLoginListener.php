@@ -34,11 +34,10 @@ class UserLoginListener
         session()->put('tenant_id', $event->user->id);
 
         //find shareholder_id and create a session record
-        $shareholder = Shareholder::where('parent_id', Auth::id())->select('id')->first();
+        $shareholder = Shareholder::where('parent_id', Auth::id())->pluck('id')->first();
+        
         if($shareholder){
-            session()->put('shareholder_id', $shareholder['id']);            
-        }else{
-            Log::error('Could not create session shareholder_id. Shareholder not found', [$shareholder]);
+            session()->put('shareholder_id', $shareholder);            
         }
         
     }
