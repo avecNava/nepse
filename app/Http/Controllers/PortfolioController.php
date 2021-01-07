@@ -256,7 +256,7 @@ class PortfolioController extends Controller
      */
     public function delete(int $id)
     {
-                
+
         if(!$id){
 
             return response()->json(
@@ -267,7 +267,19 @@ class PortfolioController extends Controller
                 ]);
         }
         
+        
+        //obtain the shareholder and stock id to update records in portfolio summary
         $portfolio = Portfolio::find($id);
+        
+        if(empty($portfolio)){
+            return response()->json(
+                [
+                    'message'=> 'Could not find record', 
+                    'status'=>'error',     
+
+                ], 404);
+        }
+
         $shareholder_id = $portfolio->shareholder_id;
         $stock_id = $portfolio->stock_id;
 
@@ -363,7 +375,7 @@ class PortfolioController extends Controller
                 'pr.close_price','pr.previous_day_close_price', 'pr.last_updated_price',
                 'ss.sector',
                 's.symbol', 's.security_name', 
-                'sh.*',
+                'sh.first_name', 'sh.last_name', 'sh.relation', 'sh.uuid',
                 'o.offer_code','o.offer_name'
                 )
         ->where(function($query) use($symbol){

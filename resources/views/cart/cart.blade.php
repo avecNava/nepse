@@ -16,9 +16,13 @@
 @section('content')
 
 <style>
-
-    article {
-        margin: 30px 0;
+    tr.basket-header {
+        background: unset;
+    }
+    tr.basket-header h2 {padding: 0 }
+    tr.basket-header td {
+        padding: 0 !important;
+        height: 40px !important;
     }
     article footer {
         text-align: right;
@@ -135,7 +139,7 @@
    
     <!-- shareholder filter -->
     @if(count($shareholders)>0)
-    <article id="shareholders">
+    <article id="shareholders" class="center-box">
         <header>
             <ul class="shareholders">
                 <li>
@@ -155,7 +159,7 @@
     @endif
 
     <!-- message -->
-    <div class="info">
+    <div class="message">
         <h3>
             <div id="sell_message"></div>
         </h3>
@@ -177,11 +181,11 @@
             @if(count($baskets) > 0)
             <table>
                 <thead>
-                    <tr>
+                    <tr class="basket-header">
                         @php
                             $data = $baskets->first();
                         @endphp
-                        <th colspan="12" class="info">
+                        <td colspan="12">
                             <div class="info flex together">
                                 <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                                 <div class="notification">
@@ -190,11 +194,11 @@
                                     @endif
                                 </div> 
                             </div>
-                        </th>
-                        <th colspan="2" class="info icon-buttons" style="text-align:right">
+                        </td>
+                        <td colspan="2" class=" icon-buttons" style="text-align:right">
                             <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
                             <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
-                        </th>
+                        </td>
                     </tr>
                     
                     <tr>

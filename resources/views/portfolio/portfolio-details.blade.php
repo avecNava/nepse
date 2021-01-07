@@ -81,7 +81,7 @@ tfoot td {
 
                         <section class="shareholder nav">
                             <h2>
-                                <a href="{{ url('portfolio',[ $info['uuid'] ]) }}">
+                                <a href="{{ url('portfolio', [ $info['uuid'] ]) }}">
                                     {{ $info['shareholder'] }}
                                 </a>
                             </h2>
@@ -187,7 +187,7 @@ tfoot td {
                         data-stock-id="{{  $info['stock_id'] }}">
                     </label>
                     <button onClick="addToBasket()">Add to basket</button>&nbsp;
-                    <span class='button'><a href="{{url('basket')}}">View basket</span>
+                    <span class='button'><a href="{{url('basket')}}">View basket</a></span>
                 </div>
             </div>
 
@@ -353,113 +353,98 @@ tfoot td {
         </div>
 
         @if( count($portfolios)==0 )
-        <div class="info" style="text-align:center">
+        <div class="center-box error-box">
             <h2 class="message error">Nothing in here<h2>
             <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
         </div>
         @endif
 
         <section class="form">
-            
-            @if(count($portfolios)>0 )
-        
-                <header>
+        <header>
+            <div></div>
+            <div class="buttons">
+                <div class="action-buttons">
+                    <button id="new">New</button>
+                    <button id="edit">Edit</button>
+                    <button id="delete">Delete</button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <table>
+                <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Offering type</th>
+                    <th class="c_digit">Quantity</th>
+                    <th class="c_digit">Unit cost</th>
+                    <th class="c_digit" title="Effective rate">Eff. rate</th>
+                    <th class="c_digit">Total amount</th>
+                    <th class="c_digit">LTP</th>
+                    <th class="c_digit">Worth</th>
+                    <th class="c_digit">Gain</th>
+                    <th class="c_digit">Purchase date</th>
+                    <th>Tags</th>
+                </tr>
+                </thead>
+                @foreach ($portfolios as $record)
+                    @php
+                        $ltp = $record->last_updated_price?: $record->close_price;
+                        $qty = $record->quantity;
+                        $worth = $qty * $ltp;
+                        $investment = $record->total_amount;
+                        $gain = $worth - $investment;
+                        $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
+                        $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
+                    @endphp
+                <tbody>
+                    
+                    <tr id="row-{{ $record->id }}">
+                        
+                        <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
+                            @if( !empty($record))
+                                <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
+                                <label for="chk-{{ $record->id }}" style="padding:5px">
+                                    {{ $record->symbol }} <sup>@if(!$record->wacc_updated_at)*@endif</sup>
+                                </label>
+                            @endif
+                        </td>
+                        <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
+                        <td class="c_digit">{{ $qty }}</td>
+                        <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
+                        <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
+                        <td class="c_digit">{{ number_format($record->total_amount) }}</td>
+                        <td class="c_digit">{{ number_format($ltp) }}</td>
+                        <td class="c_digit">{{ number_format($worth) }}</td>
+                        <td class="c_digit">
+                            <div class="c_change">
+                                <div>
+                                    <span class="change-val">
+                                    {{ number_format($gain, 1) }}
+                                    </span>
+                                    <span class="change-val {{$gain_class}}">
+                                    ({{ $gain_per }})
+                                    </span>
+                                </div>
+                                <div class="{{$gain_class}}_icon"></div>
+                            </div>
+                        </td>
+                        <td class="c_digit">{{$record->purchase_date}}</td>
+                        <td>{{$record->tags}}</td>
+                    </tr>
+                </tbody>
+                @endforeach   
+                <tfoot>
+                    <tr>
+                        <td colspan="11">
+                            <span><sup>*</sup> Stocks needs to be revised and updated</span>
+                        </td>
+                    </tr>
+                </tfoot>
 
-                    <div></div>
-    
-                    <div class="buttons">
+            </table>
 
-                        <div class="action-buttons">
-                            <button id="new">New</button>
-                            <button id="edit">Edit</button>
-                            <button id="delete">Delete</button>
-                        </div>
-
-                    </div>
-
-                </header>
-
-                <main>
-
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Offering type</th>
-                            <th class="c_digit">Quantity</th>
-                            <th class="c_digit">Unit cost</th>
-                            <th class="c_digit" title="Effective rate">Eff. rate</th>
-                            <th class="c_digit">Total amount</th>
-                            <th class="c_digit">LTP</th>
-                            <th class="c_digit">Worth</th>
-                            <th class="c_digit">Gain</th>
-                            <th class="c_digit">Purchase date</th>
-                            <th>Tags</th>
-                        </tr>
-                        </thead>
-                        @foreach ($portfolios as $record)
-                            @php
-                                $ltp = $record->last_updated_price?: $record->close_price;
-                                $qty = $record->quantity;
-                                $worth = $qty * $ltp;
-                                $investment = $record->total_amount;
-                                $gain = $worth - $investment;
-                                $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
-                                $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
-                            @endphp
-                        <tbody>
-                            
-                            <tr id="row-{{ $record->id }}">
-                                
-                                <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
-                                    @if( !empty($record))
-                                        <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                        <label for="chk-{{ $record->id }}" style="padding:5px">
-                                            {{ $record->symbol }} <sup>@if(!$record->wacc_updated_at)*@endif</sup>
-                                        </label>
-                                    @endif
-                                </td>
-                                <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
-                                <td class="c_digit">{{ $qty }}</td>
-                                <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
-                                <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
-                                <td class="c_digit">{{ number_format($record->total_amount) }}</td>
-                                <td class="c_digit">{{ number_format($ltp) }}</td>
-                                <td class="c_digit">{{ number_format($worth) }}</td>
-                                <td class="c_digit">
-                                    <div class="c_change">
-                                        <div>
-                                            <span class="change-val">
-                                            {{ number_format($gain, 1) }}
-                                            </span>
-                                            <span class="change-val {{$gain_class}}">
-                                            ({{ $gain_per }})
-                                            </span>
-                                        </div>
-                                        <div class="{{$gain_class}}_icon"></div>
-                                    </div>
-                                </td>
-                                <td class="c_digit">{{$record->purchase_date}}</td>
-                                <td>{{$record->tags}}</td>
-                            </tr>
-                        </tbody>
-                        @endforeach   
-                        <tfoot>
-                            <tr>
-                                <td colspan="11">
-                                    <span><sup>*</sup> Stocks needs to be revised and updated</span>
-                                </td>
-                            </tr>
-                        </tfoot>
-
-                    </table>
-
-                </main>
-            
-                <footer></footer>
-       
-            @endif
-
+        </main>
         </section>
         
         <section class="sales">
@@ -522,7 +507,7 @@ tfoot td {
         let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
 
         if(!id_string){
-            msg = 'Please select a record to edit';
+            msg = 'Please select a record';
             showMessage(msg, 'message', 'error'); return;
         }
 
@@ -609,7 +594,7 @@ tfoot td {
         let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
 
         if(!id_string){
-            msg = 'Please select a record to delete';
+            msg = 'Please select a record';
             showMessage(msg, 'message', 'error'); return;
         }
 
@@ -618,16 +603,17 @@ tfoot td {
 
         if(confirm('Please confirm the delete operation')) {
 
-                showLoadingMessage();
+            showLoadingMessage();
 
             let request = new XMLHttpRequest();
             const url = `${window.location.origin}/portfolio/delete/${record_id}`;
             request.open('GET', url, true);
 
-            request.onload = function(ele_success, ele_loading) {
+            request.onload = function() {
+                
+                data = JSON.parse(this.response);
+                
                 if (this.status >= 200 && this.status < 400) {
-                    data = JSON.parse(this.response);
-                    hideLoadingMessage();
                     showMessage(data.message,'message');
                     //if no records remain, redirect to main page
                     if(data.quantity == 0){
@@ -635,7 +621,10 @@ tfoot td {
                         window.location.replace(url);
                     }
                     hideDeletedRow();
+                }else{
+                    showMessage(data.message,'message','error');
                 }
+                hideLoadingMessage();
             }  
             request.onerror = function() {
             // There was a connection error of some sort
@@ -699,7 +688,7 @@ tfoot td {
         const diff = parseInt(total_quantity) - parseInt(sell_quantity);
 
         if( parseInt(sell_quantity) >  (total_quantity)){
-            showMessage(`Sell quantity '${sell_quantity}' can not exceed the total quantity '${total_quantity}'`,'basket_message', 'error');
+            showMessage(`Sell quantity exceeds the total quantity (${total_quantity})`,'basket_message', 'error');
             return false;
         }
 

@@ -110,7 +110,6 @@ footer.page-footer {
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
-#basket ul.shareholders {background: #7955480a;}
 .message {padding: 5px 0; font-weight: bold;}
 /*page footer*/
 
@@ -166,7 +165,6 @@ main.transactions td {
 
 /*form related css*/
 .form header {
-    background: #f7f7f7;
     padding: 5px 10px;display: flex;
     justify-content: space-between;
     align-items: flex-end;

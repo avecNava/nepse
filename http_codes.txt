@@ -1,6 +1,8 @@
 200, OK
 201, created
 204, Resource deleted (no Content)  similar to response()->noContent()
+204 doesn't send json response back. The response is empty
 
 
 401, Not authorized
+404, Not found

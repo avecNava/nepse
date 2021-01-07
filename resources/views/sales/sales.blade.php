@@ -14,6 +14,15 @@
 
 @section('content')
 <style>
+    
+    tr.basket-header {
+        background: unset;
+    }
+    tr.basket-header h2 {padding: 0 }
+    tr.basket-header td {
+        padding: 0 !important;
+        height: 40px !important;
+    }
     .icon-buttons button {
         background: unset;
         border-radius: unset;
@@ -55,7 +64,7 @@
 
     <!-- shareholder filter -->
     @if(count($shareholders)>0)
-    <article id="shareholders">
+    <article id="shareholders"  class="center-box">
         <header>
             <ul class="shareholders">
                 <li>

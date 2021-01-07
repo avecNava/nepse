@@ -139,7 +139,7 @@ class MyShareController extends Controller
                ->get();
           
           //if IPO, unit cost and effective rate = 100, BONUS,it will be 0, total_amount is qty*effective_rate
-          $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
+          // $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
 
           $portfolios->each(function($item) use($offers){
                
@@ -158,7 +158,8 @@ class MyShareController extends Controller
                     'unit_cost' => $item->unit_cost,
                     'effective_rate' => $item->effective_rate,
                     'total_amount' => $item->effective_rate ?: round($item->quantity * $item->effective_rate, 2),
-                    'wacc_updated_at' => in_array($item->offer_code, $offers) ? Carbon::now() : null,
+                    'wacc_updated_at' => Carbon::now(),
+                    // 'wacc_updated_at' => in_array(Str::upper($item->offer_code), $offers) ? Carbon::now() : null,
 
           ]);
 

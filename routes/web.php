@@ -35,7 +35,9 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    return Str::length(Str::uuid());
+    $offers =['IPO','FPO','RIGHTS','BONUS','MUTUALFUND','PREMIUM','SECONDARY','OTC','AUCION','BONDS','BOND','OTHER','OTHERS'];
+    $result = in_array(Str::upper('other'), $offers);
+    dd($result);
     
     //$feedback = \App\Models\Feedback::first();
     // dd($feedback->description);
