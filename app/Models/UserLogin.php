@@ -17,7 +17,7 @@ class UserLogin extends Model
     protected $guarded = [];
     protected $table = 'logins';
 
-    public function createLoginRecords(Request $request)
+    public static function createLoginRecords(Request $request)
     {
         $agent = new Agent();
 
@@ -36,7 +36,7 @@ class UserLogin extends Model
         $platform_version = explode('.', $agent->version($agent->platform()))[0];
         // 'user_agent' => $request->server('HTTP_USER_AGENT'),
 
-        UserLogIn::Create([
+        UserLogin::Create([
             'ip' => $request->ip(),
             'device' => $agent->device(),
             'device_type' => $device_type,

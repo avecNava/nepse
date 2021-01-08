@@ -5,7 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Http\Request;
-use App\Models\UserLogIn;
+use App\Models\UserLogin;
 
 class RecordLoginDetailsListener
 {
@@ -29,7 +29,7 @@ class RecordLoginDetailsListener
      */
     public function handle($event)
     {
-        $login = new UserLogin();
-        $login->createLoginRecords($this->request);
+        
+        UserLogin::createLoginRecords($this->request);
     }
 }
