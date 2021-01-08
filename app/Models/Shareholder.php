@@ -59,6 +59,7 @@ class Shareholder extends Model
                 'gender' => Str::title(Str::substr($request->gender,0,1)),
                 'relation' => (Auth::id() == $request->id) ? null : Str::title($request->relation), //relation is null for main a/c holders
                 'parent' => false,
+                'uuid' => Str::uuid(),
             ]
         );
     }
