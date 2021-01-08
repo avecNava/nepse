@@ -17,7 +17,7 @@ class UserLogin extends Model
     protected $guarded = [];
     protected $table = 'logins';
 
-    public static function createLoginRecords(Request $request)
+    public function createLoginRecords(Request $request)
     {
         $agent = new Agent();
 
