@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Login extends Model
+class UserLogin extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
     protected $guarded = [];
+    protected $table = 'logins';
 
-    public static function CreateLoginRecords(Request $request)
+    public static function createLoginRecords(Request $request)
     {
         $agent = new Agent();
 
@@ -35,7 +36,7 @@ class Login extends Model
         $platform_version = explode('.', $agent->version($agent->platform()))[0];
         // 'user_agent' => $request->server('HTTP_USER_AGENT'),
 
-        LogIn::Create([
+        UserLogIn::Create([
             'ip' => $request->ip(),
             'device' => $agent->device(),
             'device_type' => $device_type,

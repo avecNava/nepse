@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
 
@@ -37,7 +38,7 @@ class CreateSampleRecordsListener
             //check if the user has any records in PortfolioSummary table
             $records = PortfolioSummary::where('shareholder_id', $shareholder)->count('id');
             if($records == 0){
-                \App\Models\Portfolio::createRandomRecord($shareholder);
+                Portfolio::createRandomRecord($shareholder);
             }
             
         }
