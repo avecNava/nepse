@@ -493,28 +493,9 @@ section.c_score_cards article {
     width: 20px;
     background-repeat: no-repeat;
 }
-/* .social .facebook{
-    background:url(https://s.svgbox.net/materialui.svg?ic=facebook&fill=000);
-    width:20px;
-    background-repeat: no-repeat;
-    display:inline-block;
-    padding-right: 6px;
+.c-social-nav__link.facebook {
+    margin-left: -5px;
 }
-.social .twitter{
-    background:url(https://s.svgbox.net/social.svg?ic=twitter&fill=000);
-    width:20px;
-    background-repeat: no-repeat;
-    display:inline-block;
-    padding-right: 6px;
-} */
-/* .social .email{
-    background:url(https://s.svgbox.net/materialui.svg?ic=email&fill=000);
-    width:20px;
-    background-repeat: no-repeat;
-    display:inline-block;
-    padding-right: 6px;
-} */
-
 .c-social-nav {
     display: flex;
     align-items: center;
