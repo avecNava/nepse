@@ -72,10 +72,10 @@
             <header class="c-header__wrapper" style="display:flex;justify-content:space-between;">
             
                 <a href="{{config('app.url')}}" class="c-logo">
-                    <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
+                    <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="" class="c-logo__img">
                 </a>
 
-                <h1>@yield('title')</h1>
+                <h1></h1>
 
             </header>
            
