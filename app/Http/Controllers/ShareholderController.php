@@ -35,13 +35,16 @@ class ShareholderController extends Controller
      *  input Shareholder_id
      *  returns JSON 
      * */
-    public function getShareholder(Request $request, $id=null)
+    public function getShareholder(Request $request, $id = null)
     {
+        
+        // $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
         if(empty($id)){
             $id = $request->id;
         }
+
         
-        $shareholder = Shareholder::where('uuid', $id)->first();
+        $shareholder = Shareholder::where('id', $id)->first();
         // dd($shareholder->toJson(JSON_PRETTY_PRINT));
         return response()->json($shareholder);
     }
