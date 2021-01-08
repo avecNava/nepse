@@ -27,84 +27,84 @@
     </section>
 
     <details>
-    <summary><h2>Click here to import new data</h2></summary>
-    <section id="share-import-form">
-        <main>
+        <summary><h2>Click here to import new data</h2></summary>
+        <section id="share-import-form">
+            <main>
 
-            <div class="c_instructions">
-                <h3>Instructions</h3>
-                <ul>
-                    <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
-                    <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
-                    <li>Click on CSV button to download the transaction history.</li>
-                    <li>
-                        Click on Choose file (below) and browse the CSV file recently downloaded. View
-                        <a href="{{ URL::to('templates/sample-meroshare-transaction-history.xlsx')}}" target="_blank">SAMPLE FILE</a> file
-                    </li>
-                    <li>Choose a Shareholder name.</li>
-                    <li>Click on <strong>Import</strong>.</li>
-                </ul>  
-            </div>
-        
-            <div class="form">
-                <h2>Import file</h2>
-                <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
+                <div class="c_instructions">
+                    <h3>Instructions</h3>
+                    <ul>
+                        <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
+                        <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
+                        <li>Click on CSV button to download the transaction history.</li>
+                        <li>
+                            Click on Choose file (below) and browse the CSV file recently downloaded. View
+                            <a href="{{ URL::to('templates/sample-meroshare-transaction-history.xlsx')}}" target="_blank">SAMPLE FILE</a> file
+                        </li>
+                        <li>Choose a Shareholder name.</li>
+                        <li>Click on <strong>Import</strong>.</li>
+                    </ul>  
+                </div>
+            
+                <div class="form">
+                    <h2>Import file</h2>
+                    <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
 
-                    <div class="form-field">
-                        <div class="c_btn">
-                            <button type="submit">Import</button>
-                            <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
-                        </div>
-                    </div>
-
-                    @csrf()
-
-                    <div class="form-field">
-                        <label for="file">
-                            <mark>only CSV and excel files</mark>
-                        </label>
-                        
-                        <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
-                        @error('file')
-                            <div class="is-invalid">
-                                {{ $message }}
+                        <div class="form-field">
+                            <div class="c_btn">
+                                <button type="submit">Import</button>
+                                <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
                             </div>
-                        @enderror
-                        @if (\Session::has('error'))
-                        <div class="is-invalid">
-                            {!! \Session::get('error') !!}</li>
                         </div>
-                        @endif
-                        
-                    </div>
 
-                    <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                        <label for="shareholder"><strong>Shareholder</strong></label>   <br/>
-                        <select name="shareholder" id="shareholder">
-                            <option value="">Shareholder name</option>
-                            @if (!empty($shareholders))
-                                @foreach($shareholders as $member)
-                                    <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
-                                        {{ $member->first_name }} {{ $member->last_name }} 
-                                        @if (!empty($member->relation))
-                                            ({{ $member->relation }})
-                                        @endif
-                                    </option>
-                                @endforeach
+                        @csrf()
+
+                        <div class="form-field">
+                            <label for="file">
+                                <mark>only CSV and excel files</mark>
+                            </label>
+                            
+                            <input type="file" name="file" required class="@error('file') is-invalid @enderror" />
+                            @error('file')
+                                <div class="is-invalid">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            @if (\Session::has('error'))
+                            <div class="is-invalid">
+                                {!! \Session::get('error') !!}</li>
+                            </div>
                             @endif
-                        </select> 
+                            
+                        </div>
 
-                        @error('shareholder')
-                            <div class="is-invalid">{{ $message }}</div>
-                        @enderror
+                        <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
+                            <label for="shareholder"><strong>Shareholder</strong></label>   <br/>
+                            <select name="shareholder" id="shareholder">
+                                <option value="">Shareholder name</option>
+                                @if (!empty($shareholders))
+                                    @foreach($shareholders as $member)
+                                        <option value="{{ $member->id }}" @if( old('shareholder') == $member->id ) SELECTED @endif>
+                                            {{ $member->first_name }} {{ $member->last_name }} 
+                                            @if (!empty($member->relation))
+                                                ({{ $member->relation }})
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select> 
 
-                    </div>
+                            @error('shareholder')
+                                <div class="is-invalid">{{ $message }}</div>
+                            @enderror
 
-                </form>
-            </div>
-        </main>
-        <footer></footer>
-    </section>
+                        </div>
+
+                    </form>
+                </div>
+            </main>
+            <footer></footer>
+        </section>
     </details>
 
     <div id="message" class="message error">
@@ -122,23 +122,23 @@
     </div>
 
     <section class="nav">
-    <!-- shareholder filter -->   
-    @if(count($shareholders)>0)
-    <article id="shareholders"  class="center-box">
-        <header>
-            <ul class="shareholders">
-                @foreach($shareholders as $record)
-                <li>
-                    <a href="{{ url('import/meroshare', [ $record->uuid ]) }}" 
-                        title="{{ $record->relation }}">
-                        {{ $record->first_name }} {{ $record->last_name }}
-                    </a>
-                </li>                    
-                @endforeach
-            </ul>
-        </header>
-    </article>
-    @endif
+        <!-- shareholder filter -->   
+        @if(count($shareholders)>0)
+        <article id="shareholders"  class="center-box">
+            <header>
+                <ul class="shareholders">
+                    @foreach($shareholders as $record)
+                    <li>
+                        <a href="{{ url('import/meroshare', [ $record->uuid ]) }}" 
+                            title="{{ $record->relation }}">
+                            {{ $record->first_name }} {{ $record->last_name }}
+                        </a>
+                    </li>                    
+                    @endforeach
+                </ul>
+            </header>
+        </article>
+        @endif
     </section>
 
     <article>

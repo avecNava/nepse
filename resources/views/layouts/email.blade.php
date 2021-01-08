@@ -69,7 +69,7 @@
     <body>
         <div class="container">
 
-            <header class="c-header__wrapper">
+            <header class="c-header__wrapper" style="display:flex;justify-content:space-between;">
             
                 <a href="{{config('app.url')}}" class="c-logo">
                     <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY" class="c-logo__img">
@@ -87,7 +87,7 @@
 
             </main>
 
-            <footer>
+            <footer style="display:flex;justify-content:space-between;">
 
                 <div class="shout-out">
                     <div class="social-links">

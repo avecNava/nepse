@@ -32,7 +32,7 @@
         <div class="label">Import shares from MeroShare instead?</div>
         <div class="links">
             <div class="link">
-                <a href="{{url('import/share')}}" title="Import share from MeroShare">Import Share (MeroShare)</a>
+                <a href="{{url('import/meroshare')}}" title="Import share from MeroShare">Import Share (MeroShare)</a>
             </div>
         </div>
     </section>
@@ -186,7 +186,6 @@
                 
             </div>
 
-            </div>
     </header>
 
     <main class="transactions">
