@@ -342,10 +342,6 @@ tfoot td {
                                     
                 @if(session()->has('message'))
                     {{ session()->get('message') }}
-                @else
-                    @if(count($portfolios)>0)
-                        {{count($portfolios)}} @if(count($portfolios)>1)records @else record @endif
-                    @endif
                 @endif
 
             </div>
@@ -359,9 +355,17 @@ tfoot td {
         </div>
         @endif
 
-        <section class="form">
+        <section class="main__content">
         <header>
-            <div></div>
+            @php
+                $count = count($portfolios);
+                $quantity = $portfolios->sum('quantity');
+                $count_str = ($count <= 1) ? ' record' :' records';
+            @endphp
+            
+            <div>
+                {{$count}} {{$count_str}} [{{$quantity}} units]
+            </div>
             <div class="buttons">
                 <div class="action-buttons">
                     <button id="new">New</button>
@@ -369,8 +373,11 @@ tfoot td {
                     <button id="delete">Delete</button>
                 </div>
             </div>
+
+
         </header>
         <main>
+            
             <table>
                 <thead>
                 <tr>
@@ -387,6 +394,7 @@ tfoot td {
                     <th>Tags</th>
                 </tr>
                 </thead>
+                <tbody>
                 @foreach ($portfolios as $record)
                     @php
                         $ltp = $record->last_updated_price?: $record->close_price;
@@ -397,7 +405,6 @@ tfoot td {
                         $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
                         $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
                     @endphp
-                <tbody>
                     
                     <tr id="row-{{ $record->id }}">
                         
@@ -432,12 +439,16 @@ tfoot td {
                         <td class="c_digit">{{$record->purchase_date}}</td>
                         <td>{{$record->tags}}</td>
                     </tr>
+                    @endforeach   
                 </tbody>
-                @endforeach   
                 <tfoot>
                     <tr>
                         <td colspan="11">
-                            <span><sup>*</sup> Stocks needs to be revised and updated</span>
+                            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center">
+
+                                <span><sup>*</sup> Stocks needs to be revised and updated</span>
+                                <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                            </div>
                         </td>
                     </tr>
                 </tfoot>
@@ -447,15 +458,15 @@ tfoot td {
         </main>
         </section>
         
-        <section class="sales">
+        <section class="sales"> 
             @php
                 $count = count($sales);
                 $quantity = $sales->sum('quantity');
-                $count_str = ($count <= 2) ? ' records' :' recordss';
+                $count_str = ($count <= 2) ? ' record' :' records';
             @endphp
             @if($count)
             <details>
-                <summary><h2>Sales</h2> - {{$count}} {{$count_str}} {{$quantity}} units </summary>                
+                <summary><h2>Sales</h2> - {{$count}} {{$count_str}} [{{$quantity}} units] </summary>                
                 <table>
                     <tr>
                         <th>Symbol</th>
@@ -567,7 +578,7 @@ tfoot td {
         const MyDate = new Date();
         // MyDate.setDate(MyDate.getDate() + 20);
 
-        const date_str = MyDate.getFullYear() + '-' + ('0' + MyDate.getMonth()+1).slice(-2) + '-'
+        const date_str = MyDate.getFullYear() + '-' + ('0' + MyDate.getMonth() + 1).slice(-2) + '-'
              + ('0' + (MyDate.getDate()+1)).slice(-2);
 
         document.getElementById('id').value = '';

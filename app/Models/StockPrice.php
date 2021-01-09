@@ -109,6 +109,18 @@ class StockPrice extends Model
 
     }
     
+    /**
+     * gets the last transaction date and time from stock_prices table
+     */
+    public static function getLastTransactionDate( $symbol = null )
+    {
+        if($symbol){
+            return StockPrice::where('symbol', $symbol)->max('last_updated_time');
+        }
+        return StockPrice::max('last_updated_time');
+
+    }
+    
     public function scopeLastTradePrice($query)
     {
         return $query->where('latest',true);

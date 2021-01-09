@@ -39,13 +39,14 @@
         margin-right: 25px;
         padding: 5px;
     }
-    ul.shareholders li:hover {
+    ul.shareholders a:hover {
         background:beige;
     }
     ul.shareholders li a {
         font-weight: bold;
         color: #3F51B5;
-        margin-right: 25px;
+        margin-right: 20px;
+        padding:5px;
     }
 </style>
 
@@ -64,7 +65,7 @@
 <section id="basket">
 
     <!-- shareholder filter -->
-    @if(count($shareholders)>0)
+    
     <article id="shareholders"  class="center-box">
         <header>
             <ul class="shareholders">
@@ -73,16 +74,15 @@
                 </li>
                 @foreach($shareholders as $record)
                 <li>
-                    <a href="{{ url('sales', [ $record['username'], $record['id'] ]) }}" 
+                    <a href="{{ url('sales', [ $record['uuid'] ])}}" 
                         title="{{ $record['relation'] }}">
-                        {{$record['name']}}
+                        {{ $record['name'] }}
                     </a>
                 </li>                    
                 @endforeach
             </ul>
         </header>
     </article>
-    @endif
               
     <!-- message -->
     <div class="info">
@@ -115,7 +115,7 @@
                         <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                         <div class="notification">
                             @if(count($sales)>0)
-                            ({{count($sales)}} entries)
+                            ({{count($sales)}} records)
                             @endif
                         </div> 
                     </div>

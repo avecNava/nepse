@@ -42,6 +42,21 @@ class Shareholder extends Model
     {
         return $this->belongsTo('App\Models\User');        //join Shareholder and user by parent_id and  ids
     }
+    
+    /**
+     * shareholders with at least one sales
+     */
+    public function sale()
+    {
+        return $this->hasOne('App\Models\Sales', 'shareholder_id');
+    }
+    /**
+     * shareholders with at least one item in cart
+     */
+    public function cart()
+    {
+        return $this->hasOne('App\Models\SalesBasket', 'shareholder_id');
+    }
 
     public static function createShareholder(Request $request)
     {
@@ -106,6 +121,51 @@ class Shareholder extends Model
                 'gender' => $item->gender,
                 'email' => $item->email,
                 'id' => $item->id,
+                'uuid' => $item->uuid,
+            ]);
+
+        });
+        return $shareholder;
+    }
+    
+    /**
+     * returns Shareholders with Sales record
+     */
+    public static function shareholdersWithSales($parent_id)
+    {
+        $shareholders = Shareholder::where('parent_id', $parent_id)
+            ->with('sale')
+            ->get();
+
+        $shareholder = $shareholders->map(function($item, $key){
+            return collect([
+                'name' => "$item->first_name $item->last_name",
+                'gender' => $item->gender,
+                'relation' => $item->relation,
+                'id' => $item->id,
+                'uuid' => $item->uuid,
+            ]);
+
+        });
+        return $shareholder;
+    }
+    
+    /**
+     * returns Shareholders with Carts record
+     */
+    public static function shareholdersWithCarts($parent_id)
+    {
+        $shareholders = Shareholder::where('parent_id', $parent_id)
+            ->with('cart')
+            ->get();
+
+        $shareholder = $shareholders->map(function($item, $key){
+            return collect([
+                'name' => "$item->first_name $item->last_name",
+                'gender' => $item->gender,
+                'relation' => $item->relation,
+                'id' => $item->id,
+                'uuid' => $item->uuid,
             ]);
 
         });

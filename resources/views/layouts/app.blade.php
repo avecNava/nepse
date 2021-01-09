@@ -72,7 +72,9 @@
             @if (Route::has('login'))
                     <a href="{{ route('login') }}">Login</a>
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
+                    <div class="cta">
+                        <a href="{{ route('register') }}">Register</a>
+                    </div>
                 @endif
                 @endif
         </div>
@@ -83,28 +85,25 @@
         </div>
 
         @auth
-
-        <nav class="c-nav__list">
-            <ul class="navbar-nav">
-                <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
-                <li><a href="{{ url('sales') }}">Sales</a></li>
-                <li class="optional"><a href="{{ url('shareholders') }}">Shareholder</a></li>
-            </ul>
-        </nav>
-        @endauth
-
+    </div>
     </div>
 
-</div>
+    <nav class="c-nav__list home">
+        <ul class="navbar-nav">
+            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+            <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
+            <li><a href="{{ url('sales') }}">Sales</a></li>
+            <li class="optional"><a href="{{ url('shareholders') }}">Shareholder</a></li>
+        </ul>
+    </nav>
+    @endauth
+
  
 </header>
 
-<main class="c-main">
-    <div class="c_content__wrapper">
-        @yield('content')
-    </div>
-</main>
+<div class="c_content__wrapper">
+    @yield('content')
+</div>
 
         <footer class="page-footer">
         

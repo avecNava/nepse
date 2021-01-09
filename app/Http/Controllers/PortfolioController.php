@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Services\UtilityService;
+use Carbon\Carbon;
 
 class PortfolioController extends Controller
 {
@@ -34,6 +35,7 @@ class PortfolioController extends Controller
             'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
         ];
 
+        $transaction_date = StockPrice::getLastTransactionDate();
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
 
         $stocks = DB::table('portfolio_summaries as p')
@@ -95,6 +97,7 @@ class PortfolioController extends Controller
                     'portfolios' => $stocks,
                     'scorecard' => $data,
                     'notice' => $notice,
+                    'transaction_date' => Carbon::parse($transaction_date),
                 ]
             );
         }
@@ -330,10 +333,12 @@ class PortfolioController extends Controller
     {
         
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
+        $transaction_date = StockPrice::getLastTransactionDate( $symbol );
         
         if(!$shareholder_id){
             return response()->json(['message'=>'Incorect id'],501);
         }
+
         $notice = [
             'title' => 'Attention',
             'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
@@ -406,6 +411,7 @@ class PortfolioController extends Controller
             'offers' => $offers,
             'brokers' => $brokers,
             'notice' => $notice,
+            'transaction_date' => Carbon::parse($transaction_date),
         ]);
 
     }
