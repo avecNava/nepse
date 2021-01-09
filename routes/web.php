@@ -98,14 +98,14 @@ Route::get('portfolio/{uuid}', [PortfolioController::class, 'shareholderPortfoli
 
 Route::get('sales', [SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);
-Route::get('sales/{username}/{id?}',[SalesController::class,'view']);
+Route::get('sales/{uuid?}',[SalesController::class,'view']);
 
 Route::get('basket',[SalesBasketController::class,'view']);
 Route::get('basket/add',[SalesBasketController::class,'create']);
 Route::post('basket/store',[SalesBasketController::class,'store']);
 Route::post('basket/update',[SalesBasketController::class,'update']);
 Route::post('basket/delete',[SalesBasketController::class,'delete']);
-Route::get('basket/{username}/{id?}',[SalesBasketController::class,'view']);
+Route::get('basket/{uuid?}',[SalesBasketController::class,'view']);
 
 Route::post('sales/store',[SalesController::class,'store']);
 

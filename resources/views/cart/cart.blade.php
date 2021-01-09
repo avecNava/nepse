@@ -80,15 +80,18 @@
         margin-right: 25px;
         padding: 5px;
     }
-    ul.shareholders li:hover {
+    ul.shareholders a:hover {
         background:beige;
     }
     ul.shareholders li a {
         font-weight: bold;
         color: #3F51B5;
-        margin-right: 25px;
+        margin-right: 20px;
+        padding:5px;
     }
+
     .c_change{max-width: 100px;}
+
     .gain_label {
         max-width: 70px;
         display: flex;
@@ -128,7 +131,7 @@
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 
 <section id="top-nav">
-    <div class="label">View the sales</div>
+    <div class="label">Checkout your Sales</div>
     <div class="links">
         <div class="link">
             <a href="{{url('sales')}}" title="Sales">View sales</a>
@@ -144,13 +147,13 @@
         <header>
             <ul class="shareholders">
                 <li>
-                    <a href="{{url('basket') }}" title="All records">Everyone</a>
+                    <a href="{{ url('basket') }}" title="All records">Everyone</a>
                 </li>
                 @foreach($shareholders as $record)
                 <li>
-                    <a href="{{ url('basket', [ $record['username'], $record['id'] ]) }}" 
+                    <a href="{{ url('basket', [ $record['uuid'] ]) }}" 
                         title="{{ $record['relation'] }}">
-                        {{$record['name']}}
+                        {{ $record['name'] }}
                     </a>
                 </li>                    
                 @endforeach
@@ -191,7 +194,7 @@
                                 <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                                 <div class="notification">
                                     @if(count($baskets)>0)
-                                    ({{count($baskets)}} entries)
+                                    ({{count($baskets)}} records)
                                     @endif
                                 </div> 
                             </div>

@@ -67,18 +67,19 @@
                         @yield('header_title')
                     </div>
 
-                    <nav class="c-nav__list">
-                        <ul class="navbar-nav">
-                            <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                            <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
-                            <li><a href="{{ url('sales') }}">Sales</a></li>
-                            <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
-                        </ul>
-                    </nav>
                 </div>
 
             </div>
+
+            <nav class="c-nav__list home">
+                <ul class="navbar-nav">
+                    <li><a href="{{ url('home') }}">Home</a></li>
+                    <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                    <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
+                    <li><a href="{{ url('sales') }}">Sales</a></li>
+                    <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
+                </ul>
+            </nav>
              
         </header>
 

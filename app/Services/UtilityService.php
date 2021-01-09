@@ -77,6 +77,13 @@ class UtilityService
     }
 
     /**
+     * check if given string is null or empty
+     */
+    public static function IsNullOrEmptyString($question){
+        return (!isset($question) || trim($question)==='');
+      }
+
+    /**
      * checks if the given day is working day or not
      */
     public static function tradingDay($date)

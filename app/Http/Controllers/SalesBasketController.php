@@ -27,45 +27,57 @@ class SalesBasketController extends Controller
         
     }
 
-    public function view($username, $id = null)
+    public function view($uuid = null)
     {
-        // $shareholder_ids = Shareholder::getShareholderNames(Auth::id());
+        $arr_shareholder_id = null; 
         
-        $ids = [$id];
-        
-        if(empty($id))
-            $ids = Shareholder::getShareholderIds(Auth::id());
+        //if $uuid is null, get shareholders under current login        
+        if(UtilityService::IsNullOrEmptyString($uuid)){
+            
+            $shareholders = Shareholder::getShareholderNames(Auth::id());
+            
+            //loop the shareholders and return comma separated ids
+            $arr_shareholder_id = $shareholders->map(function($item){
+                return ($item['id']);
+            });
+        }
+        //otherwise, get id of the given $uuid
+        else{
+            $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
+            $arr_shareholder_id = [ $shareholder_id ]; 
+        }
 
-        $baskets = SalesBasket::whereIn('shareholder_id', $ids )
+        $baskets = SalesBasket::whereIn('shareholder_id', $arr_shareholder_id )
             ->with(['share','shareholder:*','price:stock_id,close_price,last_updated_price'])
             ->orderByDesc('created_at')
             ->get();
         
-        $grouped_shareholders = $baskets->groupBy('shareholer_id')
-            ->map(function($items, $key){
-                
-                //get unique shareholders
-                $unique = $items->unique('shareholder_id');
-                
-                return $unique->map(function($row){
+        $shareholders = Shareholder::shareholdersWithCarts(Auth::id());
 
-                    $first_name = $row->shareholder->first_name;
-                    $last_name = $row->shareholder->last_name;
+        // $grouped_shareholders = $baskets->groupBy('shareholer_id')
+        //     ->map(function($items, $key){
+                
+        //         //get unique shareholders
+        //         $unique = $items->unique('shareholder_id');
+                
+        //         return $unique->map(function($row){
+
+        //             $first_name = $row->shareholder->first_name;
+        //             $last_name = $row->shareholder->last_name;
                     
-                    return [
-                        'username' => UtilityService::serializeNames($first_name, $last_name),
-                        'name' => "$first_name $last_name",
-                        'relation' => $row->shareholder->relation,
-                        'id' => $row->shareholder->id,
-                    ];
-                });
-            });
+        //             return [
+        //                 'username' => UtilityService::serializeNames($first_name, $last_name),
+        //                 'name' => "$first_name $last_name",
+        //                 'relation' => $row->shareholder->relation,
+        //                 'id' => $row->shareholder->id,
+        //             ];
+        //         });
+        //     });
         
-        // $grouped = $basket->groupBy('shareholder_id');
 
         return view('cart.cart',[
                 'baskets' => $baskets,
-                'shareholders' => $grouped_shareholders->first(),
+                'shareholders' => $shareholders,
             ]
         ); 
 
