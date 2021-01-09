@@ -743,22 +743,9 @@ item.basket header {
 .c_shareholder_list .action button {
     margin: 0 5px;
 }
-/* article.c_shareholder_list {
-    margin-top: 50px;
-} */
-/* main.c_shareholder_form {
-    background: #fafafa;
-    margin: 20px 0;
-    border: 1px solid #6b64a0;
-    border-top-width: 0;
-} */
-
 .c_shareholder_form form {
     margin-bottom: 20px;
 }
-/* .c_shareholder_form .fields {
-    margin-left: 50px;
-} */
 /* end of shareholders */
 
 
@@ -804,91 +791,101 @@ article p {
     font-size: 20px;
 }
 
-@media only screen and (min-width: 401px){
+/* screens other than mobile */
+@media only screen and (min-width: 501px) and (max-width:1100px){
+
     div#app, div#container {
         margin: 0 auto;
-        width: 1024px;
+        width: 1100px;
     }
 
-/* feedback */
-section.contact-us {
-    font-size: 18px;
-    width: 80%;
+    /* feedback */
+    section.contact-us {
+        font-size: 18px;
+        width: 80%;
+    }
+
+    .contact-us__form label {
+        width: 200px;
+        display: inline-block;
+    }
+    .contact-us__form input[type="file"] {
+        width: 570px;
+    
+    }
+    .contact-us__form .buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .contact-us__form button{
+        margin: 0 5px;
+    }
+    .contact-us__form input[type="title"] {
+        width: 400px;
+    }
+    .contact-us__form textarea {
+        height: 300px;
+        font-size: 18px;
+        margin-left: 10px;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    /*end of feedback*/
+
+    /* form input elements*/
+    .form-field {margin: 10px 0;}
+    input {
+        padding: 5px;
+        width: 200px;
+        height: 1.5em;
+        margin: 5px 0;
+        border-radius: 5px;
+        border: 1px solid #8fa391;
+    }
+    input[type="checkbox"], input[type="radio"] {
+        width: 20px;
+        vertical-align: middle;
+        margin: 5px;
+    }
+    input[type="file"] {
+        border: 1px dotted #214b25;
+        width: 400px;
+        padding: 20px;
+        margin: 5px 0;
+        height: 50px;
+        font-family: 'Cutive';
+    }
+    select {
+        height: 2.4em;
+        border-radius: 5px;
+        padding: 2px 4px;
+        width: 213px;
+        margin: 5px 0;
+    }
+    textarea {
+        margin: 5px 0;
+        width: 400px;
+        height: 100px;
+    }
+
+    .c_shareholder {
+        padding: 0 6px;
+    }
+    button {
+        min-width: 100px;
+        border: 1px solid #97c7ce;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px #214b252e;
+        height: 2.5em;
+        padding: 0 20px;
+    }
+
 }
 
-.contact-us__form label {
-    width: 200px;
-    display: inline-block;
-}
-.contact-us__form input[type="file"] {
-    width: 570px;
-  
-}
-.contact-us__form .buttons {
-    display: flex;
-    justify-content: flex-end;
-}
-.contact-us__form button{
-    margin: 0 5px;
-}
-.contact-us__form input[type="title"] {
-    width: 400px;
-}
-.contact-us__form textarea {
-    height: 300px;
-    font-size: 18px;
-    margin-left: 10px;
-    border-radius: 5px;
-    padding: 5px;
-}
-/*end of feedback*/
+@media only screen and (min-width: 1101px){
 
-/* form input elements*/
-.form-field {margin: 10px 0;}
-input {
-    padding: 5px;
-    width: 200px;
-    height: 1.5em;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #8fa391;
-}
-input[type="checkbox"], input[type="radio"] {
-    width: 20px;
-    vertical-align: middle;
-    margin: 5px;
-}
-input[type="file"] {
-    border: 1px dotted #214b25;
-    width: 400px;
-    padding: 20px;
-    margin: 5px 0;
-    height: 50px;
-    font-family: 'Cutive';
-}
-select {
-    height: 2.4em;
-    border-radius: 5px;
-    padding: 2px 4px;
-    width: 213px;
-    margin: 5px 0;
-}
-textarea {
-    margin: 5px 0;
-    width: 400px;
-    height: 100px;
-}
-
-.c_shareholder {
-    padding: 0 6px;
-}
-button {
-    min-width: 100px;
-    border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #214b252e;
-    height: 2.5em;
-    padding: 0 20px;
-}
-
+    div#app, div#container {
+        margin: 0 auto;
+        width: 1300px;
+    }
 }
