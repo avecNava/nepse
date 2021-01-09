@@ -28,7 +28,7 @@
     <section class="transactions">
         <header class="flex js-apart al-end">
             <h2>NEPSE stock data</h2>
-            <div>as of <mark>{{$last_updated_time}}</mark></div>
+            <div class="c_info" title="Last transaction time">{{ $last_updated_time }} <mark>({{ $last_updated_time->diffForHumans() }})</mark></div>
         </header>
         @if($transactions)
         <table width="100%">

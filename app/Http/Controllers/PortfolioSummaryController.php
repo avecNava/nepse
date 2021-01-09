@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class PortfolioSummaryController extends Controller
@@ -39,7 +40,7 @@ class PortfolioSummaryController extends Controller
             'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
         ];
 
-        $transaction_date = StockPrice::getLastDate();
+        $transaction_date = StockPrice::getLastTransactionDate();
 
         $portfolios = DB::table('portfolio_summaries as p')
                     ->join('shareholders as s', function($join){
@@ -152,7 +153,7 @@ class PortfolioSummaryController extends Controller
         return view("portfolio.portfolio-summary", 
             [
                 'portfolio_summary' => $portfolio_agg->sortByDesc('total_investment'),
-                'transaction_date' => $transaction_date,
+                'transaction_date' => Carbon::parse($transaction_date),
                 'scorecard' => $score_card,
                 'notice' => $notice,
             ]);

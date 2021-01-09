@@ -128,6 +128,12 @@ section.header {margin: 15px 0; }
     text-align: right;
     font-family: monospace;
 }
+.main__content  header {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
 footer.page-footer .links .nav {
     padding:0 40px;
 }
@@ -174,12 +180,6 @@ main.transactions td {
 /* end of footer css*/
 
 /*form related css*/
-.form header {
-    padding: 5px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
 input[readonly] {
     background: #dde3eb;
     border: 0px;
@@ -538,6 +538,12 @@ summary:focus {
     outline: none;
     background: beige;
     padding: 0 10px;
+}
+
+summary {
+    outline: none;
+    padding: 5px;
+    height:2.5em;
 }
 
 #summary 

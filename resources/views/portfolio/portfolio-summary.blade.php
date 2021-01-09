@@ -67,9 +67,9 @@
         
             <header>
                 @if(count($portfolio_summary)>1)
-                    <div class="portfolio__message">
+                    <h2>
                         {{count($portfolio_summary)}} members
-                    </div>
+                    </h2>
             @endif
             </header>
 
@@ -159,7 +159,9 @@
             
             </main>
             
-            <footer><span class="c_info">Last transaction : <mark>{{ $transaction_date }}</mark></span></footer>
+            <footer>
+                <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+            </footer>
         
         </section>
             

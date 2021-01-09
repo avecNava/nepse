@@ -80,7 +80,7 @@
             
         @if( !empty($portfolios) )
         
-        <section class="a_portfolio">
+        <section class="main__content">
         
             <header class="info flex together">
                 <h2 class="title">{{ $shareholder }}</h2>
@@ -176,7 +176,11 @@
             
             </main>
             
-            <footer></footer>
+            <footer>
+                <tr><td colspan="10">
+                    <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                </td></tr>
+            </footer>
         
         </section>
             
