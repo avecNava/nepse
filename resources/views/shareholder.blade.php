@@ -18,7 +18,7 @@
 
     <section class="message">
 
-        <div class="message">                    
+        <div class="message" id="message">                    
 
         @if(session()->has('message'))
             <div class="message">
@@ -151,16 +151,13 @@
 
     </section>
 
-    <section class="message">
-        <div id="message" class="message">
-    </section>
 
     @if( !empty($shareholders) )
     <article class="form c_shareholder_list">
 
-        <header class="info">  
+        <header class="info flex js-apart al-cntr">  
 
-            <div class="info flex together">
+            <div class="flex js-together al-cntr ">
                 <h2 class="title">Shareholders</h2>
                 <div class="notification">
                     ({{count($shareholders)}} scripts)

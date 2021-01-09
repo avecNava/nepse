@@ -41,7 +41,7 @@
     <summary><h2>Click here to import new data</h2></summary>
     <section id="share-import-form">
         <main>
-            <div class="c_instructions">
+            <div class="import__instructions">
                 <h3>Instructions : </h3>
                 <ul>
                     <li>

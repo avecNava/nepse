@@ -174,23 +174,24 @@ tfoot td {
                     </div>
 
             </div>
-            <div class="item basket">
-                <header>
-                    <h2>Sales</h2>
-                    @csrf()
-                    <div id="basket_message"></div>
-                </header>
-                <div>
-                    <label for="sell_quantity">Quantity &nbsp;&nbsp;
-                        <input type="number" name="sell_quantity" id="sell_quantity" 
-                        data-uuid="{{  $info['uuid'] }}"
-                        data-stock-id="{{  $info['stock_id'] }}">
-                    </label>
-                    <button onClick="addToBasket()">Add to basket</button>&nbsp;
-                    <span class='button'><a href="{{url('basket')}}">View basket</a></span>
-                </div>
-            </div>
 
+        </section>
+
+        <section id="basket" class="item basket">
+            <header>
+                <h3>Add to Sales basket</h3>
+                @csrf()
+                <div id="basket_message"></div>
+            </header>
+            <div style="padding:10px 0">
+                <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                    <input type="number" name="sell_quantity" id="sell_quantity" 
+                    data-uuid="{{  $info['uuid'] }}"
+                    data-stock-id="{{  $info['stock_id'] }}">
+                </label>
+                <button onClick="addToBasket()">Add to basket</button>&nbsp;
+                <span class='button'><a href="{{url('basket')}}">View basket</a></span>
+            </div>
         </section>
 
         @php 
@@ -317,7 +318,7 @@ tfoot td {
                         value="{{ old('purchase_date') }}"/>
                     </div>
                     <div class='action-buttons'>
-                        <button type="submit">Save</button>
+                        <button type="submit" class="focus">Save</button>
                         <button id="cancel" type="reset" onClick="hideForm('portfolio-form')">Cancel</button>
                     </div>
                 </section>
@@ -356,7 +357,7 @@ tfoot td {
         @endif
 
         <section class="main__content">
-        <header>
+        <header class="info">
             @php
                 $count = count($portfolios);
                 $quantity = $portfolios->sum('quantity');
@@ -458,7 +459,7 @@ tfoot td {
         </main>
         </section>
         
-        <section class="sales"> 
+        <section id="sales-list" class="sales"> 
             @php
                 $count = count($sales);
                 $quantity = $sales->sum('quantity');

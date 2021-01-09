@@ -30,9 +30,10 @@ table {
     padding: 5px 15px;
     background: beige;
     border: 1px solid #CDDC39;
-    width: 120px;
+    width: 150px;
     white-space: nowrap;
     overflow: hidden;
+    box-sizing: border-box;
 }
 .sector label {
     display: none;

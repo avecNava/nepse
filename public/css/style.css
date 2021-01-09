@@ -18,17 +18,23 @@ body {
 .al-cntr {align-items: center;}
 
 header.c-header {
-    background: var(--header);
+    background: rgb(207,168,162);
+    background: linear-gradient(0deg, rgba(207,168,162,1) 0%, rgba(111,110,105,1) 0%, rgba(255,222,0,1) 92%);
 }
-div#container {
+div#container, div#app {
     box-shadow: 1px 1px 19px 4px #ddd;
 }
-main.c_content {
-    padding: 0 10px;
+.c_content__wrapper {
+    margin: 20px 0;
 }
 .welcome__wrapper {
     padding: 0 2px;
 }
+
+article#shareholders {
+    background: #97e79f;
+}
+
 /*menu links*/
 nav.home 
     li a:hover {
@@ -43,7 +49,6 @@ nav.home
     }    
 nav.home 
     {
-        margin: 10px 0;
         background: var(--form-band);
         padding: 10px;
         min-height: 1.7em;
@@ -65,12 +70,14 @@ nav.home
     justify-content: space-around;
     padding: 0 10px;
 }
-nav.c-nav__list {
-    margin: 10px 0;
-}
+
 .links a {
     font-weight: bold;
     padding: 0 10px;
+}
+
+footer .links a {
+    font-weight: normal;
 }
 
 nav.c-nav__list li {
@@ -105,9 +112,6 @@ hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
 sup {
     font-weight: bold;
     color: red;
-}
-footer.page-footer {
-    margin-top: 50px;
 }
 /*notice*/
 .error-box{
@@ -221,12 +225,19 @@ main.transactions td {
 /* end of footer css*/
 
 /*form related css*/
+.portfolio_new__form {
+    padding: 0 10px;
+}
 input[readonly] {
     background: #dde3eb;
     border: 0px;
 }
 .form-field span {
     text-transform: capitalize;
+}
+button.focus {
+    background-color: #6b64a0;
+    color: white;
 }
 .form-field .buttons {
     background: #f0f8ff85;
@@ -283,8 +294,8 @@ ul.navbar-nav {
 }
 /* end of login */
 header.info {
-    margin: 10px 0;
-    font-size: 18px;
+    padding: 10px;
+    margin:10px 0;
 }
 .info h2 {
     display: inline;
@@ -302,7 +313,7 @@ th.info {
     justify-content: flex-end;
     align-items: center;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 section#top-nav .label {
     padding: 0 10px;
@@ -338,43 +349,10 @@ section#top-nav .label {
     width: 200px;
     margin: 5px 0;
 }
-
-/* 
-component band : appears on top of form or tables
-container for message or buttons
-*/
-.c_band {
-    background: var(--form-band);
-    padding: 5px 10px;
-    color: #fff;
-    min-height: 2em;
-    display: flex;
-    border-radius: 5px;
-    margin:2px 0;
+.band {
+    background: beige;
 }
-
-.c_band>#info {
-    display: flex;
-}
-.c_band .error{
-    color: red !important;
-    background: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px;
-}
-.c_band a {color: #eef0f7;}
-
 .show {display: block !important;}
-#notice {
-    transition: all 5s;
-    /* transform-origin:top; */
-    /* transform: translateY(.09); */
-}
-div#notice .btn {
-    padding: 0 10px;
-    font-size: 12px;
-}
 .d-none {display: none !important;}
 .hide {display: none;}
 
@@ -446,6 +424,12 @@ tr.separator {
 /* end of layout */
 
 /*share import*/
+.import__instructions {
+    margin: 0 10px;
+    font-size: 15px;
+    line-height: 30px;
+}
+
 #share-import-form main{
     display: flex;
     justify-content: space-around;
@@ -462,21 +446,6 @@ tr.separator {
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-.c_instructions {
-    flex-basis: 50%;
-    margin-right: 20px;
-}
-.c_instructions ul {
-    padding: 0 15px;
-}
-.c_instructions li {
-    padding: 5px 0;
-}
-#shareholder_filter {
-    margin: 0 5px;
-    width: 180px;
-    height: 2.6em;
 }
 
 
@@ -522,15 +491,12 @@ section.c_score_cards article {
 .decrease {
     color: #ff0000;
 }
-.increase_icon {
-    background-image: url(https//s.svgbox.net/materialui.svg?fill=008000#arrow_drop_up);
-    width: 20px;
-    background-repeat: no-repeat;
+.increase_icon::after {
+    content: '💹';
+    opacity: .6;
 }
-.decrease_icon {
-    background-image: url(https//s.svgbox.net/materialui.svg?fill=FF0000#arrow_drop_down);
-    width: 20px;
-    background-repeat: no-repeat;
+.decrease_icon:after {
+    content:'🔻';
 }
 .c-social-nav__link.facebook {
     margin-left: -5px;
@@ -576,15 +542,26 @@ summary h2 {
 summary:focus {
     outline: none;
     background: beige;
-    padding: 0 10px;
+    /* padding: 0 10px; */
 }
 
 summary {
     outline: none;
     padding: 5px;
-    height:2.5em;
 }
-
+ul.shareholders li::marker {
+    content: '🧑🏻';
+}
+ul.shareholders li a {
+    font-weight: bold;
+    color: #3F51B5;
+    margin-right: 20px;
+    padding: 5px;
+}
+ul.shareholders li {
+    margin-right: 25px;
+    padding: 5px;
+}
 #summary 
 details>div {
     margin: 5px 0;
@@ -596,12 +573,12 @@ details>div {
     background:#fafafa;
 }
 #summary details summary::before {
-    content: '🎅';
-    margin-left:5px;
+    content: '👫';
+    /* content: '🎅'; */
 }
 #summary details[open] summary::before {
-    content: '🎁';
-    margin-left:5px;
+    content: '👀';
+    /* content: '🎁'; */
 }
 #summary details summary::-webkit-details-marker {
     padding:10px 0;

@@ -60,11 +60,10 @@
         </div>
     </section>
 
-    <section class="form">
-
+    <section class="portfolio_new__form__wrapper">
     <form method="POST" action="/portfolio/create">
 
-        <header>
+        <header class="info flex js-apart al-end band">
             <div>
                 <h2>Add new stock</h2>
                 <h3>Enter the following details</h3>
@@ -77,7 +76,7 @@
 
         <main class="form_container">  
 
-            <div class="c_portfolio_new">
+            <div class="portfolio_new__form">
  
                     @csrf()
                     <input type="hidden" value="{{old('id')}}" name="id">  
@@ -237,7 +236,7 @@
         <footer></footer>
 
     </form> 
-
+    </div>
     </section>
 
 @endsection

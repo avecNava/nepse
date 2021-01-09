@@ -65,7 +65,7 @@
         
         <section class="main__content">
         
-            <header>
+            <header class="info">
                 @if(count($portfolio_summary)>1)
                     <h2>
                         {{count($portfolio_summary)}} members

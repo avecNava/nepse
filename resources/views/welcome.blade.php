@@ -23,7 +23,7 @@
 @endsection
 
 @section('content')
-<div id="container">
+
 <div class="welcome__wrapper">
 
     <section class="transactions">
@@ -175,7 +175,6 @@
         @endif
 
     </div>
-</div>
 </div>
         
 @endsection

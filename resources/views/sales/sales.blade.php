@@ -30,11 +30,7 @@
     ul.shareholders li::marker {
         content: '🧑🏻';
     }
-    ul.shareholders {
-        display: flex;
-        flex-wrap: wrap;
-        border-radius: 5px;
-    }
+
     ul.shareholders li {
         margin-right: 25px;
         padding: 5px;
@@ -111,7 +107,7 @@
                     @php
                         $data = $sales->first();
                     @endphp
-                    <div class="flex together">
+                    <div class="flex js-start ">
                         <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                         <div class="notification">
                             @if(count($sales)>0)

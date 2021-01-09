@@ -31,8 +31,8 @@
         <section id="share-import-form">
             <main>
 
-                <div class="c_instructions">
-                    <h3>Instructions</h3>
+                <div class="import__instructions">
+                    <h2>Instructions</h2>
                     <ul>
                         <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
                         <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
