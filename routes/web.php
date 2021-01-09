@@ -35,6 +35,11 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
+    
+    $name  = null;
+    $name = explode(" ", $name);
+    dd($name[0]);
+
     $uuid =  (string) Str::uuid();
     
     return 

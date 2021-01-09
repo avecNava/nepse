@@ -9,15 +9,6 @@
     <!-- <span class="c_info"><label>as of</label> {{ $transaction_date }}</span> -->
 @endsection
 
-@section('notice')
-@if($notice)
-    <div class="message_wrapper" data-title="{{$notice['title']}}">
-        <p class='title'>{{$notice['title']}}</p>
-        <p class='notice'>{!!$notice['message']!!}</p>
-    </div>
-@endif
-@endsection
-
 <style>
 
 </style>
@@ -159,7 +150,8 @@
             
             </main>
             
-            <footer>
+            <footer class="flex js-apart al-end">
+                <div></div>
                 <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
             </footer>
         

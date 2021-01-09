@@ -63,7 +63,7 @@
                 <form method="POST" action="/import/share/store" enctype="multipart/form-data">
                         <div class="form-field">
                             <div class="c_btn">
-                                <button type="submit">Import</button>
+                                <button type="submit" class="focus">Import</button>
                                 <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
         
        <header class="info">
             
-            <div class="flex js-apart al-cntr">
+            <div class="flex js-apart al-end">
 
                 <div class="flex js-start al-cntr">
                     

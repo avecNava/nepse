@@ -30,10 +30,10 @@ class PortfolioController extends Controller
 
     public function shareholderPortfolio($uuid)
     {
-        $notice = [
-            'title' => 'Attention',
-            'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
-        ];
+        // $notice = [
+        //     'title' => 'Attention',
+        //     'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
+        // ];
 
         $transaction_date = StockPrice::getLastTransactionDate();
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
@@ -96,7 +96,7 @@ class PortfolioController extends Controller
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
                     'scorecard' => $data,
-                    'notice' => $notice,
+                    // 'notice' => $notice,
                     'transaction_date' => Carbon::parse($transaction_date),
                 ]
             );

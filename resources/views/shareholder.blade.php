@@ -30,7 +30,7 @@
 
     </section>
 
-    <section class="c_shareholders">
+    <section>
 
         <main>  
 
@@ -38,13 +38,13 @@
 
         <form class="form" method="POST" action="/shareholders">
 
-            <header class="flex apart">
+            <header class="flex js-apart al-end">
                 <div>
                     <h2>Add new stock</h2>
                     <h3>Enter the following details</h3>
                 </div>
                 <section class="buttons">
-                    <button type="submit">Save</button>
+                    <button type="submit" class="focus">Save</button>
                     <button type="reset" id="cancel">Cancel</button>
                 </section>
 

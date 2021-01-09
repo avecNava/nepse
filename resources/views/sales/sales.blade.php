@@ -35,9 +35,7 @@
         margin-right: 25px;
         padding: 5px;
     }
-    ul.shareholders a:hover {
-        background:beige;
-    }
+    
     ul.shareholders li a {
         font-weight: bold;
         color: #3F51B5;
@@ -142,7 +140,7 @@
                             
                             <tr>
                                 
-                                <td class="c_digit">{{ $record->sales_date }}</td>
+                                <td>{{ $record->sales_date }}</td>
                                 <td title="{{ $record->share->id }}-{{ $record->share->security_name }}">
                                     {{ $record->share->symbol }}
                                 </td>

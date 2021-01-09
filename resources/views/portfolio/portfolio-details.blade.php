@@ -12,15 +12,6 @@
     <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
-@section('notice')
-@if($notice)
-    <div class="message_wrapper" data-title="{{$notice['title']}}">
-        <p class='title'>{{$notice['title']}}</p>
-        <p class='notice'>{!!$notice['message']!!}</p>
-    </div>
-@endif
-@endsection
-
 @section('content')
 
 <style>
@@ -356,7 +347,7 @@ tfoot td {
         </div>
         @endif
 
-        <section class="main__content">
+        <section class="portfolio__content">
         <header class="info">
             @php
                 $count = count($portfolios);
@@ -365,7 +356,7 @@ tfoot td {
             @endphp
             
             <div>
-                {{$count}} {{$count_str}} [{{$quantity}} units]
+                <h2>{{$count}} {{$count_str}} [{{$quantity}} units]</h2>
             </div>
             <div class="buttons">
                 <div class="action-buttons">
@@ -445,7 +436,7 @@ tfoot td {
                 <tfoot>
                     <tr>
                         <td colspan="11">
-                            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center">
+                            <div class="flex js-apart al-end">
 
                                 <span><sup>*</sup> Stocks needs to be revised and updated</span>
                                 <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>

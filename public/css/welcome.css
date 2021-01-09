@@ -3,6 +3,12 @@
         display: flex;
         align-items: flex-start;
     }
+    .welcome__wrapper section.transactions {
+        width: 100%;
+    }
+    .welcome__wrapper .aside{
+        width: 100%;
+    }
 }
 table {
     border-collapse:separate; 
@@ -30,7 +36,7 @@ table {
     padding: 5px 15px;
     background: beige;
     border: 1px solid #CDDC39;
-    width: 150px;
+    width: 48%;
     white-space: nowrap;
     overflow: hidden;
     box-sizing: border-box;
@@ -41,5 +47,14 @@ table {
 
 section#top10items>article {
     margin-left: 10px;
+    margin-bottom: 30px;
 }
-
+.welcome__wrapper {
+    margin: 0 5px;
+}
+.welcome__wrapper section.transactions {
+    width: 70%;
+}
+.welcome__wrapper .aside{
+    width: 30%;
+}

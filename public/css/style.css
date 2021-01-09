@@ -17,9 +17,28 @@ body {
 .al-end {align-items: flex-end;}
 .al-cntr {align-items: center;}
 
+/* layout */
+section.share_import__wrapper {
+    margin: 0 10px;
+}
+.c-header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding:0 15px;
+}
+.c-logo {
+    align-self: flex-end;
+}
+
+.a_page_header {
+    text-align: right;
+}
 header.c-header {
     background: rgb(207,168,162);
     background: linear-gradient(0deg, rgba(207,168,162,1) 0%, rgba(111,110,105,1) 0%, rgba(255,222,0,1) 92%);
+}
+#app .container {
+    margin: 0 15px;
 }
 div#container, div#app {
     box-shadow: 1px 1px 19px 4px #ddd;
@@ -27,13 +46,11 @@ div#container, div#app {
 .c_content__wrapper {
     margin: 20px 0;
 }
-.welcome__wrapper {
-    padding: 0 2px;
-}
 
 article#shareholders {
     background: #97e79f;
 }
+/* end of layout */
 
 /*menu links*/
 nav.home 
@@ -60,9 +77,9 @@ nav.home
 .cta {
     display: inline-block;
     background: beige;
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
-    box-shadow: inset 0px 0px 3px 0px #214b25;
+    box-shadow: 1px 1px 5px 1px #214b25;
 }
 .c-nav {
     display: flex;
@@ -165,16 +182,11 @@ sup {
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
-.message {padding: 5px 0; font-weight: bold;}
+.message {padding: 5px; font-weight: bold;}
 /*page footer*/
 
-.main__content footer {
-    padding: 10px 0;
-    text-align: right;
-    font-family: monospace;
-}
-.main__content  header {
-    padding: 5px 0;
+
+.portfolio__content  header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -188,6 +200,7 @@ footer.page-footer .links {
     justify-content: space-evenly;
     background: #fafafa;
     padding: 10px;
+    margin-top: 40px;
 }
 footer.page-footer ul {
     padding: 0;
@@ -293,10 +306,7 @@ ul.navbar-nav {
     margin-left: 25px;
 }
 /* end of login */
-header.info {
-    padding: 10px;
-    margin:10px 0;
-}
+.info {padding:5px}
 .info h2 {
     display: inline;
 }
@@ -327,22 +337,6 @@ section#top-nav .label {
     margin: 2px;
     border-radius: 5px;
 }
-
-/* form with two columns */
-.two-col-form {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-}
-/* .form_container {
-    background: #fafafa;
-    margin: 20px 0;
-    border: 1px solid #6b64a0;
-    border-top-width: 0;
-    border-radius: 5px;
-} */
-
-/* .form-container  label:first-of-type { */
     
 .form_container label {
     display: inline-block;
@@ -351,6 +345,7 @@ section#top-nav .label {
 }
 .band {
     background: beige;
+    padding: 10px;
 }
 .show {display: block !important;}
 .d-none {display: none !important;}
@@ -409,30 +404,42 @@ tr.separator {
     width: auto;
 }
 
-/* layout */
-.c-header__wrapper {
-    display: flex;
-    justify-content: space-between;
+/*guidelines and faq*/
+section.faq {
+    width: 80%;
+    margin:0 10px;
 }
-.c-logo {
-    align-self: flex-end;
+section.faq h2 {
+    font-size: 16px;
 }
-
-.a_page_header {
-    text-align: right;
+details p {
+    margin: 10px 40px;
 }
-/* end of layout */
+section.guidelines {
+    margin: 0 20px;
+    font-size: 15px;
+    width: 80%;
+}
+section.guidelines li::marker {
+    content: '📑';
+}
+section.guidelines li {
+    margin: 15px 0;
+}
 
 /*share import*/
+#share-import-form input[type=file] {
+    width: 300px;
+}
 .import__instructions {
     margin: 0 10px;
     font-size: 15px;
     line-height: 30px;
+    width:75%;
 }
 
 #share-import-form main{
     display: flex;
-    justify-content: space-around;
 }   
 #share-import-form .form {
     background: #fafafa;
@@ -558,10 +565,23 @@ ul.shareholders li a {
     margin-right: 20px;
     padding: 5px;
 }
+ul.shareholders a:hover {
+    opacity: .8;
+    color: #214b25;
+}
 ul.shareholders li {
     margin-right: 25px;
     padding: 5px;
 }
+
+.share_import__wrapper summary::-webkit-details-marker {
+    color: white;
+    padding:0; margin:0;
+}
+.share_import__wrapper summary::before {
+    content: '➕';
+}
+
 #summary 
 details>div {
     margin: 5px 0;
@@ -690,8 +710,8 @@ section.sales summary {
 }
 .item.basket {
     padding: 0 10px;
-    background: #ededd7;
-    border-radius: 5px;
+    background: #e8e8e8;
+    box-shadow: 1px 1px 6px -3px;
 }
 item.basket header {
     display: flex;
@@ -734,19 +754,6 @@ item.basket header {
 .info_band_bottom li {
     color: #ee0000;
 }
-
-/* shareholders */
-.c_shareholder_list .action {
-    display: flex;
-    justify-content: flex-end;
-}
-.c_shareholder_list .action button {
-    margin: 0 5px;
-}
-.c_shareholder_form form {
-    margin-bottom: 20px;
-}
-/* end of shareholders */
 
 
 
@@ -791,93 +798,100 @@ article p {
     font-size: 20px;
 }
 
+ /* feedback form */
+ #shareholder-form {
+    margin: 0 10px;
+}
+#shareholder-form .c_gender {
+    display: inline-block;
+}
+ .portfolio__form, .contact-us__form {
+    margin: 10px;
+    display: flex;
+}
+.feedback__intro {
+    margin: 0 10px;
+}
+.portfolio__form, .block-left {
+    width: 60%;
+}
+.block-left {
+    width: 800px;
+}
+.block-left {
+    width: 800px;
+}
+
+label {
+    width: 200px;
+    display: inline-block;
+}
+
+.contact-us__form 
+    input[type="title"] {
+        width: 400px;
+    }
+.contact-us__form textarea {
+        font-size: 18px;
+        margin: 0 5px;
+        border-radius: 5px;
+        padding: 5px;
+        width: 600px;
+        box-sizing: border-box;
+    }
+.contact-us__form input[type="file"] {
+    height: 100px;
+    width: 590px;
+    box-sizing: border-box;
+}
+/*end of feedback*/
+
+/* form input elements*/
+.form-field {margin: 10px 0;}
+input {
+    padding: 5px;
+    width: 200px;
+    height: 1.5em;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #8fa391;
+}
+input[type="checkbox"], input[type="radio"] {
+    width: 20px;
+    vertical-align: middle;
+    margin: 5px;
+}
+input[type="file"] {
+    border: 1px dotted #214b25;
+    padding: 20px;
+    margin: 5px 0;
+    min-height: 50px;
+    font-family: 'Cutive';
+}
+select {
+    height: 2.4em;
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: 213px;
+    margin: 5px 0;
+}
+
+button {
+    min-width: 100px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: inset -2px -4px 10px 1px #214b252e;
+    height: 2.5em;
+    padding: 0 20px;
+    margin: 5px 0 5px 0;
+}
+
 /* screens other than mobile */
 @media only screen and (min-width: 501px) and (max-width:1100px){
 
     div#app, div#container {
         margin: 0 auto;
         width: 1100px;
-    }
-
-    /* feedback */
-    section.contact-us {
-        font-size: 18px;
-        width: 80%;
-    }
-
-    .contact-us__form label {
-        width: 200px;
-        display: inline-block;
-    }
-    .contact-us__form input[type="file"] {
-        width: 570px;
-    
-    }
-    .contact-us__form .buttons {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .contact-us__form button{
-        margin: 0 5px;
-    }
-    .contact-us__form input[type="title"] {
-        width: 400px;
-    }
-    .contact-us__form textarea {
-        height: 300px;
-        font-size: 18px;
-        margin-left: 10px;
-        border-radius: 5px;
-        padding: 5px;
-    }
-    /*end of feedback*/
-
-    /* form input elements*/
-    .form-field {margin: 10px 0;}
-    input {
-        padding: 5px;
-        width: 200px;
-        height: 1.5em;
-        margin: 5px 0;
-        border-radius: 5px;
-        border: 1px solid #8fa391;
-    }
-    input[type="checkbox"], input[type="radio"] {
-        width: 20px;
-        vertical-align: middle;
-        margin: 5px;
-    }
-    input[type="file"] {
-        border: 1px dotted #214b25;
-        width: 400px;
-        padding: 20px;
-        margin: 5px 0;
-        height: 50px;
-        font-family: 'Cutive';
-    }
-    select {
-        height: 2.4em;
-        border-radius: 5px;
-        padding: 2px 4px;
-        width: 213px;
-        margin: 5px 0;
-    }
-    textarea {
-        margin: 5px 0;
-        width: 400px;
-        height: 100px;
-    }
-
-    .c_shareholder {
-        padding: 0 6px;
-    }
-    button {
-        min-width: 100px;
-        border: 1px solid #97c7ce;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px #214b252e;
-        height: 2.5em;
-        padding: 0 20px;
     }
 
 }

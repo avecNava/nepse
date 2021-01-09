@@ -47,7 +47,7 @@
     <main>
         <details>
             <summary>
-                <h2>#1 Share quantities in the summary page and detail pages are different.</h2>
+                <h2> Share quantities in the summary page and detail pages are different.</h2>
             </summary>
             <div class="desc">
                 <p>
@@ -60,7 +60,7 @@
         </details>
         <details>
         <summary>
-                <h2>#2 What is basket (or cart) ?</h2>
+                <h2> What is basket (or cart) ?</h2>
             </summary>
             <div class="desc">
                 <p>
@@ -71,7 +71,7 @@
         </details>
         <details>
         <summary>
-                <h2>#3 Can not add stocks to the basket (or cart)</h2>
+                <h2> Can not add stocks to the basket (or cart)</h2>
             </summary>
             <div class="desc">
                 <p>
@@ -81,7 +81,7 @@
         </details>
         <details>
         <summary>
-                <h2>#4 What is WACC ?</h2>
+                <h2> What is WACC ?</h2>
             </summary>
             <div class="desc">
                 <p>

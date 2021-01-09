@@ -11,6 +11,7 @@ use App\Models\StockSector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Services\UtilityService;
 
 class HomeController extends Controller
 {
@@ -31,9 +32,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        $name = UtilityService::parseFirstName(optional(Auth::user())->name);
         $notice = [
-            'title' => 'Some good news',
-            'message' => 'We are coming up with an updated application. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
+            'title' => "Hey $name",
+            'message' => 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
         ];
         
         // $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();

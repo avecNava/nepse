@@ -8,16 +8,6 @@
 <h1 class="c_title">Portfolio ({{ $first_name }})</h1>
 @endsection
 
-
-@section('notice')
-@if($notice)
-    <div class="message_wrapper" data-title="{{$notice['title']}}">
-        <p class='title'>{{$notice['title']}}</p>
-        <p class='notice'>{!!$notice['message']!!}</p>
-    </div>
-@endif
-@endsection
-
 <style>
 
 </style>
@@ -178,9 +168,11 @@
             
             <footer>
                 <tr><td colspan="10">
+                <footer class="flex js-apart al-end">
+                    <div></div>
                     <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
-                </td></tr>
-            </footer>
+                </footer>
+            </td></tr>
         
         </section>
             

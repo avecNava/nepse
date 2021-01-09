@@ -5,10 +5,9 @@
 @endsection
 
 @section('header_title')
-    Stock today
+    NEPSE.TODAY
 @endsection
 @section('js')
-    <link rel="stylesheet" href="{{ URL::to('css/welcome.css') }}">    
 @endsection
 @section('custom_css')
     <link rel="stylesheet" href="{{ URL::to('css/welcome.css') }}">    

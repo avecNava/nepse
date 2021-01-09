@@ -80,9 +80,6 @@
         margin-right: 25px;
         padding: 5px;
     }
-    ul.shareholders a:hover {
-        background:beige;
-    }
     ul.shareholders li a {
         font-weight: bold;
         color: #3F51B5;
@@ -190,8 +187,8 @@
                             $data = $baskets->first();
                         @endphp
                         <td colspan="12">
-                            <div class="info flex together">
-                                <h2 class="title">{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
+                            <div class="info flex js-start al-end">
+                                <h2>{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                                 <div class="notification">
                                     @if(count($baskets)>0)
                                     ({{count($baskets)}} records)

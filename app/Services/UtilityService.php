@@ -76,6 +76,15 @@ class UtilityService
         return Str::lower($fname) . $delim . Str::lower($lname);
     }
 
+    public static function parseFirstName($input)
+    {
+        if(UtilityService::IsNullOrEmptyString($input))
+            return "Guest";
+
+        $temp = explode(" ", $input);
+        return $temp[0];
+    }
+
     /**
      * check if given string is null or empty
      */
