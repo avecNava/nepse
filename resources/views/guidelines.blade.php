@@ -15,7 +15,7 @@
 
 @section('content')
 
-    <section id="top-nav">
+    <section id="top-nav" class="optional">
         <div class="label">You may also be interested in our FAQ</div>
         <div class="links">
             <div class="link">

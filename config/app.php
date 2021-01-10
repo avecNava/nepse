@@ -17,7 +17,7 @@ return [
     'signature' => env('MAIL_SIGNATURE', 'Admin'),
     'signature-title' => env('MAIL_TITLE', 'NEPSE.TODAY support team'),
     'signature-founder' => env('MAIL_SIGNATURE_FOUNDER', 'Admin'),
-    'signature-title-founder' => env('MAIL_TITLE_FOUNDER', 'Founder'),
+    'signature-founder-title' => env('MAIL_TITLE_FOUNDER', 'Founder'),
     'email' => env('CONTACT_EMAIL', 'nava.bogatee@gmail.com'),
     'twitter' => env('CONTACT_TWITTER', '@NepseToday'),
     'facebook' => env('CONTACT_FACEBOOK', 'nepse.today'),
@@ -242,6 +242,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'MyUtility' => App\Services\UtilityService::class,
 
     ],
 

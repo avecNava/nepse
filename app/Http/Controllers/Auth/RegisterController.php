@@ -54,10 +54,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'g-recaptcha-response' => ['required'],
         ]);
     }
 
@@ -70,7 +72,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
-            'name' => $data['name'],
+            'name' => Str::title($data['name']),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
@@ -78,7 +80,13 @@ class RegisterController extends Controller
         //split name into first and last names
         $splitName = explode(' ', $data['name'], 2); // Restricts it to only 2 values
         $first_name = $splitName[0];
-        $last_name = !empty($splitName[1]) ? $splitName[1] : ''; // If last name doesn't exist, make it empty
+        $last_name = '';
+        foreach ($name as $key => $value) {
+            if($key > 0 ){
+                $last_name .= $value . ' ';
+            }
+        }
+        $last_name = Str::of($last_name)->trim();
         
         //Perform login so that we can send customized email  for verification (user model)
         //or create a session for the new user, and use in user model sendEmailVerificationNotification()
@@ -92,8 +100,8 @@ class RegisterController extends Controller
         Shareholder::create([
             'parent_id' => $user->id,
             'parent' => true,                   //all registered users will be the parent by default
-            'first_name' => $first_name,
-            'last_name' => $last_name,
+            'first_name' => Str::ucfirst($first_name),
+            'last_name' => Str::title($last_name),
             'email' => $data['email'],
             'uuid' => Str::uuid(),
             'last_modified_by' => $user->id,

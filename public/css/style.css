@@ -38,7 +38,7 @@ header.c-header {
     background: linear-gradient(0deg, rgba(207,168,162,1) 0%, rgba(111,110,105,1) 0%, rgba(255,222,0,1) 92%);
 }
 #app .container {
-    margin: 0 15px;
+    margin: 0 40px;
 }
 div#container, div#app {
     box-shadow: 1px 1px 19px 4px #ddd;
@@ -178,7 +178,7 @@ sup {
     color: #4CAF50;
     margin: 0 10px;
 }
-.notice {margin: 0; padding: 5px;}
+/* .notice {margin: 0; padding: 5px;} */
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
@@ -699,18 +699,13 @@ section.sales summary {
 .c_info_band {
     margin: 20px 0;
 }
-/* .info_band_top {
-    display: flex;
-    margin: 10px 0;
-    line-height: 35px;
-} */
 .info_band { 
     padding: 20px;
     background: beige;
 }
 .item.basket {
     padding: 0 10px;
-    background: #e8e8e8;
+    background: var(--color-orange-light95);
     box-shadow: 1px 1px 6px -3px;
 }
 item.basket header {
@@ -797,6 +792,10 @@ article p {
     font-weight: bold;
     font-size: 20px;
 }
+.c-nav.welcome a {
+    margin: 0 15px;
+}
+
 
  /* feedback form */
  #shareholder-form {
@@ -806,7 +805,7 @@ article p {
     display: inline-block;
 }
  .portfolio__form, .contact-us__form {
-    margin: 10px;
+    margin: 10px 30px;
     display: flex;
 }
 .feedback__intro {

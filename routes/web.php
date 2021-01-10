@@ -36,9 +36,16 @@ Auth::routes([
 
 Route::get('test', function(){
     
-    $name  = null;
+    $name  = 'Ananta bhadra lamichhane';
     $name = explode(" ", $name);
-    dd($name[0]);
+    $last_name = '';
+    foreach ($name as $key => $value) {
+        if($key > 0 ){
+            $last_name .= $value . ' ';
+        }
+    }
+    $temp = Str::of($last_name)->trim();
+    dd(Str::title($temp));
 
     $uuid =  (string) Str::uuid();
     

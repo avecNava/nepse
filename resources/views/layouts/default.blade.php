@@ -76,8 +76,8 @@
                     <li><a href="{{ url('home') }}">Home</a></li>
                     <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
                     <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
-                    <li><a href="{{ url('sales') }}">Sales</a></li>
-                    <li><a href="{{ url('shareholders') }}">Shareholder</a></li>
+                    <li class="optional"><a href="{{ url('sales') }}">Sales</a></li>
+                    <li class="optional"><a href="{{ url('shareholders') }}">Shareholder</a></li>
                 </ul>
             </nav>
              
@@ -97,7 +97,7 @@
             <section class="links">
                 
             <div class="feedbacks nav">  
-                    <h3>Feedbacks</h3>
+                    <h3>Connect</h3>
                     <ul class="social">
                         <li>
                             <div class="c-social-nav">

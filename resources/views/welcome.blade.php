@@ -156,7 +156,7 @@
         </section>
 
         @if(!empty($sectors))
-        <section id="sectors">
+        <section class="sectors">
             <header>
             <h2>Sectorwise turnover</h2>
             </header>

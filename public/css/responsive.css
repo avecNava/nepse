@@ -1,17 +1,54 @@
 @media only screen and (max-width: 500px){
-    *{box-sizing:border-box}
+    * { box-sizing:border-box; }
+
     div#app, div#container {
         margin: 0 auto;
         width: 500px;
     }
+    .welcome__wrapper section.transactions {
+        width: unset !important;
+    }
+
     body{font-size: 14px;}
-    h1,h2,h3,h4,h5,h6{padding: 0;margin: 0;}
+    .message_wrapper p {
+        display: inline;
+    }
+    #notice .title {
+        font-size: 1.4em;
+        color: #4CAF50;
+        margin: 0;
+    }
+    h1{padding: 0;margin: 0; font-size:1.8em;}
+    h2{padding: 0;margin: 0; font-size:1.5em;}
+    h3,h4,h5,h6{padding: 0;margin: 0; font-size:1.3em;}
+    
     .welcome__wrapper {
         flex-direction: column;
     }
-    table {border-spacing: 0px; width:480px;}
-    #sectors .sector {width:auto}
-    #sectors {width:500px}
+    section.guidelines {
+        margin: 0 10px;
+    }
+    section.faq p {
+        margin: 5px;
+    }
+    section.guidelines, section.faq{
+        margin: 5px;
+        width:100%;
+    }
+    section.guidelines ul {
+        margin: 0;
+        padding: 0 20px;
+    }
+    section#top10items {
+        margin-top: 20px;
+    }
+    section#top10items>article {
+        margin:10px 0 !important;
+    }
+    table {border-spacing: 0px; min-width:490px;}
+    
+    .sectors .sector {width:auto}
+    .sectors {width:500px}
     #notice .message_wrapper {
         padding: 5px;
         text-align: center;
@@ -35,13 +72,13 @@
     input {
         padding: 5px;
         width: 200px;
-        height: 1.5em;
+        height: 3em;
         margin: 5px 0;
         border-radius: 5px;
         border: 1px solid #8fa391;
     }
     select {
-        height: 2.4em;
+        height: 3em;
         border-radius: 5px;
         padding: 2px 4px;
         width: 213px;
@@ -52,24 +89,28 @@
         border: 1px solid #97c7ce;
         border-radius: 5px;
         box-shadow: 2px 2px 5px #214b252e;
-        height: 1.5em;
+        height3em;
         padding: 0 20px;
     }
-    textarea {
-        font-size: 15px;
+    
+    .contact-us__form textarea {
+        width: 400px;
+        height: 3em;
+        margin:0;
+        height: 10em;
     }
-    input[type="file"] {
-        border: 1px dotted #214b25;
-        width: 87%;
-        padding: 20px;
-        margin: 5px 0;
-        height: 50px;
-        font-family: 'Cutive';
+
+    .contact-us__form input[type="file"]{
+        width: 400px;
+    }
+
+    .contact-us__form input[type="title"] {
+        width: 300px;
     }
 
     /*logo*/
     img.c-logo__img {
-        height: 80px;
+        height:3em;
     }
     
     .form-field > label {

@@ -31,7 +31,7 @@
     }
 
 </style>
-    <section id="top-nav">
+    <section id="top-nav" class="optional">
         <div class="label">See how to use the application in guidelines</div>
         <div class="links">
             <div class="link">

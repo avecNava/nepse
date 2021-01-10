@@ -14,24 +14,24 @@ table {
     border-collapse:separate; 
     border-spacing: 0 0.1em;
 }
-#sectors {
+.sectors {
     /* background: #f7f7f7; */
     padding: 10px;
     margin: 10px 0;
 }
-#sectors h3 {
+.sectors h3 {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
-#sectors main {
+.sectors main {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items:stretch;
     justify-content: space-between;
 }
-#sectors .sector {
+.sectors .sector {
     margin: 2px;
     padding: 5px 15px;
     background: beige;

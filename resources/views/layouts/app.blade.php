@@ -87,7 +87,8 @@
         @endif
         
         <div class="a_page_header optional">
-            <h1>@yield('header_title')</h1>
+            <!-- <h1>@yield('header_title')</h1> -->
+            <h1>NEPSE.TODAY</h1>
         </div>
 
         @auth
@@ -118,7 +119,7 @@
 <section class="links">
     
     <div class="feedbacks nav">  
-        <h3>Feedbacks</h3>
+        <h3>Connect</h3>
         <ul class="social">
             <li>
                 <div class="c-social-nav">

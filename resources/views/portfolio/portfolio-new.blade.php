@@ -15,11 +15,6 @@
 
 @section('content')
 
-    <style>
-        textarea{
-            width:100%;
-        }
-    </style>
     <section id="top-nav">
         <div class="label">Import shares in bulk</div>
         <div class="links">
@@ -29,34 +24,6 @@
             <div class="link">
                 <a href="{{url('import/meroshare')}}" title="Import Share from MeroShare">Import from MeroShare</a>
             </div>
-        </div>
-    </section>
-
-    <section class="message">
-        <div class="message">
-            @if(session()->has('message'))
-            <div class="success">
-                {{ session()->get('message') }}
-            </div>
-            @endif     
-
-            @if(session()->has('error'))
-            <div class="error">
-                {{ session()->get('error') }}
-            </div>
-            @endif
-        </div>
-        <div class="validation-error">
-            @if ($errors->any())
-            <div class="error">
-                <h3>Validation errors</h3>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
         </div>
     </section>
 
@@ -71,16 +38,42 @@
             </div>
             <section class="buttons">
                 <button type="submit" class="focus">Save</button>
-                <button type="reset">Reset</button>
+                <button type="reset" class="optional">Reset</button>
             </section>
         </header>
 
         <main>  
 
+            <section class="message">
+                <div class="message">
+                    @if(session()->has('message'))
+                    <div class="success">
+                        {{ session()->get('message') }}
+                    </div>
+                    @endif     
+
+                    @if(session()->has('error'))
+                    <div class="error">
+                        {{ session()->get('error') }}
+                    </div>
+                    @endif
+                </div>
+                <div class="validation-error">
+                    @if ($errors->any())
+                    <div class="error">
+                        <h3>Validation errors</h3>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+            </section>
+
             <div class="portfolio__form">
  
-               
-                
                 <div class="block-left">
 
                     <div class="fields form-field">

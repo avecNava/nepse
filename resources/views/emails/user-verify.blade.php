@@ -40,6 +40,12 @@
 
         <p>&nbsp;</p>
 
+        <p>
+            Best regards, <br><br>
+            <div class="signature">{{config('app.signature')}}</div><br/>
+            {{ config('app.signature-title')}}
+        </p>
+
     </body>
 
 </html>

@@ -61,6 +61,10 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="g-recaptcha" data-sitekey="6LcIVCcaAAAAAH-4PTxeYOfUoj2La_BT0O7NiZJ8"></div>
+                        </div>
+
                         <div class="form-group row footer-row">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -75,3 +79,4 @@
     </div>
 </div>
 @endsection
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

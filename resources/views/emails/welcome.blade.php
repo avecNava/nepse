@@ -39,8 +39,8 @@
         </p>
         <p>
             Best regards, <br><br>
-            <div class="signature">{{config('app.signature')}}</div><br/>
-            {{ config('app.signature-title-founder')}}
+            <div class="signature">{{config('app.signature-founder')}}</div><br/>
+            {{ config('app.signature-founder-title')}}
         </p>
 
     </body>
