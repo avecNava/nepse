@@ -37,8 +37,8 @@
             <div>
                 @yield('notice')
             </div>
-            <div class="btn" onclick="hide_notice()">
-            <a href="#">❌</a>
+            <div class="btn">
+            <a href="#" onclick="hide_notice()" style="padding:10px">❌</a>
             </div>
         </div>
     </div> 

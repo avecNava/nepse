@@ -39,7 +39,7 @@
                         <li>Click on CSV button to download the transaction history.</li>
                         <li>
                             Click on Choose file (below) and browse the CSV file recently downloaded. View
-                            <a href="{{ URL::to('templates/sample-meroshare-transaction-history.xlsx')}}" target="_blank">SAMPLE FILE</a> file
+                            <a href="{{ URL::to('templates/sample-meroshare-transaction-history.xlsx')}}" target="_blank">SAMPLE FILE</a>
                         </li>
                         <li>Choose a Shareholder name.</li>
                         <li>Click on <strong>Import</strong>.</li>

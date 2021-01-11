@@ -50,7 +50,20 @@ div#container, div#app {
 
 article#shareholders {
     background: #97e79f;
+    box-shadow: 0px 2px 9px -3px;
 }
+article p, article>h2, article>h2 {
+    padding: 5px;
+    /* margin: 10px 0; */
+}
+
+.highlighted {
+    background: beige;
+    transition: 3s;
+    transform: perspective(20px);
+    box-shadow: 0 1px 4px 2px #6b64a0;
+}
+
 /* end of layout */
 
 /*menu links*/
@@ -108,9 +121,9 @@ abbr {font-weight: bold; color: #3c3f40;}
 .txt_right {text-align:right;}
 a {text-decoration: none;}
 h1, h2, h3 {margin:5px; margin-left:0;}
-h1 {font-family: 'Cutive', serif;font-size:1.5em;}
-h2 {font-size: 1.2em;}
-h3 {font-size: 1em;}
+h1 {font-family: 'Cutive', serif;font-size:1.7em;}
+h2 {font-size: 1.5em;}
+h3 {font-size: 1.2em;}
 mark {
     padding: 2px 4px;
     margin: 2px 0;
@@ -185,7 +198,8 @@ sup {
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
-
+#basket article.summary { margin: 50px 0; }
+#basket main#carts { margin: 50px 0; }
 /*page footer*/
 
 .portfolio__content  header {
@@ -416,7 +430,6 @@ tr.separator {
 
 /*guidelines and faq*/
 section.faq {
-    width: 80%;
     margin:0 10px;
 }
 section.faq h2 {
@@ -426,9 +439,8 @@ details p {
     margin: 10px 40px;
 }
 section.guidelines {
-    margin: 0 20px;
+    margin: 30px 60px;
     font-size: 15px;
-    width: 80%;
 }
 section.guidelines li::marker {
     content: '📑';
@@ -436,7 +448,9 @@ section.guidelines li::marker {
 section.guidelines li {
     margin: 15px 0;
 }
-
+details h3, details h2 {
+    display: inline-block;
+}
 /*share import*/
 #share-import-form input[type=file] {
     width: 300px;
@@ -816,9 +830,7 @@ article p {
     font-weight: bold;
     font-size: 20px;
 }
-.c-nav.welcome a {
-    margin: 0 15px;
-}
+
 
 
  /* feedback form */
@@ -872,7 +884,7 @@ label {
 input {
     padding: 5px;
     width: 200px;
-    /* height: 1.5em; */
+    height: 1.5em;
     margin: 5px 0;
     border-radius: 5px;
     border: 1px solid #8fa391;
@@ -898,12 +910,9 @@ select {
 }
 
 button {
-    min-width: 100px;
     border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: inset -2px -4px 10px 1px #214b252e;
     height: 2.5em;
-    padding: 0 20px;
+    padding: 0 15px;
     margin: 5px 0 5px 0;
 }
 

@@ -160,7 +160,7 @@
             <div class="flex js-together al-cntr ">
                 <h2 class="title">Shareholders</h2>
                 <div class="notification">
-                    ({{count($shareholders)}} scripts)
+                    ({{count($shareholders)}} shareholders)
                 </div>
             </div>
 

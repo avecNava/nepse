@@ -7,6 +7,9 @@ setTimeout(() => {
 
 
 function hide_notice(){
+    // document.querySelector('.notice_wrapper>.btn>a').addEventListener('click',function(e){
+    //     e.preventDefault();
+    // });
     const el = document.querySelector('#notice');
     el.classList.add('d-none');
 }

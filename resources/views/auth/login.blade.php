@@ -5,7 +5,7 @@
     
     <div class="card">
         
-        <div class="card-header"><h1>{{ __('Login') }}</h1></div>
+        <div class="card-header"><h2>{{ __('Login') }}</h2></div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('login') }}">
