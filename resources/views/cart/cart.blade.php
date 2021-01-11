@@ -128,10 +128,13 @@
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 
 <section id="top-nav">
-    <div class="label">Checkout your Sales</div>
+    <div></div>
     <div class="links">
         <div class="link">
-            <a href="{{url('sales')}}" title="Sales">View sales</a>
+            <a href="{{url('basket')}}" title="See Sales">View Sales</a>
+        </div>
+        <div class="link selected">
+            <a href="{{url('basket')}}" title="See what's inside the cart">View Cart</a>
         </div>
     </div>
 </section>

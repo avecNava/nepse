@@ -150,9 +150,11 @@
             
             </main>
             
-            <footer class="flex js-apart al-end">
-                <div></div>
-                <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+            <footer>
+                <div class="flex js-apart al-end">
+                    <span>&nbsp;<sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
+                    <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                </div>
             </footer>
         
         </section>

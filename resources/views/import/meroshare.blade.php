@@ -18,21 +18,37 @@
 <section class="share_import__wrapper">
 
     <section id="top-nav">
-        <div class="label">Import shares from Excel file</div>
+        <div class="message">
+            @if (\Session::has('success'))
+                <div class="success">
+                    {!! \Session::get('success') !!}
+                </div>
+                @endif
+
+                @if (\Session::has('error'))
+                <div class="error">
+                    {!! \Session::get('error') !!}</li>
+                </div>
+            @endif
+        </div>
+
         <div class="links">
+            <div class="link selected">
+                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">Import from MeroShare</a>
+            </div>
             <div class="link">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import share</a>
+                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import using Spreadsheet</a>
             </div>
         </div>
     </section>
 
     <details>
-        <summary><h2>Click here to import new data</h2></summary>
+        <summary><h3>To being importing, click here</h3></summary>
         <section id="share-import-form">
             <main>
 
                 <div class="import__instructions">
-                    <h2>Instructions</h2>
+                    <h3>Instructions</h3>
                     <ul>
                         <li>Login to your <a href="https://meroshare.cdsc.com.np/" target="_blank" rel="noopener noreferrer">Meroshare account</a>.</li>
                         <li>Click on <strong>My Transaction history</strong>. Filter by <strong>Date</strong>.</li>
@@ -47,15 +63,8 @@
                 </div>
             
                 <div class="form">
-                    <h2>Import file</h2>
+                    <h3>Import Form</h3>
                     <form method="POST" action="/import/meroshare/store" enctype="multipart/form-data">
-
-                        <div class="form-field">
-                            <div class="c_btn">
-                                <button type="submit" class="focus">Import</button>
-                                <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
-                            </div>
-                        </div>
 
                         @csrf()
 
@@ -100,6 +109,13 @@
 
                         </div>
 
+                        <div class="form-field">
+                            <div class="c_btn">
+                                <button type="submit" class="focus">Import</button>
+                                <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </main>
@@ -107,21 +123,8 @@
         </section>
     </details>
 
-    <div id="message" class="message error">
-        @if (\Session::has('success'))
-            <div class="message success">
-                {!! \Session::get('success') !!}
-            </div>
-            @endif
-
-            @if (\Session::has('error'))
-            <div class="message error">
-                {!! \Session::get('error') !!}</li>
-            </div>
-        @endif
-    </div>
-
     <section class="nav">
+        <h2>Shareholders</h2>
         <!-- shareholder filter -->   
         @if(count($shareholders)>0)
         <article id="shareholders"  class="center-box">
@@ -141,8 +144,10 @@
         @endif
     </section>
 
-    <article>
+    <article class="import-list">
     
+        <div id="message" class="message"></div>
+
         <header class="info">
             
             <div class="flex js-apart al-end">

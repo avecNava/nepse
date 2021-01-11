@@ -135,11 +135,15 @@ class MeroShareController extends Controller
 
           //add new records
           $success = MeroShare::importTransactions($transactions);
-          if(!$success){
-               return redirect()->back()->with('error', "Unfortunately, some of the records could not be imported 👀 <br>FYI, fields like <em>Symbol, Quantity and Offering type</em> should are mandatory");
-          }
+          
+          //get uuid for the shareholder
+          $user = Shareholder::find( $request->input('shareholder'));
 
-          return redirect()->back()->with('success', 'Selected records have been imported successfully 👌');   
+          if(!$success){
+               return redirect("import/share/" . $user->uuid)->with('error', "Import completed. <br>Unfortunately, some of the records could not be imported 👀");
+          }
+          
+          return redirect("import/share/" . $user->uuid)->with('success', 'Records imported successfully 👌 <br/>From the shareholder below, choose the records and click "Save to Portfolio');  
         
    }
 

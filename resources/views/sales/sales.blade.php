@@ -48,8 +48,11 @@
 
 
 <section id="top-nav">
-    <div class="label">See what's inside the cart</div>
+    <div></div>
     <div class="links">
+        <div class="link selected">
+            <a href="{{url('basket')}}" title="See Sales" class="selected">View Sales</a>
+        </div>
         <div class="link">
             <a href="{{url('basket')}}" title="See what's inside the cart">View Cart</a>
         </div>

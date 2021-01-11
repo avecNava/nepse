@@ -1,6 +1,7 @@
-    function showImportMessage($msg, $t=5000) {
+    function showImportMessage($msg, $flag= 'success', $t = 5000) {
         let ele = document.getElementById('message');
         ele.innerHTML = `${$msg}`;
+        ele.classList.add($flag);
         setTimeout(function(){ 
             ele.innerHTML = ' ';
         }, $t);
@@ -8,6 +9,7 @@
     function hideImportMessage() {
         let ele = document.getElementById('import-message');
         ele.classList.remove('success');
+        ele.classList.remove('error');
     }
     function checkAll() {
         var select_all = document.getElementById('select_all');
@@ -90,7 +92,7 @@ function importMeroShareTransactions(){
     
         if(selected.length <=0 ){
             let message = 'Please select some records to add to the Portfolio 🙏';
-            showImportMessage(message);
+            showImportMessage(message,'error');
             return;
         }
 
@@ -148,7 +150,7 @@ function deleteMeroShareTransactions(){
     
     if(selected.length <=0 ){
         let message = 'Please select records to delete';
-        showImportMessage(message);
+        showImportMessage(message,'error');
         return;
     }
 
@@ -197,7 +199,7 @@ function importMyShareTransactions(){
 
     if(selected.length <=0 ){
         let message = 'Please select some records to add to the Portfolio 🙏';
-        showImportMessage(message);
+        showImportMessage(message,'error');
         return;
     }
     showLoadingMessage();
@@ -255,7 +257,7 @@ function deleteMyShareTransactions(){
 
     if(selected.length <=0 ){
         let message = 'Please select records to delete';
-        showImportMessage(message);
+        showImportMessage(message,'error');
         return;
     }
 

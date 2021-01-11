@@ -317,10 +317,10 @@ tfoot td {
 
         </div>
 
-        <div class="message">
+        <section class="message" style="margin:15px 0">
             
             @if ($errors->any())
-                    <div class="error">
+                    <div class="message error">
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -330,15 +330,16 @@ tfoot td {
                 @endif
             @endif 
 
+
             <div id="message" class="message">                            
-                                    
+                
                 @if(session()->has('message'))
                     {{ session()->get('message') }}
                 @endif
-
+                
             </div>
-
-        </div>
+            
+        </section>
 
         @if( count($portfolios)==0 )
         <div class="center-box error-box">
@@ -437,8 +438,7 @@ tfoot td {
                     <tr>
                         <td colspan="11">
                             <div class="flex js-apart al-end">
-
-                                <span><sup>*</sup> Stocks needs to be revised and updated</span>
+                                <span><sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
                                 <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
                             </div>
                         </td>

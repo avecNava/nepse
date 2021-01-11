@@ -29,45 +29,55 @@
 <section class="share_import__wrapper">
     
     <section id="top-nav">
-        <div class="label">Import shares from MeroShare instead?</div>
+    
+        <div>
+            @if (\Session::has('success'))
+                <div class="message success">
+                    {!! \Session::get('success') !!}
+                </div>
+                @endif
+
+                @if (\Session::has('error'))
+                <div class="message error">
+                    {!! \Session::get('error') !!}</li>
+                </div>
+            @endif
+        </div>
+        
         <div class="links">
             <div class="link">
-                <a href="{{url('import/meroshare')}}" title="Import share from MeroShare">Import Share (MeroShare)</a>
+                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">Import from MeroShare</a>
+            </div>
+            <div class="link selected">
+                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import using Spreadsheet</a>
             </div>
         </div>
     </section>
 
     <details>
-    <summary><h2>Click here to import new data</h2></summary>
-    <section id="share-import-form">
-        <main>
-            <div class="import__instructions">
-                <h3>Instructions : </h3>
-                <ul>
-                    <li>
-                        Download the
-                        <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE EXCEL FILE</a>.
-                    </li>
-                    <li>Open and update the file with your stocks. <mark>Stock symbol, quantity and offering type are mandatory.</mark></li>
-                    <li>Use valid and standard names for stock symbol. Use only symbol not the full name.</li>
-                    <li>For offering types, ONLY USE THE CODES DEFINED IN THE DOWNLOADED FILE.</li>
-                    <li>Upload the updated file using the form below.</li>
-                    <li>Choose a shareholder. Use separate file for different shareholder.</li>
-                    <li>Click on Import.</li>
-                    <li>Once imported, you can save the stocks to your portfolio.</li>
-                </ul>  
-            </div>
-                
-            <div class="form">
-                <h2>Import file</h2>
-                <form method="POST" action="/import/share/store" enctype="multipart/form-data">
-                        <div class="form-field">
-                            <div class="c_btn">
-                                <button type="submit" class="focus">Import</button>
-                                <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
-                            </div>
-                        </div>
-                        
+        <summary><h3>To being importing, click here</h3></summary>
+        <section id="share-import-form">
+            <main>
+                <div class="import__instructions">
+                    <h3>Instructions : </h3>
+                    <ul>
+                        <li>
+                            Download the
+                            <a href="{{ URL::to('templates/my-shares-template.xlsx')}}" target="_blank">SAMPLE EXCEL FILE</a>.
+                        </li>
+                        <li>Open and update the file with your stocks. <mark>Stock symbol, quantity and offering type are mandatory.</mark></li>
+                        <li>Use valid and standard names for stock symbol. Use only symbol not the full name.</li>
+                        <li>For offering types, ONLY USE THE CODES DEFINED IN THE DOWNLOADED FILE.</li>
+                        <li>Upload the updated file using the form below.</li>
+                        <li>Choose a shareholder. Use separate file for different shareholder.</li>
+                        <li>Click on Import.</li>
+                        <li>Once imported, you can save the stocks to your portfolio.</li>
+                    </ul>  
+                </div>
+                    
+                <div class="form">
+                    <h2>Import form</h2>
+                    <form method="POST" action="/import/share/store" enctype="multipart/form-data">
                         @csrf()
 
                         <div class="form-field">
@@ -108,52 +118,46 @@
 
                         </div>
 
-                    </div>
+                        <div class="form-field">
+                            <div class="c_btn">
+                                <button type="submit" class="focus">Import</button>
+                                <button onClick="closeForm('myshare-import-form')" type="reset">Cancel</button>
+                            </div>
+                        </div>
 
-                </form>
+                    </form>
 
-            </div>
-        </main>
-    </section>
-    </details>
+                </div>
+            </main>
+        </section>
+</details>
 
-    <div id="message" class="message error">
-        @if (\Session::has('success'))
-            <div class="message success">
-                {!! \Session::get('success') !!}
-            </div>
-            @endif
-
-            @if (\Session::has('error'))
-            <div class="message error">
-                {!! \Session::get('error') !!}</li>
-            </div>
-        @endif
-    </div>
 
     <section class="nav">
-    <!-- shareholder filter -->   
-    @if(count($shareholders)>0)
-    <article id="shareholders"  class="center-box">
-        <header>
-            <ul class="shareholders">
-                @foreach($shareholders as $record)
-                <li>
-                    <a href="{{ url('import/share', [ $record->uuid ]) }}" 
-                        title="{{ $record->relation }}">
-                        {{ $record->first_name }} {{ $record->last_name }}
-                    </a>
-                </li>                    
-                @endforeach
-            </ul>
-        </header>
-    </article>
+        <h2>Shareholders</h2>
+        <!-- shareholder filter -->   
+        @if(count($shareholders)>0)
+        <article id="shareholders"  class="center-box">
+            <header>
+                <ul class="shareholders">
+                    @foreach($shareholders as $record)
+                    <li>
+                        <a href="{{ url('import/share', [ $record->uuid ]) }}" 
+                            title="{{ $record->relation }}">
+                            {{ $record->first_name }} {{ $record->last_name }}
+                        </a>
+                    </li>                    
+                    @endforeach
+                </ul>
+            </header>
+        </article>
     @endif
     </section>
 
-    <article>
+    <article class="import-list">
         
-       <header class="info">
+        <div id="message" class="message error"></div>
+        <header class="info">
             
             <div class="flex js-apart al-end">
 
@@ -204,7 +208,18 @@
                 <th>Shareholder</th>
                 <th>Remarks</th>
             </tr>
-            
+            @if(count($transactions)<=0)
+                    <tr>
+                        <td colspan="9">
+
+                            <div class="info center-box">
+                                <h2 class="message error">No records<h2>
+                                <h3 class="message success">💡 Please click on the shareholder above to view records</h3>
+                            </div>
+
+                        </td>
+                    </tr>
+                @endif
             @foreach ($transactions as $trans)
             
             @php 

@@ -122,11 +122,14 @@ class MyShareController extends Controller
           //add new records
           $success = MyShare::importTransactions($transactions);
 
+          //get uuid for the shareholder
+          $user = Shareholder::find( $request->input('shareholder'));
+
           if(!$success){
-               return redirect()->back()->with('error', "Unfortunately, some of the records could not be imported 👀");
+               return redirect("import/share/" . $user->uuid)->with('error', "Import completed. <br>Unfortunately, some of the records could not be imported 👀");
           }
-    
-        return redirect()->back()->with('success', 'Selected records have been imported successfully 👌');
+          
+          return redirect('states/'.$id.'/regions')->with('success', 'Records imported successfully 👌 <br/>From the shareholder below, choose the records and click "Save to Portfolio');
 
     }
 

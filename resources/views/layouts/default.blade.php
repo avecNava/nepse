@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', "NEPSE.TODAY") }} - @yield('title')</title>
-    <meta name="description" content="nepse, nepal stock, portfolio, financial management, finance, money, investment, profit, bull, bullish, bear">
+    <title>{{ config('app.name', 'NEPSE.TODAY') }} - Free portfolio management system for Nepal stock exchange</title>
+    <meta name="description" content="nepse, nepal stock, nepse portfolio, nepal share, share lagani, financial management, nepal stock exchange, invest in share, free stock management">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
     <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 

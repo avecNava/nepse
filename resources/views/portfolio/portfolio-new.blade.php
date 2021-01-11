@@ -21,14 +21,16 @@
     }
 </style>
 
+<section class="share_import__wrapper">
+
     <section id="top-nav">
-        <div class="label">Import shares in bulk</div>
+        <h3>Bulk Import</h3>
         <div class="links">
             <div class="link">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import (Spreadsheet)</a>
+                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">MeroShare</a>
             </div>
             <div class="link">
-                <a href="{{url('import/meroshare')}}" title="Import Share from MeroShare">Import from MeroShare</a>
+                <a href="{{url('import/share')}}" title="Import Share from Excel file">Spreadsheet</a>
             </div>
         </div>
     </section>
@@ -232,5 +234,6 @@
     </form> 
     </div>
     </section>
+</section>
 
 @endsection
