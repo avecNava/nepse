@@ -16,18 +16,16 @@
 
     <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
+    
     <section class="message">
-
         <div class="message" id="message">                    
-
-        @if(session()->has('message'))
-            <div class="message">
-                {{ session()->get('message') }}
-            </div>
-        @endif
-
+            @if(session()->has('message'))
+                <span class="success">{{ session()->get('message') }}</span>
+            @endif
+            @if(session()->has('error'))
+                <span class="error">{{ session()->get('message') }}</span>
+            @endif
         </div>
-
     </section>
 
     <section>
@@ -57,7 +55,7 @@
 
             </header>
 
-            <div class="two-col-form">
+            <div class="flex js-start">
 
                 <div class="block-left">
         
@@ -128,9 +126,11 @@
                 </div>
 
                 <div class="block-right">
+                    
                     <div class="validation-error">
                         @if ($errors->any())
                             <div class="error">
+                                <h2>Attention:</h2>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>

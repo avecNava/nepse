@@ -173,8 +173,9 @@ btnDelete.addEventListener("click", function() {
   
     request.onload = function(ele_success, ele_loading) {
         if (this.status >= 200 && this.status < 400) {
-            $data = JSON.parse(this.response);
-            showMessage($data.message);
+            data = JSON.parse(this.response);
+            showMessage(data.message);
+            document.getElementById(data.row).classList.add('hide');
             hideLoadingMessage();
         }
     }  

@@ -49,9 +49,7 @@ section#top10items>article {
     margin-left: 10px;
     margin-bottom: 30px;
 }
-.welcome__wrapper {
-    margin: 0 5px;
-}
+
 .welcome__wrapper section.transactions {
     width: 70%;
 }

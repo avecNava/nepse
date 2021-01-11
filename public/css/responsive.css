@@ -1,12 +1,21 @@
 @media only screen and (max-width: 500px){
     * { box-sizing:border-box; }
+    h2, h3,h4,h5,h6{padding: 0; margin: 0}
+    h1{font-size:1.5em;}
+    h2{font-size:1.3em;}
 
-    div#app, div#container {
+    div#app {
         margin: 0 auto;
         width: 500px;
     }
+    #app .container {
+        margin: 0 15px;
+    }
     .welcome__wrapper section.transactions {
         width: unset !important;
+    }
+    .welcome__wrapper {
+        flex-direction: column;
     }
 
     body{font-size: 14px;}
@@ -18,25 +27,28 @@
         color: #4CAF50;
         margin: 0;
     }
-    h1{padding: 0;margin: 0; font-size:1.8em;}
-    h2{padding: 0;margin: 0; font-size:1.5em;}
-    h3,h4,h5,h6{padding: 0;margin: 0; font-size:1.3em;}
     
-    .welcome__wrapper {
-        flex-direction: column;
-    }
     section.guidelines {
         margin: 0 10px;
     }
-    section.faq p {
-        margin: 5px;
+    section.faq h2 {font-size:1.3em;}
+    section.faq h3 {
+        font-size: 1.1em;
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 400px;
+        vertical-align: top;
+    }
+    section.guidelines, p, section.faq p {
+        font-size: 1.2em;
     }
     section.guidelines, section.faq{
-        margin: 5px;
         width:100%;
     }
     section.guidelines ul {
-        margin: 0;
+        margin:15px;
         padding: 0 20px;
     }
     section#top10items {
@@ -98,6 +110,11 @@
         height: 3em;
         margin:0;
         height: 10em;
+    }
+
+    .portfolio__form, .contact-us__form {
+        margin: 10px 15px;
+        display: flex;
     }
 
     .contact-us__form input[type="file"]{

@@ -45,8 +45,7 @@ function hideForm(form_id) {
     // el.classList.add('hide');
 }
 
-function showMessage(message, el, flag = 'success') {
-    if(!el){el = document.getElementById('message');}
+function showMessage(message, el = 'message', flag = 'success') {
     document.getElementById(el).innerHTML=message;
     document.getElementById(el).classList.add(flag);
 }

@@ -14,6 +14,12 @@
 @endsection
 
 @section('content')
+<style>
+    section.message{
+        padding: 0 25px;
+        margin: 10px 0;
+    }
+</style>
 
     <section id="top-nav">
         <div class="label">Import shares in bulk</div>
@@ -44,33 +50,32 @@
 
         <main>  
 
-            <section class="message">
-                <div class="message">
-                    @if(session()->has('message'))
-                    <div class="success">
-                        {{ session()->get('message') }}
-                    </div>
-                    @endif     
+        <section class="message">
+            @if(session()->has('message'))
+                <div class="message success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif     
 
-                    @if(session()->has('error'))
-                    <div class="error">
-                        {{ session()->get('error') }}
-                    </div>
-                    @endif
+            @if(session()->has('error'))
+            <div class="message error">
+                {{ session()->get('error') }}
+            </div>
+            @endif
+
+            @if ($errors->any())
+            <div class="validation-error">
+                <div class="error">
+                    <h3>Attention:</h3>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                 </div>
-                <div class="validation-error">
-                    @if ($errors->any())
-                    <div class="error">
-                        <h3>Validation errors</h3>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                </div>
-            </section>
+            </div>
+            @endif
+        </section>
 
             <div class="portfolio__form">
  
@@ -188,7 +193,7 @@
                         <input type="text" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
                         <span id="effective_rate_label"></span>
                     </div> 
-
+                    
                 </div>
 
                 <div class="block-right">

@@ -3,6 +3,7 @@ body {
     font-family: 'Scope One', serif; 
     --scorecard : #1d1c25;
     --form-band : #6b64a0;
+    --color-theme : #ffc266;
     --header:#fff5e6;
     --color-orange-light95:#fff5e6;
     --color-orange-light70:#ffc266;
@@ -34,8 +35,8 @@ section.share_import__wrapper {
     text-align: right;
 }
 header.c-header {
-    background: rgb(207,168,162);
-    background: linear-gradient(0deg, rgba(207,168,162,1) 0%, rgba(111,110,105,1) 0%, rgba(255,222,0,1) 92%);
+    background: rgb(202,202,168);
+    background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
 }
 #app .container {
     margin: 0 40px;
@@ -75,11 +76,9 @@ nav.home
         background: unset !important;
     }
 .cta {
-    display: inline-block;
-    background: beige;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 1px 1px 5px 1px #214b25;
+    box-shadow: 0 0 9px -2px #214b25;
 }
 .c-nav {
     display: flex;
@@ -112,7 +111,10 @@ h1, h2, h3 {margin:5px; margin-left:0;}
 h1 {font-family: 'Cutive', serif;font-size:1.5em;}
 h2 {font-size: 1.2em;}
 h3 {font-size: 1em;}
-mark {padding: 0px 3px;border-radius: 8px;}
+mark {
+    padding: 2px 4px;
+    margin: 2px 0;
+}
 img.c-logo__img {height: 130px;padding: 20px 0;}
 .error {color:red !important;}
 .error ul {padding: 0 15px;}
@@ -122,6 +124,7 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
     padding: 10px;
     border: 1px dotted;
 }
+div.message, span.message {font-weight:bold;padding: 0 5px;}
 .negative {background: #e60f05 !important;}
 .is-invalid {color: #fb0000;}
 .positive {background: var(--color-green-light30) !important;}
@@ -182,9 +185,8 @@ sup {
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
 #basket-notify {text-align: right; padding: 2px;}
-.message {padding: 5px; font-weight: bold;}
-/*page footer*/
 
+/*page footer*/
 
 .portfolio__content  header {
     display: flex;
@@ -198,9 +200,10 @@ footer.page-footer .links {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    background: #fafafa;
     padding: 10px;
     margin-top: 40px;
+    background: rgb(202,202,168);
+    background: linear-gradient(355deg, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
 }
 footer.page-footer ul {
     padding: 0;
@@ -251,6 +254,10 @@ input[readonly] {
 button.focus {
     background-color: #6b64a0;
     color: white;
+    border: 1px solid var(--color-orange-light70);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .15em;
 }
 .form-field .buttons {
     background: #f0f8ff85;
@@ -273,6 +280,9 @@ button.focus {
     color: #607D8B;
     min-width: 50px !important;
     font-size: 14px;
+}
+textarea {
+    width: 412px;
 }
 /* login */
 .c-nav__user {
@@ -382,7 +392,7 @@ tr.separator {
 /* end of form input elements*/
 .loading {
     padding: 10px 60px;
-    background-image: url(//s.svgbox.net/loaders.svg?fill=805ad5#three-dots);
+    background-image: '🔃';
     background-repeat: no-repeat;
     background-size: 30px;
     background-color: #d2fbab;
@@ -498,13 +508,27 @@ section.c_score_cards article {
 .decrease {
     color: #ff0000;
 }
-.increase_icon::after {
+.increase_icon {
+    background: url(/assets/images/up.svg);
+    width: 10px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 5px 5px 0 0;
+}
+.decrease_icon {
+    background: url(/assets/images/down.svg);
+    width: 10px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 5px 5px 0 0;
+}
+/* .increase_icon::after {
     content: '💹';
     opacity: .6;
 }
 .decrease_icon:after {
     content:'🔻';
-}
+} */
 .c-social-nav__link.facebook {
     margin-left: -5px;
 }
@@ -805,22 +829,20 @@ article p {
     display: inline-block;
 }
  .portfolio__form, .contact-us__form {
-    margin: 10px 30px;
+    margin: 20px;
     display: flex;
+    padding-bottom: 40px;
 }
 .feedback__intro {
     margin: 0 10px;
 }
-.portfolio__form, .block-left {
+.portfolio__form .block-left {
     width: 60%;
 }
-.block-left {
-    width: 800px;
+.block-right {
+    padding: 10px;
+    margin-left: 10px;
 }
-.block-left {
-    width: 800px;
-}
-
 label {
     width: 200px;
     display: inline-block;
@@ -840,7 +862,7 @@ label {
     }
 .contact-us__form input[type="file"] {
     height: 100px;
-    width: 590px;
+    width: 600px;
     box-sizing: border-box;
 }
 /*end of feedback*/
@@ -850,7 +872,7 @@ label {
 input {
     padding: 5px;
     width: 200px;
-    height: 1.5em;
+    /* height: 1.5em; */
     margin: 5px 0;
     border-radius: 5px;
     border: 1px solid #8fa391;

@@ -91,17 +91,17 @@ class ShareholderController extends Controller
         }
         //do not delete shareholders if they have protfolio
         elseif($member->total > 0){
-            $message = "😒 Can not delete! Selected member has $member->total scripts in record.";
+            $message = "Did not delete 😉<br/>Selected shareholder already has $member->total scripts in record";
         }
         else {
             $deleted = Shareholder::destroy($id);
             if($deleted > 0){
-                $message = "Shareholder $shareholder->first_name deleted.";
+                $message = "Shareholder `$shareholder->first_name` deleted.";
                 $flag = true;
             }
         }
 
-        return response()->json(['action'=>'delete', 'message'=> $message, 'status'=>$flag]);
+        return response()->json(['message' => $message, 'status' => $flag, 'row' => 'row'.$id]);
     }
 
 }
