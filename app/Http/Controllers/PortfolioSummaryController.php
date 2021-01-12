@@ -35,11 +35,6 @@ class PortfolioSummaryController extends Controller
         $scripts ='';
         $members = '';
 
-        // $notice = [
-        //     'title' => 'Attention',
-        //     'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
-        // ];
-
         $transaction_date = StockPrice::getLastTransactionDate();
 
         $portfolios = DB::table('portfolio_summaries as p')
@@ -68,11 +63,12 @@ class PortfolioSummaryController extends Controller
             
             //aggregates
             $total_investment = $portfolios->sum('investment');
-            // dd($total_investment);
+            
             $net_worth = $portfolios->sum(function($item){
                 $close_price = $item->last_updated_price ?  $item->last_updated_price  : $item->close_price;
                 return $item->quantity * $close_price;
             });
+
             $net_gain = $net_worth - $total_investment;
             $total_shareholders = $portfolios->unique('shareholder_id');
             $total_scripts = $portfolios->unique('stock_id');
@@ -107,8 +103,7 @@ class PortfolioSummaryController extends Controller
                 $total_investment = $items->sum(function($item){
                     return $item->quantity * $item->wacc;
                 });
-                // echo $key;
-                // dd($total_investment);
+                
                 $current_worth = $items->sum(function($item){
                     $ltp = $item->last_updated_price ?  $item->last_updated_price : $item->close_price;
                     return $item->quantity * $ltp;
@@ -155,7 +150,6 @@ class PortfolioSummaryController extends Controller
                 'portfolio_summary' => $portfolio_agg->sortByDesc('total_investment'),
                 'transaction_date' => Carbon::parse($transaction_date),
                 'scorecard' => $score_card,
-                // 'notice' => $notice,
             ]);
         
     }

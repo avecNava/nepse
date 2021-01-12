@@ -23,6 +23,7 @@ use App\Models\User;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
 use App\Models\StockSector;
+use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Notifications\Notifiable;
 
@@ -35,30 +36,31 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
+    $id='826d10c0-4ff4-11eb-ab5f-0800271e8147';
     
-    $name  = 'Ananta bhadra lamichhane';
-    $name = explode(" ", $name);
-    $last_name = '';
-    foreach ($name as $key => $value) {
-        if($key > 0 ){
-            $last_name .= $value . ' ';
-        }
-    }
-    $temp = Str::of($last_name)->trim();
-    dd(Str::title($temp));
+    $stocks = DB::table('portfolio_summaries as p')
+            ->join('shareholders as m', function($join) use($id){
+                $join->on('m.id', '=', 'p.shareholder_id')
+                    ->where('m.uuid', $id);
+            })
+            ->join('portfolios as po', function($join){
+                $join->on('po.shareholder_id', 'p.shareholder_id')
+                ->on('po.stock_id','p.stock_id');
+            })
+            ->join('stocks as s', 's.id', '=', 'p.stock_id')
+            ->leftJoin('stock_prices as pr', function($join){
+                $join->on('pr.stock_id','p.stock_id')
+                    ->where('pr.latest',TRUE);
+            })
+            ->select(
+                'p.*','s.*', 'po.quantity as qty1',
+                'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
+                'm.first_name','m.last_name','m.uuid',
+            )
+            ->orderBy('s.symbol')
+            ->get();
 
-    $uuid =  (string) Str::uuid();
-    
-    return 
-    Shareholder::create([
-        'parent_id' => 1,
-        'parent' => true,                   //all registered users will be the parent by default
-        'first_name' => 'test',
-        'last_name' => 'testing',
-        'email' => 'test@gmail.com',
-        'uuid' => $uuid,
-        'last_modified_by' => 1,
-    ]);
+        $stocks->dd();
 });
 
 Route::get('sample-record', function(){

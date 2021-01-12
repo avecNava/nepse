@@ -56,27 +56,25 @@
         
         <section class="main__content">
         
-            <header class="info">
-                @if(count($portfolio_summary)>1)
+            <header class='header-row'>
+                <div class="header-row__label">
+                    @if(count($portfolio_summary)>1)
                     <h2>
                         {{count($portfolio_summary)}} members
                     </h2>
-            @endif
+                    @endif
+                </div>
+                <div class='header-labels header-items'>
+                    <div class="col1"># Scripts</div>
+                    <div class="col3">Investment</div>
+                    <div class="col4">Current worth</div>
+                    <!-- <div class="col5">Previous worth</div> -->
+                    <div class="col6">Difference</div>
+                    <div class="col6">Gain</div>
+                </div>
             </header>
 
             <main id="summary">
-                <section class='header-row'>
-                    <div></div>
-                    <div class='header-labels header-items'>
-                        <div class="col1"># Scripts</div>
-                        <div class="col2"># Units</div>
-                        <div class="col3">Investment</div>
-                        <div class="col4">Current worth</div>
-                        <div class="col5">Previous worth</div>
-                        <div class="col6">Difference</div>
-                        <div class="col7">Gain</div>
-                    </div>
-                </section>
 
                 @foreach ($portfolio_summary as $row)
                 
@@ -96,21 +94,18 @@
                             <div class="col1">                                    
                                 {{ number_format($row['total_scripts']) }}
                             </div>
-                            <div class="col2">
-                                {{ number_format($row['total_units']) }}
-                            </div>                                    
                             <div class="col3">
                                 {{number_format($row['total_investment'])}}
                             </div>
                             <div class="col4">
                                 {{number_format( $row['current_worth'] ) }}
                             </div>
-                            <div class="col5">{{number_format($row['prev_worth'])}}</div>
+                            <!-- <div class="col5">{{number_format($row['prev_worth'])}}</div> -->
 
                             <div class="col6">
                                 <div class="c_change">
-                                    <div>
-                                        <div>{{ number_format( $row['change'] ) }} </div>
+                                    <div>{{ number_format( $row['change'] ) }} </div>
+                                    <div class="c_change_per">
                                         <span class="{{ $row['change_css'] }}">
                                             @if($row['change_pc'])
                                                 {{ $row['change_pc'] }}%
@@ -121,10 +116,10 @@
                                 </div>
                             </div>
 
-                            <div class="col7">
+                            <div class="col6">
                                 <div class="c_change">
-                                    <div>
-                                        <div>{{ number_format( $row['gain'] ) }} </div>
+                                    <div>{{ number_format( $row['gain'] ) }} </div>
+                                    <div class="c_change_per">
                                         <span class="{{ $row['gain_css'] }}">
                                             @if($row['gain_pc'])
                                                 {{ $row['gain_pc'] }}%

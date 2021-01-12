@@ -46,6 +46,7 @@
         </p>
         <article>
             <article id="add-stocks">
+                <br/>
                 <h2>Add Stocks</h2>
                 <p>You can add stocks in multiple ways.</p>
 
@@ -101,6 +102,7 @@
             </article>
 
             <article id="add-shareholder">
+                <br/>
                 <h2>Add Shareholder</h2>
                 <p>You can add your family members, friends circle etc as Shareholder and add stocks under their names. Stocks for different shareholders will be visible in the <a href="{{ url('portfolio') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">dashboard</a>
                 </p>
@@ -111,7 +113,9 @@
                 </ul>
                                 
             </article>
+
             <article id="dashboard">
+                <br/>
                 <h2>Dashboard</h2>
                 <p>
                     <a href="#portfolio">Portfolio</a> will be the dashboard  until we come up with something interesting 😉
@@ -123,7 +127,9 @@
                 </ul>
                 
             </article>
+
             <article id="portfolio">
+                <br/>
                 <h2>Portfolio</h2>
                 <p>
                     Whenver you are in the <a href="{{ url('portfolio') }}" title="Portfolio"  target="_blank" rel="noopener noreferrer">Portfolio view</a>, you can click on Shareholder names and view stocks recorded under them. Please note that the list will show aggregated shares.
@@ -138,19 +144,25 @@
                 </ul>
                 
             </article>
+
             <article id="update-stocks">
+                <br/>
                 <h2>Update stocks</h2>
                 <p>
                     Goto <a href="#portfolio-detail">portfolio details</a> for the stock you would like to edit. Select a record, click on checkbox and click on <strong>Edit</strong> button.
                 </p>
             </article>
+
             <article id="delete-stocks">
+                <br/>
                 <h2>Delete stocks</h2>
                 <p>
                     Goto <a href="#portfolio-detail">portfolio details</a> for the stock you would like to delete. Select a record, click on checkbox and click on <strong>Delete</strong> button.
                 </p>
             </article>
+
             <article id="duplicate-stocks">
+                <br/>
                 <h2>Duplicate stocks</h2>
                 <p>
                     Stocks imported using bulk import via Meroshare account may have duplicate records or some records missing. Please verify the stocks are correctly imported. 
@@ -161,6 +173,7 @@
             </article>
 
             <article id="sales">
+                <br/>
                 <h2>Sales</h2>
                 <p>
                     You can keep a record of Sales of the stocks you sold.
@@ -176,6 +189,7 @@
             </article>
 
             <article id="stocks">
+                <br/>
                 <h2>Stocks</h2>
                 <p>
                     If you do not see any stock name in the list of stocks, please let us know.
@@ -186,7 +200,9 @@
                         </li>
                 </ul>
             </article>
+
             <article id="brokers">
+                <br/>
                 <h2>Brokers</h2>
                 <p>
                     If you do not see any broker name in the list of brokers, please let us know.
@@ -197,7 +213,9 @@
                         </li>
                 </ul>
             </article>
+
             <article id="feedbacks">
+                <br/>
                 <h2>Ideas, bugs, suggestions</h2>
                 <p>
                     No application is ever complete or is ever free from errors (or bugs 🐛). You may have a creative head than we do and have interesting ideas we could apply to help manage stocks more easily and beautifully.

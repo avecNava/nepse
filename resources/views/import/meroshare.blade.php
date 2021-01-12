@@ -43,7 +43,7 @@
     </section>
 
     <details>
-        <summary><h3>To being importing, click here</h3></summary>
+        <summary><h3>To begin importing, click here</h3></summary>
         <section id="share-import-form">
             <main>
 
