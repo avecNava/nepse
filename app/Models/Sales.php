@@ -47,7 +47,6 @@ class Sales extends Model
                 'sales_date' => $row['transaction_date'],
             ],
             [
-                // 'offer_id' => $row['offer_id'],
                 'last_modified_by' => Auth::id(),
                 'remarks' => $row['remarks'],
             ]);

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Relation;
 use App\Models\Shareholder;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Str;
 
 
 class ShareholderController extends Controller
@@ -58,6 +58,7 @@ class ShareholderController extends Controller
             'email' => 'nullable|email',
             'gender' => 'nullable|in:male,female,other',
             'relation' => 'required',
+            'uuid' => Str::uuid(),
         ]);
         
         //todo: check if the email address is unique (per parent shareholder)

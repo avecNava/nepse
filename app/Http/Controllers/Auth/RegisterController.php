@@ -78,10 +78,10 @@ class RegisterController extends Controller
         ]);
         
         //split name into first and last names
-        $splitName = explode(' ', $data['name'], 2); // Restricts it to only 2 values
+        $splitName = explode(' ', $data['name'], 2); // Restricts it to only 2 values   
         $first_name = $splitName[0];
         $last_name = '';
-        foreach ($name as $key => $value) {
+        foreach ($splitName as $key => $value) {
             if($key > 0 ){
                 $last_name .= $value . ' ';
             }
