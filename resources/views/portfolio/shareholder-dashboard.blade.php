@@ -9,15 +9,18 @@
 @endsection
 
 <style>
-
+    .c_score_cards article {
+        width: 140px !important;
+    }
 </style>
+
 @section('js')
     
 @endsection
 
 @section('content')
 
-    <div class="c_portfolio_container">
+    <div class="sh_dashboard__wrapper">
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
         @if(!empty($scorecard))

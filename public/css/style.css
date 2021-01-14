@@ -18,6 +18,11 @@ body {
 .al-end {align-items: flex-end;}
 .al-cntr {align-items: center;}
 
+.navbar-nav li.selected {
+    background: #da9321 !important;
+    font-weight: bold;
+}
+
 /* layout */
 section.share_import__wrapper {
     margin: 0 10px;
@@ -318,7 +323,7 @@ ul.navbar-nav {
     margin: 0;
     list-style-type: none;
     font-size: 18px;
-    align-self: flex-end;
+    text-align: right;
 }
 .c-header__wrapper {
     display: flex;
@@ -499,22 +504,76 @@ details h3, details h2 {
     align-items: center;
 }
 
+/*modal dialog*
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  div#myModal li {
+    margin: 1.2em;
+    font-size: 20px;
+}
+
+div#myModal #modal-message {
+    font-size: 20px;
+    font-weight: bold;
+    color: green;
+}
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto; 
+    margin-top:20px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 75%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* end of modal */
 
 /*portfolio css*/
-
-.c_portfolio_container .main__content {
-    margin: 20px;
+.welcome__wrapper,
+.c_portfolio_container .main__content,
+.sh_dashboard__wrapper .main__content {
+    margin: 0 5px;
 }
 .c_portfolio_container .header-row {
     display: flex;
     align-items: flex-end;
 }
-.main__content h3 {
+.main__content h3 :not(first-child) {
     display: inline-block;
     min-width: 200px;
     font-size: 18px;
     color: var(--color-black-light30);
-    margin-left:20px;
+    margin-left: 20px;
 }
 .c_portfolio_container .header-row__label {
     min-width: 250px;
@@ -647,6 +706,9 @@ ul.shareholders li {
 
 #summary details:nth-child(odd) {
     background:#fafafa;
+}
+.sh_dashboard__wrapper .main__content h2:before {
+    content: '👫';
 }
 #summary details summary::before {
     content: '👫';

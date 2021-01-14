@@ -86,6 +86,16 @@ class UtilityService
     }
 
     /**
+     * returns if the URL matches the given key
+     */
+    public static function urlMatch($text)
+    {
+        $url = Str::lower(url()->current());
+        return Str::endsWith($url, Str::lower($text)) ? true : false;
+
+    }
+
+    /**
      * check if given string is null or empty
      */
     public static function IsNullOrEmptyString($question){

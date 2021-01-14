@@ -34,7 +34,7 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th class="optional">SN</th>
+                    <th class="optional">&nbsp;SN</th>
                     <th>Symbol</th>
                     <th>LTP</th>
                     <th>Change</th>

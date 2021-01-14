@@ -10,7 +10,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Add new Portfolio</h1>
+    <h1 class="c_title">Add new stock</h1>
 @endsection
 
 @section('content')
@@ -31,6 +31,9 @@
             </div>
             <div class="link">
                 <a href="{{url('import/share')}}" title="Import Share from Excel file">Spreadsheet</a>
+            </div>
+            <div class="link">
+                <a href="{{url('shareholders')}}" title="Add new Shareholder">Shareholders</a>
             </div>
         </div>
     </section>

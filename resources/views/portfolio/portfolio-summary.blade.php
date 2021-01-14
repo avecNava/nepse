@@ -59,9 +59,9 @@
             <header class='header-row'>
                 <div class="header-row__label">
                     @if(count($portfolio_summary)>1)
-                    <h2>
+                    <h3>
                         {{count($portfolio_summary)}} members
-                    </h2>
+                    </h3>
                     @endif
                 </div>
                 <div class='header-labels header-items'>

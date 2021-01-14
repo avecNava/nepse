@@ -36,31 +36,11 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    $id='826d10c0-4ff4-11eb-ab5f-0800271e8147';
-    
-    $stocks = DB::table('portfolio_summaries as p')
-            ->join('shareholders as m', function($join) use($id){
-                $join->on('m.id', '=', 'p.shareholder_id')
-                    ->where('m.uuid', $id);
-            })
-            ->join('portfolios as po', function($join){
-                $join->on('po.shareholder_id', 'p.shareholder_id')
-                ->on('po.stock_id','p.stock_id');
-            })
-            ->join('stocks as s', 's.id', '=', 'p.stock_id')
-            ->leftJoin('stock_prices as pr', function($join){
-                $join->on('pr.stock_id','p.stock_id')
-                    ->where('pr.latest',TRUE);
-            })
-            ->select(
-                'p.*','s.*', 'po.quantity as qty1',
-                'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
-                'm.first_name','m.last_name','m.uuid',
-            )
-            ->orderBy('s.symbol')
-            ->get();
-
-        $stocks->dd();
+    $text = 'se/test';
+    $url = url()->current();
+    $temp  = Str::contains($url, $text);
+    if($temp)
+        echo 'Yay';
 });
 
 Route::get('sample-record', function(){

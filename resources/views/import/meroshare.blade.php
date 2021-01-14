@@ -42,6 +42,41 @@
         </div>
     </section>
 
+    <!-- Trigger/Open The Modal -->
+    <!-- <button id="myBtn">Open Modal</button> -->
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-message"></p>
+        <div class="notice">
+            <h2><mark>Please pay attention to the following points:</mark></h2>
+            <p>
+                <ul>
+                    <li>Cost price for IPOs have been recorded as Rs 100 and Bonus shares updated to 0.</li>
+                    <li>
+                        Stocks purchased via FPO and/or Secondary market (or brokers) does not have purchase price updated. You will need to update them manually. 
+                    </li>
+                    <li>
+                        <mark>Stocks without cost price (as mentioned above) will not be displayed in the summary page and shareholder's dashboard.  As a result you may see shares with less quantity than what it appears in your Meroshare account.</mark>
+                    </li>
+                    <li>Such shares will re-appear once the cost prices are updated updated.</li>
+                    <li>If you have any SalesBasket record, they will be imported to the Sales section. However, those records will also appear under your portfolio. You'll need to identify such records and delete from your portfolio manually. Or you can identify such records in the excel file and delete them beofre importing.</li>
+                    <li>The imported records will be preserved until they are manually deleted.</li>
+                    <li>During future imports (if any), old records will be preserved. Only new stocks will be imported.</li>
+                    <li>Instructions on updating stocks are available at
+                    <a href="{{url('guidelines#update-stocks')}}" target="_blank" rel="noopener noreferrer">Update stocks</a> section in the 
+                    <a href="{{url('guidelines')}}" target="_blank" rel="noopener noreferrer">Guidelines</a></li>
+                </ul>
+            </p>
+        </div>
+    </div>
+
+    </div>
+
     <details>
         <summary><h3>To begin importing, click here</h3></summary>
         <section id="share-import-form">
@@ -262,6 +297,34 @@
         @endif
 
     </article>
-        
+    <script>
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        // var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal
+        // btn.onclick = function() {
+        // modal.style.display = "block";
+        // }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        // window.onclick = function(event) {
+        //     if (event.target == modal) {
+        //     modal.style.display = "none";
+        //     }
+        // }
+
+    </script>
 </section>
 @endsection

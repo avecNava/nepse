@@ -107,6 +107,14 @@ function importMeroShareTransactions(){
                 hideLoadingMessage();
                 unCheckAll();
                 showImportMessage($data.message);
+
+                if (this.status >= 200 && this.status< 300){
+                    //show the modal dialog
+                    var modal_message = document.getElementById("modal-message");
+                    modal_message.innerHTML = $data.message;
+                    var modal = document.getElementById("myModal");
+                    modal.style.display = "block";
+                }
             }
         }
 

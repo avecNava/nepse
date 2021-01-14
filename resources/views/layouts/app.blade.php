@@ -94,13 +94,13 @@
         @auth
     </div>
     </div>
-
+    
     <nav class="c-nav__list home">
         <ul class="navbar-nav">
-            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-            <li><a href="{{ url('portfolio/new') }}">New Share</a></li>
-            <li><a href="{{ url('sales') }}">Sales</a></li>
-            <li class="optional"><a href="{{ url('shareholders') }}">Shareholder</a></li>
+            <li class="{{MyUtility::urlMatch('home')?'selected':''}}"><a href="{{ url('home') }}">Home</a></li>
+            <li class="{{MyUtility::urlMatch('portfolio')?'selected':''}}"><a href="{{ url('portfolio') }}">Portfolio</a></li>
+            <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New Share</a></li>
+            <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
         </ul>
     </nav>
     @endauth
