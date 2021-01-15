@@ -34,17 +34,17 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th class="optional">&nbsp;SN</th>
+                    <th class="optional c_digit">&nbsp;SN</th>
                     <th>Symbol</th>
-                    <th>LTP</th>
-                    <th>Change</th>
-                    <th>% change</th>
-                    <th class="optional">Open price</th>
-                    <th>High price</th>
-                    <th>Low Price</th>
-                    <th class="optional">Total quantity</th>
-                    <th class="optional">Toal value</th>
-                    <th class="optional">Previous price</th>
+                    <th class="c_digit">LTP</th>
+                    <th class="c_digit">Change</th>
+                    <th class="c_digit">% change</th>
+                    <th class="optional c_digit">Open price</th>
+                    <th class="c_digit">High price</th>
+                    <th class="c_digit">Low Price</th>
+                    <th class="optional c_digit">Total quantity</th>
+                    <th class="optional c_digit">Toal value</th>
+                    <th class="optional c_digit">Previous price</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,11 +57,11 @@
                     $change_css = \App\Services\UtilityService::gainLossClass1($change);
                 @endphp
                 <tr>
-                    <td class="optional">{{$key+1}}</td>
+                    <td class="optional c_digit">{{$key+1}}</td>
                     <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
-                    <td>{{$transaction->last_updated_price}}</td>
-                    <td class="{{$change_css}}">{{$change}}</td>
-                    <td>
+                    <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
+                    <td class="{{$change_css}} c_digit">{{$change}}</td>
+                    <td class="c_digit">
                         <div class="flex apart">
                         <div class="{{$change_css}}">
                             {{$change_per}}
@@ -69,12 +69,12 @@
                         <div class="{{$change_css}}_icon">&nbsp;</div>
                         </div>
                     </td>
-                    <td class="optional">{{$transaction->open_price}}</td>
-                    <td>{{$transaction->high_price}}</td>
-                    <td>{{$transaction->low_price}}</td>
-                    <td class="optional">{{$transaction->total_traded_qty}}</td>
-                    <td class="optional">{{$transaction->total_traded_value}}</td>
-                    <td class="optional">{{$transaction->previous_day_close_price}}</td>
+                    <td class="c_digit" class="optional">{{ number_format($transaction->open_price) }}</td>
+                    <td class="c_digit">{{ number_format($transaction->high_price) }}</td>
+                    <td class="c_digit">{{ number_format($transaction->low_price) }}</td>
+                    <td class="c_digit" class="optional">{{ number_format($transaction->total_traded_qty) }}</td>
+                    <td class="c_digit" class="optional">{{ number_format($transaction->total_traded_value) }}</td>
+                    <td class="c_digit" class="optional">{{ number_format($transaction->previous_day_close_price) }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -95,14 +95,14 @@
                     <table>
                         <tr>
                             <th>Symbol</th>
-                            <th>Turnover</th>
-                            <th>LTP</th>
+                            <th class="c_digit">Turnover</th>
+                            <th class="c_digit">LTP</th>
                         </tr>
                         @foreach($turnovers as $turnover)
                         <tr>
                             <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
-                            <td>{{number_format($turnover->total_traded_value)}}</td>
-                            <td>{{number_format($turnover->last_updated_price)}}</td>
+                            <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
+                            <td class="c_digit">{{number_format($turnover->last_updated_price)}}</td>
                         </tr>
                         @endforeach
                     </table>
@@ -117,14 +117,14 @@
                     <table>
                         <tr>
                             <th>Symbol</th>
-                            <th>LTP</th>
-                            <th>Change</th>
+                            <th class="c_digit">LTP</th>
+                            <th class="c_digit">Change</th>
                         </tr>
                         @foreach($gainers as $turnover)
                         <tr>
                             <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                            <td>{{number_format($turnover['ltp'])}}</td>
-                            <td title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
                         </tr>
                         @endforeach
                     </table>
@@ -139,14 +139,14 @@
                     <table>
                         <tr>
                             <th>Symbol</th>
-                            <th>LTP</th>
-                            <th>Change</th>
+                            <th class="c_digit">LTP</th>
+                            <th class="c_digit">Change</th>
                         </tr>
                         @foreach($loosers as $turnover)
                         <tr>
                             <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                            <td>{{number_format($turnover['ltp'])}}</td>
-                            <td title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
                         </tr>
                         @endforeach
                     </table>
