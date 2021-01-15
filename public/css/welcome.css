@@ -29,7 +29,7 @@ table {
     flex-direction: row;
     flex-wrap: wrap;
     align-items:stretch;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 .sectors .sector {
     margin: 2px;

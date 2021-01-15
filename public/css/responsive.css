@@ -1,5 +1,5 @@
 @media only screen and (max-width: 414px){
-    * { box-sizing:border-box; }
+    *, *::before,*::after { box-sizing:border-box; }
     h2, h3,h4,h5,h6{padding: 0; margin: 0}
     h1{font-size:1.5em;}
     h2{font-size:1.3em;}
@@ -57,7 +57,7 @@
     section#top10items>article {
         margin:10px 0 !important;
     }
-    table {border-spacing: 0px; min-width:400px;}
+    table {border-spacing: 0px; width:385px;}
     
     .sectors .sector {width:auto}
     .sectors {width:400px}
