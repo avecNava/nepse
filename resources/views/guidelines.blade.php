@@ -16,10 +16,13 @@
 @section('content')
 
     <section id="top-nav" class="optional">
-        <div class="label">You may also be interested in our FAQ</div>
+        <span></span>
         <div class="links">
             <div class="link">
-                <a href="{{url('faq')}}" title="Frequently asked questions">Frequently asked questions</a>
+                <a href="{{url('faq')}}" title="Frequently asked questions">FAQs</a>
+            </div>
+            <div class="link selected">
+                <a href="{{url('guidelines')}}" title="Guidelines">Guidelines</a>
             </div>
         </div>
     </section>
@@ -87,11 +90,14 @@
                                 Use this method of bulk importing shares for the first time only. You can edit and delete shares manually afterwards. 
                             </li>
                             <li>
-                                The system will update IPO and Rights shares with unit cost of 100 and Bonus shares with unit cost of zero (0) during bulk import. All other offering types like FPO, Bonds, Mutual Funds, Secondary market purchases etc will have unit cost as Zero. <mark>You are required to verify/update unit price/effective price for shares imported via Meroshare manually.</mark>
+                                The system will update IPO and Rights shares with unit cost of 100 and Bonus shares with unit cost of zero (0) during bulk import. 
+                            </li>
+                            <li>All other offering types like FPO, Bonds, Mutual Funds, Secondary market purchases etc will have unit cost as Zero. <mark>You are required to verify/update unit price/effective price for shares imported via Meroshare manually.</mark>
                             </li>
                             <li>
-                                If the unit costs/effective cost is not entered, the net worth and gain may not be calculated correctly.
+                                If the unit cost price is not entered, the net worth and gain may not be calculated correctly.
                             </li>
+                            <li>The summary page and shareholders dashboard page only shows stocks with cost price updated. Hence,<mark>the quanities of shares may appear to be less than what actaully is from your Meroshare account. Such shares will re-appear once cost price is updated.</mark></li>
                     </ul>
                     <ul>
                             <li>

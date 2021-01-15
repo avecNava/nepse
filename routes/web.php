@@ -88,6 +88,7 @@ Route::post('portfolio/edit', [PortfolioController::class, 'update']);
 Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
 
 Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
+Route::post('portfolio/export', [PortfolioController::class, 'export']);
 
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode

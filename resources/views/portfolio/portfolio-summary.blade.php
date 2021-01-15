@@ -54,13 +54,13 @@
             
         @if( !empty($portfolio_summary) )
         
-        <section class="main__content">
+        <section class="main__content summary_main__content">
         
             <header class='header-row'>
                 <div class="header-row__label">
                     @if(count($portfolio_summary)>1)
                     <h3>
-                        {{count($portfolio_summary)}} members
+                        &nbsp;{{count($portfolio_summary)}} members
                     </h3>
                     @endif
                 </div>
@@ -147,7 +147,7 @@
             
             <footer>
                 <div class="flex js-apart al-end">
-                    <span>&nbsp;<sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
+                    <span></span>
                     <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
                 </div>
             </footer>

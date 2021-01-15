@@ -75,11 +75,38 @@
         
         <section class="main__content">
         
-            <header class="info flex together">
-                <h2 class="title">{{ $shareholder }}</h2>
-                <div class="notification">
-                    ({{count($portfolios)}} scripts)
+            <header class="info">
+
+                <div class="flex js-apart al-end">
+
+                <div class="flex js-start al-cntr">
+                    <h2 class="title">{{ $shareholder }}</h2>
+                    <div class="notification">
+                        ({{count($portfolios)}} scripts)
+                    </div>
                 </div>
+
+                <div class="flex js-start al-cntr">
+                    <div class="message" id="message">                    
+                        @if(session()->has('message'))
+                            <span class="success">{{ session()->get('message') }}</span>
+                        @endif
+                        @if(session()->has('error'))
+                            <span class="error">{{ session()->get('error') }}</span>
+                        @endif
+                    </div>
+
+                    @php
+                        $row = $portfolios->first();
+                    @endphp
+                    <form  method="POST" action="/portfolio/export" style="margin:0">
+                        @csrf()
+                        <input name="id" type="hidden" value="{{ $row->shareholder_id }}">
+                        <button>Export</button>
+                    </form>
+
+                </div>
+
             </header>
 
             <main>

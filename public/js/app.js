@@ -1,9 +1,12 @@
+//show notice 
 setTimeout(() => {
     const el = document.querySelector('#notice');
     if(el.querySelector('.message_wrapper')){
-        el.removeAttribute('style');
+        // el.style.display = "block";
+        el.classList.add('show');
+        el.classList.remove('hide');
         }
-}, 1000);
+}, 5000);
 
 
 function hide_notice(){

@@ -18,11 +18,6 @@ body {
 .al-end {align-items: flex-end;}
 .al-cntr {align-items: center;}
 
-.navbar-nav li.selected {
-    background: #da9321 !important;
-    font-weight: bold;
-}
-
 /* layout */
 section.share_import__wrapper {
     margin: 0 10px;
@@ -46,7 +41,7 @@ header.c-header {
     background: rgb(202,202,168);
     background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
 }
-#app .container {
+.container {
     margin: 0 40px;
 }
 div#container, div#app {
@@ -56,10 +51,10 @@ div#container, div#app {
     margin: 20px 0;
 }
 
-article#shareholders {
+/* article#shareholders {
     background: #97e79f;
     box-shadow: 0px 2px 9px -3px;
-}
+} */
 article p, article>h2, article>h2 {
     padding: 5px;
     /* margin: 10px 0; */
@@ -75,37 +70,35 @@ article p, article>h2, article>h2 {
 /* end of layout */
 
 /*menu links*/
-nav.home 
-    li a:hover {
-        opacity: .8;
-        transition: transform 2s;
-        transform: scale(1.2);
-    }
-nav.home 
-    li a {
-        color: white;
-        padding: 5px;
-    }    
-nav.home 
-    {
-        background: var(--form-band);
-        padding: 10px;
-        min-height: 1.7em;
-    }
-nav.home 
-    li {
-        background: unset !important;
-    }
-.cta {
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 9px -2px #214b25;
+.navbar-nav {
+    background: var(--form-band);
+    /* height: 2.5em; */
+    margin: 0;
+    font-size: 18px;
+    text-align: right;
+}
+.navbar-nav li {
+    display: inline-block;
+    padding: 10px 15px;
+}
+
+.navbar-nav li :hover {
+    opacity: .8;
+    transition: transform 2s;
+    transform: scale(1.2);        
+}
+.navbar-nav li a {
+    color: white;
+}  
+
+.navbar-nav li.selected {
+    background: #da9321;
+    font-weight: bold;
 }
 .c-nav {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 0 10px;
 }
 
 .links a {
@@ -117,12 +110,6 @@ footer .links a {
     font-weight: normal;
 }
 
-nav.c-nav__list li {
-    display: inline;
-    padding: 2px 6px;
-    background: aliceblue;
-    border-radius: 5px;
-}
 abbr {font-weight: bold; color: #3c3f40;}
 .band-tall { height: 50px;}
 .no-border {border: none !important;}
@@ -314,17 +301,7 @@ textarea {
 .c-nav__user__wrapper {
     align-self: flex-end;
 }
-ul.navbar-nav {
-    padding: 20px;
-}
 
-ul.navbar-nav {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    font-size: 18px;
-    text-align: right;
-}
 .c-header__wrapper {
     display: flex;
 }
@@ -379,7 +356,10 @@ section#top-nav .label {
     background: beige;
     padding: 10px;
 }
-.show {display: block !important;}
+.show {
+    transition: display 5s ease-in-out 5s;
+    display: block !important;
+}
 .d-none {display: none !important;}
 .hide {display: none;}
 
@@ -541,6 +521,10 @@ div#myModal #modal-message {
     border: 1px solid #888;
     width: 75%; /* Could be more or less, depending on screen size */
   }
+
+  .modal-content ul {
+    padding: 0;
+  }
   
   /* The Close Button */
   .close {
@@ -559,8 +543,10 @@ div#myModal #modal-message {
   /* end of modal */
 
 /*portfolio css*/
-.welcome__wrapper,
-.c_portfolio_container .main__content,
+.summary_main__content {
+    margin: 40px 10px;
+}
+.portfolio__content, .welcome__wrapper,
 .sh_dashboard__wrapper .main__content {
     margin: 0 5px;
 }
@@ -747,7 +733,7 @@ section.sales h2 {
     display: inline;
 }
 section.sales {
-    margin: 30px 0;
+    margin: 30px 5px;
 }
 section.sales summary {
     outline: none;

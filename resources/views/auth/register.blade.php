@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('content')
 <style>
@@ -6,6 +6,7 @@
         height:2.5em;
     }
 </style>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

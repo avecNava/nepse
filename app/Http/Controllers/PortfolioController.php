@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Services\UtilityService;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 use Carbon\Carbon;
 
 class PortfolioController extends Controller
@@ -451,6 +452,53 @@ class PortfolioController extends Controller
             'message' => 'Can not find any stocks with the supplied id',
             'status' => 'error',
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $shareholder_id = $request->id;
+        $name = Auth::user()->name;
+        $date = Carbon::now();
+        $file_name = UtilityService::serializeString($name,'-') .'-'. $date->toDateString();
+        
+        $stocks = DB::table('portfolio_summaries as p')
+            ->join('shareholders as m', function($join) use($shareholder_id){
+                $join->on('m.id', '=', 'p.shareholder_id')
+                    ->where('m.id', $shareholder_id);
+            })
+            ->join('stocks as s', 's.id', '=', 'p.stock_id')
+            ->leftJoin('stock_prices as pr', function($join){
+                $join->on('pr.stock_id','p.stock_id')
+                    ->where('pr.latest',TRUE);
+            })
+            ->select(
+                'p.*','s.*', 'm.*',
+                'pr.close_price', 'pr.last_updated_price', 'pr.previous_day_close_price',
+            )
+            ->orderBy('s.symbol')
+            ->get();
+
+        try {
+               
+            $writer = SimpleExcelWriter::streamDownload("$file_name.xlsx");
+            $stocks->map(function($item, $key) use($writer){
+                $writer->addRow([
+                    'SN' => $key + 1,
+                    'Name' => $item->first_name . ' '. $item->last_name,
+                    'Symbol' => $item->symbol,
+                    'Quantity' => $item->quantity,
+                    'Effective_rate' => $item->wacc,
+                    'Cost' => $item->investment,
+                ]);
+            });
+
+            $writer->toBrowser();            
+            return redirect()->back()->with('message', "Portfolio exported successfully");
+        
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', "Portfolio could not be exported");
+        }
+
     }
 
 }

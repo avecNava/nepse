@@ -14,7 +14,7 @@
     @yield('custom_css')
 </head>
 <body>
-    <div id="notice" style="display:none">
+    <div id="notice" class="hide">
         <div class="notice_wrapper">
             <div>
                 @yield('notice')
@@ -62,7 +62,6 @@
                         @endif
                     </div>
                     @endif
-                    
                     <div class="a_page_header">
                         @yield('header_title')
                     </div>
@@ -71,12 +70,28 @@
 
             </div>
 
-            <nav class="c-nav__list home">
+            <nav class="navbar__wrapper">
             <ul class="navbar-nav">
                 <li class="{{MyUtility::urlMatch('home')?'selected':''}}"><a href="{{ url('home') }}">Home</a></li>
+                @guest
+                <li class="{{MyUtility::urlMatch('register')?'selected':''}}">
+                    @if (Route::has('register'))
+                    <div>
+                        <a href="{{ route('register') }}">Register</a>
+                    </div>
+                    @endif
+                </li>
+                <li class="{{MyUtility::urlMatch('login')?'selected':''}}">
+                    @if (Route::has('login'))
+                        <a href="{{ route('login') }}">Login</a>
+                    @endif
+                </li>
+                @endguest
+                @auth
                 <li class="{{MyUtility::urlMatch('portfolio')?'selected':''}}"><a href="{{ url('portfolio') }}">Portfolio</a></li>
                 <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New Share</a></li>
                 <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
+                @endauth
             </ul>
             </nav>
              
@@ -145,7 +160,7 @@
                     </ul>
                 </div>
                 
-                
+                @auth
                 <div class="sales nav optional">
                     <h3>Manage sales</h3>
                     <ul>
@@ -164,14 +179,13 @@
                         <li><a href="{{ url('/shareholders') }}">Shareholders</a></li>
                     </ul>
                 </div>
-
+            @endauth
             </section>
             <div class="copyright">
                  © {{ date("Y") }} {{ config('app.name', "NEPSE.TODAY") }}&nbsp; All rights reserved.
             </div>
         </footer>
         
-        <!-- <script src="{{asset('assets/js/shareholder.js')}}"></script> -->
         @yield('js')
 
 </body>

@@ -32,8 +32,11 @@
 
 </style>
     <section id="top-nav" class="optional">
-        <div class="label">See how to use the application in guidelines</div>
+        <div></div>
         <div class="links">
+            <div class="link selected">
+                <a href="{{url('faq')}}" title="Frequently asked questions">FAQs</a>
+            </div>
             <div class="link">
                 <a href="{{url('guidelines')}}" title="Guidelines">Guidelines</a>
             </div>

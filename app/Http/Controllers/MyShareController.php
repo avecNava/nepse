@@ -200,7 +200,7 @@ class MyShareController extends Controller
           });
      
           return response()->json([
-               'message' => count($portfolios) . " records have been imported to your portfolio 👌",
+               'message' => count($portfolios) . " record(s) have been imported to your portfolio 👌",
                'count' => count($portfolios),
           ]);
 

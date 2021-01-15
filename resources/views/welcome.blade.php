@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('title')
     Your stock portfolio management application over the browser
 @endsection
 
 @section('header_title')
-    NEPSE.TODAY
+    <h1>NEPSE.TODAY</h1>
 @endsection
 @section('js')
 @endsection
