@@ -94,7 +94,7 @@ article p, article>h2, article>h2 {
 .navbar-nav li.selected {
     background: #da9321;
     font-weight: bold;
-}
+}  
 .c-nav {
     display: flex;
     flex-direction: column;
@@ -133,6 +133,11 @@ img.c-logo__img {height: 130px;padding: 20px 0;}
     border: 1px dotted;
 }
 div.message, span.message {font-weight:bold;padding: 0 5px;}
+section.message {
+    margin: 10px 0;
+    padding: 10px;
+    font-weight: bold;
+}
 .negative {background: #e60f05 !important;}
 .is-invalid {color: #fb0000;}
 .positive {background: var(--color-green-light30) !important;}
@@ -315,6 +320,7 @@ textarea {
     margin-left: 25px;
 }
 /* end of login */
+
 .info {padding:5px}
 .info h2 {
     display: inline;
@@ -749,6 +755,29 @@ section.sales summary {
 
 
 /* form section inside portfolio details */
+#portfolio-detail {
+    background: beige;
+    padding: 20px;
+    position: relative;
+}
+#portfolio-detail .stock div {
+    margin-top: 5px;
+    margin-right: 50px;
+}
+#portfolio-form__wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: beige;
+    transition: display 10s ease-in 12s;
+    height:415px;
+}
+div#portfolio-form__wrapper form {
+    display: flex;
+}
+div#portfolio-form__wrapper section {
+    margin: 0 10px;
+}
 .display-label {
     margin: 10px 0;
     max-width: 200px;
@@ -768,14 +797,11 @@ section.sales summary {
 .c_info_band {
     margin: 20px 0;
 }
-.info_band { 
-    padding: 20px;
-    background: beige;
-}
+
 .item.basket {
-    padding: 0 10px;
-    background: var(--color-orange-light95);
-    box-shadow: 1px 1px 6px -3px;
+    margin: 10px 0;
+    background: #f1f1d7;
+    padding: 10px;
 }
 item.basket header {
     display: flex;
@@ -791,35 +817,6 @@ item.basket header {
 .value {
     width: 200px;
 }
-.info_band_bottom button {
-    margin-top: 30px;
-}
-.info_band_bottom select {
-    margin:5px 0;
-}
-.info_band_bottom form {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.info_band_bottom .form-field {
-    margin: 0 2px;
-}   
-.info_band_bottom label {
-    display: block;
-}
-.info_band_bottom {
-    margin: 10px 0;
-    background: #cacaa8;
-    padding: 10px 0;
-    border-radius: 5px;
-}
-.info_band_bottom li {
-    color: #ee0000;
-}
-
-
 
 .guidelines a {
     color: #3F51B5;
@@ -886,11 +883,6 @@ article p {
     padding: 10px;
     margin-left: 10px;
 }
-label {
-    width: 200px;
-    display: inline-block;
-}
-
 .contact-us__form 
     input[type="title"] {
         width: 400px;
@@ -912,6 +904,11 @@ label {
 
 /* form input elements*/
 .form-field {margin: 10px 0;}
+.form-field label {
+    width: 200px;
+    display: inline-block;
+}
+
 input {
     padding: 5px;
     width: 200px;

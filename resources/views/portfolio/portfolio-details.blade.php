@@ -24,8 +24,7 @@ tfoot td {
 </style>
 
     <div class="c_portfolio_container">
-    
-    @if(count($portfolios)>0 )
+   
 
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
@@ -64,391 +63,387 @@ tfoot td {
             if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
         @endphp
         
-        <section class="info_band">
+        <section id="portfolio-detail">
 
             <div class="flex js-apart">
-
-                    <div class="block-left">
-
-                        <section class="shareholder nav">
-                            <h2>
-                                <a href="{{ url('portfolio', [ $info['uuid'] ]) }}">
-                                    {{ $info['shareholder'] }}
-                                </a>
-                            </h2>
-                        </section>
-
-                        <div class="stock">
-                            <h2 class='highlight'>{{$info['security_name']}}</h2>
-                            <h3>{{$info['sector']}}</h3>
-                            <div class="item">
-                                <label>Total quantity </label>
-                                <span class="value" data-quantity="{{$qty}}" id="total_quantity">
-                                    {{number_format($qty)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>WACC (Weighted avg.) </label>
-                                <span class="value" id="wacc" data-rate="{{$wacc}}">
-                                    {{number_format($wacc,2)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Last price (LTP) </label>
-                                <span class="value">
-                                    {{number_format($ltp)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Previous day price </label>
-                                <span class="value">
-                                    {{number_format($ltp_prev)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Change </label>
-                                <span class="value {{$change_class}}">
-                                    {{number_format($change)}} ({{number_format($change_per,2)}}%)
-                                </span>
-                            </div>  
-                        </div>
-
-                    </div>
-
-                    <div class="block-right">
+                <div>
+                    <h2>
+                        <a href="{{ url('portfolio', [ $info['uuid'] ]) }}">
+                            {{ $info['shareholder'] }}
+                        </a>
+                    </h2> 
+                    <h3 class='highlight'>{{$info['security_name']}}</h3>
+                    <h3>{{$info['sector']}}</h3>
+                </div>
+                <div class="flex js-start">
+                    <div class="stock left">
                     
-                        <div class="stock">
-                            <div class="item">
-                                <label>Total investment </label>
-                                <span class="value">
-                                    {{ number_format($investment)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Current worth </label>
-                                <span class="value">
-                                    {{number_format($worth)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Gain </label>
-                                <span class="value {{$gain_class}}">
-                                {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
-                                </span>
-                            </div>  
-                            <div class="item">
-                                <label>High </label>
-                                <span class="value"> 
-                                    {{number_format($price_high)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>Low </label>
-                                <span class="value"> 
-                                    {{number_format($price_low)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>52 weeks high</label>
-                                <span class="value">
-                                    {{number_format($price_high_52)}}
-                                </span>
-                            </div>
-                            <div class="item">
-                                <label>52 weeks low</label>
-                                <span class="value">
-                                    {{number_format($price_low_52)}}
-                                </span>
-                            </div>
+                        <div class="item">
+                            <label>Total quantity </label>
+                            <span class="value" data-quantity="{{$qty}}" id="total_quantity">
+                                {{number_format($qty)}}
+                            </span>
                         </div>
-
+                        <div class="item">
+                            <label>WACC (Weighted avg.) </label>
+                            <span class="value" id="wacc" data-rate="{{$wacc}}">
+                                {{number_format($wacc,2)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Last price (LTP) </label>
+                            <span class="value">
+                                {{number_format($ltp)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Previous day price </label>
+                            <span class="value">
+                                {{number_format($ltp_prev)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Change </label>
+                            <span class="value {{$change_class}}">
+                                {{number_format($change)}} ({{number_format($change_per,2)}}%)
+                            </span>
+                        </div>  
                     </div>
-
-            </div>
-
-        </section>
-
-        <section id="basket" class="item basket">
-            <header>
-                <h3>Add to Sales basket</h3>
-                @csrf()
-                <div id="basket_message"></div>
-            </header>
-            <div style="padding:10px 0">
-                <label for="sell_quantity">Quantity &nbsp;&nbsp;
-                    <input type="number" name="sell_quantity" id="sell_quantity" 
-                    data-uuid="{{  $info['uuid'] }}"
-                    data-stock-id="{{  $info['stock_id'] }}">
-                </label>
-                <button onClick="addToBasket()">Add to basket</button>&nbsp;
-                <span class='button'><a href="{{url('basket')}}">View basket</a></span>
-            </div>
-        </section>
-
-        @php 
-            $hidden = 'hidden';
-            if($errors->any()){
-                $hidden = '';
-            }
-        @endphp
-
-        <div id="portfolio-form" class="info_band_bottom" {{$hidden}}>
-
-            <form method="POST" action="/portfolio/edit">
-                
-                @csrf()
-                <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['uuid']) }}">
-                <input type="hidden" name="stock_id" value="{{ old('stock_id', $info['stock_id']) }}">
-
-                <section>
-                    <div class="display-label">
-                        <label>Shareholder</label><div title="{{$info['relation']}}"><strong>{{$info['shareholder']}}</strong></div>
+                    <div class="stock right">
+                        <div class="item">
+                            <label>Total investment </label>
+                            <span class="value">
+                                {{ number_format($investment)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Current worth </label>
+                            <span class="value">
+                                {{number_format($worth)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Gain </label>
+                            <span class="value {{$gain_class}}">
+                            {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
+                            </span>
+                        </div>  
+                        <div class="item">
+                            <label>High </label>
+                            <span class="value"> 
+                                {{number_format($price_high)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Low </label>
+                            <span class="value"> 
+                                {{number_format($price_low)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>52 weeks high</label>
+                            <span class="value">
+                                {{number_format($price_high_52)}}
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>52 weeks low</label>
+                            <span class="value">
+                                {{number_format($price_low_52)}}
+                            </span>
+                        </div>
                     </div>
-                    <div class="display-label">
-                        <label>Script</label><div><strong>{{$info['security_name']}}</strong></div>
-                    </div>
-                    <div>
-                        <label for="offer" class="@error('offer') is-invalid @enderror">Offering type</label>
-                        <select name="offer" id="offer">
-                            @if(!empty(@offers))
-                                <option data-tag="none" value="0">Select</option>
-                                @foreach($offers as $offer)
-                                    <option data-tag="{{ $offer->offer_code }}" value="{{ $offer->id }}"
-
-                                        @if(old('offer') == $offer->id )
-                                            SELECTED
-                                        @endif
-
-                                    >{{ $offer->offer_code }} ({{$offer->offer_name}})</option>
-                                @endforeach
-                            @endif
-                        </select> 
-                    </div>
-                </section>
-
-                <section>
-                    <div>
-                        <label for="unit_cost"  
-                        class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                        <input type="number" name="unit_cost" require id="unit_cost" required 
-                        value="{{ old('unit_cost') }}"/>
-                    </div>
-                    <div class="form-field">
-                        <label for="quantity"
-                        class="@error('quantity') is-invalid @enderror">Quantity</label>
-                        <input type="number" name="quantity" required id="quantity" required 
-                        value="{{ old('quantity') }}"/>
-                    </div>
-                    <div>
-                        <label for="    " title="Base price * Quantity"
-                        class="@error('base_amount') is-invalid @enderror">Base amount</label>
-                        <input type="text" name="base_amount" id="base_amount" required 
-                        value="{{ old('base_amount') }}"/>
-                    </div>
-                    <div>
-                        <label for="total_amount" title="Bill amount inclusive commissions"
-                        class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                        <input type="text" name="total_amount" id="total_amount" required 
-                        value="{{ old('total_amount') }}"/>
-                    </div>
-                    <div>
-                        <label for="effective_rate"
-                        class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
-                        <input type="text" name="effective_rate" id="effective_rate" required 
-                        value="{{ old('effective_rate') }}"/>
-                    </div>
-
-                </section>
-
-                <section id='secondary' class='hide'>
-
-                    <div>
-                        <label for="broker"
-                        class="@error('broker') is-invalid @enderror">Broker</label>
-                        <select name="broker" id="broker">
-                            @if(!empty(@brokers))
-                            <option value="0">Select</option>
-                            @foreach($brokers as $broker)
-                                <option value="{{ $broker->broker_no }}">{{ $broker->broker_no }} - {{$broker->broker_name}}</option>
-                            @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div>
-                        <label for="sebon_commission">Broker commission<label>
-                        <input type="text" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"> 
-                    </div>
-                    <div>
-                        <label for="sebon_commission">SEBON commission<label>
-                        <input type="text" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
-                    </div> 
-                    <div>
-                        <label for="dp_amount">DP amount<label>
-                        <input type="text" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
-                    </div> 
-                </section>
-
-                <section>
-                    <div>
-                        <label for="receipt_number"
-                        class="@error('receipt_number') is-invalid @enderror">Receipt number</label>
-                        <input type="text" name="receipt_number" id="receipt_number" 
-                        value="{{ old('receipt_number') }}"/>
-                    </div>
-                    <div>
-                        <label for="tags"
-                        class="@error('tags') is-invalid @enderror">Tags</label>
-                        <input type="text" name="tags" id="tags" 
-                        value="{{ old('tags') }}"/>
-                    </div>
-                    <div>
-                        <label for="purchase_date"
-                        class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
-                        <input type="date" name="purchase_date" id="purchase_date" 
-                        value="{{ old('purchase_date') }}"/>
-                    </div>
-                    <div class='action-buttons'>
-                        <button type="submit" class="focus">Save</button>
-                        <button id="cancel" type="reset" onClick="hideForm('portfolio-form')">Cancel</button>
-                    </div>
-                </section>
-            </form> 
-
-        </div>
-
-        <section class="message" style="margin:15px 0">
-            
-            @if ($errors->any())
-                    <div class="message error">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            @endif 
-
-
-            <div id="message" class="message">                            
-                
-                @if(session()->has('message'))
-                    {{ session()->get('message') }}
-                @endif
-                
-            </div>
-            
-        </section>
-
-        @if( count($portfolios)==0 )
-        <div class="center-box error-box">
-            <h2 class="message error">Nothing in here<h2>
-            <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
-        </div>
-        @endif
-
-        <section class="portfolio__content">
-        <header class="info">
-            @php
-                $count = count($portfolios);
-                $quantity = $portfolios->sum('quantity');
-                $count_str = ($count <= 1) ? ' record' :' records';
-            @endphp
-            
-            <div>
-                <h2>{{$count}} {{$count_str}} [{{$quantity}} units]</h2>
-            </div>
-            <div class="buttons">
-                <div class="action-buttons">
-                    <button id="new">New</button>
-                    <button id="edit">Edit</button>
-                    <button id="delete">Delete</button>
                 </div>
             </div>
+      
+            <section id="basket" class="item basket">
+                <header>
+                    <h3>Add to Sales basket</h3>
+                    @csrf()                    
+                </header>
+                <div style="padding:10px 0">
+                    <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                        <input type="number" name="sell_quantity" id="sell_quantity" 
+                        data-uuid="{{  $info['uuid'] }}"
+                        data-stock-id="{{  $info['stock_id'] }}">
+                    </label>
+                    <button onClick="addToBasket()">Add to basket</button>&nbsp;
+                    <span class='button'><a href="{{url('basket')}}">View basket</a></span>
+                </div>
+                <div id="basket_message"></div>
+            </section>
 
 
-        </header>
-        <main>
-            
-            <table>
-                <thead>
-                <tr>
-                    <th>Symbol</th>
-                    <th>Offering type</th>
-                    <th class="c_digit">Quantity</th>
-                    <th class="c_digit">Unit cost</th>
-                    <th class="c_digit" title="Effective rate">Eff. rate</th>
-                    <th class="c_digit">Total amount</th>
-                    <th class="c_digit">LTP</th>
-                    <th class="c_digit">Worth</th>
-                    <th class="c_digit">Gain</th>
-                    <th class="c_digit">Purchase date</th>
-                    <th>Tags</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($portfolios as $record)
-                    @php
-                        $ltp = $record->last_updated_price?: $record->close_price;
-                        $qty = $record->quantity;
-                        $worth = $qty * $ltp;
-                        $investment = $record->total_amount;
-                        $gain = $worth - $investment;
-                        $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
-                        $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
-                    @endphp
+            @php 
+                $hidden = 'hidden';
+                if($errors->any()){
+                    $hidden = '';
+                }
+            @endphp
+
+            <div id="portfolio-form__wrapper" {{$hidden}}>
+
+                <header style="margin-left:10px">
+                    <h2>Edit Stock</h2>
+                </header>
+
+                <form method="POST" action="/portfolio/edit">
                     
-                    <tr id="row-{{ $record->id }}">
-                        
-                        <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
-                            @if( !empty($record))
-                                <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
-                                <label for="chk-{{ $record->id }}" style="padding:5px">
-                                    {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
-                                </label>
-                            @endif
-                        </td>
-                        <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
-                        <td class="c_digit">{{ $qty }}</td>
-                        <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
-                        <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
-                        <td class="c_digit">{{ number_format($record->total_amount) }}</td>
-                        <td class="c_digit">{{ number_format($ltp) }}</td>
-                        <td class="c_digit">{{ number_format($worth) }}</td>
-                        <td class="c_digit">
-                            <div class="c_change">
-                                <div>
-                                    <span class="change-val">
-                                    {{ number_format($gain, 1) }}
-                                    </span>
-                                    <span class="change-val {{$gain_class}}">
-                                    ({{ $gain_per }})
-                                    </span>
-                                </div>
-                                <div class="{{$gain_class}}_icon"></div>
-                            </div>
-                        </td>
-                        <td class="c_digit">{{$record->purchase_date}}</td>
-                        <td>{{$record->tags}}</td>
-                    </tr>
-                    @endforeach   
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="11">
-                            <div class="flex js-apart al-end">
-                                <span><sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
-                                <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
+                    @csrf()
+                    <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
+                    <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['uuid']) }}">
+                    <input type="hidden" name="stock_id" value="{{ old('stock_id', $info['stock_id']) }}">
 
-            </table>
+                    <section>
+                        <div class="form-field">
+                            <label>Shareholder</label><div title="{{$info['relation']}}"><strong>{{$info['shareholder']}}</strong></div>
+                        </div>
+                        <div class="form-field">
+                            <label>Script</label><div><strong>{{$info['security_name']}}</strong></div>
+                        </div>
+                        <div class="form-field">
+                            <label for="offer" class="@error('offer') is-invalid @enderror">Offering type</label>
+                            <select name="offer" id="offer">
+                                @if(!empty(@offers))
+                                    <option data-tag="none" value="0">Select</option>
+                                    @foreach($offers as $offer)
+                                        <option data-tag="{{ $offer->offer_code }}" value="{{ $offer->id }}"
 
-        </main>
+                                            @if(old('offer') == $offer->id )
+                                                SELECTED
+                                            @endif
+
+                                        >{{ $offer->offer_code }} ({{$offer->offer_name}})</option>
+                                    @endforeach
+                                @endif
+                            </select> 
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="form-field">
+                            <label for="unit_cost"  
+                            class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
+                            <input type="number" name="unit_cost" require id="unit_cost" required 
+                            value="{{ old('unit_cost') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="quantity"
+                            class="@error('quantity') is-invalid @enderror">Quantity</label>
+                            <input type="number" name="quantity" required id="quantity" required 
+                            value="{{ old('quantity') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="" title="Base price * Quantity"
+                            class="@error('base_amount') is-invalid @enderror">Base amount</label>
+                            <input type="text" name="base_amount" id="base_amount" required 
+                            value="{{ old('base_amount') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="total_amount" title="Bill amount inclusive commissions"
+                            class="@error('total_amount') is-invalid @enderror">Total amount</label>
+                            <input type="text" name="total_amount" id="total_amount" required 
+                            value="{{ old('total_amount') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="effective_rate"
+                            class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
+                            <input type="text" name="effective_rate" id="effective_rate" required 
+                            value="{{ old('effective_rate') }}"/>
+                        </div>
+
+                    </section>
+
+                    <section id='secondary' class='hide'>
+
+                    <div class="form-field">
+                            <label for="broker"
+                            class="@error('broker') is-invalid @enderror">Broker</label>
+                            <select name="broker" id="broker">
+                                @if(!empty(@brokers))
+                                <option value="0">Select</option>
+                                @foreach($brokers as $broker)
+                                    <option value="{{ $broker->broker_no }}">{{ $broker->broker_no }} - {{$broker->broker_name}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="sebon_commission">Broker commission<label>
+                            <input type="text" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"> 
+                        </div>
+                        <div class="form-field">
+                            <label for="sebon_commission">SEBON commission<label>
+                            <input type="text" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
+                        </div> 
+                        <div class="form-field">
+                            <label for="dp_amount">DP amount<label>
+                            <input type="text" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
+                        </div> 
+                    </section>
+
+                    <section>
+                    <div class="form-field">
+                            <label for="receipt_number"
+                            class="@error('receipt_number') is-invalid @enderror">Receipt number</label>
+                            <input type="text" name="receipt_number" id="receipt_number" 
+                            value="{{ old('receipt_number') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="tags"
+                            class="@error('tags') is-invalid @enderror">Tags</label>
+                            <input type="text" name="tags" id="tags" 
+                            value="{{ old('tags') }}"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="purchase_date"
+                            class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
+                            <input type="date" name="purchase_date" id="purchase_date" 
+                            value="{{ old('purchase_date') }}"/>
+                        </div>
+                        <div class='action-buttons form-field'>
+                            <button type="submit" class="focus">Save</button>
+                            <button id="cancel" type="reset">Cancel</button>
+                        </div>
+                    </section>
+                </form> 
+
+            </div>
+
         </section>
+
+        <section class="message">
+            <div id="message">
+
+                @if ($errors->any())
+                <div class="error">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @if(session()->has('message'))
+                <div class="success">                            
+                    {{ session()->get('message') }}
+                </div>
+                @endif
+
+            </div>
+        </section>
+        
+        <div class="portfolio__content">
+
+            @if( count($portfolios)==0 )
+            <div class="center-box error-box">
+                <h2 class="message error">Nothing in here<h2>
+                <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
+            </div>
+            @endif
+
+            <header class="info">
+                @php
+                    $count = count($portfolios);
+                    $quantity = $portfolios->sum('quantity');
+                    $count_str = ($count <= 1) ? ' record' :' records';
+                @endphp
+                
+                <div>
+                    <h2>{{$count}} {{$count_str}} [{{$quantity}} units]</h2>
+                </div>
+                <div class="buttons">
+                    <div class="action-buttons">
+                        <button id="new">New</button>
+                        <button id="edit">Edit</button>
+                        <button id="delete">Delete</button>
+                    </div>
+                </div>
+
+
+            </header>
+            <main>
+                
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Offering type</th>
+                        <th class="c_digit">Quantity</th>
+                        <th class="c_digit">Unit cost</th>
+                        <th class="c_digit" title="Effective rate">Eff. rate</th>
+                        <th class="c_digit">Total amount</th>
+                        <th class="c_digit">LTP</th>
+                        <th class="c_digit">Worth</th>
+                        <th class="c_digit">Gain</th>
+                        <th class="c_digit">Purchase date</th>
+                        <th>Tags</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($portfolios as $record)
+                        @php
+                            $ltp = $record->last_updated_price?: $record->close_price;
+                            $qty = $record->quantity;
+                            $worth = $qty * $ltp;
+                            $investment = $record->total_amount;
+                            $gain = $worth - $investment;
+                            $gain_class = \App\Services\UtilityService::gainLossClass1($gain);
+                            $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
+                        @endphp
+                        
+                        <tr id="row-{{ $record->id }}">
+                            
+                            <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
+                                @if( !empty($record))
+                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
+                                    <label for="chk-{{ $record->id }}" style="padding:5px">
+                                        {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
+                                    </label>
+                                @endif
+                            </td>
+                            <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
+                            <td class="c_digit">{{ $qty }}</td>
+                            <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
+                            <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
+                            <td class="c_digit">{{ number_format($record->total_amount) }}</td>
+                            <td class="c_digit">{{ number_format($ltp) }}</td>
+                            <td class="c_digit">{{ number_format($worth) }}</td>
+                            <td class="c_digit">
+                                <div class="c_change">
+                                    <div>
+                                        <span class="change-val">
+                                        {{ number_format($gain, 1) }}
+                                        </span>
+                                        <span class="change-val {{$gain_class}}">
+                                        ({{ $gain_per }})
+                                        </span>
+                                    </div>
+                                    <div class="{{$gain_class}}_icon"></div>
+                                </div>
+                            </td>
+                            <td class="c_digit">{{$record->purchase_date}}</td>
+                            <td>{{$record->tags}}</td>
+                        </tr>
+                        @endforeach   
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                <div class="flex js-apart al-end">
+                                    <span><sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
+                                    <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </main>
+
+            </div>
         
         <section id="sales-list" class="sales"> 
             @php
@@ -498,7 +493,7 @@ tfoot td {
 
     // handle Cancel button
     document.getElementById("cancel").addEventListener("click", function() {
-        hideForm('portfolio-form');
+        hideForm('portfolio-form__wrapper');
         resetInputFields();
     });
 
@@ -515,7 +510,7 @@ tfoot td {
         }
 
         showLoadingMessage();
-        showForm('portfolio-form');
+        showForm('portfolio-form__wrapper');
         
         document.querySelector('.message').innerHTML='';
 
