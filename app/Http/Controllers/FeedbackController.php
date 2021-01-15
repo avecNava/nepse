@@ -44,8 +44,13 @@ class FeedbackController extends Controller implements ShouldQueue
             'title' => 'nullable|min:2',
             'feedback' => 'required|min:10',
             'attachment' => 'nullable|mimes:jpeg,jpg,png',
+            'g-recaptcha-response' => 'required',
         ],
-        [ 'category.*' => 'Please choose a category for the message']);
+        [ 
+            'g-recaptcha-response.required' => 'Not a bot? Please solve the re-captcha',
+            'category.*' => 'Please choose a category for the message',
+
+        ]);
         
         $file_name_str='';
 

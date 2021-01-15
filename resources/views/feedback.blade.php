@@ -103,6 +103,11 @@
                         <input type="file" name="attachment"  class="@error('attachment') is-invalid @enderror" />
                     </div>
 
+                    <div class="form-field">
+                        <label for="g-recaptcha"></label>
+                        <div class="g-recaptcha" data-sitekey="6LcIVCcaAAAAAH-4PTxeYOfUoj2La_BT0O7NiZJ8"></div>
+                    </div>
+
                 </div>
 
                 <div class="block-right message">
@@ -125,6 +130,7 @@
         </form>
 
     </section>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </div>
 
 @endsection

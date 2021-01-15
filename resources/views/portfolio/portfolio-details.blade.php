@@ -351,7 +351,7 @@ tfoot td {
                 @endphp
                 
                 <div>
-                    <h2>{{$count}} {{$count_str}} [{{$quantity}} units]</h2>
+                    <h3>{{$count}} {{$count_str}} [{{$quantity}} units]</h3>
                 </div>
                 <div class="buttons">
                     <div class="action-buttons">

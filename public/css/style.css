@@ -873,6 +873,9 @@ article p {
     display: flex;
     padding-bottom: 40px;
 }
+.contact-us__form .g-recaptcha {
+    margin-left: 200px;
+}
 .feedback__intro {
     margin: 0 10px;
 }
