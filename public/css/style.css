@@ -859,8 +859,6 @@ article p {
     font-size: 20px;
 }
 
-
-
  /* feedback form */
  #shareholder-form {
     margin: 0 10px;
@@ -948,7 +946,7 @@ button {
 }
 
 /* screens other than mobile */
-@media only screen and (min-width: 501px) and (max-width:1100px){
+@media only screen and (min-width: 415px) and (max-width:1100px){
 
     div#app, div#container {
         margin: 0 auto;

@@ -38,7 +38,7 @@
                     <th>Symbol</th>
                     <th class="c_digit">LTP</th>
                     <th class="c_digit">Change</th>
-                    <th class="c_digit">% change</th>
+                    <th class="c_digit">% Change</th>
                     <th class="optional c_digit">Open price</th>
                     <th class="c_digit">High price</th>
                     <th class="c_digit">Low Price</th>
@@ -69,12 +69,12 @@
                         <div class="{{$change_css}}_icon">&nbsp;</div>
                         </div>
                     </td>
-                    <td class="c_digit" class="optional">{{ number_format($transaction->open_price) }}</td>
+                    <td class="c_digit optional">{{ number_format($transaction->open_price) }}</td>
                     <td class="c_digit">{{ number_format($transaction->high_price) }}</td>
                     <td class="c_digit">{{ number_format($transaction->low_price) }}</td>
-                    <td class="c_digit" class="optional">{{ number_format($transaction->total_traded_qty) }}</td>
-                    <td class="c_digit" class="optional">{{ number_format($transaction->total_traded_value) }}</td>
-                    <td class="c_digit" class="optional">{{ number_format($transaction->previous_day_close_price) }}</td>
+                    <td class="c_digit optional">{{ number_format($transaction->total_traded_qty) }}</td>
+                    <td class="c_digit optional">{{ number_format($transaction->total_traded_value) }}</td>
+                    <td class="c_digit optional">{{ number_format($transaction->previous_day_close_price) }}</td>
                 </tr>
                 @endforeach
             </tbody>
