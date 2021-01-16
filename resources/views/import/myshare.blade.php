@@ -15,20 +15,10 @@
 
 @section('content')
 
-<style>
-    section#import-shares ul>li {
-        padding: 5px 0;
-        font-size: 18px;
-    }
-    section#import-shares ul {
-        padding: 0 20px;
-}
-</style>
-
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 <section class="share_import__wrapper">
     
-    <section id="top-nav">
+    <section id="top-nav" class="optional">
     
         <div>
             @if (\Session::has('success'))
@@ -54,7 +44,7 @@
         </div>
     </section>
 
-    <details>
+    <details class="form_details">
         <summary><h3>To begin importing, click here</h3></summary>
         <section id="share-import-form">
             <main>
@@ -139,7 +129,7 @@
         @if(count($shareholders)>0)
         <article id="shareholders"  class="center-box">
             <header>
-                <ul class="shareholders">
+                <ul class="shareholder-nav">
                     @foreach($shareholders as $record)
                     <li>
                         <a href="{{ url('import/share', [ $record->uuid ]) }}" 

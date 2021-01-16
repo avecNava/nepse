@@ -14,17 +14,11 @@
 @endsection
 
 @section('content')
-<style>
-    section.message{
-        padding: 0 25px;
-        margin: 10px 0;
-    }
-</style>
 
 <section class="share_import__wrapper">
 
-    <section id="top-nav">
-        <h3>Bulk Import</h3>
+    <section id="top-nav"  class="optional">
+        <h3></h3>
         <div class="links">
             <div class="link">
                 <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">MeroShare</a>
@@ -47,7 +41,7 @@
                 <h2>Add new stock</h2>
                 <h3>Enter the following details</h3>
             </div>
-            <section class="buttons">
+            <section class="flex">
                 <button type="submit" class="focus">Save</button>
                 <button type="reset" class="optional">Reset</button>
             </section>
@@ -84,7 +78,7 @@
 
             <div class="portfolio__form">
  
-                <div class="block-left">
+                <div class="form-left">
 
                     <div class="form-field">
                         <label for="shareholder" class="@error('shareholder') is-invalid @enderror" >Shareholder</label>
@@ -201,7 +195,7 @@
                     
                 </div>
 
-                <div class="block-right">
+                <div class="form-right">
 
                     <div class="form-field">
                         <label for="purchase_date" class="@error('purchase_date') is-invalid @enderror">Purchase date</label>

@@ -49,11 +49,11 @@
     <section class="form__wrapper">
 
         <form method="POST" action="feedbacks" enctype="multipart/form-data">
-            <header class="info flex js-apart al-end band">
-                <h2>Contact us</h2>
-                <div class="buttons">
+            <header class="info flex js-apart al-cntr band">
+                <h2>Feedbacks</h2>
+                <div class="flex">
                     <button type="submit" class="focus">Send Feedback</button>
-                    <button id="cancel" type="reset">Reset</button>
+                    <button id="cancel" type="reset" class="optional">Reset</button>
                 </div>
             </header>
             <main>

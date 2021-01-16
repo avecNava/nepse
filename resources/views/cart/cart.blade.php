@@ -5,12 +5,10 @@
 @endsection
 
 @section('js')
-    <!-- <script src="{{ URL::to('js/meroshare.js') }}"></script> -->
 @endsection
 
 @section('header_title')
-<!-- <h1 class="c_title">My Cart ({{ optional(Auth::user())->name }})</h1> -->
-<h1 class="c_title">Sales cart</h1>
+<h1 class="c_title">Sales basket</h1>
 @endsection
 
 @section('content')
@@ -31,13 +29,6 @@
     article h2 {
         background: beige;
         padding: 10px;
-        text-align: center;
-    }
-    .info h2 {
-        background: unset;
-    }
-    td{
-        line-height:unset;
     }
    
     main#carts input[type='checkbox'] {
@@ -45,7 +36,7 @@
     }
     main#carts input {
         font-family: 'Cutive';
-        width: 60px;
+        width: 100px;
         text-align: right;
         font-size: 12px;
     }
@@ -68,25 +59,6 @@
         min-width: 50px;
     }
     
-    ul.shareholders li::marker {
-        content: '🧑🏻';
-    }
-    ul.shareholders {
-        display: flex;
-        flex-wrap: wrap;
-        border-radius: 5px;
-    }
-    ul.shareholders li {
-        margin-right: 25px;
-        padding: 5px;
-    }
-    ul.shareholders li a {
-        font-weight: bold;
-        color: #3F51B5;
-        margin-right: 20px;
-        padding:5px;
-    }
-
     .c_change{max-width: 100px;}
 
     .gain_label {
@@ -99,26 +71,7 @@
     td.symbol {
         min-width: 100px;
     }
-
-    article.summary main {
-        display: flex;
-        justify-content: space-around;
-    }
-    article.summary .block>label {
-        display: inline-block;
-        width: 150px;
-        font-weight: bold;
-        padding: 5px;
-    }
     
-    article.summary input {
-        width: 130px;
-        background: #f7f7f7;
-        text-align: right;
-        font-size: 16px;
-        height: 1.3em;
-        font-family: 'Cutive';
-    }
     input#net_receivable {
         outline: 2px solid #FF9800;
         font-weight: bold;
@@ -127,7 +80,7 @@
 
 <div id="loading-message" style="display:none">Working... Please wait...</div>
 
-<section id="top-nav">
+<section id="top-nav"  class="optional">
     <div></div>
     <div class="links">
         <div class="link">
@@ -145,7 +98,7 @@
     @if(count($shareholders)>0)
     <article id="shareholders" class="center-box">
         <header>
-            <ul class="shareholders">
+            <ul class="shareholder-nav">
                 <li>
                     <a href="{{ url('basket') }}" title="All records">Everyone</a>
                 </li>
@@ -189,7 +142,7 @@
                         @php
                             $data = $baskets->first();
                         @endphp
-                        <td colspan="12">
+                        <td colspan="12" class="band">
                             <div class="info flex js-start al-end">
                                 <h2>{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
                                 <div class="notification">
@@ -199,7 +152,7 @@
                                 </div> 
                             </div>
                         </td>
-                        <td colspan="2" class=" icon-buttons" style="text-align:right">
+                        <td colspan="2" class=" icon-buttons band" style="text-align:right">
                             <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
                             <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
                         </td>
@@ -320,23 +273,23 @@
         <main>
 
             <div class="col">
-                <div class="block">
+                <div class="form-field">
                     <label for="total_quantity">Total quantity</label>
                     <input type="text" name="total_quantity" id="total_quantity" readonly>
                 </div>
-                <div class="block">
+                <div class="form-field">
                     <label for="total_investment">Total Investment</label>
                     <input type="text" name="total_investment" id="total_investment" readonly>
                 </div>
-                <div class="block">
+                <div class="form-field">
                     <label for="total_amount">Total sales </label>
                     <input type="text" name="total_amount" id="total_amount" readonly>
                 </div>
-                <div class="block">
+                <div class="form-field">
                     <label for="total_gain">Net Gain</label>
                     <input type="text" name="total_gain" id="total_gain" readonly>
                 </div>
-                <div class="block">
+                <div class="form-field">
                     <label for="total_gain_tax">Gain tax</label>
                     <input type="text" name="total_gain_tax" id="total_gain_tax" readonly>
                 </div>
@@ -345,20 +298,20 @@
 
             <div class="col">
 
-                <div class="block">
+                <div class="form-field">
                     <label for="total_sebon_comm">SEBON Commission</label>                
                     <input type="text" name="total_sebon_comm" id="total_sebon_comm" readonly>
                 </div>
-                <div class="block">
+                <div class="form-field">
                     <label for="total_broker_comm">Broker Commission</label>       
                     <input type="text" name="total_broker_comm" id="total_broker_comm" readonly>
                 </div>
                 
-                <div class="block">
+                <div class="form-field">
                     <label for="dp_amount">DP amount</label>
                     <input type="text" name="dp_amount" id="dp_amount" readonly>
                 </div>
-                <div class="block net_pay">
+                <div class="form-field net_pay">
                     <label for="net_receivable">Net Receivable </label>
                     <input type="text" name="net_receivable" id="net_receivable" readonly>
                 </div>

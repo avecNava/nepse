@@ -36,28 +36,21 @@
 
         <form class="form" method="POST" action="/shareholders">
 
-            <header class="flex js-apart al-end">
+            <header class="flex js-apart al-end band">
                 <div>
                     <h2>Add new stock</h2>
                     <h3>Enter the following details</h3>
                 </div>
-                <section class="buttons">
+                <section class="flex">
                     <button type="submit" class="focus">Save</button>
                     <button type="reset" id="cancel">Cancel</button>
                 </section>
 
-<!-- 
-                <div class="form-field button">
-                    <button type="submit">Save</button>
-                </div> -->
-
-
-
             </header>
 
-            <div class="flex js-start">
+            <div class="flex js-start form_content">
 
-                <div class="block-left">
+                <div class="form-left">
         
                     @csrf()
 
@@ -125,7 +118,7 @@
 
                 </div>
 
-                <div class="block-right">
+                <div class="form-right">
                     
                     <div class="validation-error">
                         @if ($errors->any())
@@ -164,7 +157,7 @@
                 </div>
             </div>
 
-            <div class="buttons">
+            <div class="flex">
                 <button id="new">New</button>
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
@@ -178,9 +171,9 @@
                     <th></th>                    
                     <th>Name</th>                    
                     <th>Email</th>
-                    <th>Date of birth</th>
-                    <th>Gender</th>
-                    <th>Relation</th>
+                    <th class="optional">Date of birth</th>
+                    <th class="optional">Gender</th>
+                    <th class="optional">Relation</th>
                 </tr>
                 
                 @foreach ($shareholders as $record)                
@@ -192,9 +185,9 @@
                         <label for="{{ $record->id }}">{{ $record->first_name }} {{ $record->last_name }}</label>
                     </td>
                     <td><label for="{{ $record->id }}">{{ $record->email }}</label</td>
-                    <td>{{ $record->date_of_birth }}</td>
-                    <td>{{ $record->gender }}</td>
-                    <td>{{ empty($record->relation)? 'You' : $record->relation }}</td>
+                    <td class="optional">{{ $record->date_of_birth }}</td>
+                    <td class="optional">{{ $record->gender }}</td>
+                    <td class="optional">{{ empty($record->relation)? 'You' : $record->relation }}</td>
                 </tr>
                 @endforeach            
             </table>

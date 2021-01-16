@@ -8,12 +8,6 @@
 <h1 class="c_title">Portfolio ({{ $first_name }})</h1>
 @endsection
 
-<style>
-    .c_score_cards article {
-        width: 140px !important;
-    }
-</style>
-
 @section('js')
     
 @endsection
@@ -56,7 +50,7 @@
                     <footer>{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</footer>
                 </article>
 
-                <article>
+                <article class="optional">
                     <header># Units</header>
                     <main>{{number_format($scorecard['quantity'])}}</main>
                     <footer></footer>

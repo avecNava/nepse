@@ -10,13 +10,15 @@
 @section('js')
 @endsection
 @section('custom_css')
-    <link rel="stylesheet" href="{{ URL::to('css/welcome.css') }}">    
+    
 @endsection
 @section('notice')
 @if($notice)
     <div class="message_wrapper" data-title="{{$notice['title']}}">
-        <p class='title'>{{$notice['title']}}</p>
-        <p class='notice'>{!!$notice['message']!!}</p>
+        <p class='notice'>
+            <span class='title'>{{$notice['title']}}</span>
+            {!!$notice['message']!!}
+        </p>
     </div>
 @endif
 @endsection
@@ -27,7 +29,7 @@
 
     <section class="transactions">
         <header class="flex js-apart al-end">
-            <h2>&nbsp;NEPSE stock data</h2>
+            <h2>NEPSE stock data</h2>
             <div class="c_info" title="Last transaction time">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
         </header>
         @if($transactions)
@@ -38,7 +40,7 @@
                     <th>Symbol</th>
                     <th class="c_digit">LTP</th>
                     <th class="c_digit">Change</th>
-                    <th class="c_digit">% Change</th>
+                    <th class="c_digit c_change">% Change</th>
                     <th class="optional c_digit">Open price</th>
                     <th class="c_digit">High price</th>
                     <th class="c_digit">Low Price</th>
@@ -61,7 +63,7 @@
                     <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
                     <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
                     <td class="{{$change_css}} c_digit">{{$change}}</td>
-                    <td class="c_digit">
+                    <td class="c_digit c_change">
                         <div class="flex apart">
                         <div class="{{$change_css}}">
                             {{$change_per}}

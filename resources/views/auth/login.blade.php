@@ -3,7 +3,7 @@
     <h1>NEPSE.TODAY</h1>
 @endsection
 @section('content')
-<div class="container">
+<div class="auth__wrapper">
     
     <div class="card">
         

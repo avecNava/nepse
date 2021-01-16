@@ -27,27 +27,13 @@
         background: unset;
         border-radius: unset;
     }
-    ul.shareholders li::marker {
-        content: '🧑🏻';
-    }
-
-    ul.shareholders li {
-        margin-right: 25px;
-        padding: 5px;
-    }
-    
-    ul.shareholders li a {
-        font-weight: bold;
-        color: #3F51B5;
-        margin-right: 20px;
-        padding:5px;
-    }
+   
 </style>
 
 <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
 
-<section id="top-nav">
+<section id="top-nav" class="optional">
     <div></div>
     <div class="links">
         <div class="link selected">
@@ -65,14 +51,14 @@
     
     <article id="shareholders"  class="center-box">
         <header>
-            <ul class="shareholders">
+            <ul class="shareholder-nav">
                 <li>
                     <a href="{{url('sales') }}" title="All records">Everyone</a>
                 </li>
                 @foreach($shareholders as $record)
                 <li>
                     <a href="{{ url('sales', [ $record['uuid'] ])}}" 
-                        title="{{ $record['relation'] }}">
+                        title="{{ $record['name'] }}">
                         {{ $record['name'] }}
                     </a>
                 </li>                    

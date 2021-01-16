@@ -38,7 +38,7 @@
                 <main>{{number_format($scorecard['net_gain'])}}</main>
                 <footer>{{$scorecard['net_gain_per'] ? number_format($scorecard['net_gain_per']) :''}}%</footer>
             </article>
-            <article>
+            <article class="optional">
                 <header># Shareholders</header>
                 <main>{{number_format($scorecard['shareholders'])}}</main>
                 <footer></footer>
@@ -55,6 +55,8 @@
         @if( !empty($portfolio_summary) )
         
         <section class="main__content summary_main__content">
+        
+        <main id="summary">
         
             <header class='header-row'>
                 <div class="header-row__label">
@@ -74,7 +76,7 @@
                 </div>
             </header>
 
-            <main id="summary">
+            
 
                 @foreach ($portfolio_summary as $row)
                 
