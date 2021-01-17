@@ -29,6 +29,7 @@ div#container, div#app {
 }
 .c_content__wrapper {
     margin: 20px 0;
+    /* width: 100vw;; */
 }
 
 abbr {font-weight: bold; color: #3c3f40;}
@@ -199,12 +200,13 @@ table th {
     font-size: 15px;
     height: 50px;
 }
-td {
-    line-height: 3em;
-    padding: 0 5px;
+table td {
+    line-height: 2.5em;
+    font-size:1em;
 }
-tr:hover {
+table tr:hover {
     background: beige;
+    background: #e1ead67a;
 }
 /* tr:nth-child(even) { background: var(--color-black-light90);} */
 tr:nth-child(odd) { background: var(--color-orange-light95);}
@@ -563,17 +565,21 @@ item.basket header {
 
 
 /* screens other than mobile */
-@media only screen and (min-width: 415px){
+@media only screen and (min-width: 400px){
 
     div#app, div#container {
         margin: 0 auto;
         width: 1100px;
     }
-    
-    .optional {
+    .site-logo {
+        background: url("/assets/logo.png");
+        height: 125px;
+        width: 150px;
+    }
+    .site-header .optional, .optional {
         display: block;
     }
-
+        
     th.optional, td.optional {
         display: revert;
     }
@@ -612,9 +618,18 @@ item.basket header {
         display: block;
     }
 
+    .navbar-nav a {
+        color: white;
+    }
+
     ul.navbar-nav li:first-child {display: none;}
     ul.navbar-nav li:last-child {display: none;}
     ul.navbar-nav li:nth-child(6) {display: none;}
+
+    .feedbacks.nav li {
+        text-align: left;
+        padding: 0 5px;
+    }
 
     #top-nav {
         display: flex;
@@ -636,39 +651,75 @@ item.basket header {
         border-radius: 5px;
     }
 
+    /*summary paage showcase*/
+    .score_card__wapper article {
+        width: 13em;
+        height: calc(100vh/7);
+    }
+    .shareholder_dashboard__wrapper .score_card__wapper  article{
+        width: 11em;
+    }
+    .summary__wrapper {
+        margin: 20px;
+        width: 91vw;
+    }
+    .summary__wrapper .score_card__wapper {
+        flex-wrap: nowrap;
+        margin:30px 0;
+    }
+    .score_card__wapper article {
+        font-size: 1.2em;
+    }
+    .score_card__wapper main.value {
+        text-align: center;
+        font-size: 2em;
+    }
+    .showcase__wrapper article {
+        flex-wrap: nowrap;
+        margin: 40px 0;
+        width: 78.5em;
+    }
+   
+
+    .showcase__wrapper .left_section {
+        padding: 10px;
+    }
+    .showcase__wrapper .right_section {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .showcase__wrapper .right_section>div {
+        margin: 0 20px;
+    }
+    .profile__wrapper {
+        flex-wrap: nowrap;
+    }
+
     /*welcome page*/
     section.sectors main {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-evenly;
+        justify-content: flex-start;
+        width: 30em;
     }
     .sectors .sector {
-        width:49%;
-        margin:2px;
+        margin: 4px;
+        width:11em;
     }
     
-    /* scorecard */
-    section.c_score_cards {
-        display: flex;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-        margin-top: 10px;
-    }
-    section.c_score_cards main {
-        font-size: 30px;
-    }
-    section.c_score_cards footer {
-        text-align: right;
-    }
-    section.c_score_cards article {
-        width: 200px;
-        background: var(--scorecard);
-        padding: 15px;
-        margin: 5px;
-        color: #fff;
-    }
-
+    
     /* layout */
+
+    section.guidelines, section.faq {
+        margin: 10px 60px;
+    }
+    section.guidelines p,section.faq p {font-size:20px;}
+    section.faq p {
+        padding: 0 20px;
+
+    }
 
     article.summary main {
         display: flex;
@@ -681,12 +732,16 @@ item.basket header {
         flex-direction: row;
         display: flex;
     }
+    .welcome__wrapper section.transactions {
+        width: 57em;
+    }
     .welcome__wrapper .aside{
         margin-left:10px;
     }
-    .summary_main__content {
+    /* todo: check this out */
+    /* .summary_main__content {
         margin: 40px 10px;
-    }
+    } */
     .portfolio__content, .welcome__wrapper,
     .sh_dashboard__wrapper .main__content {
         margin: 0 5px;
@@ -751,9 +806,6 @@ item.basket header {
         display: flex;
         padding-bottom: 40px;
         flex-direction: row;
-    }
-    .g-recaptcha {
-        margin-left: 200px;
     }
 
     footer.page-footer .links {

@@ -45,50 +45,45 @@ class StockPriceController extends Controller
 
         $response = $client->request('GET',"today-price", [
             'query' => [
-                'size' => '600',                            
+                'size' => '400',
                 'businessDate' => $date_string
             ],
             'http_errors' => false              //parse the response, not matter it's ok or error
             ]);
+        
+        try {            
+        
+                $body = $response->getBody();
+                $content = $body->getContents();
+
+                if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
+                    $msg = "Scraping failed. Data unavailable.',['. $date_string";
+                    Log::warning('Scraping failed. Data unavailable.',['date'=>$date_string,'message'=>$msg]);
+                    return response()->json( ['message'=> $msg] );
+                }
+                
+                $data_array = json_decode($content, true);
             
-        $body = $response->getBody();
-        $content = $body->getContents();
+                Stock::addOrUpdateStock($data_array['content']);
+                StockPrice::updateOrCreateStockPrice( $data_array['content'] );        
+                StockPrice::updateStockIDs();
+                $time_finish = Carbon::now();
+                $time_elapsed = $time_start->diffInSeconds($time_finish);
 
-        if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
-            $msg = "Scraping failed. No data available. $date_string";
-            Log::warning('Scraping failed. No data available.',['date'=>$date_string,'message'=>$msg]);
-            return response()->json(['message'=>$msg]);
-        }
-        
-        $data_array = json_decode($content, true);
-    
-        // $data = array(["id" => 1262446,"businessDate" => "2020-11-19",
-        //         "securityId" => 2893,"symbol" => "AIL",
-        //         "securityName" => "Ajod Insurance Limited",
-        //         "openPrice" => 530.0,"highPrice" => 574.0,
-        //         "lowPrice" => 527.0,"closePrice" => 563.0,
-        //         "totalTradedQuantity" => 75950,"totalTradedValue" => 41735965.0,
-        //         "previousDayClosePrice" => 526.0,"fiftyTwoWeekHigh" => 580.0,
-        //         "fiftyTwoWeekLow" => 291.0,"lastUpdatedTime" => "2020-11-19T14:59:59.711318",
-        //         "lastUpdatedPrice" => 563.0,"totalTrades" => 1153,"averageTradedPrice" => 549.52]);
-        // StockPrice::updateOrCreateStockPrice($data);        
+                $arr_output = [
+                    'time_taken' => $time_elapsed ."s",
+                    '# records' => count($data_array['content']),
+                    'start_time' => "$time_start",
+                    'end_time' => "$time_finish",
+                ];
 
-        Log::notice('Started scraping from nepalstock',['date' => $date_string]);
-
-        Stock::addOrUpdateStock($data_array['content']);
-        StockPrice::updateOrCreateStockPrice( $data_array['content'] );        
-        StockPrice::updateStockIDs();
-        $time_finish = Carbon::now();
-        $time_elapsed = $time_start->diffInSeconds($time_finish);
-
-        Log::notice('Finished scraping from nepalstock',
-            [
-                'date'=>$date_string, 
-                'time'=>$time_elapsed.' seconds'
-            ]);
-        
-        echo "Time taken : $time_elapsed seconds";
-        return $data_array['content'];
+                Log::info('Scraping nepalstock.', $arr_output);                
+                return response()->json($arr_output);
+                
+            } catch (\Throwable $th) {
+                Log::warning($th->getMessage());
+                return response()->json( ['message'=> $th->getMessage()] );
+            }
     }
 
     /**

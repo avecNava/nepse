@@ -14,51 +14,51 @@
 
 @section('content')
 
-    <div class="sh_dashboard__wrapper">
+    <div class="shareholder_dashboard__wrapper">
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
         @if(!empty($scorecard))
-            <section class="c_score_cards">
+            <section class="score_card__wapper">
 
                 <article>
                     <header>Investment</header>
-                    <main>{{number_format($scorecard['investment'])}}</main>
+                    <main class="value">{{number_format($scorecard['investment'])}}</main>
                     <footer></footer>
                 </article>
 
                 <article>
                     <header>Net worth</header>
-                    <main>{{number_format($scorecard['worth'])}}</main>
+                    <main class="value">{{number_format($scorecard['worth'])}}</main>
                     <footer></footer>
                 </article>
                 
                 <article class="{{$scorecard['gain_class']}}">
                     <header>Net Gain</header>
-                    <main>{{number_format($scorecard['gain'])}}</main>
+                    <main class="value">{{number_format($scorecard['gain'])}}</main>
                     <footer>{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</footer>
                 </article>
 
                 <article title="Previous worth">
                     <header>Prev. worth</header>
-                    <main>{{number_format($scorecard['prev_worth'])}}</main>
+                    <main class="value">{{number_format($scorecard['prev_worth'])}}</main>
                     <footer></footer>
                 </article>
 
                 <article title="Difference between Current and Previous worth" class="{{$scorecard['change_class']}}">
                     <header>Difference</header>
-                    <main>{{number_format($scorecard['change'])}}</main>
+                    <main class="value">{{number_format($scorecard['change'])}}</main>
                     <footer>{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</footer>
                 </article>
 
-                <article class="optional">
+                <article  hidden>
                     <header># Units</header>
-                    <main>{{number_format($scorecard['quantity'])}}</main>
+                    <main class="value">{{number_format($scorecard['quantity'])}}</main>
                     <footer></footer>
                 </article>
 
                 <article>
                     <header># Scripts</header>
-                    <main>{{number_format($scorecard['scripts'])}}</main>
+                    <main class="value">{{number_format($scorecard['scripts'])}}</main>
                     <footer></footer>
                 </article>
                 
@@ -76,7 +76,7 @@
                 <div class="flex js-start al-cntr">
                     <h2 class="title">{{ $shareholder }}</h2>
                     <div class="notification">
-                        ({{count($portfolios)}} scripts)
+                    &nbsp;({{count($portfolios)}} scripts)
                     </div>
                 </div>
 
@@ -93,10 +93,10 @@
                     @php
                         $row = $portfolios->first();
                     @endphp
-                    <form  method="POST" action="/portfolio/export" style="margin:0">
+                    <form  method="POST" action="/portfolio/export" style="margin:0" class="optional">
                         @csrf()
                         <input name="id" type="hidden" value="{{ $row->shareholder_id }}">
-                        <button>Export</button>
+                        <button style="margin:0">Export</button>
                     </form>
 
                 </div>
@@ -106,16 +106,16 @@
             <main>
             <table>
                 <tr>
-                    <th class="c_digit">SN</th>
+                    <th class="c_digit optional">SN</th>
                     <th style="text-align:left">Symbol</th>
                     <th class="c_digit">Quantity</th>
-                    <th class="c_digit">Effective rate</th>
-                    <th class="c_digit">Investment</th>
+                    <th class="c_digit optional">Effective rate</th>
+                    <th class="c_digit optional">Investment</th>
                     <th class="c_digit" title="Last transaction price">LTP</th>
                     <th class="c_digit">Worth</th>
                     <th class="c_digit">Gain</th>
-                    <th class="c_digit">Prev. worth</th>
-                    <th class="c_digit">Change</th>
+                    <th class="c_digit optional">Prev. worth</th>
+                    <th class="c_digit optional">Change</th>
                 </tr>
                 
                 @foreach ($portfolios as $key=>$record)
@@ -136,7 +136,7 @@
                 @endphp
                     
                 <tr id="row-{{ $record->id }}">
-                    <td class="c_digit">{{ $key + 1 }}</td>
+                    <td class="c_digit optional">{{ $key + 1 }}</td>
                     <td style="text-align:left" title="{{ $record->stock_id }}-{{ $record->security_name }}">
                         <a href="{{ 
                                     url('portfolio',
@@ -151,8 +151,8 @@
 
                     </td>
                     <td class="c_digit">{{number_format($quantity)}}</td>
-                    <td class="c_digit">{{number_format($wacc,2)}}</td>
-                    <td class="c_digit">{{ number_format($investment)}}</td>
+                    <td class="c_digit optional">{{number_format($wacc,2)}}</td>
+                    <td class="c_digit optional">{{ number_format($investment)}}</td>
                     <td class="c_digit">{{ number_format($close_price)}}</td>
                     <td class="c_digit">{{ number_format($worth)}}</td>
                     <td class="c_digit">
@@ -168,8 +168,8 @@
                             <div class="{{$gain_class}}_icon"></div>
                         </div>                        
                     </td>
-                    <td class="c_digit" title="Previous price : {{$record->previous_day_close_price}}">{{ number_format($prev_worth)}}</td>
-                    <td>
+                    <td class="c_digit optional" title="Previous price : {{$record->previous_day_close_price}}">{{ number_format($prev_worth)}}</td>
+                    <td class="optional">
                         <div class="c_change">
                             <div>
                                 <span class="change-val">

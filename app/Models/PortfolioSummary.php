@@ -83,11 +83,11 @@ class PortfolioSummary extends Model
                     ->where('stock_id', $stock_id)
                     ->delete();
 
-            info('Portfolio Summary not updated', [
-                'shareholder_id' => $shareholder_id, 
-                'stock_id' => $stock_id, 
-                'quantity' => $quantity, 
-            ]);
+            // info('Portfolio Summary not updated', [
+            //     'shareholder_id' => $shareholder_id, 
+            //     'stock_id' => $stock_id, 
+            //     'quantity' => $quantity, 
+            // ]);
 
             return;
         }

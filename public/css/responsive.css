@@ -14,13 +14,22 @@ div#app, div#container {
     box-shadow: unset;
     width:100%;
 }    
+
+/*welcome page css*/
 .welcome__wrapper section.transactions {
-    width: unset;
+    width: 23em;
     margin: 30px 0;
+}
+.welcome__wrapper .aside {
+    width: 23em;
+}
+.transactions table td:nth-child(2) {
+    max-width: 50px;
 }
 .welcome__wrapper {
     flex-direction: column;
-}   
+    margin: 5px;
+} 
 .message_wrapper p {
     display: inline;
 }
@@ -32,25 +41,32 @@ div#app, div#container {
     display: flex;
 }
 table {border-spacing: 0px; width:98vw;}
-.sectors {width:400px}
-.welcome__wrapper .aside {
-    width: unset !important;
-}
+
 section#top10items article {
     margin: 10px 0;
 }
 .sectors .sector {
-    margin: 0px;
+    margin: 2px 1px;
     padding: 5px;
     background: beige;
     border: 1px solid #CDDC39;
-    width: 50%;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+    width:10em;
 }
+.sectors main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
 #notice .message_wrapper {
     text-align: center;
     font-weight: bold;
+}
+.site-header .optional {
+    display: none;
 }
 .optional {
     display: none;
@@ -98,7 +114,6 @@ div#notice .btn {
 /* faq and guidelines */
 section.faq header, section.guidelines header{margin:10px 0;}
 section.faq h3, section.guidelines h3{display:inline; font-weight: normal;}
-section.faq, section.guidelines { margin: 10px; }
 section.faq li, section.guidelines li{padding-left: 10px;}
 
 section.guidelines li::marker {
@@ -186,6 +201,15 @@ main.c-main {
     flex-direction: column;
     align-items: center;
 }
+.site-logo {
+    width: 108px;
+    height: 88px;
+    background: url(/assets/logo-sm.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 ul.navbar-nav{
     padding:0;
     display: flex;
@@ -210,7 +234,7 @@ header.main-header {
     padding: 10px 15px;
 }
 .navbar-nav a {
-    color: white;
+    color: #000000;
     font-weight: bold;
 }
 
@@ -230,21 +254,6 @@ header.main-header {
     transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
   }
 
-  /* scorecards */
-    section.c_score_cards {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-    }
-  .c_score_cards article {
-    width: 24vw;
-    background: var(--scorecard);
-    padding: 10px;
-    color: #fff;
-    height: 5.5em;
-    font-size: .9em;
-    margin: 1px;
-    }
 
 /*menu links*/
 div#hamburger {
@@ -287,7 +296,7 @@ ul.navbar-nav li:first-child {
     font-weight: bold;
 }
 
-.links a {
+ul.navbar-nav .links a {
     font-weight: bold;
     padding: 0 10px;
 }
@@ -347,12 +356,11 @@ button {
     margin-right: 5px;
 }
 
-section.contact-us__form {
-    margin: 10px;
-}
-
 
 /*layout*/
+article.sales_list main {
+    margin: 10px 20px;
+}
 #share-import-form li {
     list-style-type: disc;
     margin-left: 15px;
@@ -369,11 +377,14 @@ details.form_details summary:focus {
     background: unset;
 }
 
-
 details.form_details h3{
     display: inline;
 }
-
+section.guidelines { margin: 10px 20px; }
+section.faq { margin: 10px; }
+.contact-us__form {
+    margin: 10px 20px;
+}
 .form_content {
     margin: 0 20px;
 }
@@ -386,7 +397,7 @@ details.form_details h3{
     font-weight: bold;
 }
 
-.nav__user__wrapper.optional {
+.nav__user__wrapper {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
@@ -408,10 +419,11 @@ section.feedback__intro {
     margin: 0 20px;
 }
 .summary_main__content #summary {
-    margin: 40px 0;
+    margin: 60px 0;
+    flex-direction: column;
 }
 section.portfolio__form__wrapper main {
-    margin: 0 25px;
+    margin: 0 15px;
 }
 .center-box {
     background: #e3e3b817;
@@ -429,18 +441,149 @@ ul.shareholder-nav li {
     margin: 10px;
 }
 ul.shareholder-nav li::before {
-    content: '🔽';
+    content: '🕸';
+    opacity: .5;
+}
+
+
+/*summary page showcase*/
+
+.shareholder_dashboard__wrapper, .summary__wrapper {
+    margin: 10px;
+}
+table td {
+    line-height: 2em;
+    font-size:.9em;
+}
+.shareholder_dashboard__wrapper table td:nth-child(2) {
+    min-width: 50px;
+}
+.summary__wrapper .showcase__wrapper, .summary__wrapper.score_card__wapper {
+    margin: 20px 0;
+}
+
+/* scorecards */
+.score_card__wapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    width: 100vw;
+}
+.score_card__wapper article {
+    width: calc(93vw/2);
+    background: var(--scorecard);
+    padding: 10px;
+    color: #fff;
+    height: 6.5em;
+    font-size: .9em;
+    margin: 1px;
+    box-sizing: border-box;
+}
+.showcase__wrapper{
+    margin: 20px 0;
+    width: 100vw;
+}
+.showcase__wrapper article {
+    margin-top: 20px;
+    display: flex;
+    border: 1px dashed var(--form-band);
+    padding: 10px;
+    box-shadow: 0 0 4px 0px;
+    flex-wrap: wrap;
+    width: 21.7em;
+}
+
+.profile__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.profile__wrapper .name {
+    padding: 10px 25px;
+    text-align: center;
+}
+.dp-male {
+    width: 150px;
+    height: 150px;
+    background: beige;
+}
+
+p.event {
+    width: 200px;
+}
+
+article.summary .right_section {
+    margin-left: 20px 40px;
+}
+.dp{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 6px -1px #000;
+}
+.dp-male {
+    background: url(/assets/images/mf.jpg) 313px 350px;
+}
+.dp-female {
+    background: url(/assets/images/mf.jpg) -155px -164px;
+}
+.showcase table th {
+    background: revert;
+    height:unset;
+    padding:5px;
+}
+
+div.summary{
+    padding: 20px 0;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.8em;
+}
+.summary>div {
+    display: flex;
+}
+.change div {
+    display: inline-block;
+}
+div.summary>div>span {
+    display: inline-block;
+    width: 121px;
+    margin: 1px 0;
+}
+.showcase__wrapper .right_section {
+    display: none;
+}
+.score_card__wapper main.value {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+    width: auto;
+}
+.name h2 {
+    display: block;
+    width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /*page footer*/
 .page-footer {
     margin-top: 100px;
 }
+footer .flex {flex-direction:column}
+footer .c_info {
+    text-align: center;
+    padding: 20px;
+}
 .links ul { padding:0; }
 .links li {
     list-style-type: none;
-    text-align: center;
     line-height: 2em;
+    text-align: center;
+    padding: 0 10px
 }
 .feedbacks.nav {
     display: flex;
@@ -449,16 +592,12 @@ ul.shareholder-nav li::before {
     flex-direction: column;
 }
 section.links h3 {
-    display: block;
-    text-align: center;
-    padding: 10px 20px;
-    background: rgb(245 245 220 / 18%)
     margin: 20px 0;
-    border-radius: 5px;
+    text-align: center;
 }
-
-.c-social-nav__link {
-    padding-top: 9px;
+span.c-social-nav__link {
+    width: 25px;
+    display: inline-block;
 }
 footer .links a {
     font-weight: normal;

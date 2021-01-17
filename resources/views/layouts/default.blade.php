@@ -41,24 +41,21 @@
             </div>
 
                 <div class="site-info__wrapper">
-
-                    <div class="site-logo">
-                        <a href="/">
-                            <img src="{{ URL::to('assets/nepse-today-logo.png') }}" alt="NEPSE.TODAY">
-                        </a>
-                    </div>                
+                    
+                    <a href="/" title="click to go to the main page">
+                        <div class="site-logo" title="site logo"></div>                
+                    </a>
 
                     <div class="site-header">
 
                         <div class="nav__user__wrapper optional">
 
+                            @auth
                             <div class="flex">
-                                @if(Auth::check())
-                                    <div class="nav__username">
-                                        {{ optional(Auth::user())->name }}&nbsp;
-                                    </div>                                        
-                                @endif
-
+                                <div class="nav__username">
+                                    {{ optional(Auth::user())->name }}&nbsp;
+                                </div>                                        
+                            
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
@@ -70,12 +67,12 @@
                                     </a>
                                 </span>
                             </div>
-
                             @if( $basket > 0) 
                                 <div id="basket-notify">
                                     <a href="{{url('basket')}}" title="View Cart">View cart</a>
                                 </div>
                             @endif
+                            @endauth
 
                         </div>
 
@@ -145,6 +142,13 @@
                             </span>
                         </li>
                         @endauth
+                        @guest
+                        <li>
+                            <a href="{{ route('login') }}">
+                                {{ __('Login') }}
+                            </a>
+                        </li>
+                        @endguest
                     </ul>
                     </nav>
 
@@ -174,7 +178,7 @@
                             <li>
                                 <div class="social-nav">
                                 <span class="c-social-nav__link email">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon icon-tabler icon-tabler-mail" width="24" height="24"  stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 15" class="icon icon-tabler icon-tabler-mail" width="24" height="24"  stroke-width="1.2" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z"/>
                                         <rect x="3" y="5" width="18" height="14" rx="2" />
                                         <polyline points="3 7 12 13 21 7" />
