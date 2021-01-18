@@ -113,6 +113,7 @@
                         <li class="{{ MyUtility::urlMatch('login') ? 'selected' : '' }}">
                             <a href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
+                        <li></li>
                         @endguest
 
                         @auth

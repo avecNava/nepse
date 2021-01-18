@@ -450,6 +450,7 @@ section.sales summary {
 
     ul.navbar-nav li:first-child {display: none;}
     ul.navbar-nav li:last-child {display: none;}        /*hide the logout button in big screen*/
+    
 
     .feedbacks.nav li {
         text-align: left;
