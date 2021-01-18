@@ -23,7 +23,7 @@ tfoot td {
 }
 </style>
 
-    <div class="c_portfolio_container">
+    <div id="portfolio-detail">
    
 
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
@@ -63,10 +63,10 @@ tfoot td {
             if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
         @endphp
         
-        <section id="portfolio-detail">
+        <section>
 
-            <div class="flex js-apart">
-                <div>
+            <div class="ps__wrapper">
+                <div class="shareholder-info">
                     <h2>
                         <a href="{{ url('portfolio', [ $info['uuid'] ]) }}">
                             {{ $info['shareholder'] }}
@@ -74,6 +74,24 @@ tfoot td {
                     </h2> 
                     <h3 class='highlight'>{{$info['security_name']}}</h3>
                     <h3>{{$info['sector']}}</h3>
+
+                    <section id="basket" class="item basket">
+                    <header>
+                        <h3>Add to Sales basket</h3>
+                        @csrf()                    
+                    </header>
+                    <div style="padding:10px 0">
+                        <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                            <input type="number" name="sell_quantity" id="sell_quantity" 
+                            data-uuid="{{  $info['uuid'] }}"
+                            data-stock-id="{{  $info['stock_id'] }}">
+                        </label>
+                        <button onClick="addToBasket()">Add to basket</button>&nbsp;
+                        <span class='button'><a href="{{url('basket')}}">View basket</a></span>
+                    </div>
+                    <div id="basket_message"></div>
+                </section>
+                
                 </div>
                 <div class="flex js-start">
                     <div class="stock left">
@@ -156,23 +174,6 @@ tfoot td {
                 </div>
             </div>
       
-            <section id="basket" class="item basket">
-                <header>
-                    <h3>Add to Sales basket</h3>
-                    @csrf()                    
-                </header>
-                <div style="padding:10px 0">
-                    <label for="sell_quantity">Quantity &nbsp;&nbsp;
-                        <input type="number" name="sell_quantity" id="sell_quantity" 
-                        data-uuid="{{  $info['uuid'] }}"
-                        data-stock-id="{{  $info['stock_id'] }}">
-                    </label>
-                    <button onClick="addToBasket()">Add to basket</button>&nbsp;
-                    <span class='button'><a href="{{url('basket')}}">View basket</a></span>
-                </div>
-                <div id="basket_message"></div>
-            </section>
-
 
             @php 
                 $hidden = 'hidden';
@@ -289,19 +290,19 @@ tfoot td {
                             <input type="text" name="receipt_number" id="receipt_number" 
                             value="{{ old('receipt_number') }}"/>
                         </div>
-                        <div class="form-field">
+                        <div class="form-field optional">
                             <label for="tags"
                             class="@error('tags') is-invalid @enderror">Tags</label>
                             <input type="text" name="tags" id="tags" 
                             value="{{ old('tags') }}"/>
                         </div>
-                        <div class="form-field">
+                        <div class="form-field optional">
                             <label for="purchase_date"
                             class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
                             <input type="date" name="purchase_date" id="purchase_date" 
                             value="{{ old('purchase_date') }}"/>
                         </div>
-                        <div class='action-buttons form-field'>
+                        <div class='flex'>
                             <button type="submit" class="focus">Save</button>
                             <button id="cancel" type="reset">Cancel</button>
                         </div>
@@ -369,16 +370,16 @@ tfoot td {
                     <thead>
                     <tr>
                         <th>Symbol</th>
-                        <th>Offering type</th>
+                        <th class="optional">Offering type</th>
                         <th class="c_digit">Quantity</th>
                         <th class="c_digit">Unit cost</th>
                         <th class="c_digit" title="Effective rate">Eff. rate</th>
-                        <th class="c_digit">Total amount</th>
+                        <th class="c_digit optional">Total amount</th>
                         <th class="c_digit">LTP</th>
                         <th class="c_digit">Worth</th>
                         <th class="c_digit">Gain</th>
-                        <th class="c_digit">Purchase date</th>
-                        <th>Tags</th>
+                        <th class="c_digit optional">Purchase date</th>
+                        <th class="optional">Tags</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -396,18 +397,20 @@ tfoot td {
                         <tr id="row-{{ $record->id }}">
                             
                             <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
+                                <div style="display:flex;flex-wrap:nowrap">
                                 @if( !empty($record))
-                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">&nbsp;
+                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">
                                     <label for="chk-{{ $record->id }}" style="padding:5px">
                                         {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
                                     </label>
                                 @endif
+                                </div>
                             </td>
-                            <td title="{{$record->offer_name}}">{{$record->offer_code}}</td>
+                            <td title="{{$record->offer_name}}" class="optional">{{$record->offer_code}}</td>
                             <td class="c_digit">{{ $qty }}</td>
                             <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
                             <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
-                            <td class="c_digit">{{ number_format($record->total_amount) }}</td>
+                            <td class="c_digit optional">{{ number_format($record->total_amount) }}</td>
                             <td class="c_digit">{{ number_format($ltp) }}</td>
                             <td class="c_digit">{{ number_format($worth) }}</td>
                             <td class="c_digit">
@@ -423,7 +426,7 @@ tfoot td {
                                     <div class="{{$gain_class}}_icon"></div>
                                 </div>
                             </td>
-                            <td class="c_digit">{{$record->purchase_date}}</td>
+                            <td class="c_digit optional">{{$record->purchase_date}}</td>
                             <td>{{$record->tags}}</td>
                         </tr>
                         @endforeach   

@@ -114,36 +114,6 @@ input[readonly] {
 .form-field span {
     text-transform: capitalize;
 }
-button.focus {
-    background-color: #6b64a0;
-    color: white;
-    border: 1px solid var(--color-orange-light70);
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: .15em;
-}
-.form-field .buttons {
-    background: #f0f8ff85;
-    border-radius: 5px;
-    text-align: right;
-    padding: 5px 0;
-}
-.icon-buttons button {
-    border: 0px;
-    min-width: 45px !important;
-    font-size: 16px;
-    padding: 3px;
-    height: 2em;
-    box-shadow:  1px 1px 0px;
-    margin: 0;
-    margin-left: 5px;
-}
-.small-buttons button {
-    padding: 0 10px;
-    color: #607D8B;
-    min-width: 50px !important;
-    font-size: 14px;
-}
 
 .card-header {
     margin-bottom: 20px;
@@ -483,31 +453,6 @@ section.sales summary {
     line-height: 35px;
 }
 
-
-/* form section inside portfolio details */
-#portfolio-detail {
-    background: beige;
-    padding: 20px;
-    position: relative;
-}
-#portfolio-detail .stock div {
-    margin-top: 5px;
-    margin-right: 50px;
-}
-#portfolio-form__wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: beige;
-    transition: display 10s ease-in 12s;
-    height:415px;
-}
-div#portfolio-form__wrapper form {
-    display: flex;
-}
-div#portfolio-form__wrapper section {
-    margin: 0 10px;
-}
 .display-label {
     margin: 10px 0;
     max-width: 200px;
@@ -524,29 +469,7 @@ div#portfolio-form__wrapper section {
     color:red;
     font-weight: bold;
 }
-.c_info_band {
-    margin: 20px 0;
-}
 
-.item.basket {
-    margin: 10px 0;
-    background: #f1f1d7;
-    padding: 10px;
-}
-item.basket header {
-    display: flex;
-    align-items: center;
-}
-.item.basket header {
-    display: flex;
-    align-items: center;
-}
-.item.basket h2 {
-    margin-right: 30px;
-}
-.value {
-    width: 200px;
-}
 
 /* verification */
 .card-body button {
@@ -565,7 +488,8 @@ item.basket header {
 
 
 /* screens other than mobile */
-@media only screen and (min-width: 400px){
+/* 575px=35.938em */
+@media only screen and (min-width: 575px){
 
     div#app, div#container {
         margin: 0 auto;
@@ -652,34 +576,29 @@ item.basket header {
     }
 
     /*summary paage showcase*/
-    .score_card__wapper article {
-        width: 13em;
-        height: calc(100vh/7);
-    }
-    .shareholder_dashboard__wrapper .score_card__wapper  article{
-        width: 11em;
-    }
     .summary__wrapper {
         margin: 20px;
-        width: 91vw;
+        width: revert;
     }
-    .summary__wrapper .score_card__wapper {
-        flex-wrap: nowrap;
+    .showcase__wrapper, .score_card__wapper {
         margin:30px 0;
+        width: 100%;
     }
+
     .score_card__wapper article {
         font-size: 1.2em;
+        width: 19.1%;
     }
     .score_card__wapper main.value {
         text-align: center;
         font-size: 2em;
     }
+    
     .showcase__wrapper article {
         flex-wrap: nowrap;
         margin: 40px 0;
-        width: 78.5em;
+        width: 99%;
     }
-   
 
     .showcase__wrapper .left_section {
         padding: 10px;
@@ -706,11 +625,32 @@ item.basket header {
     }
     .sectors .sector {
         margin: 4px;
-        width:11em;
+        width: 48.3%;
     }
     
     
     /* layout */
+
+    /* portfolio detail */
+
+    /* form section inside portfolio details */
+    #portfolio-detail .ps__wrapper {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    div#portfolio-form__wrapper form {
+        flex-direction: row;
+        box-shadow: inset 0 0 7px -2px;
+        width: 98%;
+        padding: 20px;
+    }
+    #portfolio-form__wrapper {
+        position: absolute;
+        top: 0;
+        background: #f7f7f7;
+        width: auto;
+    }
+
 
     section.guidelines, section.faq {
         margin: 10px 60px;
@@ -820,10 +760,20 @@ item.basket header {
 
 }
 
-@media only screen and (min-width: 1101px){
+@media only screen and(min-wdth:400px) and(max-width: 1000px){
 
     div#app, div#container {
+        --screen-width:60em;
         margin: 0 auto;
-        width: 1300px;
+        width: var(--screen-width);
+    }
+}
+
+@media only screen and (min-width: 1200px){
+
+    div#app, div#container {
+        --screen-width:90em;
+        margin: 0 auto;
+        width: var(--screen-width);
     }
 }

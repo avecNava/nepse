@@ -56,7 +56,7 @@
                     <footer></footer>
                 </article>
 
-                <article>
+                <article hidden>
                     <header># Scripts</header>
                     <main class="value">{{number_format($scorecard['scripts'])}}</main>
                     <footer></footer>

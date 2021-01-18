@@ -31,17 +31,6 @@
     }
 
 </style>
-    <section id="top-nav" class="optional">
-        <div></div>
-        <div class="links">
-            <div class="link selected">
-                <a href="{{url('faq')}}" title="Frequently asked questions">FAQs</a>
-            </div>
-            <div class="link">
-                <a href="{{url('guidelines')}}" title="Guidelines">Guidelines</a>
-            </div>
-        </div>
-    </section>
 
     <section class="faq">
     <header>

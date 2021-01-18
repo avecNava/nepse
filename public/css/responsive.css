@@ -17,11 +17,7 @@ div#app, div#container {
 
 /*welcome page css*/
 .welcome__wrapper section.transactions {
-    width: 23em;
     margin: 30px 0;
-}
-.welcome__wrapper .aside {
-    width: 23em;
 }
 .transactions table td:nth-child(2) {
     max-width: 50px;
@@ -53,7 +49,7 @@ section#top10items article {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width:10em;
+    width:17em;
 }
 .sectors main {
     display: flex;
@@ -325,15 +321,6 @@ input, select {
     width:60vw;
 }
 
-button {
-    min-width: 100px;
-    border: 1px solid #97c7ce;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #214b252e;
-    height3em;
-    padding: 0 20px;
-}
-
 input[type="checkbox"], input[type="radio"] {
     width: 20px;
     vertical-align: middle;
@@ -347,19 +334,95 @@ input[type="file"] {
     font-family: 'Cutive';
 }
 
-
 button {
     border: 1px solid #97c7ce;
     height: 2.5em;
     padding: 0 15px;
     margin: 5px 0 5px 0;
     margin-right: 5px;
+    border: 1px solid #97c7ce;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #214b252e;
+}
+
+button.focus {
+    background-color: #6b64a0;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: .15em;
+}
+/* .form-field .buttons {
+    background: #f0f8ff85;
+    border-radius: 5px;
+    text-align: right;
+    padding: 5px 0;
+}
+.icon-buttons button {
+    border: 0px;
+    min-width: 45px !important;
+    font-size: 16px;
+    padding: 3px;
+    height: 2em;
+    box-shadow:  1px 1px 0px;
+    margin: 0;
+    margin-left: 5px;
+}
+.small-buttons button {
+    padding: 0 10px;
+    color: #607D8B;
+    min-width: 50px !important;
+    font-size: 14px;
+} */
+
+/*layout*/
+
+.c_portfolio_container .flex {
+    flex-wrap: wrap;
+}
+
+#portfolio-detail .stock {
+    padding: 0 20px;
+    line-height: 1.7em;
+}
+
+#portfolio-detail {
+    padding: 20px 10px;
+    position: relative;
+}
+
+div#portfolio-form__wrapper form {
+    display: flex;
+    flex-direction: column;
+    background: #f7f7f7;
+    width: 100vw;
+}
+div#shareholder-form {
+    width: 100vw;
+    background: #f7f7f7;
+}
+
+.shareholder-info {
+    width: 40%;
 }
 
 
-/*layout*/
+.item.basket {
+    background: beige;
+    padding: 10px;
+}
+
+.item.basket header {
+    display: flex;
+    align-items: center;
+}
+.item.basket h2 {
+    margin-right: 30px;
+}
+
+
 article.sales_list main {
-    margin: 10px 20px;
+    margin: 10px;
 }
 #share-import-form li {
     list-style-type: disc;
@@ -472,11 +535,11 @@ table td {
 .score_card__wapper article {
     width: calc(93vw/2);
     background: var(--scorecard);
-    padding: 10px;
+    padding: 5px;
+    margin: 5px;
     color: #fff;
     height: 6.5em;
     font-size: .9em;
-    margin: 1px;
     box-sizing: border-box;
 }
 .showcase__wrapper{
@@ -484,13 +547,14 @@ table td {
     width: 100vw;
 }
 .showcase__wrapper article {
-    margin-top: 20px;
+    margin: 20px 2px;
     display: flex;
     border: 1px dashed var(--form-band);
     padding: 10px;
     box-shadow: 0 0 4px 0px;
     flex-wrap: wrap;
-    width: 21.7em;
+    width: 95%;
+    justify-content: center;
 }
 
 .profile__wrapper {
