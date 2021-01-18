@@ -9,8 +9,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Import Stocks</h1>
-    <h2>Mero Share</h2>
+    <h1 class="c_title">Import Stocks (MeroShare)</h1>
 @endsection
 
 @section('content')
@@ -123,7 +122,7 @@
                         </div>
 
                         <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                            <label for="shareholder"><strong>Shareholder</strong></label>   <br/>
+                            <label for="shareholder"><strong>Shareholder</strong></label> 
                             <select name="shareholder" id="shareholder">
                                 <option value="">Shareholder name</option>
                                 @if (!empty($shareholders))
@@ -147,7 +146,7 @@
                         <div class="form-field">
                             <div class="c_btn">
                                 <button type="submit" class="focus">Import</button>
-                                <button  onClick="closeForm('meroshare-import-form')" type="reset">Cancel</button>
+                                <button  onClick="closeForm()" type="reset">Cancel</button>
                             </div>
                         </div>
 
@@ -200,7 +199,7 @@
                     @endphp
                         
                     @if( count($transactions)>0 )
-                    <div class="notification">
+                    <div class="notification optional">
                         ({{count($transactions)}} records)
                     </div>
                     @endif
@@ -208,7 +207,7 @@
                 </div>
 
                 <div class="buttons">
-                    <button id="import-meroshare-portfolio" onClick="importMeroShareTransactions()">Save to Portfolio</button>
+                    <button id="import-meroshare-portfolio" onClick="importMeroShareTransactions()">Send to Portfolio</button>
                     <button id="delete-meroshare"  onClick="deleteMeroShareTransactions()">Delete</button>
                 </div>
                
@@ -219,17 +218,23 @@
           
             <table>
                 <tr>
-                    <th style="text-align:left"><label for="select_all">
-                        <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">&nbsp;Symbol</label>
+                    <th>
+
+                        <div class="flex al-cntr">
+                            <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
+                            <label for="select_all">&nbsp;Symbol</label>
+                            
+                        </div>
+
                     </th>
                     <!-- <th title="Stock ID">ID</th> -->
                     <th class="c_digit">Cr.</th>
                     <th class="c_digit">Dr.</th>
                     <th class="c_digit">Desc</th>
-                    <th class="c_digit">Offer</th>
-                    <th class="c_digit" title="Transaction date">Transaction date</th>
-                    <th>Shareholder</th>
-                    <th>Remarks</th>
+                    <th>Offer</th>
+                    <th class="c_digit optional" title="Transaction date">Transaction date</th>
+                    <th> <div class="td-clip">Shareholder</div></th>
+                    <th class="optional td-clip">Remarks</th>
                 </tr>
                 @if(count($transactions)<=0)
                     <tr>
@@ -256,7 +261,7 @@
                 @endphp
 
                 <tr>                    
-                    <td>
+                    <td class="flex al-cntr">
                         @if ( !empty($stock_id) )
                             <input type="checkbox" name="t_id" id="{{ $trans->id }}">
                         @endif
@@ -270,14 +275,16 @@
                     <td class="c_digit">{{ $trans->credit_quantity }}</td>
                     <td class="c_digit">{{ $trans->debit_quantity }}</td>
                     <td class="c_digit">{{ $trans->transaction_mode }}</td>
-                    <td class="c_digit">{{ $trans->offer_code }}</td>
-                    <td class="c_digit">{{ $trans->transaction_date }}</td>
+                    <td style="margin-left:10px" class="td-clip-75" title="{{ $trans->offer_code }}">{{ $trans->offer_code }}</td>
+                    <td class="c_digit optional">{{ $trans->transaction_date }}</td>
                     <td>
+                    <div style="margin-left:10px" class="td-clip" title="{{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}">
                         @if( !empty($trans->shareholder) )
                             {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
                         @endif
+                    </div>
                     </td>
-                    <td>{{ $trans->remarks }}</td>
+                    <td class="optional"><div title="{{ $trans->remarks }}" style="margin-left:10px" class="td-clip">{{ $trans->remarks }}</div></td>
                 </tr>
                 @endforeach            
             </table>

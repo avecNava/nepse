@@ -9,8 +9,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Import Stocks</h1>
-    <h2>Spreadsheet</h2>
+    <h1 class="c_title">Import Stocks (Spreadsheet)</h1>
 @endsection
 
 @section('content')
@@ -87,7 +86,7 @@
                         </div>
 
                         <div class="form-field" title="Choose a shareholder under whom the file will be imported.">
-                            <label for="shareholder"><strong>Shareholder</strong></label><br/>
+                            <label for="shareholder"><strong>Shareholder</strong></label>
                             <select name="shareholder" id="shareholder" onChange="">
                                 <option value="">Shareholder name</option>
                                 @if (!empty($shareholders))
@@ -146,7 +145,8 @@
 
     <article class="import-list">
         
-        <div id="message" class="message error"></div>
+        <div id="message" class="message"></div>
+        
         <header class="info">
             
             <div class="flex js-apart al-end">
@@ -166,7 +166,7 @@
                     @endphp
                     
                     @if( count($transactions)>0 )
-                    <div class="notification">
+                    <div class="notification optional">
                         ({{count($transactions)}} records)
                     </div>
                     @endif
@@ -185,18 +185,21 @@
     <main class="transactions">
         <table>
             <tr>
-                <th style="text-align:left"><label for="select_all">
-                    <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">&nbsp;Symbol</label>
+                <th>
+                    <div class="flex al-cntr">
+                        <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
+                        <label for="select_all">&nbsp;Symbol</label>
+                    </div>
                 </th>
                 <!-- <th title="Stock ID">ID</th> -->
-                <th class="c_digit">Quantity</th>
-                <th class="c_digit">Unit cost</th>
-                <th class="c_digit">Effective rate</th>
+                <th class="c_digit" title="Quantity">Qty</th>
+                <th class="c_digit optional">Unit cost</th>
+                <th class="c_digit">Eff. rate</th>
                 <th class="c_digit">Total Cost</th>
-                <th class="c_digit">Offering type</th>
-                <th class="c_digit">Purchase date</th>
-                <th>Shareholder</th>
-                <th>Remarks</th>
+                <th><div class="td-clip-75">Offering type</div></th>
+                <th class="c_digit optional">Purchase date</th>
+                <th > <div class="td-clip">Shareholder</div></th>
+                <th class="optional">Remarks</th>
             </tr>
             @if(count($transactions)<=0)
                     <tr>
@@ -225,7 +228,7 @@
 
             <tr>
                 
-                <td>
+                <td class="flex al-cntr">
                     @if ( !empty($stock_id) )
                         <input type="checkbox" name="t_id" id="{{ $trans->id }}">
                     @endif
@@ -237,17 +240,19 @@
 
                 <!-- <td>{{ $stock_id }}</td> -->
                 <td class="c_digit">{{ $trans->quantity }}</td>
-                <td class="c_digit">{{ $trans->unit_cost }}</td>
+                <td class="c_digit optional">{{ $trans->unit_cost }}</td>
                 <td class="c_digit">{{ number_format($trans->effective_rate, 2) }}</td>
                 <td class="c_digit">{{ number_format($trans->effective_rate * $trans->quantity, 1) }}</td>
-                <td class="c_digit">{{ $trans->offer_code }}</td>
-                <td class="c_digit">{{ $trans->purchase_date }}</td>
-                <td>
+                <td class="td-clip-75" style="margin-left:10px" title="{{ $trans->offer_code }}">{{ $trans->offer_code }}</td>
+                <td class="c_digit optional">{{ $trans->purchase_date }}</td>
+                <td style="margin-left:10px">
+                    <div class="td-clip" title="{{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}">
                     @if( !empty($trans->shareholder) )
                         {{ $trans->shareholder->first_name }} {{ $trans->shareholder->last_name }}
                     @endif
+                    </div>
                 </td>
-                <td>{{ $trans->description }}</td>
+                <td style="margin-left:10px" class="optional td-clip">{{ $trans->description }}</td>
             </tr>
             @endforeach            
         </table>

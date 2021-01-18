@@ -107,7 +107,7 @@
                     <table>
                     <thead>
                         <tr>
-                            <th>Sales date</th>
+                            <th class="optional">Sales date</th>
                             <th>Symbol</th>
                             <th class="c_digit">Qty</th>
                             <th class="c_digit">Cost Price</th>
@@ -129,7 +129,7 @@
                             
                             <tr>
                                 
-                                <td>{{ $record->sales_date }}</td>
+                                <td  class="optional">{{ $record->sales_date }}</td>
                                 <td title="{{ $record->share->id }}-{{ $record->share->security_name }}">
                                     {{ $record->share->symbol }}
                                 </td>

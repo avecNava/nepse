@@ -217,7 +217,7 @@
                         <label for="remarks" class="@error('remarks') is-invalid @enderror">Remarks</label>
                     </div> 
                     <div>
-                        <textarea name="remarks" rows="5" cols="30"> {{old('remarks')}} </textarea>
+                        <textarea name="remarks" rows="5" cols="30">{{old('remarks')}}</textarea>
                     </div>
 
                 </div>

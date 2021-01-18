@@ -51,7 +51,7 @@
                         <div class="nav__user__wrapper optional">
 
                             @auth
-                            <div class="flex">
+                            <div class="flex al-end">
                                 <div class="nav__username">
                                     {{ optional(Auth::user())->name }}&nbsp;
                                 </div>                                        
@@ -59,7 +59,7 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                                <span class="nav__logout">
+                                <span class="nav__logout" style="padding:1px 0">
                                     <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
@@ -67,11 +67,7 @@
                                     </a>
                                 </span>
                             </div>
-                            @if( $basket > 0) 
-                                <div id="basket-notify">
-                                    <a href="{{url('basket')}}" title="View Cart">View cart</a>
-                                </div>
-                            @endif
+                          
                             @endauth
 
                         </div>
@@ -114,19 +110,18 @@
                             </div>
                             @endif
                         </li>
-                        <li class="{{MyUtility::urlMatch('login')?'selected':''}}">
-                            @if (Route::has('login'))
-                                <a href="{{ route('login') }}">Login</a>
-                            @endif
+                        <li class="{{ MyUtility::urlMatch('login') ? 'selected' : '' }}">
+                            <a href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         @endguest
+
                         @auth
                         <li class="{{MyUtility::urlMatch('portfolio')?'selected':''}}"><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                        <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New Share</a></li>
+                        <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New</a></li>
                         <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
                         <li>                            
                             @if( $basket > 0) 
-                                <a href="{{url('basket')}}" title="View Cart">View cart</a>
+                                <a href="{{url('basket')}}" title="View Cart">Cart</a>
                             @endif
                         </li>
                         <li>
@@ -142,13 +137,6 @@
                             </span>
                         </li>
                         @endauth
-                        @guest
-                        <li>
-                            <a href="{{ route('login') }}">
-                                {{ __('Login') }}
-                            </a>
-                        </li>
-                        @endguest
                     </ul>
                     </nav>
 

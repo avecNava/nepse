@@ -20,10 +20,6 @@ body {
 
 /* layout */
 
-.share_import__wrapper summary {
-    text-align: right;
-}
-
 div#container, div#app {
     box-shadow: 1px 1px 19px 4px #ddd;
 }
@@ -78,25 +74,6 @@ section.header {margin: 15px 0; }
 #basket main#carts { margin: 50px 0; }
 /*page footer*/
 
-.portfolio__content  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-main.transactions td:last-child {
-    font-size: 13px;
-    text-align: right;
-}
-main.transactions td {
-    line-height: 25px;
-}
-.portfolio.nav ul {
-    margin: 0;
-}
-.portfolio.nav * {
-    text-align: right;
-}
 .copyright {
     padding: 10px;
     text-align: center;
@@ -215,24 +192,6 @@ tr.separator {
     width: auto;
 }
 
-/*share import*/
-#share-import-form input[type=file] {
-    width: 300px;
-}
-.import__instructions {
-    margin: 0 10px;
-    font-size: 15px;
-    line-height: 30px;
-    width:750px;
-}
-
-#share-import-form main{
-    display: flex;
-}   
-#share-import-form .form {
-    background: #fafafa;
-    padding: 5px 10px;
-}
 .link_menu {
     font-size: 20px;
     font-weight: bold;
@@ -243,63 +202,6 @@ tr.separator {
     align-items: center;
 }
 
-/*modal dialog*
-
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  div#myModal li {
-    margin: 1.2em;
-    font-size: 20px;
-}
-
-div#myModal #modal-message {
-    font-size: 20px;
-    font-weight: bold;
-    color: green;
-}
-
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: auto; 
-    margin-top:20px;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 75%; /* Could be more or less, depending on screen size */
-  }
-
-  .modal-content ul {
-    padding: 0;
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  /* end of modal */
 
 /*portfolio css*/
 
@@ -547,33 +449,29 @@ section.sales summary {
     }
 
     ul.navbar-nav li:first-child {display: none;}
-    ul.navbar-nav li:last-child {display: none;}
-    ul.navbar-nav li:nth-child(6) {display: none;}
+    ul.navbar-nav li:last-child {display: none;}        /*hide the logout button in big screen*/
 
     .feedbacks.nav li {
         text-align: left;
         padding: 0 5px;
     }
 
-    #top-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-        margin: 5px 0;
+    /*text clip*/
+    .td-clip {
+        min-width: 200px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
     }
-    section#top-nav .label {
-        padding: 0 10px;
+    .td-clip-75 {
+        width: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
     }
-    #top-nav .links {
-        display: flex;
-    }
-    #top-nav .link {
-        padding: 10px 15px;
-        background: beige;
-        margin: 2px;
-        border-radius: 5px;
-    }
+    
 
     /*summary paage showcase*/
     .summary__wrapper {
@@ -651,6 +549,20 @@ section.sales summary {
         width: auto;
     }
 
+    /*shareholder*/
+    .form.c_shareholder_list header {
+        flex-direction: row;
+    }
+    div#shareholder-form {
+        width: 100%;
+    }
+
+    /*import share*/
+    section#share-import-form main {
+        flex-direction: row;
+    }
+
+    /*faq and guidelines*/
 
     section.guidelines, section.faq {
         margin: 10px 60px;
@@ -717,6 +629,18 @@ section.sales summary {
         color: #4CAF50;
         margin: 0 10px;
     }
+
+      
+  /* Modal Content/Box */
+  .modal-content {
+    margin: auto; 
+    margin-top:20px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 75%; /* Could be more or less, depending on screen size */
+  }
+
+  /* input buttons */
 
     select, input {
         width: 15vw;

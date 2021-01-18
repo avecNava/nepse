@@ -151,9 +151,9 @@
         <header class="info flex js-apart al-cntr">  
 
             <div class="flex js-together al-cntr ">
-                <h2 class="title">Shareholders</h2>
+                <h2 class="title">Shareholders</h2>&nbsp;
                 <div class="notification">
-                    ({{count($shareholders)}} shareholders)
+                    ({{count($shareholders)}} records)
                 </div>
             </div>
 

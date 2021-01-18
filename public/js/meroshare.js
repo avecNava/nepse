@@ -33,8 +33,9 @@
     }
     
     //cancel button click, hide the form
-    function closeForm($name){
-        hideForm($name);
+    function closeForm(){
+        const temp = document.querySelector('details.form_details');
+        temp.removeAttribute('open');
     }
     
     //display selected count (select all)    
