@@ -15,7 +15,6 @@ class UserLogoutListener
     public function __construct()
     {
         //
-        info('logout');
     }
 
     /**
@@ -26,7 +25,7 @@ class UserLogoutListener
      */
     public function handle($event)
     {   
-        Log::info('Logout ', [$event->user->name]);
+        info('Logout, User id :', [ session()->get('tenant_id') ]);
         session()->forget('tenant_id');
         session()->forget('basket');
     }

@@ -185,6 +185,11 @@
                                 
                             </table>
                         </div>
+                        @php
+                            $top_loss = $arr_gainloss[$key]['loss'];
+                            $uuid = $row['uuid'];
+                        @endphp
+                        @if(count($top_loss) > 0)
                         <div class="top5loss">
                             <h3>Top Losses</h3>
                             <table>
@@ -192,10 +197,7 @@
                                     <th>Symbol</th>
                                     <th>Losses</th>
                                 </tr>
-                                @php
-                                    $top_loss = $arr_gainloss[$key]['loss'];
-                                    $uuid = $row['uuid'];
-                                @endphp
+                                
                                 @foreach ($top_loss as $record)
                                 @if($record['gain'] < 0)
                                 <tr>
@@ -211,6 +213,7 @@
                                 
                             </table>
                         </div>
+                        @endif
                         <!-- <div class="events">
                             <h3>Events</h3>
                             <div class="event">

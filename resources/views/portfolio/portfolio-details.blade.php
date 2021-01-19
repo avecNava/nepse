@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Portfolio details</h1>
+    <h1 class="c_title">Portfolio detail</h1>
 @endsection
 
 @section('js')
@@ -346,24 +346,19 @@ tfoot td {
             </div>
             @endif
 
-            <header class="info">
+            <header class="info js-apart flex al-end">
                 @php
                     $count = count($portfolios);
                     $quantity = $portfolios->sum('quantity');
                     $count_str = ($count <= 1) ? ' record' :' records';
                 @endphp
                 
-                <div>
-                    <h3>{{$count}} {{$count_str}} [{{$quantity}} units]</h3>
+                <h3>{{$count}} {{$count_str}} ({{$quantity}} units)</h3>
+                <div class="flex al-cntr">
+                    <button id="new">New</button>
+                    <button id="edit">Edit</button>
+                    <button id="delete">Delete</button>
                 </div>
-                <div class="buttons">
-                    <div class="action-buttons">
-                        <button id="new">New</button>
-                        <button id="edit">Edit</button>
-                        <button id="delete">Delete</button>
-                    </div>
-                </div>
-
 
             </header>
             <main>
