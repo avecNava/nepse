@@ -53,7 +53,9 @@ Route::get('mail', function(){
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
+Route::get('account/register', function(){
+    return redirect('register');
+});
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}', [ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);

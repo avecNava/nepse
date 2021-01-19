@@ -482,7 +482,7 @@ section.sales summary {
 
     .score_card__wapper article {
         font-size: 1.2em;
-        width: 19.1%;
+        width: 19%;
     }
     .score_card__wapper main.value {
         text-align: center;
@@ -520,7 +520,7 @@ section.sales summary {
     }
     .sectors .sector {
         margin: 4px;
-        width: 48.3%;
+        width: 34%;
     }
     
     
@@ -588,10 +588,11 @@ section.sales summary {
         display: flex;
     }
     .welcome__wrapper section.transactions {
-        width: 57em;
+        width: 67%;
     }
     .welcome__wrapper .aside{
         margin-left:10px;
+        width:30%;
     }
     /* todo: check this out */
     /* .summary_main__content {
@@ -646,9 +647,19 @@ section.sales summary {
   /* input buttons */
 
     select, input {
-        width: 15vw;
+        width: 25%;
+    }
+    .form-field {width:revert;}
+    .form-field input, .form-field select {
+        width: 50%;
+    }
+    .form-field input[type="date"] {
+        width: 25%;
     }
 
+    #portfolio-form__wrapper .form-field input[type="date"] {
+        width: 50%;
+    }
     textarea {
         font-size: 18px;
         margin: 0 5px;
@@ -696,11 +707,16 @@ section.sales summary {
     }
 }
 
-@media only screen and (min-width: 1200px){
+/* @media only screen and (min-width: 1200px){
 
     div#app, div#container {
-        --screen-width:90em;
+        --screen-width:75em;
         margin: 0 auto;
         width: var(--screen-width);
     }
-}
+    .sectors .sector {
+        margin: 4px;
+        width: 48.3%;
+    }
+
+} */

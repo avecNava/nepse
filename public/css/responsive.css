@@ -130,10 +130,11 @@ section.guidelines ul {
 }
 .highlighted {
     background: beige;
-    transition: 1s;
+    /* transition: 1s; */
     transform: perspective(20px);
-    box-shadow: 1px 1px 2px 0px #6b64a0;
+    box-shadow: 0px 1px 6px -1px #6b64a0;
     border-radius: 5px;
+    padding: 5px 10px;
 }
 
 /* input elements */
@@ -151,6 +152,9 @@ input[type="title"] {
 input[type="file"]{
     width: 90vw;
     border: 1px solid #c4c8ae;
+}
+.g-recaptcha {
+    margin-top: 10px;
 }
 .portfolio__form, .contact-us__form {
     display: flex;
