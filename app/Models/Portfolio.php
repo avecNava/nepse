@@ -195,7 +195,6 @@ class Portfolio extends Model
      */
     public static function createRandomRecord($shareholder)
     {
-        info('Portfolio: create sample records');
 
         //1. get random 3 stocks 
         info('1. Obtained random stocks');
@@ -230,6 +229,8 @@ class Portfolio extends Model
                 $item->stock_id
             );
         });
+
+        Log::info('Created sample portfolio', [optional(Auth::user())->name]);
     }
 
     public static function calculateWACC(int $shareholder, int $stock)

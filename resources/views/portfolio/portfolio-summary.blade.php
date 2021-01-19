@@ -141,13 +141,19 @@
                                 </tr>
                                 @php
                                     $top_grossing = $arr_grossing[$key];
+                                    $uuid = $row['uuid'];
                                 @endphp
-                                @foreach ($top_grossing as $row)
+                                @foreach ($top_grossing as $record)
                                 <tr>
-                                    <td><abbr title="{{ $row['name'] }}">{{ $row['symbol'] }}</abbr></td>
-                                    <td class="c_digit">{{ $row['quantity'] }}</td>
-                                    <td class="c_digit">{{ number_format($row['ltp']) }}</td>
-                                    <td class="c_digit">{{ number_format($row['worth']) }}</td>
+                                    
+                                    <td>
+                                        <a href="{{ url('portfolio',[ $record['symbol'], $uuid ]) }}">
+                                            <abbr title="{{ $record['name'] }}">{{ $record['symbol'] }}</abbr>
+                                        </a>
+                                    </td>
+                                    <td class="c_digit">{{ $record['quantity'] }}</td>
+                                    <td class="c_digit">{{ number_format($record['ltp']) }}</td>
+                                    <td class="c_digit">{{ number_format($record['worth']) }}</td>
                                 </tr>
                                 @endforeach
 
@@ -162,12 +168,19 @@
                                 </tr>
                                 @php
                                     $top_gains = $arr_gainloss[$key]['gain'];
+                                    $uuid = $row['uuid'];
                                 @endphp
-                                @foreach ($top_gains as $row)
+                                @foreach ($top_gains as $record)
+                                @if($record['gain'] > 0)
                                 <tr>
-                                    <td><abbr title="{{ $row['name'] }}">{{ $row['symbol'] }}</abbr></td>
-                                    <td class="c_digit">{{ number_format($row['gain']) }}</td>
+                                    <td>
+                                        <a href="{{ url('portfolio',[ $record['symbol'], $uuid ]) }}">
+                                            <abbr title="{{ $record['name'] }}">{{ $record['symbol'] }}</abbr>
+                                        </a>
+                                    </td>
+                                    <td class="c_digit increase">{{ number_format($record['gain']) }}</td>
                                 </tr>
+                                @endif
                                 @endforeach
                                 
                             </table>
@@ -181,12 +194,19 @@
                                 </tr>
                                 @php
                                     $top_loss = $arr_gainloss[$key]['loss'];
+                                    $uuid = $row['uuid'];
                                 @endphp
-                                @foreach ($top_loss as $row)
+                                @foreach ($top_loss as $record)
+                                @if($record['gain'] < 0)
                                 <tr>
-                                    <td><abbr title="{{ $row['name'] }}">{{ $row['symbol'] }}</abbr></td>
-                                    <td class="c_digit">{{ number_format($row['gain']) }}</td>
+                                    <td>
+                                        <a href="{{ url('portfolio',[ $record['symbol'], $uuid ]) }}">
+                                            <abbr title="{{ $record['name'] }}">{{ $record['symbol'] }}</abbr>
+                                        </a>
+                                    </td>
+                                    <td class="c_digit decrease">{{ number_format($record['gain']) }}</td>
                                 </tr>
+                                @endif
                                 @endforeach
                                 
                             </table>

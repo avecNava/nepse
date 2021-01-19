@@ -17,7 +17,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Models\Shareholder;
 use App\Models\Portfolio;
 use App\Models\MyShare;
-use App\Models\StockPrice;
+use App\Models\Stock;
 use Carbon\Carbon;
 use App\Models\User;
 use Jenssegers\Agent\Agent;
@@ -36,11 +36,8 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    $text = 'se/test';
-    $url = url()->current();
-    $temp  = Str::contains($url, $text);
-    if($temp)
-        echo 'Yay';
+    $temp = Shareholder::find(1);
+    return optional($temp)->first_name . ' ' . optional($temp)->last_name;
 });
 
 Route::get('sample-record', function(){

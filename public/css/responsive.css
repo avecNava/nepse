@@ -143,6 +143,7 @@ textarea {
     margin:0;
     height: 10em;
     border: 1px solid #c4c8ae;
+    padding:3px;
 }
 input[type="title"] {
     width: 90vw;
@@ -168,6 +169,7 @@ input[type="file"]{
 .form-field > label {
     font-weight: bold;
 }
+
 .form-field {
     display: flex;
     flex-direction: column;
@@ -343,6 +345,7 @@ input, select {
     height: 2.5em;
     border: 1px solid #c4c8ae;
     width:60vw;
+    padding:3px;
 }
 
 input[type="checkbox"], input[type="radio"] {
@@ -403,7 +406,10 @@ ul.shareholder-nav {
     height: 65px;
     overflow-y: scroll;
 }
-
+tr.strike {
+    color: red;
+    text-decoration: line-through;
+}
 .td-clip {
     width: 100px;
     white-space: nowrap;
@@ -505,13 +511,17 @@ section#share-import-form main {
 }
 
 #portfolio-detail .stock {
-    padding: 0 20px;
+    padding: 5px;
     line-height: 1.7em;
 }
 
 #portfolio-detail {
     padding: 20px 10px;
     position: relative;
+}
+.item label {
+    color: darkslategrey;
+    display: inline-block;
 }
 
 div#portfolio-form__wrapper form {
@@ -526,7 +536,7 @@ div#shareholder-form {
 }
 
 .shareholder-info {
-    width: 40%;
+    width: 100%;
 }
 
 

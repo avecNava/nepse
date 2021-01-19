@@ -361,11 +361,7 @@ section.sales summary {
     display: block;
 }
 .item {font-weight: bold;}
-.item label {
-    color: darkslategrey;
-    width: 200px;
-    display: inline-block;
-}
+
 .item input {
     width: 80px;
     color:red;
@@ -536,6 +532,12 @@ section.sales summary {
     #portfolio-detail .ps__wrapper {
         display: flex;
         justify-content: space-evenly;
+    }
+    .shareholder-info {
+        width: 40%;
+    }
+    .item label {
+        width: 200px;
     }
     div#portfolio-form__wrapper form {
         flex-direction: row;

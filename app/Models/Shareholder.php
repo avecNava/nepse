@@ -50,6 +50,13 @@ class Shareholder extends Model
     {
         return $this->hasOne('App\Models\Sales', 'shareholder_id');
     }
+
+    public static function getShareholderName($id)
+    {
+        $temp = Shareholder::find($id);
+        return optional($temp)->first_name . ' ' . optional($temp)->last_name;
+    }
+
     /**
      * shareholders with at least one item in cart
      */
@@ -105,6 +112,8 @@ class Shareholder extends Model
             'parent' => false,
             'uuid' => Str::uuid(),
         ]);
+
+        Log::info('Created shareholder groups (long/short term)', [optional(Auth::user())->name]);
     }
 
 

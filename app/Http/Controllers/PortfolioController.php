@@ -31,10 +31,6 @@ class PortfolioController extends Controller
 
     public function shareholderPortfolio($uuid)
     {
-        // $notice = [
-        //     'title' => 'Attention',
-        //     'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
-        // ];
 
         $transaction_date = StockPrice::getLastTransactionDate();
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
@@ -42,7 +38,8 @@ class PortfolioController extends Controller
         $stocks = DB::table('portfolio_summaries as p')
             ->join('shareholders as m', function($join) use($shareholder_id){
                 $join->on('m.id', '=', 'p.shareholder_id')
-                    ->where('m.id', $shareholder_id);
+                    ->where('m.id', $shareholder_id)
+                    ->where('m.tenant_id', session()->get('tenant_id'));
             })
             ->join('stocks as s', 's.id', '=', 'p.stock_id')
             ->leftJoin('stock_prices as pr', function($join){
@@ -285,6 +282,13 @@ class PortfolioController extends Controller
 
         //step 1: delete records from Portfolio
         $deleted = Portfolio::destroy($id);
+        Log::info('Stock deleted', 
+        [
+            'user' => Auth::user()->name, 
+            'shareholder_id' => Shareholder::getShareholderName($shareholder_id) ,
+            'stock' => Stock::getSymbol($stock_id),
+            'quantity' => $portfolio->quantity,
+        ]);
 
         //step 2 : CALCULATE total_quantity and wacc_rate ; update in summary table
         PortfolioSummary::updateCascadePortfoliSummaries($shareholder_id, $stock_id);
@@ -363,7 +367,8 @@ class PortfolioController extends Controller
         $portfolios = DB::table('portfolios as p')
         ->join('shareholders as sh', function($join) use($shareholder_id){
             $join->on('sh.id', '=', 'p.shareholder_id')
-                ->where('sh.id', $shareholder_id);
+                ->where('sh.id', $shareholder_id)
+                ->where('sh.tenant_id', session()->get('tenant_id'));
         })
         ->leftJoin('stock_prices as pr', function($join){
             $join->on('pr.stock_id','=', 'p.stock_id')

@@ -29,6 +29,12 @@ class Stock extends Model
         return $this->belongsTo(StockSector::class);
     }
 
+    public static function getSymbol($id)
+    {
+        $temp = Stock::find($id);
+        return optional($temp)->symbol;
+    }
+
     /**
      * creates or updates stocks from the given array
      * input: array with symbol and security_name

@@ -109,7 +109,7 @@ class PortfolioSummaryController extends Controller
                 return collect([
                     'name' =>$row->security_name,
                     'symbol' =>$row->symbol,
-                    'gain' => $cost - $worth,
+                    'gain' => $worth - $cost ,
                 ]);
             });
             return [
@@ -119,7 +119,8 @@ class PortfolioSummaryController extends Controller
         });
 
         //3.loop each Shareholder data and calculate aggregates
-        $portfolio_agg = $shareholders->map(function ($items, $key) {            
+        $portfolio_agg = $shareholders->map(function ($items, $key) {
+
             $row = $items->first();
             $total_scripts = $items->count();
             $total_units = $items->sum(function($row){

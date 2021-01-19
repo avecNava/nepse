@@ -80,14 +80,16 @@ tfoot td {
                         <h3>Add to Sales basket</h3>
                         @csrf()                    
                     </header>
-                    <div style="padding:10px 0">
-                        <label for="sell_quantity">Quantity &nbsp;&nbsp;
+                    <div class="flex al-cntr">
+                        <label for="sell_quantity" style="padding:4px">Quantity &nbsp;&nbsp;
                             <input type="number" name="sell_quantity" id="sell_quantity" 
                             data-uuid="{{  $info['uuid'] }}"
                             data-stock-id="{{  $info['stock_id'] }}">
                         </label>
-                        <button onClick="addToBasket()">Add to basket</button>&nbsp;
+                        <div class="flex al-cntr">
+                        <button onClick="addToBasket()">Add to basket</button>
                         <span class='button'><a href="{{url('basket')}}">View basket</a></span>
+                        </div>
                     </div>
                     <div id="basket_message"></div>
                 </section>
@@ -394,9 +396,9 @@ tfoot td {
                             $gain_per = \App\Services\UtilityService::calculatePercentage($gain, $investment);
                         @endphp
                         
-                        <tr id="row-{{ $record->id }}">
+                        <tr id="row-{{ $record->id }}"  class="@if(empty($record->wacc_updated_at)) strike @endif">
                             
-                            <td title="{{ $record->stock_id }}-{{ $record->security_name }}">
+                            <td title="{{ $record->stock_id }}-{{ $record->security_name }}" >
                                 <div style="display:flex;flex-wrap:nowrap">
                                 @if( !empty($record))
                                     <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">

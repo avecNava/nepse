@@ -42,7 +42,7 @@ class EventServiceProvider extends ServiceProvider
             UserLoginListener::class,
             RecordLoginDetailsListener::class,
         ],
-        /*set session for the current tenant_id when logged out*/
+        /*clear session for the current tenant_id when logged out*/
         Logout::class => [
             UserLogoutListener::class,
         ],

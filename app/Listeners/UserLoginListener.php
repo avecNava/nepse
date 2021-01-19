@@ -28,7 +28,7 @@ class UserLoginListener
      */
     public function handle($event)
     {
-        Log::info('User log in listener', [$event->user->name]);
+        Log::info('Login ', [$event->user->name]);
 
         //create session record for the tenant_id        
         session()->put('tenant_id', $event->user->id);
