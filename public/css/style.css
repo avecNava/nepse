@@ -518,11 +518,7 @@ section.sales summary {
         justify-content: flex-start;
         width: 30em;
     }
-    .sectors .sector {
-        margin: 4px;
-        width: 34%;
-    }
-    
+   
     
     /* layout */
 
@@ -588,16 +584,20 @@ section.sales summary {
         display: flex;
     }
     .welcome__wrapper section.transactions {
-        width: 67%;
+        min-width: 60%;
+        /* box-sizing: border-box; */
     }
     .welcome__wrapper .aside{
-        margin-left:10px;
-        width:30%;
+        margin-left:5px;
+        min-width:25%;
+        box-sizing: border-box;
     }
-    /* todo: check this out */
-    /* .summary_main__content {
-        margin: 40px 10px;
-    } */
+    .sectors .sector {
+        margin: 4px;
+        max-width: 40%;
+    }
+
+
     .portfolio__content, .welcome__wrapper,
     .sh_dashboard__wrapper .main__content {
         margin: 0 5px;
