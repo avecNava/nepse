@@ -143,7 +143,7 @@ class MeroShareController extends Controller
                return redirect("import/meroshare/" . $user->uuid)->with('error', "Import completed. <br>Unfortunately, some of the records could not be imported 👀");
           }
           
-          return redirect("import/meroshare/" . $user->uuid)->with('success', 'Records imported successfully 👌 <br/>From the shareholder below, choose the records and click "Save to Portfolio');  
+          return redirect("import/meroshare/" . $user->uuid)->with('success', 'Records imported successfully 👌 <br/>From the records below,  Select records below and click "Save to Portfolio');  
         
    }
 

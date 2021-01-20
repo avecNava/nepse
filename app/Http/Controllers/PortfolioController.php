@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
 use App\Services\UtilityService;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PortfolioController extends Controller
 {

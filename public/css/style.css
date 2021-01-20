@@ -698,25 +698,21 @@ section.sales summary {
 
 }
 
-@media only screen and(min-wdth:400px) and(max-width: 1000px){
+@media only screen and(min-wdth:575px) and(max-width: 1000px){
 
     div#app, div#container {
-        --screen-width:60em;
+        --screen-width:62.5em;
         margin: 0 auto;
         width: var(--screen-width);
     }
 }
 
-/* @media only screen and (min-width: 1200px){
+ @media only screen and (min-width: 1101px){
 
     div#app, div#container {
-        --screen-width:75em;
+        --screen-width:81.15em;         /*1300px */
         margin: 0 auto;
         width: var(--screen-width);
     }
-    .sectors .sector {
-        margin: 4px;
-        width: 48.3%;
-    }
 
-} */
+} 
