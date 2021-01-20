@@ -56,4 +56,9 @@ class Stock extends Model
                 
         }
     }
+
+    public static function getStockDetail($symbol)
+    {
+        return Stock::where('symbol',$symbol)->with('sector:sector,id')->first();
+    }
 }

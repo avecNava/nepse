@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Portfolio detail</h1>
+    <h1 class="c_title">Stock detail</h1>
 @endsection
 
 @section('js')
@@ -62,30 +62,32 @@ tfoot td {
             if($change > 0) { $change_class='increase'; } else if($change < 0) { $change_class='decrease'; }
             if($gain > 0) { $gain_class='increase'; } else if($gain < 0) { $gain_class='decrease'; }
         @endphp
-        
+      
         <section>
-
             <div class="ps__wrapper">
                 <div class="shareholder-info">
                     <h2>
-                        <a href="{{ url('portfolio', [ $info['uuid'] ]) }}">
-                            {{ $info['shareholder'] }}
+                        <a href="{{ url('portfolio', [ $shareholder['uuid'] ]) }}">
+                            {{ $shareholder['name'] }}
                         </a>
                     </h2> 
-                    <h3 class='highlight'>{{$info['security_name']}}</h3>
-                    <h3>{{$info['sector']}}</h3>
-
+                    @if($stock)
+                    <h3 class='highlight'>{{$stock['security_name']}}({{$stock['symbol']}})</h3>
+                    <h3>{{$stock->sector->sector}}</h3>
+                    @endif
                     <section id="basket" class="item basket">
                     <header>
                         <h3>Add to Sales basket</h3>
                         @csrf()                    
                     </header>
                     <div class="flex al-cntr">
+                        @if($stock)
                         <label for="sell_quantity" style="padding:4px">Quantity &nbsp;&nbsp;
                             <input type="number" name="sell_quantity" id="sell_quantity" 
-                            data-uuid="{{  $info['uuid'] }}"
-                            data-stock-id="{{  $info['stock_id'] }}">
+                            data-uuid="{{  $shareholder['uuid'] }}"
+                            data-stock-id="{{  $stock['id']  }}">
                         </label>
+                        @endif
                         <div class="flex al-cntr">
                         <button onClick="addToBasket()">Add to basket</button>
                         <span class='button'><a href="{{url('basket')}}">View basket</a></span>
@@ -186,7 +188,7 @@ tfoot td {
 
             <div id="portfolio-form__wrapper" {{$hidden}}>
 
-                <header style="margin-left:10px">
+                <header style="margin-left:15px">
                     <h2>Edit Stock</h2>
                 </header>
 
@@ -194,16 +196,20 @@ tfoot td {
                     
                     @csrf()
                     <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
-                    <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $info['uuid']) }}">
-                    <input type="hidden" name="stock_id" value="{{ old('stock_id', $info['stock_id']) }}">
+                    <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $shareholder['uuid']) }}">
+                    @if($stock)
+                    <input type="hidden" name="stock_id" value="{{ old('stock_id', $stock['id']) }}">
+                    @endif
 
                     <section>
                         <div class="form-field">
-                            <label>Shareholder</label><div title="{{$info['relation']}}"><strong>{{$info['shareholder']}}</strong></div>
+                            <label>Shareholder</label><div><strong>{{$shareholder['name']}}</strong></div>
                         </div>
+                        @if($stock)
                         <div class="form-field">
-                            <label>Script</label><div><strong>{{$info['security_name']}}</strong></div>
+                            <label>Script</label><div><strong>{{$stock['security_name']}}</strong></div>
                         </div>
+                        @endif
                         <div class="form-field">
                             <label for="offer" class="@error('offer') is-invalid @enderror">Offering type</label>
                             <select name="offer" id="offer">
@@ -314,37 +320,8 @@ tfoot td {
             </div>
 
         </section>
-
-        <section class="message">
-            <div id="message">
-
-                @if ($errors->any())
-                <div class="error">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
-                @if(session()->has('message'))
-                <div class="success">                            
-                    {{ session()->get('message') }}
-                </div>
-                @endif
-
-            </div>
-        </section>
         
         <div class="portfolio__content">
-
-            @if( count($portfolios)==0 )
-            <div class="center-box error-box">
-                <h2 class="message error">Nothing in here<h2>
-                <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
-            </div>
-            @endif
 
             <header class="info js-apart flex al-end">
                 @php
@@ -352,8 +329,33 @@ tfoot td {
                     $quantity = $portfolios->sum('quantity');
                     $count_str = ($count <= 1) ? ' record' :' records';
                 @endphp
-                
+
+                <section class="message">
+
+                <div id="message">
+                    
                 <h3>{{$count}} {{$count_str}} ({{$quantity}} units)</h3>
+
+                    @if ($errors->any())
+                    <div class="error">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    @if(session()->has('message'))
+                    <div class="success">                            
+                        {{ session()->get('message') }}
+                    </div>
+                    @endif
+
+                </div>
+                </section>
+                
+                
                 <div class="flex al-cntr">
                     <button id="new">New</button>
                     <button id="edit">Edit</button>
@@ -365,6 +367,7 @@ tfoot td {
                 
                 <table>
                     <thead>
+     
                     <tr>
                         <th>Symbol</th>
                         <th class="optional">Offering type</th>
@@ -380,6 +383,18 @@ tfoot td {
                     </tr>
                     </thead>
                     <tbody>
+                        
+                    @if( count($portfolios)==0 )
+                    <tr>
+                        <td colspan="11">
+                            <div class="center-box error-box">
+                                <h2 class="message error">Nothing in here<h2>
+                                <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
+
                     @foreach ($portfolios as $record)
                         @php
                             $ltp = $record->last_updated_price?: $record->close_price;
@@ -394,7 +409,7 @@ tfoot td {
                         <tr id="row-{{ $record->id }}"  class="@if(empty($record->wacc_updated_at)) strike @endif">
                             
                             <td title="{{ $record->stock_id }}-{{ $record->security_name }}" >
-                                <div style="display:flex;flex-wrap:nowrap">
+                                <div style="display:flex;flex-wrap:nowrap;align-items:center">
                                 @if( !empty($record))
                                     <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">
                                     <label for="chk-{{ $record->id }}" style="padding:5px">

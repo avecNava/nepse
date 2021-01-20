@@ -336,6 +336,11 @@ ul.navbar-nav .links a {
     padding: 10px;
 }
 
+.card-body .alert-success {
+    font-weight: bold;
+    color: green;
+    padding: 10px 0;
+}
 
 /* form input elements*/
 
@@ -351,7 +356,9 @@ input, select {
     width:60vw;
     padding:3px;
 }
-
+select#shareholders {
+    min-width: 150px;
+}
 input[type="checkbox"], input[type="radio"] {
     width: 20px;
     vertical-align: middle;
@@ -515,7 +522,7 @@ section#share-import-form main {
 }
 
 #portfolio-detail .stock {
-    padding: 5px;
+    padding: 5px 15px;
     line-height: 1.7em;
 }
 

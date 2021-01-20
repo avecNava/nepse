@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AppLog extends Model
 {
@@ -13,14 +15,22 @@ class AppLog extends Model
     protected $guarded = [];
     protected $table = 'logs';
 
-    public static function CreateLogRecords(Request $request)
+    public static function createLog($arr_log)
     {
         
+        Log::info('Stock deleted', 
+        [
+            'Model' =>  $arr_log['module'],
+            'Title' => $arr_log['title'],
+            'Description' => $arr_log['desc'],
+        ]);
 
-        // Log::Create([
-        
-        //     'user_id' => Auth::id(),
-        // ]);
+        AppLog::create([
+            'model' =>  $arr_log['module'],
+            'title' => $arr_log['title'],
+            'description' => $arr_log['desc'],
+            'user_id' => Auth::id(),
+        ]);
 
     }
 }

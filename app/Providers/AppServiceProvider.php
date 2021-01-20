@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\PortfolioObserver;
+use App\Models\Portfolio;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,7 +33,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         
-        
+        Portfolio::observe(PortfolioObserver::class);
+
         //#1071 - Specified key was too long; max key length is 767 bytes
         //https://stackoverflow.com/questions/1814532/1071-specified-key-was-too-long-max-key-length-is-767-bytes
         // Schema::defaultStringLength(191); 

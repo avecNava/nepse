@@ -56,13 +56,13 @@
                                     {{ optional(Auth::user())->name }}&nbsp;
                                 </div>                                        
                             
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form1" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                                 <span class="nav__logout" style="padding:1px 0">
                                     <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+                                            document.getElementById('logout-form1').submit();">
                                         {{ __('Logout') }}
                                     </a>
                                 </span>

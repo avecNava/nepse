@@ -22,6 +22,7 @@ use App\Services\UtilityService;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Models\AppLog;
 
 class PortfolioController extends Controller
 {
@@ -34,6 +35,10 @@ class PortfolioController extends Controller
     {
 
         $transaction_date = StockPrice::getLastTransactionDate();
+
+
+        $shareholders = Shareholder::shareholdersWithPortfolio(Auth::id());
+       
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
 
         $stocks = DB::table('portfolio_summaries as p')
@@ -95,7 +100,7 @@ class PortfolioController extends Controller
                     'shareholder' => optional($row)->first_name . " " . optional($row)->last_name,
                     'portfolios' => $stocks,
                     'scorecard' => $data,
-                    // 'notice' => $notice,
+                    'shareholders' => $shareholders,
                     'transaction_date' => Carbon::parse($transaction_date),
                 ]
             );
@@ -164,7 +169,8 @@ class PortfolioController extends Controller
     public function store(StorePortfolio $request)
     {   
         $user_id = Auth::id();
-
+        $uuid = Shareholder::getShareholderUUID($request->shareholder);
+   
         try {
             
             Portfolio::createPortfolio($request);
@@ -175,7 +181,7 @@ class PortfolioController extends Controller
 
             PortfolioSummary::updateCascadePortfoliSummaries($shareholder, $stock);
 
-            return  redirect()->back()->with('message','Record created successfully 👌 ');
+            return  redirect()->back()->with('message',"Record created successfully 👌.  <a href='" . url('portfolio', [$uuid]) ."'>View record</a>");
 
         } catch (\Throwable $th) {
             UtilityService::createLog('storePortfolio', $th);
@@ -283,12 +289,18 @@ class PortfolioController extends Controller
 
         //step 1: delete records from Portfolio
         $deleted = Portfolio::destroy($id);
-        Log::info('Stock deleted', 
-        [
+        
+        $desc = [
             'user' => Auth::user()->name, 
-            'shareholder_id' => Shareholder::getShareholderName($shareholder_id) ,
+            'shareholder' => Shareholder::getShareholderName($shareholder_id) . ' - ' . $shareholder_id,
             'stock' => Stock::getSymbol($stock_id),
             'quantity' => $portfolio->quantity,
+        ];
+
+        AppLog::createLog([
+            'module' => 'PortfolioController',
+            'title' => 'DELETE Stock',
+            'desc' => json_encode($desc),            
         ]);
 
         //step 2 : CALCULATE total_quantity and wacc_rate ; update in summary table
@@ -342,13 +354,8 @@ class PortfolioController extends Controller
         $transaction_date = StockPrice::getLastTransactionDate( $symbol );
         
         if(!$shareholder_id){
-            return response()->json(['message'=>'Incorect id'],501);
+            return response()->json(['message'=>'Incorect id'], 501);
         }
-
-        $notice = [
-            'title' => 'Attention',
-            'message' => 'Please verify your stocks as there may be some errors during import from the old system.',
-        ];
 
         $offers = StockOffering::all()->sortBy('offer_code');
 
@@ -373,7 +380,7 @@ class PortfolioController extends Controller
         })
         ->leftJoin('stock_prices as pr', function($join){
             $join->on('pr.stock_id','=', 'p.stock_id')
-            ->where('pr.latest', 1);
+            ->where('pr.latest', true);
         })
         ->leftJoin('stock_offerings as o', 'o.id', '=', 'p.offer_id')
         ->join('stocks as s', 's.id', '=', 'p.stock_id')
@@ -399,13 +406,6 @@ class PortfolioController extends Controller
                                 $rate = $item->effective_rate ? $item->effective_rate : $item->unit_cost;
                                 return $item->quantity * $rate;
                             }),
-            'shareholder' => $item ?  "$item->first_name $item->last_name" : '-',
-            'shareholder_str' => $item ?  UtilityService::serializeString( $item->first_name . ' ' . $item->last_name, '-' ) : '-',
-            'uuid' => $item ?  $item->uuid : 0,
-            'stock_id' => $item ?  $item->stock_id : '',
-            'sector' => $item ?  $item->sector : '',
-            'security_name' => $item ? $item->security_name : '-',
-            'relation' => $item ? $item->relation : '-',
         ]);
        
 
@@ -417,7 +417,8 @@ class PortfolioController extends Controller
             'portfolios' => $portfolios,
             'offers' => $offers,
             'brokers' => $brokers,
-            'notice' => $notice,
+            'shareholder' => collect(['name' => Shareholder::getShareholderName($shareholder_id), 'uuid' => $uuid]),
+            'stock' =>  Stock::getStockDetail($symbol),
             'transaction_date' => Carbon::parse($transaction_date),
         ]);
 

@@ -81,7 +81,7 @@ class MeroShareController extends Controller
 
           // Check file extension
           if( !in_array(strtolower($extension),$valid_extension, true)){
-          return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
+               return redirect()->back()->with('error','File type not supported. Please provide an XLSX or a CSV file');   
           }
 
           $new_name = UtilityService::serializeTime() .'-'. UtilityService::serializeString($file_name);
@@ -98,19 +98,24 @@ class MeroShareController extends Controller
                $rows->each(function(array $row) use ($transactions, $shareholder_id) {
 
                     $remarks = $row['History Description'];
+                    $offer_type = $this->getOfferType($remarks);
                     
-                    $transactions->push( 
-                         array(
-                              'symbol' => $row['Scrip'], 
-                              'transaction_date' => $row['Transaction Date'],
-                              'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
-                              'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
-                              'transaction_mode' => $this->getTransactionMode($remarks),
-                              'offer_type' => $this->getOfferType($remarks),
-                              'remarks' => $remarks,
-                              'shareholder_id' =>$shareholder_id
-                         )
-                    );
+                    //IGNORE merger (they're debited and credited whhich makes it 0)
+                    if ($offer_type != 'MERGER') {
+
+                         $transactions->push( 
+                              array(
+                                   'symbol' => $row['Scrip'], 
+                                   'transaction_date' => $row['Transaction Date'],
+                                   'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
+                                   'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
+                                   'transaction_mode' => $this->getTransactionMode($remarks),
+                                   'offer_type' => $offer_type,
+                                   'remarks' => $remarks,
+                                   'shareholder_id' =>$shareholder_id
+                              );
+                         );
+                    }
                });
 
           } catch (\Throwable $th) {
@@ -161,11 +166,11 @@ class MeroShareController extends Controller
      elseif(Str::contains($offering_txt,'ca-merger')){
           return 'MERGER';
      }
-     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
-          return 'FPO';
-     }
      elseif(Str::contains($offering_txt,['initial public offering','ipo'])) {
           return 'IPO';
+     }
+     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
+          return 'FPO';
      }
      elseif(Str::contains($offering_txt,'demat')){
           return 'IPO';
@@ -230,7 +235,6 @@ class MeroShareController extends Controller
                'FPO',
                'IPO',
                'SECONDARY',
-               'MERGER',
                'OTHER',
                'OTHERS',
           ];
@@ -259,7 +263,7 @@ class MeroShareController extends Controller
                Sales::updateOrCreateSales($sales);
           }
 
-          //5. parse purchase and sales
+          //5. parse purchase and sales data
           //get shareholder_id and stock_id in each group
           //insert/update portfolio summary table with the aggregated data
           if($portfolios->isNotEmpty()){

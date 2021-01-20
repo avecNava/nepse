@@ -36,8 +36,14 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    $temp = Shareholder::find(1);
-    return optional($temp)->first_name . ' ' . optional($temp)->last_name;
+
+    return  DB::table('shareholders as s')
+    ->join('portfolio_summaries as p','s.id','p.shareholder_id')
+    ->where('s.parent_id', 1)
+    ->selectRaw('DISTINCT(p.shareholder_id),first_name,last_name,uuid')
+    ->get();
+   
+    dd($ids);
 });
 
 Route::get('sample-record', function(){

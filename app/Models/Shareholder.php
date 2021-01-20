@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\BelongsToTenant;
 use App\Services\UtilityService;
+use Illuminate\Support\Facades\DB;
 
 class Shareholder extends Model
 {
@@ -42,6 +43,15 @@ class Shareholder extends Model
     {
         return $this->belongsTo('App\Models\User');        //join Shareholder and user by parent_id and  ids
     }
+
+    public static function shareholdersWithPortfolio($user_id)
+    {
+        return  DB::table('shareholders as s')
+            ->join('portfolio_summaries as p','s.id','p.shareholder_id')
+            ->where('s.parent_id', 1)
+            ->selectRaw('DISTINCT(p.shareholder_id),first_name,last_name,uuid')
+            ->get();
+    }
     
     /**
      * shareholders with at least one sales
@@ -51,12 +61,36 @@ class Shareholder extends Model
         return $this->hasOne('App\Models\Sales', 'shareholder_id');
     }
 
+    public static function getShareholderUUID($id)
+    {
+        $temp = Shareholder::find($id);
+        return optional($temp)->uuid;
+    }
     public static function getShareholderName($id)
     {
         $temp = Shareholder::find($id);
         return optional($temp)->first_name . ' ' . optional($temp)->last_name;
     }
 
+    public static function getShareholderNames($parent_id)
+    {
+        $shareholders = Shareholder::where('parent_id', $parent_id)->get();
+        $shareholder = $shareholders->map(function($item, $key){
+            return collect([
+                'name' => "$item->first_name $item->last_name",
+                '_name' => UtilityService::serializeString("$item->first_name $item->last_name","-"),
+                'relationF' => !empty($item->relation) ? "($item->relation)":'(Self)',
+                'relation' => $item->relation, 
+                'date_of_birth' => $item->date_of_birth,
+                'gender' => $item->gender,
+                'email' => $item->email,
+                'id' => $item->id,
+                'uuid' => $item->uuid,
+            ]);
+
+        });
+        return $shareholder;
+    }
     /**
      * shareholders with at least one item in cart
      */
@@ -117,25 +151,6 @@ class Shareholder extends Model
     }
 
 
-    public static function getShareholderNames($parent_id)
-    {
-        $shareholders = Shareholder::where('parent_id', $parent_id)->get();
-        $shareholder = $shareholders->map(function($item, $key){
-            return collect([
-                'name' => "$item->first_name $item->last_name",
-                '_name' => UtilityService::serializeString("$item->first_name $item->last_name","-"),
-                'relationF' => !empty($item->relation) ? "($item->relation)":'(Self)',
-                'relation' => $item->relation, 
-                'date_of_birth' => $item->date_of_birth,
-                'gender' => $item->gender,
-                'email' => $item->email,
-                'id' => $item->id,
-                'uuid' => $item->uuid,
-            ]);
-
-        });
-        return $shareholder;
-    }
     
     /**
      * returns Shareholders with Sales record

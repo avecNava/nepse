@@ -235,9 +235,11 @@ class Portfolio extends Model
 
     public static function calculateWACC(int $shareholder, int $stock)
     {
-        
+        //only get records for the given shareholder, given stock whose wacc has been updated
         $portfolios = Portfolio::where('shareholder_id', $shareholder)
-                    ->where('stock_id', $stock)->get();
+                    ->where('stock_id', $stock)
+                    ->whereNotNull('wacc_updated_at')
+                    ->get();
         
         if(!empty($portfolios)){
 

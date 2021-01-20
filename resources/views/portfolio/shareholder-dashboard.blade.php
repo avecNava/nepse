@@ -17,7 +17,7 @@
     <div class="shareholder_dashboard__wrapper">
     
         <div id="loading-message" style="display:none">Loading... Please wait...</div>
-        @if(!empty($scorecard))
+        @if(($scorecard['scripts']>0))
             <section class="score_card__wapper">
 
                 <article>
@@ -58,13 +58,14 @@
 
                 <article hidden>
                     <header># Scripts</header>
-                    <main class="value">{{number_format($scorecard['scripts'])}}</main>
+                    &nbsp;<main class="value">{{number_format($scorecard['scripts'])}}</main>
                     <footer></footer>
                 </article>
                 
             </section>
         @endif
-            
+    
+
         @if( !empty($portfolios) )
         
         <section class="main__content">
@@ -75,12 +76,22 @@
 
                 <div class="flex js-start al-cntr">
                     <h2 class="title">{{ $shareholder }}</h2>
+                    @if(count($portfolios)>0)
                     <div class="notification">
                     &nbsp;({{count($portfolios)}} scripts)
                     </div>
+                    @endif
                 </div>
 
                 <div class="flex js-start al-cntr">
+                <select name="shareholders" id="shareholders" onchange="refresh()">
+                    @foreach($shareholders as $row)
+                    <option value="{{ $row->uuid }}" @if($uuid == $row->uuid) SELECTED @endif>
+                        {{$row->first_name}} {{$row->last_name}} 
+                    </option>
+                    @endforeach
+                </select>    
+                &nbsp;
                     <div class="message" id="message">                    
                         @if(session()->has('message'))
                             <span class="success">{{ session()->get('message') }}</span>
@@ -95,7 +106,7 @@
                     @endphp
                     <form  method="POST" action="/portfolio/export" style="margin:0" class="optional">
                         @csrf()
-                        <input name="id" type="hidden" value="{{ $row->shareholder_id }}">
+                        <input name="id" type="hidden" value="{{ optional($row)->shareholder_id }}">
                         <button style="margin:0">Export</button>
                     </form>
 
@@ -117,6 +128,16 @@
                     <th class="c_digit optional">Prev. worth</th>
                     <th class="c_digit optional">Change</th>
                 </tr>
+                @if(count($portfolios)==0)
+                <tr>
+                    <td colspan="10">
+                    <div class="center-box error-box">
+                        <h2 class="message error">Nothing in here<h2>
+                        <h3 class="message success">💡 You can add some by clicking the `New` button.</h3>
+                    </div>
+                    </td>
+                </tr>
+                @endif
                 
                 @foreach ($portfolios as $key=>$record)
 
@@ -194,7 +215,9 @@
                 <tr><td colspan="10">
                 <footer class="flex js-apart al-end">
                     <div></div>
+                    @if(count($portfolios)>0)
                     <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                    @endif
                 </footer>
             </td></tr>
         
@@ -207,6 +230,11 @@
 
     <script>
         
+        function refresh() {
+            const el = document.querySelector('select#shareholders');
+            const url = `/portfolio/${el.value}`;
+            window.location.replace(url);
+        }
        
     </script>
 

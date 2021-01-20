@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\BelongsToTenant;
 use App\Models\Portfolio;
 use App\Services\UtilityService;
+use App\Models\Shareholder;
 
 class PortfolioSummary extends Model
 {
@@ -35,6 +36,7 @@ class PortfolioSummary extends Model
         $transaction_date = StockPrice::getLastDate();
         return $this->belongsTo('App\Models\StockPrice','stock_id','stock_id');
     }
+
 
     public function scopeLatestPrice($query)
     {
@@ -74,43 +76,28 @@ class PortfolioSummary extends Model
         $quantity =  Portfolio::where('shareholder_id', $shareholder_id)
                     ->whereNotNull('wacc_updated_at')
                     ->where('stock_id', $stock_id)
-                    ->sum('quantity');
-
-        //if not recourd found in portfolio table, delete the corresponding record in the summary table
-        if($quantity <= 0){
-
-            PortfolioSummary::where('shareholder_id', $shareholder_id)
-                    ->where('stock_id', $stock_id)
-                    ->delete();
-
-            // info('Portfolio Summary not updated', [
-            //     'shareholder_id' => $shareholder_id, 
-            //     'stock_id' => $stock_id, 
-            //     'quantity' => $quantity, 
-            // ]);
-
-            return;
-        }
+                    ->sum('quantity');                      //returns 0 if not found
 
         $effective_rate = Portfolio::calculateWACC($shareholder_id, $stock_id);
         
         $investment = Portfolio::where('shareholder_id', $shareholder_id)
                         ->where('stock_id', $stock_id)
+                        ->whereNotNull('wacc_updated_at')
                         ->sum('total_amount');
         
         try {
             
             PortfolioSummary::updateOrCreate(
-                [
-                    'shareholder_id' => $shareholder_id,
-                    'stock_id' => $stock_id,
-                ],
-                [
-                    'quantity' => $quantity,
-                    'investment' => $investment,
-                    'wacc' => $effective_rate,
-                    'last_modified_by' => Auth::id(),
-                ]);
+            [
+                'shareholder_id' => $shareholder_id,
+                'stock_id' => $stock_id,
+            ],
+            [
+                'quantity' => $quantity,
+                'investment' => $investment,
+                'wacc' => $effective_rate,
+                'last_modified_by' => Auth::id(),
+            ]);
         
                     
         } catch (\Throwable $th) {
