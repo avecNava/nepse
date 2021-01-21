@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-<h1 class="c_title">Portfolio ({{ $first_name }})</h1>
+<h1 class="c_title">Portfolio</h1>
 @endsection
 
 @section('js')

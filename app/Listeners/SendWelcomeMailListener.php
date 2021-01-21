@@ -28,8 +28,8 @@ class SendWelcomeMailListener
     public function handle($event)
     {
         $user = $event->user;
-        $bcc = config('app.email','nava.bogatee@outlook.com');
-        Mail::to($user->email)->send(new WelcomeMail($user));
-        Mail::to('nava.bogatee@gmail.com')->bcc($bcc)->send(new WelcomeMail($user));
+        $bcc = config('app.email','nava.bogatee@gmail.com');
+        Mail::to($user->email)->bcc($bcc)->send(new WelcomeMail($user));
+        // Mail::to('nava.bogatee@gmail.com')->bcc($bcc)->send(new WelcomeMail($user));
     }
 }

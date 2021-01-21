@@ -1,7 +1,7 @@
 function fnRefreshBasket(){
     const msg = document.querySelector('#sell_message');
     // msg.innerHTML ='Refreshing the basket ⌚ ... ';
-    url = `${window.location.origin}/basket`;
+    url = `${window.location.origin}/cart`;
     setTimeout(function(){ 
         window.location.replace(url);
     }, 2000);
@@ -123,7 +123,7 @@ function updateBasket(){
         return false;
     }
     
-    const url = `${window.location.origin}/basket/update`;
+    const url = `${window.location.origin}/cart/update`;
     //for each ids, get the quantity, sales_amount, wacc, shareholder/stock id, 
     //then process ajax record to update record
     selected.forEach(function(id){
@@ -213,7 +213,7 @@ function deleteBasket(){
         return false;
     }
 
-    let url = `${window.location.origin}/basket/delete`;
+    let url = `${window.location.origin}/cart/delete`;
 
     if(confirm(`Ths will delete ${selected.length} records. Please confirm.`)) {
         

@@ -75,6 +75,7 @@ class SalesController extends Controller
             [
                 'sales' => $sales,
                 'shareholders' => $shareholders,
+                'selected' => Shareholder::getShareholderDetail($uuid),
             ]); 
 
     }

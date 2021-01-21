@@ -15,9 +15,9 @@ use App\Models\StockPrice;
 use Illuminate\Support\Facades\DB;
 // use App\Services\UtilityService;
 
+
 class Portfolio extends Model
 {
-    //Trait BelongsToTenant has definitions for Global Scope
     use HasFactory, BelongsToTenant;
 
     protected $guarded = [];

@@ -222,8 +222,7 @@
 
                         <div class="flex al-cntr">
                             <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
-                            <label for="select_all">&nbsp;Symbol</label>
-                            
+                            <label for="select_all">&nbsp;Symbol</label>                            
                         </div>
 
                     </th>

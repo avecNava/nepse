@@ -112,8 +112,8 @@ class MeroShareController extends Controller
                                    'transaction_mode' => $this->getTransactionMode($remarks),
                                    'offer_type' => $offer_type,
                                    'remarks' => $remarks,
-                                   'shareholder_id' =>$shareholder_id
-                              );
+                                   'shareholder_id' => $shareholder_id,
+                              )
                          );
                     }
                });

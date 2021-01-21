@@ -48,11 +48,11 @@ mark {
     border: 1px dotted;
 }
 div.message, span.message {font-weight:bold;padding: 0 5px;}
-section.message {
+/* section.message {
     margin: 10px 0;
     padding: 10px;
     font-weight: bold;
-}
+} */
 .negative {background: #e60f05 !important;}
 .is-invalid {color: #fb0000;}
 .positive {background: var(--color-green-light30) !important;}
@@ -106,6 +106,7 @@ input[readonly] {
 .info {padding:5px}
 .info h2 {
     display: inline;
+    background: revert;
 }
 .info .notification {
     align-self:center;

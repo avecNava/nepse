@@ -78,6 +78,7 @@ class SalesBasketController extends Controller
         return view('cart.cart',[
                 'baskets' => $baskets,
                 'shareholders' => $shareholders,
+                'selected' => Shareholder::getShareholderDetail($uuid),
             ]
         ); 
 
@@ -161,7 +162,7 @@ class SalesBasketController extends Controller
             );
 
             $message = "$basket_quantity units added to the basket. 
-                        <span class='basket_total'>Basket total : $new_quantity </span>";
+                        <span class='basket_total'>Cart total : $new_quantity </span>";
                 return response()->json([
                 'status' => 'success',
                 'message' => $message,

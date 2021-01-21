@@ -17,7 +17,7 @@
     tr.basket-header {
         background: unset;
     }
-    tr.basket-header h2 {padding: 0 }
+    tr.basket-header h2 {padding: 0 ; background:revert;}
     tr.basket-header td {
         padding: 0 !important;
         height: 40px !important;
@@ -84,36 +84,15 @@
     <div></div>
     <div class="links">
         <div class="link">
-            <a href="{{url('basket')}}" title="See Sales">View Sales</a>
+            <a href="{{url('sales')}}" title="See Sales">View Sales</a>
         </div>
         <div class="link selected">
-            <a href="{{url('basket')}}" title="See what's inside the cart">View Cart</a>
+            <a href="{{url('cart')}}" title="See what's inside the cart">View Cart</a>
         </div>
     </div>
 </section>
 
 <section id="basket">
-   
-    <!-- shareholder filter -->
-    @if(count($shareholders)>0)
-    <article id="shareholders" class="center-box">
-        <header>
-            <ul class="shareholder-nav">
-                <li>
-                    <a href="{{ url('basket') }}" title="All records">Everyone</a>
-                </li>
-                @foreach($shareholders as $record)
-                <li>
-                    <a href="{{ url('basket', [ $record['uuid'] ]) }}" 
-                        title="{{ $record['relation'] }}">
-                        {{ $record['name'] }}
-                    </a>
-                </li>                    
-                @endforeach
-            </ul>
-        </header>
-    </article>
-    @endif
 
     <!-- message -->
     <div class="message">
@@ -124,37 +103,53 @@
     
     <!-- basket -->
     <article>
-
-        <header>
-            @if(count($baskets)<=0)
-            <div class="info center-box error-box">
-                <h2 class="message error">The cart is empty.<h2>
-                <h3 class="message success">💡 You can go to <strong>Portfolio details</strong> and add items to the cart.</h3>
-            </div>
-        @endif
-        </header>
             
         <main id="carts">
-            @if(count($baskets) > 0)
+          
             <table>
                 <thead>
                     <tr class="basket-header">
-                        @php
-                            $data = $baskets->first();
-                        @endphp
-                        <td colspan="12" class="band">
-                            <div class="info flex js-start al-end">
-                                <h2>{{$data->shareholder->first_name}} {{$data->shareholder->last_name}}</h2>
-                                <div class="notification">
-                                    @if(count($baskets)>0)
-                                    ({{count($baskets)}} records)
-                                    @endif
-                                </div> 
+                       
+                        <td colspan="14">
+                            
+                            <div class="flex js-apart al-cntr">
+                            <div class="flex js-start al-cntr">
+                                
+                                    <h2 class="title">
+                                        @if($selected) 
+                                            {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
+                                        @else
+                                            ALL
+                                        @endif
+                                    </h2>
+                                    <div class="notification">
+                                        {{count($baskets)}} record(s)
+                                    </div> 
+
                             </div>
-                        </td>
-                        <td colspan="2" class=" icon-buttons band" style="text-align:right">
-                            <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
-                            <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
+
+                            <div class="flex al-cntr">
+
+                                <select name="shareholders" id="shareholders" style="margin:2px 5px">
+                                    <option value="">Everyone</option>
+                                    @foreach($shareholders as $record)
+                                    <option value="{{ $record['uuid'] }}" 
+                                    @IF($selected)
+                                        @if($selected->uuid == $record['uuid']) SELECTED @endif
+                                    @endif
+                                    >
+                                        {{$record['name']}}
+                                    </option>
+                                    @endforeach
+                                </select> 
+
+                                <div class="buttons">
+                                    <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
+                                    <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
+                                </div>
+
+                            </div>
+                        </div>
                         </td>
                     </tr>
                     
@@ -174,31 +169,41 @@
                         <th>Shareholder</th>
                         <th>Sell</th>
                     </tr>
-
+                    @if(count($baskets)<=0)
+                    <tr>
+                        <td colspan="14">
+                            <div class="info center-box error-box" style="text-align:center">
+                                <h2 class="message error">The cart is empty<h2>
+                                <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
                 </thead>
                 <tbody>
-                @foreach ($baskets as $index => $row)                    
-                @php
-                    $quantity = $row->quantity;
-                    $ltp = 0;
-                    if( !empty($row->price)){
-                        $ltp = $row->price->close_price ?: $row->price->last_updated_price;
-                    }
-                    $wacc = $row->wacc;
-                    $cost_price = $wacc * $quantity;
-                    $worth = $ltp * $quantity;
-                    $sales_amount = $ltp * $quantity;
-                    $gain = $worth - $cost_price;
-                    $gain_pc = '';
-                    if($cost_price>0)
-                        $gain_pc = round(($gain/$cost_price)*100, 2);
-                    $gain_class = '';
-                    if($gain > 0){
-                        $gain_class = 'increase';
-                    }elseif($gain < 0){
-                        $gain_class = 'decrease';
-                    }
-                @endphp
+
+                    @foreach ($baskets as $index => $row)                    
+                    @php
+                        $quantity = $row->quantity;
+                        $ltp = 0;
+                        if( !empty($row->price)){
+                            $ltp = $row->price->close_price ?: $row->price->last_updated_price;
+                        }
+                        $wacc = $row->wacc;
+                        $cost_price = $wacc * $quantity;
+                        $worth = $ltp * $quantity;
+                        $sales_amount = $ltp * $quantity;
+                        $gain = $worth - $cost_price;
+                        $gain_pc = '';
+                        if($cost_price>0)
+                            $gain_pc = round(($gain/$cost_price)*100, 2);
+                        $gain_class = '';
+                        if($gain > 0){
+                            $gain_class = 'increase';
+                        }elseif($gain < 0){
+                            $gain_class = 'decrease';
+                        }
+                    @endphp
                 
                 <tr id="row-{{$row->id}}">
                     <td class="symbol">
@@ -258,7 +263,7 @@
                 @endforeach  
                 </tbody>
                 </table>
-            @endif
+         
 
         </main>
             
@@ -324,5 +329,13 @@
     @endif
 
 </section>
-<script src="{{ URL::to('js/basket.js') }}"></script>
+<script src="{{ URL::to('js/cart.js') }}"></script>
+<script>
+        
+    const el = document.querySelector('select#shareholders').addEventListener('change',function(e){
+        const uuid = e.target.value;
+        const url = `/cart/${uuid}`;
+        window.location.replace(url);
+    });
+</script>
 @endsection

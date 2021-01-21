@@ -5,7 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">My portfolio</h1>
+    <h1 class="c_title">Dashboard</h1>
 @endsection
 
 <style>

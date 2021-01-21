@@ -115,14 +115,17 @@
                         </li>
                         <li></li>
                         @endguest
-
                         @auth
-                        <li class="{{MyUtility::urlMatch('portfolio')?'selected':''}}"><a href="{{ url('portfolio') }}">Portfolio</a></li>
+                        @php $uuuid = \App\Models\Shareholder::getShareholderUUID(session('shareholder_id')); @endphp
+                        <li class="{{MyUtility::urlMatch('dashboard')?'selected':''}}"><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li class="{{MyUtility::urlMatch('portfolio/'.$uuuid)?'selected':''}}">
+                            <a href="{{url('portfolio', [$uuuid]) }}">Portfolio</a>
+                        </li>
                         <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New</a></li>
                         <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
-                        <li>                            
+                        <li class="{{MyUtility::urlMatch('basket')?'selected':''}}">                        
                             @if( $basket > 0) 
-                                <a href="{{url('basket')}}" title="View Cart">Cart</a>
+                                <a href="{{url('cart')}}" title="View Cart">Cart</a>
                             @endif
                         </li>
                         <li>

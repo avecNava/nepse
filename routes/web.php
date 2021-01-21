@@ -36,14 +36,7 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-
-    return  DB::table('shareholders as s')
-    ->join('portfolio_summaries as p','s.id','p.shareholder_id')
-    ->where('s.parent_id', 1)
-    ->selectRaw('DISTINCT(p.shareholder_id),first_name,last_name,uuid')
-    ->get();
-   
-    dd($ids);
+  dd(session('tenant_id'));
 });
 
 Route::get('sample-record', function(){
@@ -90,9 +83,9 @@ Route::get('portfolio/new', [PortfolioController::class, 'create']);
 Route::post('portfolio/create', [PortfolioController::class, 'store']);
 Route::get('portfolio/edit/{id}', [PortfolioController::class, 'edit']);
 Route::post('portfolio/edit', [PortfolioController::class, 'update']);
-Route::get('portfolio/delete/{id}', [PortfolioController::class, 'delete']);
+Route::post('portfolio/delete', [PortfolioController::class, 'delete']);
 
-Route::get('portfolio', [PortfolioSummaryController::class, 'index']);
+Route::get('dashboard', [PortfolioSummaryController::class, 'index']);
 Route::post('portfolio/export', [PortfolioController::class, 'export']);
 
 /*put these at the bottom or the portfolio routes*/
@@ -104,12 +97,11 @@ Route::get('sales', [SalesController::class,'view']);
 Route::post('sales/store',[SalesController::class,'store']);
 Route::get('sales/{uuid?}',[SalesController::class,'view']);
 
-Route::get('basket',[SalesBasketController::class,'view']);
-Route::get('basket/add',[SalesBasketController::class,'create']);
-Route::post('basket/store',[SalesBasketController::class,'store']);
-Route::post('basket/update',[SalesBasketController::class,'update']);
-Route::post('basket/delete',[SalesBasketController::class,'delete']);
-Route::get('basket/{uuid?}',[SalesBasketController::class,'view']);
+Route::get('cart/{uuid?}',[SalesBasketController::class,'view']);
+Route::get('cart/add',[SalesBasketController::class,'create']);
+Route::post('cart/store',[SalesBasketController::class,'store']);
+Route::post('cart/update',[SalesBasketController::class,'update']);
+Route::post('cart/delete',[SalesBasketController::class,'delete']);
 
 Route::post('sales/store',[SalesController::class,'store']);
 

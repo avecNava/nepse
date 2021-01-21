@@ -108,7 +108,7 @@ div#notice .btn {
 
 /* faq and guidelines */
 section.faq header, section.guidelines header{margin:10px 0;}
-section.faq h3, section.guidelines h3{display:inline; font-weight: normal;}
+section.faq h3, section.guidelines h3{display:inline; }
 section.faq li, section.guidelines li{padding-left: 10px;}
 
 section.guidelines li::marker {
@@ -389,6 +389,10 @@ button.focus {
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: .15em;
+}
+button.small-btn{
+    height: 2em;
+    padding: 2px 5px;
 }
 /* .form-field .buttons {
     background: #f0f8ff85;

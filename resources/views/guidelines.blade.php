@@ -42,7 +42,7 @@
                 <p>You can add stocks in multiple ways.</p>
 
                 <section id="manual">
-                    <h3>Add stocks manually </h3>
+                    <h3>01. Add stocks manually </h3>
                     <p>
                         Add new stocks manually one by one by using webform. The form has validations and will calculate effective rate as you enter data.
                     </p>
@@ -54,7 +54,7 @@
                 </section>
 
                 <section id="excel">
-                    <h3>Import stocks using excel file (Bulk Import)</h3>
+                    <h3>02. Bulk Import (Spreadsheet) </h3>
                     <p>
                         To import share using excel file, click the link below. Please <a href="{{'templates/my-shares-template.xlsx'}}">download a sample excel file</a>, update with your stocks and import.
                     </p>
@@ -66,7 +66,7 @@
                 </section>
 
                 <section class="meroshare">
-                    <h3>Import stocks from MeroShare (Bulk Import)</h3>
+                    <h3>03. Bulk Import (Meroshare CSV dump)</h3>
                     <p>We understand manually entering huge transactions can be error prone, time taking and confusing. That is the reason why we added a feature for bulk importing stocks. You can download your portfolio from your <a href="https://meroshare.cdsc.com.np" target="_blank" rel="noopener noreferrer">MeroShare account</a> as csv/excel file and upload at one shot.</p>
                     <p>
                         Stocks downloaded should have a fixed structure/format. You can <a href="{{ url('templates/sample-meroshare-transaction-history.xlsx') }}">download a sample file</a> and see how it looks.
@@ -112,11 +112,11 @@
                 <br/>
                 <h2>Dashboard</h2>
                 <p>
-                    <a href="#portfolio">Portfolio</a> will be the dashboard  until we come up with something interesting 😉
+                    The dashboard will show the summary of the stocks for each family member in one shot. This may keep changing as we add new features.
                 </p>
                 <ul>
                         <li>
-                        <a href="{{ url('portfolio') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">Dashboard</a>
+                        <a href="{{ url('dashboard') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">Dashboard</a>
                         </li>
                 </ul>
                 
@@ -126,14 +126,14 @@
                 <br/>
                 <h2>Portfolio</h2>
                 <p>
-                    Whenver you are in the <a href="{{ url('portfolio') }}" title="Portfolio"  target="_blank" rel="noopener noreferrer">Portfolio view</a>, you can click on Shareholder names and view stocks recorded under them. Please note that the list will show aggregated shares.
+                    When you click on any Shareholder name in the dashboard it will take you to the portfolio page for that person.
                 </p>
                 <p>
                     Click on the individual symbols in the list to view details for each share. The details view will show shares by purchase date, offering type and quantities.
                 </p>
                 <ul>
                         <li>
-                        <a href="{{ url('portfolio') }}" title="Portfolio"  target="_blank" rel="noopener noreferrer">Portfolio</a>
+                        <a href="{{ url('dashboard') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">Dashboard</a>
                         </li>
                 </ul>
                 
@@ -143,7 +143,7 @@
                 <br/>
                 <h2>Update stocks</h2>
                 <p>
-                    Goto <a href="#portfolio-detail">portfolio details</a> for the stock you would like to edit. Select a record, click on checkbox and click on <strong>Edit</strong> button.
+                    Goto <a href="#portfolio">shareholder portfolio</a>. Click on the symbol you would like to edit and click on <strong>Edit</strong> button.
                 </p>
             </article>
 
@@ -151,18 +151,7 @@
                 <br/>
                 <h2>Delete stocks</h2>
                 <p>
-                    Goto <a href="#portfolio-detail">portfolio details</a> for the stock you would like to delete. Select a record, click on checkbox and click on <strong>Delete</strong> button.
-                </p>
-            </article>
-
-            <article id="duplicate-stocks">
-                <br/>
-                <h2>Duplicate stocks</h2>
-                <p>
-                    Stocks imported using bulk import via Meroshare account may have duplicate records or some records missing. Please verify the stocks are correctly imported. 
-                </p>
-                <p>
-                    If you have sold stocks before or your stocks went merger, there may be chances that such records appear two times as port the purchase and sales records are exported while you export shares at Meroshare account. Identify such glitches and delete them individually.
+                    Similar like <a href="#update-stocks">update stocks</a> but this time click on <strong>Delete</strong> button.
                 </p>
             </article>
 
@@ -170,14 +159,14 @@
                 <br/>
                 <h2>Sales</h2>
                 <p>
-                    You can keep a record of Sales of the stocks you sold.
+                    You can keep a record of Sales of the stocks you sold. <mark>Please note that this feature is evolving and not yet complete</mark>
                 </p>
                 <ul>
                         <li>
-                            <a href="{{url('portfolio/sales')}}" title="Add sales" target="_blank" rel="noopener noreferrer">Add sales record</a>
+                            <a href="{{url('portfolio/sales')}}" title="Add sales" target="_blank" rel="noopener noreferrer">Add sales record</a> <mark>Under development</mark>
                         </li>
                         <li>
-                            <a href="{{url('portfolio')}}" title="Sales" target="_blank" rel="noopener noreferrer">View Sales</a>
+                            <a href="{{url('sales')}}" title="Sales" target="_blank" rel="noopener noreferrer">View Sales</a>
                         </li>
                 </ul>
             </article>

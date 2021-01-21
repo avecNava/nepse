@@ -259,21 +259,32 @@ class PortfolioController extends Controller
      * delete the portfolio
      * $id is the record id
      */
-    public function delete(int $id)
+    public function delete(Request $request)
     {
 
-        if(!$id){
+        if( empty($request->rows) ){
+            return response()->json([
+                 'status' => 'error',
+                 'message' => 'Confused 👀 Did you select any record at all?',
+             ]);
+       }
 
-            return response()->json(
-                [
-                    'action'=>'delete', 
-                    'message'=> 'Shareholder id can not be null', 
-                    'status'=>'error',                
-                ]);
+       // /trans_id is comma separated (eg, 1,2,3,4,5), explode into array 
+       $arr_id = Str::of($request->rows)->explode(',');
+
+        //convert the given list of ids into array, chunk into two arrays, 
+        //mass delete the first chunk, manually delete the last element, so observe event occurs
+        $rowid = $arr_id[0];
+
+        if(count($arr_id) > 1){
+            $chunk = array_chunk($arr_id->toArray(), count($arr_id) - 1);    //2nd array will have last element
+            $arr1 = $chunk[0];
+            $rowid = $chunk[1][0];                      //get the last row id
         }
+       
         
         //obtain the shareholder and stock id to update records in portfolio summary
-        $portfolio = Portfolio::find($id);
+        $portfolio = Portfolio::find($rowid);
         
         if(empty($portfolio)){
             return response()->json(
@@ -287,8 +298,15 @@ class PortfolioController extends Controller
         $shareholder_id = $portfolio->shareholder_id;
         $stock_id = $portfolio->stock_id;
 
+
         //step 1: delete records from Portfolio
-        $deleted = Portfolio::destroy($id);
+        //1.1 delete the first array (mass delete)
+        if(!empty($arr1)){
+            Portfolio::whereIn('id', $arr1)->delete();     //mass deletes            
+        }
+     
+        //1.2 delete the last row
+        $deleted = Portfolio::destroy($rowid);
         
         $desc = [
             'user' => Auth::user()->name, 
@@ -312,21 +330,18 @@ class PortfolioController extends Controller
             $remaining = Portfolio::where('shareholder_id', $portfolio->shareholder_id)->where('stock_id',$portfolio->stock_id)->sum('quantity');
 
             //remove from summaries where quantity is zero
-            PortfolioSummary::where('quantity', '<=', 0)->delete();
+            PortfolioSummary::where('quantity', '<=', 0)->delete();  //todo: do this via oberver later
             
-            if($deleted > 0){
-                
-                $message = "Portfolio deleted. Remaining units $remaining";
-                return response()->json(
-                    [
-                        'quantity'=>$remaining,
-                        'message'=> $message, 
-                        'status'=>'success',
-                    ], 
-                    201
-                );
+            $message = "Portfolio deleted. Remaining units $remaining";
+            return response()->json(
+                [
+                    'quantity'=>$remaining,
+                    'message'=> $message, 
+                    'status'=>'success',
+                ], 
+                201
+            );
 
-            }
         }
         return response()->json(
             [

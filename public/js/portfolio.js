@@ -1,34 +1,52 @@
 // Select all checkboxes with the name 's_id' using querySelectorAll.
-var checkboxes = document.querySelectorAll("input[type=checkbox][name=s_id]");
+// var checkboxes = document.querySelectorAll("input[type=checkbox][name=s_id]");
 
-//capture the id of the selected checkbox
-Array.prototype.forEach.call(checkboxes, function(el, i){
+// //capture the id of the selected checkbox
+// Array.prototype.forEach.call(checkboxes, function(el, i){
 
-    el.addEventListener('change', function() {
+//     el.addEventListener('change', function() {
         
-        let s_id = this.id;
+//         let s_id = this.id;
 
-        if(this.checked){
-            document.getElementById('edit').setAttribute('data-id', s_id);
-            document.getElementById('delete').setAttribute('data-id', s_id);
-        }
+//         if(this.checked){
+//             document.getElementById('edit').setAttribute('data-id', s_id);
+//             document.getElementById('delete').setAttribute('data-id', s_id);
+//         }
 
-        else {
-            document.getElementById('edit').removeAttribute('data-id');
-            document.getElementById('delete').removeAttribute('data-id');
-        }
+//         else {
+//             document.getElementById('edit').removeAttribute('data-id');
+//             document.getElementById('delete').removeAttribute('data-id');
+//         }
 
-        // console.log(this.id, this.checked);
+//         // console.log(this.id, this.checked);
         
-        //uncheck all other checkboxes (one select at a time)
-        Array.prototype.forEach.call(checkboxes, function(el, i){
-        if(el.id != s_id)
-            el.checked = false;
-        });
+//         //uncheck all other checkboxes (one select at a time)
+//         // Array.prototype.forEach.call(checkboxes, function(el, i){
+//         // if(el.id != s_id)
+//         //     el.checked = false;
+//         // });
 
-    })
+//     })
 
-});
+// });
+
+
+//check all checkbox is Select all is checked, else unselect all
+function checkAll() {
+    var select_all = document.getElementById('select_all');
+    var flag = select_all.checked;            
+    var elements = document.getElementsByName("s_id");
+    Array.prototype.forEach.call(elements, function(el, i){
+        el.checked=flag;
+    });
+}
+function unCheckAll() {
+    var select_all = document.getElementById('select_all');                    
+    var elements = document.getElementsByName("s_id");
+    Array.prototype.forEach.call(elements, function(el, i){
+        el.checked=false;
+    });
+}
 
 //handle quantity change
 document.getElementById('quantity').addEventListener('change',function(){

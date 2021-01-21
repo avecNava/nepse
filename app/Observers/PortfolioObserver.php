@@ -7,6 +7,12 @@ use App\Models\PortfolioSummary;
 
 class PortfolioObserver
 {
+
+    public function creating(Portfolio $portfolio)
+    {
+        $portfolio->tenant_id = session('tenant_id');
+    }
+
     /**
      * Handle the Portfolio "created" event.
      *
@@ -50,7 +56,7 @@ class PortfolioObserver
     {
         //check if its the last record in the portfolio table, 
         //if yes, delete the stock from portfolio summary table
-
+        
         $count = Portfolio::where('shareholder_id', $portfolio->shareholder_id)
                     ->where('stock_id', $portfolio->stock_id)->sum('quantity');        //returns 0 if not found
         
@@ -58,6 +64,7 @@ class PortfolioObserver
             PortfolioSummary::where('shareholder_id', $portfolio->shareholder_id)
             ->where('stock_id', $portfolio->stock_id)->delete();
         }
+        // info('observer deleted');
 
     }
 

@@ -22,11 +22,11 @@ tfoot td {
     background: #fff;
 }
 </style>
+    <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
     <div id="portfolio-detail">
    
 
-        <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
         @php
             $ltp=0;
@@ -72,7 +72,7 @@ tfoot td {
                         </a>
                     </h2> 
                     @if($stock)
-                    <h3 class='highlight'>{{$stock['security_name']}}({{$stock['symbol']}})</h3>
+                    <h3 class='highlight'>{{$stock['security_name']}} ({{$stock['symbol']}})</h3>
                     <h3>{{$stock->sector->sector}}</h3>
                     @endif
                     <section id="basket" class="item basket">
@@ -90,7 +90,7 @@ tfoot td {
                         @endif
                         <div class="flex al-cntr">
                         <button onClick="addToBasket()">Add to basket</button>
-                        <span class='button'><a href="{{url('basket')}}">View basket</a></span>
+                        <span class='button'><a href="{{url('cart')}}">View basket</a></span>
                         </div>
                     </div>
                     <div id="basket_message"></div>
@@ -369,7 +369,10 @@ tfoot td {
                     <thead>
      
                     <tr>
-                        <th>Symbol</th>
+                        <th class="flex al-cntr">
+                            <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
+                            <label for="select_all">&nbsp;Symbol</label>                            
+                        </th>
                         <th class="optional">Offering type</th>
                         <th class="c_digit">Quantity</th>
                         <th class="c_digit">Unit cost</th>
@@ -411,8 +414,8 @@ tfoot td {
                             <td title="{{ $record->stock_id }}-{{ $record->security_name }}" >
                                 <div style="display:flex;flex-wrap:nowrap;align-items:center">
                                 @if( !empty($record))
-                                    <input type="checkbox" name="s_id" id="chk-{{ $record->id }}">
-                                    <label for="chk-{{ $record->id }}" style="padding:5px">
+                                    <input type="checkbox" name="s_id" id="{{ $record->id }}">
+                                    <label for="{{ $record->id }}" style="padding:5px">
                                         {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
                                     </label>
                                 @endif
@@ -499,6 +502,11 @@ tfoot td {
 
 <script>
 
+    document.getElementById('select_all').addEventListener('change', function(e){
+        checkAll();
+    });
+
+
     // handle New button clicked
     document.getElementById("new").addEventListener("click", function() {
         const url = `${window.location.origin}/portfolio/new`;
@@ -515,11 +523,9 @@ tfoot td {
     // handle Edit button clicked
     document.getElementById("edit").addEventListener("click", function() {
 
-        //retrieve the data-id attribute from the edit button
-        let el = document.getElementById('edit');
-        let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
-
-        if(!id_string){
+        var chk = document.querySelector('input[name=s_id]:checked');
+        
+        if(chk === null){
             msg = 'Please select a record';
             showMessage(msg, 'message', 'error'); return;
         }
@@ -530,11 +536,8 @@ tfoot td {
         document.querySelector('.message').innerHTML='';
 
 
-        //parse the id from the given string
-        let record_id = parseID('chk_', id_string);
-
         let request = new XMLHttpRequest();
-        const url = `${window.location.origin}/portfolio/get/${record_id}`;
+        const url = `${window.location.origin}/portfolio/get/${chk.id}`;
         request.open('GET', url, true);
 
         request.onload = function() {
@@ -603,61 +606,59 @@ tfoot td {
 
     // handle Delete button clicked
     document.getElementById("delete").addEventListener("click", function() {
+    let selected = [];
+    let elements = document.getElementsByName("s_id");
+    let ele_import = document.getElementById('message');
+    let url = `${window.location.origin}/portfolio/delete`;
 
-        //retrieve the data-id attribute from the delete button
-        //the data-id attirbute is the id of the row
-        const  el = document.getElementById('delete');
-        let id_string = el.getAttribute('data-id');        //eg, id_string=chk_29
-
-        if(!id_string){
-            msg = 'Please select a record';
-            showMessage(msg, 'message', 'error'); return;
+    Array.prototype.forEach.call(elements, function(el, i){
+        if(el.checked){
+            selected.push(el.id);
         }
+    });
 
-        //parse the id from the given string
-        let record_id = parseID('chk_', id_string);
+    if(selected.length <= 0 ){
+        let message = 'Please select records to delete';
+        showMessage(message,'message','error');
+        return;
+    }
 
-        if(confirm('Please confirm the delete operation')) {
+    if(confirm('Please confirm the delete operation')){
 
             showLoadingMessage();
-
-            let request = new XMLHttpRequest();
-            const url = `${window.location.origin}/portfolio/delete/${record_id}`;
-            request.open('GET', url, true);
-
-            request.onload = function() {
-                
-                data = JSON.parse(this.response);
-                
+            let _token = document.getElementsByName('_token')[0].value;
+            let request = new XMLHttpRequest();            
+            request.open('POST', url, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function() {                
+                data = JSON.parse(this.response);                
                 if (this.status >= 200 && this.status < 400) {
                     showMessage(data.message,'message');
+
                     //if no records remain, redirect to main page
                     if(data.quantity == 0){
-                        let url = `${window.location.origin}/portfolio`;
+                        url = `${window.location.origin}/portfolio`;
                         window.location.replace(url);
                     }
-                    hideDeletedRow();
-                }else{
-                    showMessage(data.message,'message','error');
+                    window.location.reload();   //refresh the page
                 }
-                hideLoadingMessage();
             }  
             request.onerror = function() {
             // There was a connection error of some sort
             hideLoadingMessage();
             };
 
-            request.send(); 
+            request.send(`_token=${_token}&rows=${selected.toString()}`);
 
         }
     
     });
 
-    function hideDeletedRow($id) {
-        const tag = document.getElementById('delete').dataset.id;
-        const id = parseID('chk-', tag);
-        document.getElementById('row-'+id).classList.add('hide');
-    }
+    // function hideDeletedRow($id) {
+    //     const tag = document.getElementById('delete').dataset.id;
+    //     const id = parseID('chk-', tag);
+    //     document.getElementById('row-'+id).classList.add('hide');
+    // }
 
     function resetSellError(){
         const msg = document.querySelector('#basket_message')
@@ -669,7 +670,7 @@ tfoot td {
     function saveToBasket(sell_quantity, shareholder_id, stock_id){
         
         showLoadingMessage();
-        const url = `${window.location.origin}/basket/store`;
+        const url = `${window.location.origin}/cart/store`;
         let _token = document.getElementsByName('_token')[0].value;
         let request = new XMLHttpRequest();
         request.open('POST', url, true);

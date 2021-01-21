@@ -72,6 +72,11 @@ class Shareholder extends Model
         return optional($temp)->first_name . ' ' . optional($temp)->last_name;
     }
 
+    public static function getShareholderDetail($uuid)
+    {
+        return Shareholder::where('uuid', $uuid)->first();
+    }
+
     public static function getShareholderNames($parent_id)
     {
         $shareholders = Shareholder::where('parent_id', $parent_id)->get();
