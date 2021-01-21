@@ -84,13 +84,7 @@
                 </div>
 
                 <div class="flex js-start al-cntr">
-                <select name="shareholders" id="shareholders" onchange="refresh()">
-                    @foreach($shareholders as $row)
-                    <option value="{{ $row->uuid }}" @if($uuid == $row->uuid) SELECTED @endif>
-                        {{$row->first_name}} {{$row->last_name}} 
-                    </option>
-                    @endforeach
-                </select>    
+              
                 &nbsp;
                     <div class="message" id="message">                    
                         @if(session()->has('message'))

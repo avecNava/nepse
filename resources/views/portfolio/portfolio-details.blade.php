@@ -26,8 +26,6 @@ tfoot td {
 
     <div id="portfolio-detail">
    
-
-
         @php
             $ltp=0;
             $ltp_prev=0;

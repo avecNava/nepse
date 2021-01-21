@@ -32,7 +32,7 @@ Auth::routes([
     'register' => true,
 ]);
     
-// Auth::loginUsingId(6);
+Auth::loginUsingId(6);
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
