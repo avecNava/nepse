@@ -36,8 +36,7 @@ class PortfolioController extends Controller
 
         $transaction_date = StockPrice::getLastTransactionDate();
 
-
-        $shareholders = Shareholder::shareholdersWithPortfolio(Auth::id());
+        $shareholders = Shareholder::shareholdersWithPortfolio($uuid, TRUE);
        
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
 

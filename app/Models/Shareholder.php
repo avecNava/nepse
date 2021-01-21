@@ -44,11 +44,20 @@ class Shareholder extends Model
         return $this->belongsTo('App\Models\User');        //join Shareholder and user by parent_id and  ids
     }
 
-    public static function shareholdersWithPortfolio($user_id)
+    public static function shareholdersWithPortfolio($user_id, $uuid = FALSE)
     {
+        
+        $parent = $user_id;
+
+        //if the given id is uuid then, get the id first
+        if($uuid){
+            $parent = Shareholder::where('uuid', $user_id)
+                ->pluck('parent_id')->first();
+        }
+
         return  DB::table('shareholders as s')
             ->join('portfolio_summaries as p','s.id','p.shareholder_id')
-            ->where('s.parent_id', 1)
+            ->where('s.parent_id', $parent)
             ->selectRaw('DISTINCT(p.shareholder_id),first_name,last_name,uuid')
             ->get();
     }
@@ -154,8 +163,6 @@ class Shareholder extends Model
 
         Log::info('Created shareholder groups (long/short term)', [optional(Auth::user())->name]);
     }
-
-
     
     /**
      * returns Shareholders with Sales record

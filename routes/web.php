@@ -32,11 +32,11 @@ Auth::routes([
     'register' => true,
 ]);
     
-Auth::loginUsingId(6);
+// Auth::loginUsingId(7);
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-  dd(session('tenant_id'));
+    return Shareholder::where('uuid','6ea1d6f6-d847-4938-aca9-af40a40f838c')->pluck('parent_id')->first();
 });
 
 Route::get('sample-record', function(){

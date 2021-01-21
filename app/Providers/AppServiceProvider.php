@@ -42,8 +42,8 @@ class AppServiceProvider extends ServiceProvider
         //https://laravel.com/docs/8.x/database#listening-for-query-events
         // receive each SQL query executed by the  application,
         DB::listen(function ($query) {            
-            // Log::info("SQL : " . $query->sql);
-            // $query->bindings
+            Log::info("SQL : " . $query->sql);
+            info($query->bindings);
             // $query->time
         });
 
