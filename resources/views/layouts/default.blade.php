@@ -115,6 +115,7 @@
                         </li>
                         <li></li>
                         @endguest
+
                         @auth
                         @php $uuuid = \App\Models\Shareholder::getShareholderUUID(session('shareholder_id')); @endphp
                         <li class="{{MyUtility::urlMatch('dashboard')?'selected':''}}"><a href="{{ url('dashboard') }}">Dashboard</a></li>
@@ -123,11 +124,11 @@
                         </li>
                         <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New</a></li>
                         <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
+                        @if( $basket > 0) 
                         <li class="{{MyUtility::urlMatch('basket')?'selected':''}}">                        
-                            @if( $basket > 0) 
                                 <a href="{{url('cart')}}" title="View Cart">Cart</a>
-                            @endif
-                        </li>
+                            </li>
+                        @endif
                         <li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -226,8 +227,8 @@
                     <div class="portfolio__wrapper">
                         <h3>Manage portfolio</h3>
                         <ul>
-                            <li><a href="{{ url('portfolio') }}">Portfolio</a></li>
-                            <li><a href="{{ url('/portfolio/new') }}">New Portfolio</a></li>
+                            <li><a href="{{url('portfolio', [$uuuid]) }}">Portfolio</a></li>
+                            <li><a href="{{ url('/portfolio/new') }}">Add share</a></li>
                             <li><a href="{{ url('/import/share') }}">Import (Spreadsheet)</a></li>
                             <li><a href="{{ url('/import/meroshare') }}">Import (MeroShare)</a></li>
                             <li><a href="{{ url('/shareholders') }}">Shareholders</a></li>

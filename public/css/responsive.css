@@ -129,12 +129,9 @@ section.guidelines ul {
     margin: 0 20px;
 }
 .highlighted {
-    background: beige;
-    /* transition: 1s; */
-    transform: perspective(20px);
-    box-shadow: 0px 1px 6px -1px #6b64a0;
-    border-radius: 5px;
-    padding: 5px 10px;
+    transition: font-size .5s;
+    color: var(--form-band);
+    font-size: 25px;
 }
 
 /* input elements */
@@ -194,52 +191,6 @@ nav.c-nav__list li {
 main.c-main {
     padding: 0;
 }
-
-/*header*/
-.site-info__wrapper {
-    margin: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.site-logo {
-    width: 108px;
-    height: 88px;
-    background: url(/assets/logo-sm.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-
-ul.navbar-nav{
-    padding:0;
-    display: flex;
-    flex-direction: column;
-}
-header.main-header {
-    background: rgb(202,202,168);
-    background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
-    position: relative;
-}
-.main-header__wrapper {
-    display: flex;
-}
-
-.navbar-nav li.selected {
-    background: #da9321;
-    font-weight: bold;
-}
-
-.navbar-nav li {
-    display: inline-block;
-    padding: 10px 15px;
-}
-.navbar-nav a {
-    color: #000000;
-    font-weight: bold;
-}
-
-
 
 /* The Overlay (background) */
 .overlay {
@@ -301,21 +252,65 @@ div#hamburger>div {
     right: 0;
 }
 
-nav.navbar__wrapper {
-    width: 100%;
+/*header*/
+.site-info__wrapper {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.navbar-nav {
+.site-logo {
+    width: 108px;
+    height: 88px;
+    background: url(/assets/logo-sm.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+header.main-header {
+    background: rgb(202,202,168);
+    background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
+    position: relative;
+}
+
+.main-header__wrapper {
+    display: flex;
+}
+
+ul.navbar-nav{
+    padding:0;
+    display: flex;
+    flex-direction: column; 
     background: rgb(202,202,168);
     background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
     margin: 0;
     font-size: 18px;
     text-align: center;
 }
-.navbar-nav li {
+
+.navbar-nav li:not(last-child) {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 5px 10px;
 }
+
+.navbar-nav li.selected {
+    background: #da9321;
+    font-weight: bold;
+}
+
+.navbar-nav a {
+    color: #000000;
+    font-weight: bold;
+    display: block;
+    padding: 5px;
+}
+
+nav.navbar__wrapper {
+    width: 100%;
+}
+
 ul.navbar-nav li:first-child {
     font-size: 33px;
     padding: 0;

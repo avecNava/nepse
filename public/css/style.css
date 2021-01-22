@@ -6,7 +6,7 @@ body {
     --color-theme : #ffc266;
     --header:#fff5e6;
     --color-orange-light95:#fff5e6;
-    --color-orange-light70:#ffc266;
+    --color-orange-light70:#fafafa;
     --color-green-light30:#009900;
     --color-black-light30:#4d4d4d;
 }
@@ -142,8 +142,7 @@ section#top-nav .selected {
 /*table formatting*/
 table {border-spacing: 0px; width:100%;}
 table th {
-    background: var(--color-orange-light70);
-    padding: 4px;
+    background: var(--color-orange-light95);
     text-align: left;
     font-size: 15px;
     height: 50px;
@@ -157,7 +156,7 @@ table tr:hover {
     background: #e1ead67a;
 }
 /* tr:nth-child(even) { background: var(--color-black-light90);} */
-tr:nth-child(odd) { background: var(--color-orange-light95);}
+tr:nth-child(even) { background: var(--color-orange-light70); }
 tr:last-child td {border-bottom: 1px solid #ebeeef;}
 .c_digit {text-align: right;padding: 0 5px;}
 tr.separator {

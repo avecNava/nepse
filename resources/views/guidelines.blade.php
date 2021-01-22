@@ -15,11 +15,17 @@
 
 @section('content')
 
+<style>
+    h2 { margin-top: 50px; }
+    .scroll-top {scroll-margin-top: .8em;}
+    .note {
+    margin: 30px;
+    }
+}
+</style>
     <section class="guidelines">
     <h2>Guidelines</h2>
-        <p>
-            Now you have created an account with us, we thought the following guidelines would be benefical for you.
-        </p>
+        
         <p>
             <ul class="navbar">
                 <li><a href="#add-stocks">Add Stocks</a></li>
@@ -28,7 +34,6 @@
                 <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#update-stocks">Update stocks</a></li>
                 <li><a href="#delete-stocks">Delete stocks</a></li>
-                <li><a href="#duplicate-stocks">Duplicate stocks</a></li>
                 <li><a href="#sales">Sales</a></li>
                 <li><a href="#stocks">Stocks</a></li>
                 <li><a href="#brokers">Brokers</a></li>
@@ -36,8 +41,8 @@
             </ul>
         </p>
         <article>
-            <article id="add-stocks">
-                <br/>
+            <article class="scroll-top" id="add-stocks">
+                
                 <h2>Add Stocks</h2>
                 <p>You can add stocks in multiple ways.</p>
 
@@ -71,8 +76,14 @@
                     <p>
                         Stocks downloaded should have a fixed structure/format. You can <a href="{{ url('templates/sample-meroshare-transaction-history.xlsx') }}">download a sample file</a> and see how it looks.
                     </p>
-                    <p>
-                        <mark style="padding:3px 8px"><strong>Note :</strong></mark>
+                    <ul>
+                        <li>
+                            <a href="{{ url('import/meroshare') }}" title="Import share"  target="_blank" rel="noopener noreferrer">Import shares (Meroshare)</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="note">
+                        <strong>Note :</strong>
                         <ul>
                             <li>
                                 Use this method of bulk importing shares for the first time only. You can edit and delete shares manually afterwards. 
@@ -86,17 +97,14 @@
                                 If the unit cost price is not entered, the net worth and gain may not be calculated correctly.
                             </li>
                             <li>The summary page and shareholders dashboard page only shows stocks with cost price updated. Hence,<mark>the quanities of shares may appear to be less than what actaully is from your Meroshare account. Such shares will re-appear once cost price is updated.</mark></li>
-                    </ul>
-                    <ul>
-                            <li>
-                                <a href="{{ url('import/meroshare') }}" title="Import share"  target="_blank" rel="noopener noreferrer">Import shares (Meroshare)</a>
-                            </li>
-                    </ul>
+                        </ul>
+                    </div>
+                    
                 </section>
             </article>
 
-            <article id="add-shareholder">
-                <br/>
+            <article class="scroll-top" id="add-shareholder">
+                
                 <h2>Add Shareholder</h2>
                 <p>You can add your family members, friends circle etc as Shareholder and add stocks under their names. Stocks for different shareholders will be visible in the <a href="{{ url('portfolio') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">dashboard</a>
                 </p>
@@ -108,8 +116,8 @@
                                 
             </article>
 
-            <article id="dashboard">
-                <br/>
+            <article class="scroll-top" id="dashboard">
+                
                 <h2>Dashboard</h2>
                 <p>
                     The dashboard will show the summary of the stocks for each family member in one shot. This may keep changing as we add new features.
@@ -122,8 +130,8 @@
                 
             </article>
 
-            <article id="portfolio">
-                <br/>
+            <article class="scroll-top" id="portfolio">
+                
                 <h2>Portfolio</h2>
                 <p>
                     When you click on any Shareholder name in the dashboard it will take you to the portfolio page for that person.
@@ -139,24 +147,24 @@
                 
             </article>
 
-            <article id="update-stocks">
-                <br/>
+            <article class="scroll-top" id="update-stocks">
+                
                 <h2>Update stocks</h2>
                 <p>
                     Goto <a href="#portfolio">shareholder portfolio</a>. Click on the symbol you would like to edit and click on <strong>Edit</strong> button.
                 </p>
             </article>
 
-            <article id="delete-stocks">
-                <br/>
+            <article class="scroll-top" id="delete-stocks">
+                
                 <h2>Delete stocks</h2>
                 <p>
                     Similar like <a href="#update-stocks">update stocks</a> but this time click on <strong>Delete</strong> button.
                 </p>
             </article>
 
-            <article id="sales">
-                <br/>
+            <article class="scroll-top" id="sales">
+                
                 <h2>Sales</h2>
                 <p>
                     You can keep a record of Sales of the stocks you sold. <mark>Please note that this feature is evolving and not yet complete</mark>
@@ -171,8 +179,8 @@
                 </ul>
             </article>
 
-            <article id="stocks">
-                <br/>
+            <article class="scroll-top" id="stocks">
+                
                 <h2>Stocks</h2>
                 <p>
                     If you do not see any stock name in the list of stocks, please let us know.
@@ -184,8 +192,8 @@
                 </ul>
             </article>
 
-            <article id="brokers">
-                <br/>
+            <article class="scroll-top" id="brokers">
+                
                 <h2>Brokers</h2>
                 <p>
                     If you do not see any broker name in the list of brokers, please let us know.
@@ -197,8 +205,8 @@
                 </ul>
             </article>
 
-            <article id="feedbacks">
-                <br/>
+            <article class="scroll-top" id="feedbacks">
+                
                 <h2>Ideas, bugs, suggestions</h2>
                 <p>
                     No application is ever complete or is ever free from errors (or bugs 🐛). You may have a creative head than we do and have interesting ideas we could apply to help manage stocks more easily and beautifully.
