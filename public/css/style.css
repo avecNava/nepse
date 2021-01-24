@@ -11,61 +11,6 @@ body {
     --color-black-light30:#4d4d4d;
 }
 
-/*flex attribute css*/
-.flex {display: flex;}
-.js-apart {justify-content: space-between;}
-.js-start {justify-content: flex-start;}
-.al-end {align-items: flex-end;}
-.al-cntr {align-items: center;}
-
-/* layout */
-
-div#container, div#app {
-    box-shadow: 1px 1px 19px 4px #ddd;
-}
-.c_content__wrapper {
-    margin: 20px 0;
-    /* width: 100vw;; */
-}
-
-abbr {font-weight: bold; color: #3c3f40;}
-.band-tall { height: 50px;}
-.no-border {border: none !important;}
-.txt_right {text-align:right;}
-a {text-decoration: none;}
-
-mark {
-    padding: 2px 4px;
-    margin: 2px 0;
-}
-
-.error {color:red !important;}
-.error ul {padding: 0 15px;}
-.success {color:green !important;}
-.context-link {
-    color: darkred;
-    padding: 10px;
-    border: 1px dotted;
-}
-div.message, span.message {font-weight:bold;padding: 0 5px;}
-/* section.message {
-    margin: 10px 0;
-    padding: 10px;
-    font-weight: bold;
-} */
-.negative {background: #e60f05 !important;}
-.is-invalid {color: #fb0000;}
-.positive {background: var(--color-green-light30) !important;}
-hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
-sup {
-    font-weight: bold;
-    color: red;
-}
-/*notice*/
-.error-box{
-    height: 100px;
-    margin: 50px 0;
-}
 /* .notice {margin: 0; padding: 5px;} */
 section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
@@ -453,6 +398,11 @@ section.sales summary {
         padding: 0 5px;
     }
 
+    .c_content__wrapper {
+        margin: 20px 0;
+    }
+    
+
     /*text clip*/
     .td-clip {
         min-width: 200px;
@@ -553,12 +503,24 @@ section.sales summary {
         min-height: 475px;
     }
 
-    /*shareholder*/
+    /*shareholder CRUD*/
     .form.c_shareholder_list header {
         flex-direction: row;
+        justify-content: space-between;
     }
     div#shareholder-form {
-        width: 100%;
+        display:block;
+        width: revert;
+    }
+    div#shareholder-form input { width: 80%; }
+    div#shareholder-form input[type="date"]{ width: 40%; }
+    section#shareholder-crud {
+        justify-content: space-evenly;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .form.c_shareholder_list {
+        width: 65%;
     }
 
     /*import share*/
@@ -651,23 +613,21 @@ section.sales summary {
 
   /* input buttons */
 
-    select, input {
-        width: 25%;
+    input, select {
+        width: 200px;
     }
-
+    
     .form-field input, .form-field select {
-        width: 50%;
+        width: 80%;
     }
-    .form-field input[type="date"] {
-        width: 25%;
+    
+    input[type="radio"],input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
     }
 
-    #portfolio-form__wrapper .form-field input[type="date"] {
-        width: 50%;
-    }
     textarea {
         font-size: 18px;
-        margin: 0 5px;
         border-radius: 5px;
         padding: 5px;
         width: 600px;
@@ -681,14 +641,19 @@ section.sales summary {
     input[type="title"] {
         width: 400px;
     }
-    input[type="date"] {
-        width: 15vw;
-        text-align: center;
+    .portfolio__form .form-left {
+        width: 500px;
+    }
+    .portfolio__form .form-field {
+        width: 80%;
     }
     .portfolio__form, .contact-us__form {
         display: flex;
         padding-bottom: 40px;
         flex-direction: row;
+    }
+    .portfolio__form input[type="date"] {
+        width: 150px;
     }
 
     footer.page-footer .links {

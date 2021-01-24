@@ -12,7 +12,56 @@ div#app, div#container {
     padding: 0;
     box-shadow: unset;
     width:100%;
-}    
+} 
+
+/*flex attribute css*/
+.flex {display: flex;}
+.js-apart {justify-content: space-between;}
+.js-start {justify-content: flex-start;}
+.al-end {align-items: flex-end;}
+.al-cntr {align-items: center;}
+
+/* layout */
+
+div#container, div#app {
+    box-shadow: 1px 1px 19px 4px #ddd;
+}
+
+abbr {font-weight: bold; color: #3c3f40;}
+.band-tall { height: 50px;}
+.no-border {border: none !important;}
+.txt_right {text-align:right;}
+a {text-decoration: none;}
+
+mark {
+    padding: 2px 4px;
+    margin: 2px 0;
+}
+section.message {
+    margin-top: 15px;
+    line-height: 1.4em;
+    font-weight: bold;
+}
+.error {color:red;}
+.error ul {padding: 0 15px;}
+.success {color:green;}
+.context-link {
+    color: darkred;
+    padding: 10px;
+    border: 1px dotted;
+}
+.negative {background: #e60f05 !important;}
+.is-invalid {color: #fb0000;}
+.positive {background: var(--color-green-light30) !important;}
+hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
+sup {
+    font-weight: bold;
+    color: red;
+}
+.error-box{
+    height: 100px;
+    margin: 50px 0;
+}
 
 /*welcome page css*/
 .welcome__wrapper section.transactions {
@@ -178,6 +227,9 @@ input[type="file"]{
     margin: 10px 0;
 }
 
+.c_content__wrapper {
+    margin: 0;
+}
 
 nav.c-nav__list li {
     display: inline-block;
@@ -540,15 +592,42 @@ div#portfolio-form__wrapper form {
     background: #f7f7f7;
     width: 100vw;
 }
-div#shareholder-form {
+
+/*shareholder crud*/
+#shareholder-form {
     width: 100vw;
     background: #f7f7f7;
+    display:none;
+}
+header.shareholder-list-header{
+    display: flex;
+    flex-direction: column-reverse;
+}
+section#shareholder-crud {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+}
+.validation-error li {
+    list-style-type: disc;
+}
+.validation-error {
+    padding: 10px;
+}
+.c_gender {
+    flex-direction: row;
+    margin: 0;
 }
 
-.shareholder-info {
-    width: 100%;
+.c_gender label {
+    width: 100px;
 }
 
+
+/* .form.c_shareholder_list header {
+    flex-direction: column;
+    align-items: flex-start;
+} */
 
 .item.basket {
     background: beige;
@@ -594,10 +673,6 @@ section.faq { margin: 10px; }
 }
 .form_content {
     margin: 0 20px;
-}
-.form.c_shareholder_list header {
-    flex-direction: column;
-    align-items: flex-start;
 }
 .nav__username {
     font-size: 20px;

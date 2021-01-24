@@ -27,6 +27,16 @@ Array.prototype.forEach.call(checkboxes, function(el, i){
 });
 
 //-------------------------------------
+// handle New button
+//-------------------------------------
+let btnNew = document.getElementById("new");
+btnNew.addEventListener("click", function() {
+  resetInputFields();   // reset form
+  clearMessage();
+  showForm('shareholder-form');
+});
+
+//-------------------------------------
 // handle Cancel button
 //-------------------------------------
 let btnCancel = document.getElementById("cancel");
@@ -35,14 +45,6 @@ btnCancel.addEventListener("click", function() {
   resetInputFields();
 });
 
-//-------------------------------------
-// handle New button
-//-------------------------------------
-let btnNew = document.getElementById("new");
-btnNew.addEventListener("click", function() {
-  resetInputFields();   // reset form
-  showForm('shareholder-form');
-});
 
 //-------------------------------------
 // handle Edit button clicked
@@ -58,6 +60,7 @@ btnEdit.addEventListener("click", function() {
     let msg = 'Please select a record to edit';
     showMessage(msg,'message');    return;
   }
+
 
   showLoadingMessage(); 
   clearMessage(); 
@@ -175,7 +178,9 @@ btnDelete.addEventListener("click", function() {
         if (this.status >= 200 && this.status < 400) {
             data = JSON.parse(this.response);
             showMessage(data.message);
-            document.getElementById(data.row).classList.add('hide');
+            if(data.status==true){
+              document.getElementById(data.row).classList.add('hide');
+            }
             hideLoadingMessage();
         }
     }  
