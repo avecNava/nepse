@@ -19,7 +19,6 @@
 
     <div class="summary__wrapper">
     
-        <div id="loading-message" style="display:none">Loading... Please wait...</div>
         @if(!empty($scorecard))
         <section class="score_card__wapper">
             <article>

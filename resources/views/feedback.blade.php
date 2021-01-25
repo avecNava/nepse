@@ -13,7 +13,6 @@
 @endsection
 
 @section('content')
-<div id="loading-message" style="display:none">Importing... Please wait...</div>
 <div class="feedback__wrapper">
 
     <section class="feedback__intro">

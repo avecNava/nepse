@@ -20,7 +20,6 @@
 
     <div class="c_portfolio_container">
     
-        <div id="loading-message" style="display:none">Loading... Please wait...</div>
         @if(!empty($scorecard))
         <section class="c_score_cards">
             <article>

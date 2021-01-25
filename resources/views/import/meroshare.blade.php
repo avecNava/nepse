@@ -13,7 +13,6 @@
 @endsection
 
 @section('content')
-<div id="loading-message" style="display:none">Working... Please wait...</div>
 <section class="share_import__wrapper">
 
     <section id="top-nav"  class="optional">

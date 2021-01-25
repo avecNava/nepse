@@ -2,7 +2,63 @@
 201, created
 204, Resource deleted (no Content)  similar to response()->noContent()
 204 doesn't send json response back. The response is empty
+For a DELETE request: HTTP 200 or HTTP 204 should imply "resource deleted successfully". 
+HTTP 202 can also be returned which would imply that the instruction was accepted by the server 
+and the "resource was marked for deletion".
 
 
 401, Not authorized
 404, Not found
+
+
+For a PUT request: HTTP 200 or HTTP 204 should imply "resource updated successfully".
+
+
+HTTP 200 OK: Standard response for successful HTTP requests. The actual response will depend on the request method used.
+
+HTTP 204 No Content: The server successfully processed the request, but is not returning any content
+
+
+https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
+
+DELETE
+
+200 (if you want send some additional data in the Response) or 204 (recommended).
+
+202 Operation deleted has not been committed yet.
+
+If there's nothing to delete, use 204 or 404 (DELETE operation is idempotent, delete an already deleted item is operation successful, so you can return 204, but it's true that idempotent doesn't necessarily imply the same response)
+
+Other errors:
+
+400 Bad Request (Malformed syntax or a bad query is strange but possible).
+401 Unauthorized Authentication failure
+403 Forbidden: Authorization failure or invalid Application ID.
+405 Not Allowed. Sure.
+409 Resource Conflict can be possible in complex systems.
+And 501, 502 in case of errors.
+PUT
+
+If you're updating an element of a collection
+
+200/204 with the same reasons as DELETE above.
+202 if the operation has not been commited yet.
+The referenced element doesn't exists:
+
+PUT can be 201 (if you created the element because that is your behaviour)
+
+404 If you don't want to create elements via PUT.
+
+400 Bad Request (Malformed syntax or a bad query more common than in case of DELETE).
+
+401 Unauthorized
+
+403 Forbidden: Authentication failure or invalid Application ID.
+
+405 Not Allowed. Sure.
+
+409 Resource Conflict can be possible in complex systems, as in DELETE.
+
+422 Unprocessable entity It helps to distinguish between a "Bad request" (e.g. malformed XML/JSON) and invalid field values
+
+And 501, 502 in case of errors.

@@ -22,7 +22,6 @@ tfoot td {
     background: #fff;
 }
 </style>
-    <div id="loading-message" style="display:none">Loading... Please wait...</div>
 
     <div id="portfolio-detail">
    
@@ -298,13 +297,13 @@ tfoot td {
                         </div>
                         <div class="form-field optional">
                             <label for="tags"
-                            class="@error('tags') is-invalid @enderror">Tags</label>
+                            class="@error('tags') is-invalid @enderror">Tags</label><br/>
                             <input type="text" name="tags" id="tags" 
                             value="{{ old('tags') }}"/>
                         </div>
                         <div class="form-field optional">
                             <label for="purchase_date"
-                            class="@error('purchase_date') is-invalid @enderror">Purchase date</label>
+                            class="@error('purchase_date') is-invalid @enderror">Purchase date</label><br/>
                             <input type="date" name="purchase_date" id="purchase_date" 
                             value="{{ old('purchase_date') }}"/>
                         </div>
@@ -542,7 +541,7 @@ tfoot td {
 
             if (this.status >= 200 && this.status < 400) {
                 data = JSON.parse(this.response);
-                updateInputFields(data, 'message');
+                updateInputFields(data);
                 document.querySelector('#offer').dispatchEvent(new Event("change"));
                 hideLoadingMessage();
             }

@@ -13,7 +13,7 @@ use App\Models\StockOffering;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use Illuminate\Support\Str;
-use App\Http\Requests\StorePortfolio;
+use App\Http\Requests\PortfolioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -165,7 +165,7 @@ class PortfolioController extends Controller
     /**
      * store portfolio (main form)
      */
-    public function store(StorePortfolio $request)
+    public function store(PortfolioRequest $request)
     {   
         $user_id = Auth::id();
         $uuid = Shareholder::getShareholderUUID($request->shareholder);

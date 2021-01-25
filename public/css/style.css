@@ -5,6 +5,7 @@ body {
     --form-band : #6b64a0;
     --color-theme : #ffc266;
     --header:#fff5e6;
+    --color-th:#e4e4b8;
     --color-orange-light95:#fff5e6;
     --color-orange-light70:#fafafa;
     --color-green-light30:#009900;
@@ -87,7 +88,7 @@ section#top-nav .selected {
 /*table formatting*/
 table {border-spacing: 0px; width:100%;}
 table th {
-    background: var(--color-orange-light95);
+    background: var(--color-th);
     text-align: left;
     font-size: 15px;
     height: 50px;
@@ -400,9 +401,9 @@ section.sales summary {
 
     .c_content__wrapper {
         margin: 20px 0;
+        position: relative;
     }
     
-
     /*text clip*/
     .td-clip {
         min-width: 200px;
@@ -522,6 +523,24 @@ section.sales summary {
     .form.c_shareholder_list {
         width: 65%;
     }
+    #portfolio-form__wrapper .form-field {
+        width: 300px;
+    }
+
+
+    /* sales CRUD */
+    #sales .form_content input {
+        width: 50%;
+    }
+    
+    #sales .form_content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #sales textarea#remarks {
+        width: 18em;
+        height: 5em;
+    }
 
     /*import share*/
     section#share-import-form main {
@@ -616,7 +635,7 @@ section.sales summary {
     input, select {
         width: 200px;
     }
-    
+
     .form-field input, .form-field select {
         width: 80%;
     }

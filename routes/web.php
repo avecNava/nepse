@@ -94,8 +94,11 @@ Route::get('portfolio/{symbol}/{member}', [PortfolioController::class, 'showPort
 Route::get('portfolio/{uuid}', [PortfolioController::class, 'shareholderPortfolio']);
 
 Route::get('sales', [SalesController::class,'view']);
-Route::post('sales/store',[SalesController::class,'store']);
+Route::get('sales/get/{id}',[SalesController::class,'getSales']);
 Route::get('sales/{uuid?}',[SalesController::class,'view']);
+Route::post('sales/edit',[SalesController::class,'update']);
+Route::post('sales/export',[SalesController::class,'export']);
+Route::post('sales/store',[SalesController::class,'store']);
 
 Route::get('cart/{uuid?}',[SalesBasketController::class,'view']);
 Route::get('cart/add',[SalesBasketController::class,'create']);
@@ -103,7 +106,6 @@ Route::post('cart/store',[SalesBasketController::class,'store']);
 Route::post('cart/update',[SalesBasketController::class,'update']);
 Route::post('cart/delete',[SalesBasketController::class,'delete']);
 
-Route::post('sales/store',[SalesController::class,'store']);
 
 Route::get('guidelines', [HomeController::class, 'guideline']);
 Route::get('faq', [HomeController::class, 'faq']);

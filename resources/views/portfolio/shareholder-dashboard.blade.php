@@ -16,7 +16,6 @@
 
     <div class="shareholder_dashboard__wrapper">
     
-        <div id="loading-message" style="display:none">Loading... Please wait...</div>
         @if(($scorecard['scripts']>0))
             <section class="score_card__wapper">
 

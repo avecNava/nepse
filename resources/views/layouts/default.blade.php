@@ -148,6 +148,7 @@
             </div>
 
             </div>
+            <div id="loading-message" style="display:none">Loading... Please wait...</div>
         </header>
 
         <main class="c_content">
@@ -256,7 +257,7 @@
 
             /* Close when someone clicks on the "x" symbol inside the overlay */
             function closeNav() {
-            document.getElementById("myNav").style.width = "0%";
+                document.getElementById("myNav").style.width = "0%";
             }
         </script>
 

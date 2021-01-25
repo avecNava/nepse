@@ -246,14 +246,13 @@ main.c-main {
 
 /* The Overlay (background) */
 .overlay {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
     width: 0;
     position: absolute;
     z-index: 1; /* Sit on top */
     left: 0;
-    top: 0;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    top: 0;.
+    margin:auto;
+    
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
   }
@@ -278,7 +277,7 @@ section#top-nav .label {
     display: flex;
 }
 #top-nav .link {
-    padding: 3px 8px;
+    padding:8px;
     margin: 2px;
 }
 .link:hover {
@@ -418,6 +417,9 @@ input[type="file"] {
     height: 5em;
     font-family: 'Cutive';
 }
+.tax {
+    background: #fafafa;
+}
 
 button {
     border: 1px solid #97c7ce;
@@ -439,30 +441,8 @@ button.focus {
 }
 button.small-btn{
     height: 2em;
-    padding: 2px 5px;
+    padding: 2px 8px;
 }
-/* .form-field .buttons {
-    background: #f0f8ff85;
-    border-radius: 5px;
-    text-align: right;
-    padding: 5px 0;
-}
-.icon-buttons button {
-    border: 0px;
-    min-width: 45px !important;
-    font-size: 16px;
-    padding: 3px;
-    height: 2em;
-    box-shadow:  1px 1px 0px;
-    margin: 0;
-    margin-left: 5px;
-}
-.small-buttons button {
-    padding: 0 10px;
-    color: #607D8B;
-    min-width: 50px !important;
-    font-size: 14px;
-} */
 
 ul.shareholder-nav {
     height: 65px;
@@ -642,10 +622,28 @@ section#shareholder-crud {
     margin-right: 30px;
 }
 
-
 article.sales_list main {
-    margin: 10px;
+    margin: 5px;
 }
+.basket td,.basket th, .sales_list td, .sales_list th {
+    text-align: right;
+}
+article#sales_crud.show {
+    transition: opacity 1.5s;
+    opacity: 100%;
+    width: revert;
+    height: revert;
+    margin:0 auto;
+}
+article#sales_crud {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+article#sales_crud {
+    background: #bdc6b7;
+}
+
 #share-import-form li {
     list-style-type: disc;
     margin-left: 15px;

@@ -8,10 +8,13 @@ use App\Models\SalesBasket;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
+use App\Models\Broker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\UtilityService;
+use App\Http\Requests\SalesRequest;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class SalesController extends Controller
 {
@@ -21,10 +24,24 @@ class SalesController extends Controller
         $this->middleware(['auth', 'verified']); 
     }
 
+    public function getSales(int $id)
+    {
+        $data = Sales::where('id', $id)->with(['share:id,symbol','shareholder:id,first_name,last_name'])->first();
+     
+        if(!empty($data)){
+            return response()->json($data, 200);
+        }
+        
+        return response()->json([
+            'data' => null,
+        ], 404);
+    }
+
     public function view( $uuid = null )
     {
         
         $arr_shareholder_id = null; 
+        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
         
         //if $uuid is null, get shareholders under current login        
         if(UtilityService::IsNullOrEmptyString($uuid)){
@@ -76,8 +93,46 @@ class SalesController extends Controller
                 'sales' => $sales,
                 'shareholders' => $shareholders,
                 'selected' => Shareholder::getShareholderDetail($uuid),
+                'brokers' => $brokers,
             ]); 
 
+    }
+
+    public function update(SalesRequest $request)
+    {
+        // $validated = $request->validated();
+        // dd($validated);
+        
+        $row_id = $request->get('id');
+        $sales = Sales::find($request->id);
+        if(!empty($sales)){
+            $sales->stock_id = $request->stock_id;
+            $sales->shareholder_id = $request->shareholder_id;
+            $sales->quantity = $request->quantity;
+            $sales->wacc = $request->wacc;
+            $sales->cost_price = $request->cost_price;
+            $sales->sell_price = $request->sell_price;
+            $sales->net_receivable = $request->net_receivable;
+            $sales->sales_date = $request->sales_date;
+            $sales->payment_date = $request->payment_date;
+            $sales->broker_commission = $request->broker_commission;
+            $sales->sebon_commission = $request->sebon_commission;
+            $sales->capital_gain_tax = $request->capital_gain_tax;
+            $sales->gain = $request->gain;
+            $sales->dp_amount = $request->dp_amount;
+            $sales->name_transfer = $request->name_transfer;
+            $sales->receipt_number = $request->receipt_number;
+            $sales->broker_no = $request->broker;
+            $sales->remarks = $request->remarks;
+            $sales->last_modified_by = Auth::id();
+            $sales->save();
+
+            return redirect()->back()->with('message','Record updated successfully');
+        } 
+
+        else{
+            return redirect()->back()->with('error','Record not found',404);
+        }
     }
 
     //called when marked as Sold is called via Shopping basket
@@ -165,6 +220,67 @@ class SalesController extends Controller
                 'message' => 'Error: '. $th->getMessage() . ' Line: ' . $th->getLine() . ' File: ' . $th->getFile(),
                 // 'message' => 'An unexpected error occured. Please ensure that Effective rate is updated for the stock.',
             ], 500);
+        }
+
+    }
+
+    public function export(Request $request)
+    {
+        $shareholder_id = Auth::id();
+        
+        $uuid = $request->shareholder;
+        if(!empty($uuid)){
+            $shareholder_id = Shareholder::getShareholderDetail($uuid);
+        }
+
+        $name = Auth::user()->name;
+        $date = Carbon::now();
+        $file_name = UtilityService::serializeString($name,'-') .'-'. $date->toDateString();
+        
+        $stocks = DB::table('sales as s')
+            ->join('shareholders as m', function($join) use($shareholder_id){
+                $join->on('m.id', '=', 's.shareholder_id')
+                    ->where('m.id', $shareholder_id);
+            })
+            ->join('stocks as st', 'st.id', '=', 's.stock_id')
+            ->select(
+                's.*','st.symbol', 'm.first_name', 'm.last_name',
+            )
+            ->orderBy('st.symbol')
+            ->get();
+
+        try {
+               
+            $writer = SimpleExcelWriter::streamDownload("$file_name.xlsx");
+            $stocks->map(function($item, $key) use($writer){
+                $writer->addRow([
+                    'SN' => $key + 1,
+                    'Name' => $item->first_name . ' '. $item->last_name,
+                    'Symbol' => $item->symbol,
+                    'Quantity' => $item->quantity,
+                    'WACC' => $item->wacc,
+                    'Cost price' => $item->cost_price,
+                    'Sell price' => $item->sell_price,
+                    'Gain' => $item->gain,
+                    'Broker commission' => $item->broker_commission,
+                    'SEBON commission' => $item->sebon_commission,
+                    'CGT' => $item->capital_gain_tax,
+                    'DP Amount' => $item->dp_amount,
+                    'Name transfer' => $item->name_transfer,
+                    'Net receiveable' => $item->net_receivable,
+                    'Receipt no' => $item->receipt_number,
+                    'Remarks' => $item->remarks,
+                    'Broker #' => $item->broker_no,
+                    'Sales date' => $item->sales_date,
+                    'Paid on' => $item->payment_date,
+                ]);
+            });
+
+            $writer->toBrowser();            
+            return redirect()->back()->with('message', "Sales record exported successfully");
+        
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', "Sales record could not be exported");
         }
 
     }

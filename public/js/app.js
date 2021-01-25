@@ -20,6 +20,7 @@ function hide_notice(){
 
 //select an option in a list
 function setOption(selectElement, value) {
+    // console.log(selectElement, value);
     var options = selectElement.options;
     for (var i = 0, optionsLength = options.length; i < optionsLength; i++) {
         if (options[i].value == value) {

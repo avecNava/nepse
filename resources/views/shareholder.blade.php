@@ -13,8 +13,6 @@
 @endsection
 
 @section('content')
-
-    <div id="loading-message" style="display:none">Loading... Please wait...</div>
     
     <section id="shareholder-crud">
 
