@@ -8,6 +8,7 @@ use App\Models\SalesBasket;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
 use App\Models\Shareholder;
+use App\Models\Stock;
 use App\Models\Broker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,51 @@ class SalesController extends Controller
     public function __construct()
     {
         $this->middleware(['auth', 'verified']); 
+    }
+
+    public function create()
+    {
+        $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
+        $stocks = Stock::select('id','symbol','security_name')->orderBy('symbol')->get();
+        
+        //get all the shareholder names to display in the select input
+        $shareholders = Shareholder::where('parent_id', Auth::id())->orderBy('first_name')->get();
+
+        return view('sales.new-sales',[
+            'stocks' => $stocks,
+            'brokers' => $brokers,
+            'shareholders' => $shareholders,
+        ]);
+    }
+
+    public function store(SalesRequest $request)
+    {
+       
+        $sales = new Sales();
+        $sales->stock_id = $request->stock_id;
+        $sales->shareholder_id = $request->shareholder_id;
+        $sales->quantity = $request->quantity;
+        $sales->wacc = $request->wacc;
+        $sales->cost_price = $request->cost_price;
+        $sales->sell_price = $request->sell_price;
+        $sales->net_receivable = $request->net_receivable;
+        $sales->sales_date = $request->sales_date;
+        $sales->payment_date = $request->payment_date;
+        $sales->broker_commission = $request->broker_commission;
+        $sales->sebon_commission = $request->sebon_commission;
+        $sales->capital_gain_tax = $request->capital_gain_tax;
+        $sales->gain = $request->gain;
+        $sales->dp_amount = $request->dp_amount;
+        $sales->name_transfer = $request->name_transfer;
+        $sales->receipt_number = $request->receipt_number;
+        $sales->broker_no = $request->broker;
+        $sales->remarks = $request->remarks;
+        $sales->last_modified_by = Auth::id();
+        $sales->save();
+
+        $uuid = Shareholder::getShareholderUUID($request->shareholder_id);
+        return redirect()->back()->with('message','New Sales record created successfully. Click <a target="_blank" rel="noopener noreferrer" href="'. url('sales', [$uuid]) . '">here</a> to view the record');
+        
     }
 
     public function getSales(int $id)
@@ -87,10 +133,11 @@ class SalesController extends Controller
         //         });
         //     });
             
+      
         return 
             view('sales.sales', 
             [
-                'sales' => $sales,
+                'sales_grouped' => $sales->groupBy('shareholder_id'),
                 'shareholders' => $shareholders,
                 'selected' => Shareholder::getShareholderDetail($uuid),
                 'brokers' => $brokers,
@@ -136,7 +183,7 @@ class SalesController extends Controller
     }
 
     //called when marked as Sold is called via Shopping basket
-    public function store(Request $request)
+    public function markSold(Request $request)
     {
         //todo: update dp_amount for unique transactions shareholder_stock_day
        
@@ -228,12 +275,14 @@ class SalesController extends Controller
     {
         $shareholder_id = Auth::id();
         
-        $uuid = $request->shareholder;
+        $uuid = $request->shareholders;
+        
         if(!empty($uuid)){
-            $shareholder_id = Shareholder::getShareholderDetail($uuid);
+            $shareholder = Shareholder::getShareholderDetail($uuid);
+            $shareholder_id = $shareholder->id;
         }
 
-        $name = Auth::user()->name;
+        $name = Auth::user()->name . '-' . $shareholder_id;
         $date = Carbon::now();
         $file_name = UtilityService::serializeString($name,'-') .'-'. $date->toDateString();
         

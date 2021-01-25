@@ -161,7 +161,7 @@ function updateBasket(){
 
 function fnSell(id){
     
-    const url = `${window.location.origin}/sales/store`;
+    const url = `${window.location.origin}/sales/mark-sold`;
 
     if(confirm(`Ths will mark the current record as SOLD. Please confirm.`)) {
         

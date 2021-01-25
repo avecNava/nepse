@@ -84,6 +84,9 @@
     <div></div>
     <div class="links">
         <div class="link">
+            <a href="{{url('sales/new')}}" title="New sales">New sales</a>
+        </div>
+        <div class="link">
             <a href="{{url('sales')}}" title="See Sales">View Sales</a>
         </div>
         <div class="link selected">

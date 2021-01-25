@@ -33,6 +33,9 @@
 <section id="top-nav" class="optional">
     <div></div>
     <div class="links">
+        <div class="link">
+            <a href="{{url('sales/new')}}" title="New sales">New sales</a>
+        </div>
         <div class="link selected">
             <a href="{{url('sales')}}" title="See Sales" class="selected">View Sales</a>
         </div>
@@ -105,7 +108,7 @@
            </div>
 
            <div class="form-field">
-               <label for="wacc"><abbr title="Weighted average calculated cost">WACC</abbr></label>
+               <label for="wacc"><abbr title="Weighted average cost of capital">WACC</abbr></label>
                <input type="text" value="{{old('wacc')}}" name="wacc" id="wacc"
                class="@error('wacc') is-invalid @enderror" />
            </div> 
@@ -224,20 +227,7 @@
 
         <header class="band info flex js-apart al-cntr">
 
-            <div class="flex js-start ">
-                <h2 class="title">
-                    @if($selected) 
-                        {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
-                    @else
-                        ALL
-                    @endif
-                </h2>
-                <div class="notification">
-                    @if(count($sales)>0)
-                        ({{count($sales)}} records)
-                    @endif
-                </div> 
-            </div>
+           <div></div>
             
             <div class="flex al-cntr">
                 <form  method="POST" action="/sales/export" style="margin:0" class="optional">
@@ -245,7 +235,7 @@
                     <button style="margin:0">Export</button>
                 &nbsp;
                 <select name="shareholders" id="shareholders">
-                    <option value="">Everyone</option>
+                    <option value="">ALL</option>
                     @foreach($shareholders as $record)
                     <option value="{{ $record['uuid'] }}" 
                     @IF($selected)
@@ -260,8 +250,25 @@
             </div>
         </header>
         <main>
+        @foreach ($sales_grouped as $sales)
+            <hr>
             <table>
             <thead>
+                <tr>
+                    <td colspan="23">
+                        <div class="flex js-start al-cntr">
+                            <h2 class="title">
+                                @php $temp = $sales->first(); @endphp                             
+                                {{ Str::title($temp->shareholder->first_name)}} {{Str::title($temp->shareholder->last_name)}}                           
+                            </h2>
+                            <div class="notification">
+                                @if(count($sales)>0)
+                                    ({{count($sales)}} records)
+                                @endif
+                            </div> 
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <th style="text-align:left" class="optional">&nbsp;Sales date</th>
                     <th style="text-align:left">Symbol</th>
@@ -277,22 +284,23 @@
                     <th><span class="td-clip-75" title="Amount received">Amount received</span></th>
                     <th style="text-align:center"></th>
                 </tr>
-                @if(count($sales)<=0)
-                <tr>
-                    <td colspan="14">
-                        <div class="info center-box error-box" style="text-align:center">
-                            <h2 class="message error">No Sales record yet<h2>
-                            <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
-                        </div>
-                    </td>
-                </tr>
-                @endif
+               
             </thead>
             <tbody>
                 
+                
                 @foreach ($sales as $record)
+                    @if(count($sales)<=0)
                     <tr>
-                        
+                        <td colspan="14">
+                            <div class="info center-box error-box" style="text-align:center">
+                                <h2 class="message error">No Sales record yet<h2>
+                                <h3 class="message success">💡 The records will show up here once you make some sales.</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
+                    <tr>                        
                         <td style="text-align:left"  class="optional">{{ $record->sales_date }}</td>
                         <td style="text-align:left" title="{{ $record->share->id }}-{{ $record->share->security_name }}">
                             {{ $record->share->symbol }}
@@ -309,10 +317,12 @@
                         <td></td>
                         <td><button class="small-btn edit" data-id="{{ $record->id }}">📝</button></td>
                     </tr>
+                    @endif
 
                 @endforeach   
             </tbody>
             </table>
+            @endforeach
         </main>
 
     </article>

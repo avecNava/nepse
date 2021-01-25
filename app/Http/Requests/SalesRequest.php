@@ -24,7 +24,6 @@ class SalesRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|numeric|gt:0', 
             'stock_id' => 'required|numeric|gt:0', 
             'shareholder_id' => 'required|numeric|gt:0', 
             'quantity' => 'required|numeric|gt:0', 
