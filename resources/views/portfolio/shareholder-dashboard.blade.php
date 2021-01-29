@@ -215,7 +215,7 @@
                 <footer class="flex js-apart al-end">
                     <div></div>
                     @if(count($portfolios)>0)
-                    <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                    <span class="c_info" title="Last trade date">{{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
                     @endif
                 </footer>
             </td></tr>

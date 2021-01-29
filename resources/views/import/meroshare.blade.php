@@ -310,6 +310,7 @@
         var el_close = document.getElementById("close");
         el_close.onclick = function() {
             modal.style.display = "none";
+            window.location.reload();
         }
 
     </script>

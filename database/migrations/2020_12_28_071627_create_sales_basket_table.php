@@ -28,6 +28,7 @@ class CreateSalesBasketTable extends Migration
             $table->float('sell_price', 14, 2)->nullable();
             $table->float('net_receivable', 14, 2)->nullable();
             $table->integer('tenant_id')->index();
+            $table->foreignId('portfolio_id')->constrained('portfolios')->nullable();
             $table->foreignId('last_modified_by')->constrained('users');
             $table->timestamps();
         });

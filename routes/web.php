@@ -12,20 +12,7 @@ use App\Http\Controllers\MyShareController;
 use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
-use App\Models\PortfolioSummary;
 use App\Http\Controllers\FeedbackController;
-use App\Models\Shareholder;
-use App\Models\Portfolio;
-use App\Models\MyShare;
-use App\Models\Stock;
-use Carbon\Carbon;
-use App\Models\User;
-use Jenssegers\Agent\Agent;
-use Illuminate\Support\Facades\Auth;
-use App\Models\StockSector;
-use Illuminate\Support\Facades\DB;
-
-// use Illuminate\Notifications\Notifiable;
 
 Auth::routes([
     'verify' => true,
@@ -36,13 +23,7 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    return Shareholder::where('uuid','6ea1d6f6-d847-4938-aca9-af40a40f838c')->pluck('parent_id')->first();
-});
 
-Route::get('sample-record', function(){
-    $shareholder = Shareholder::find(53);
-    event(new \App\Events\CreateSampleRecordsEvent($shareholder->id));
-    return "Sample record created for Shareholder<br/>" . $shareholder->toJson(JSON_PRETTY_PRINT) ;
 });
 
 Route::get('mail', function(){
@@ -102,9 +83,9 @@ Route::post('sales/edit',[SalesController::class,'update']);
 Route::post('sales/export',[SalesController::class,'export']);
 Route::post('sales/mark-sold',[SalesController::class,'markSold']);
 
+Route::post('cart/store',[SalesBasketController::class,'store']);
 Route::get('cart/{uuid?}',[SalesBasketController::class,'view']);
 Route::get('cart/add',[SalesBasketController::class,'create']);
-Route::post('cart/store',[SalesBasketController::class,'store']);
 Route::post('cart/update',[SalesBasketController::class,'update']);
 Route::post('cart/delete',[SalesBasketController::class,'delete']);
 
@@ -118,11 +99,8 @@ Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 Route::fallback(function() {
-    echo '<center><h2>Ouch! You seemeed to be lost<h2>';
-    echo '<h3>Country roads take me <a href=' . url('/') .'>HOME</h3>';
+    echo '<center><h2>Ouch! <br><br>Lost your way?<br><br>Wandering around?<h2>';
+    echo '<h1>Country roads take me <a href=' . url('/') .'>HOME</h1>';
     echo '</center>';
 });

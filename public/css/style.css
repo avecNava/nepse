@@ -13,11 +13,8 @@ body {
 }
 
 /* .notice {margin: 0; padding: 5px;} */
-section.header {margin: 15px 0; }
 #basket-notify:before {content: '🛒';}
-/* #basket-notify {text-align: right; padding: 2px;} */
-#basket article.summary { margin: 50px 0; }
-#basket main#carts { margin: 50px 0; }
+
 /*page footer*/
 
 .copyright {
@@ -580,7 +577,7 @@ section.sales summary {
     }
     .sectors .sector {
         margin: 4px;
-        max-width: 40%;
+        max-width: 47%;
     }
 
 
@@ -620,7 +617,10 @@ section.sales summary {
         margin: 0 10px;
     }
 
-      
+    .notice li {
+        font-size: 1.2rem;
+    }
+
   /* Modal Content/Box */
   .modal-content {
     margin: auto; 

@@ -25,6 +25,7 @@
         Array.prototype.forEach.call(elements, function(el, i){
             el.checked=false;
         });
+        document.getElementById('select_all').checked = false;
     }
     
     //new button click, show the form
@@ -106,7 +107,7 @@ function importMeroShareTransactions(){
             if (this.status >= 200 && this.status < 400) {
                 $data = JSON.parse(this.response);
                 hideLoadingMessage();
-                unCheckAll();
+                // unCheckAll();        //not reqd as the page will be reloaded once the instruction dialog is closed
                 showImportMessage($data.message);
 
                 if (this.status >= 200 && this.status< 300){
@@ -211,6 +212,7 @@ function importMyShareTransactions(){
         showImportMessage(message,'error');
         return;
     }
+
     showLoadingMessage();
 
     //call ajax 
@@ -222,8 +224,9 @@ function importMyShareTransactions(){
         if (this.status >= 200 && this.status < 400) {
             $data = JSON.parse(this.response);
             hideLoadingMessage();
-            unCheckAll();
+            // unCheckAll();
             showImportMessage($data.message);
+            setTimeout(() => {window.location.reload();}, 1000);
         }
     }
 

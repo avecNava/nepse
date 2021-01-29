@@ -144,7 +144,9 @@
 
     <article class="import-list">
         
-        <div id="message" class="message"></div>
+        <section class="message">
+            <div id="message" class="message"></div>
+        </section>
         
         <header class="info">
             

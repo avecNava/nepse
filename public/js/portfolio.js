@@ -52,6 +52,10 @@ function unCheckAll() {
 document.getElementById('quantity').addEventListener('change',function(){
     updateTotalPrice();
 });
+//handle dp_amount change
+document.getElementById('dp_amount').addEventListener('change',function(){
+    updateTotalPrice();
+});
 //handle quantity blur
 document.getElementById('quantity').addEventListener('blur',function(){
     updateTotalPrice();
@@ -128,8 +132,9 @@ function updateTotalPrice() {
                 let sebon = parseFloat(data.sebon);
                 let broker_commission = ((broker/100) * sub_total);
                 let sebon_commission = ((sebon/100) * sub_total);
+                const dp_amount = document.getElementById('dp_amount').value;
 
-                total_amount = parseFloat(sub_total) + parseFloat(broker_commission) + parseFloat(sebon_commission);
+                total_amount = parseFloat(sub_total) + parseFloat(broker_commission) + parseFloat(sebon_commission) + parseInt(dp_amount);
                 eff_rate = (total_amount / quantity);
                 if(broker_commission)
                     document.getElementById('broker_commission').value =  broker_commission.toFixed(2);

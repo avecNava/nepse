@@ -112,7 +112,7 @@ class PortfolioController extends Controller
      */
     public function commission(UtilityService $broker, $amount=0)
     {
-        if($amount<1){
+        if($amount < 1){
             return response()->json([
                 'amount' => $amount,
                 'message' => 'Invalid amount',
@@ -411,12 +411,15 @@ class PortfolioController extends Controller
         })->orderBy('purchase_date', 'DESC')->get();
 
         //summary data to display in the top band
-        $item = $portfolios->first();
+        $summary = $portfolios->filter(function($item){
+            return $item->wacc_updated_at != null;
+        });        
+        $item = $summary->first();
         
         $metadata = collect([
-            'total_scripts' => $portfolios->count('stock_id'),
-            'quantity' => $portfolios->sum('quantity'),
-            'investment' => $portfolios->sum(function($item){
+            'total_scripts' => $summary->count('stock_id'),
+            'quantity' => $summary->sum('quantity'),
+            'investment' => $summary->sum(function($item){
                                 $rate = $item->effective_rate ? $item->effective_rate : $item->unit_cost;
                                 return $item->quantity * $rate;
                             }),

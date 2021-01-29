@@ -92,9 +92,10 @@ function fnPOST(action_url, querystring){
 
         hideLoadingMessage();
         const data = JSON.parse(this.response);
+        console.log(this.status);
 
         if (this.status >= 200 && this.status < 400) {
-            __showMessage(data.message,false,true);
+            __showMessage(data.message, false, false, true);
             return true;
         }
         else{
@@ -170,12 +171,12 @@ function fnSell(id){
         const stock_id = obj.stock;        
         const quantity = document.querySelector(`#qty-${id}`).value;
         const wacc = document.querySelector(`#wacc-${id}`).value;
-        const broker_comm = document.querySelector(`#comm-${id}`).textContent;
-        const sebon_comm = document.querySelector(`#sebon-${id}`).textContent;
-        const cgt = document.querySelector(`#cgt-${id}`).textContent;
+        const broker_comm = document.querySelector(`#comm-${id}`).textContent.replaceAll(',','');
+        const sebon_comm = document.querySelector(`#sebon-${id}`).textContent.replaceAll(',','');
+        const cgt = document.querySelector(`#cgt-${id}`).textContent.replaceAll(',','');
         const sell_price = document.querySelector(`#sell-${id}`).value;
-        const cost_price = document.querySelector(`#cost-${id}`).textContent;
-        const net_receivable = document.querySelector(`#net_amount-${id}`).textContent;
+        const cost_price = document.querySelector(`#cost-${id}`).textContent.replaceAll(',','');
+        const net_receivable = document.querySelector(`#net_amount-${id}`).textContent.replaceAll(',','');
 
         let _token = document.getElementsByName('_token')[0].value;
         const querystring = `_token=${_token}
@@ -192,6 +193,7 @@ function fnSell(id){
             &net_receivable=${net_receivable}`;
 
         if(fnPOST(url, querystring)){
+            console.log('refreshing');
             fnRefreshBasket();
         }
 

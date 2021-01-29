@@ -101,7 +101,7 @@
 
                             </div>
                         </li>
-                        <li class="{{MyUtility::urlMatch('home')?'selected':''}}"><a href="{{ url('home') }}">Home</a></li>
+                        <li class="{{MyUtility::urlMatch('home')?'selected':''}}"><a href="{{ url('/') }}">Home</a></li>
                         @guest
                         <li class="{{MyUtility::urlMatch('register')?'selected':''}}">
                             @if (Route::has('register'))
@@ -125,7 +125,7 @@
                         <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New</a></li>
                         <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
                         @if( $basket > 0) 
-                        <li class="{{MyUtility::urlMatch('basket')?'selected':''}}">                        
+                        <li class="{{MyUtility::urlMatch('cart')?'selected':''}}">                        
                                 <a href="{{url('cart')}}" title="View Cart">Cart</a>
                             </li>
                         @endif
@@ -168,7 +168,7 @@
 
                     <div class="connect__wrapper"> 
                         <h3>Connect</h3>
-                        <ul">
+                        <ul>
                             <li>
                                 <div class="social-nav">
                                 <span class="c-social-nav__link email">

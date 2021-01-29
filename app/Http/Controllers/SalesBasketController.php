@@ -35,7 +35,6 @@ class SalesBasketController extends Controller
         if(UtilityService::IsNullOrEmptyString($uuid)){
             
             $shareholders = Shareholder::getShareholderNames(Auth::id());
-            
             //loop the shareholders and return comma separated ids
             $arr_shareholder_id = $shareholders->map(function($item){
                 return ($item['id']);
@@ -53,28 +52,7 @@ class SalesBasketController extends Controller
             ->get();
         
         $shareholders = Shareholder::shareholdersWithCarts(Auth::id());
-
-        // $grouped_shareholders = $baskets->groupBy('shareholer_id')
-        //     ->map(function($items, $key){
-                
-        //         //get unique shareholders
-        //         $unique = $items->unique('shareholder_id');
-                
-        //         return $unique->map(function($row){
-
-        //             $first_name = $row->shareholder->first_name;
-        //             $last_name = $row->shareholder->last_name;
-                    
-        //             return [
-        //                 'username' => UtilityService::serializeNames($first_name, $last_name),
-        //                 'name' => "$first_name $last_name",
-        //                 'relation' => $row->shareholder->relation,
-        //                 'id' => $row->shareholder->id,
-        //             ];
-        //         });
-        //     });
         
-
         return view('cart.cart',[
                 'baskets' => $baskets,
                 'shareholders' => $shareholders,
@@ -85,84 +63,125 @@ class SalesBasketController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { 
         try {
             
             $error = false;
-            $stock = $request->stock_id;
-            $basket_quantity = $request->quantity;
+            $order = $request->quantity;
+            $stock_id = $request->stock_id;
             $uuid = $request->uuid;
             $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
 
             //check if the sales is within limit
-            if( $basket_quantity < config('app.buy-sell-limit')){
-                $msg = 'Minimum sell limit is ' . config('app.buy-sell-limit'). ' units';
-                $error = true;
-            }
-            
-            if(! $error ) {
-
-                // check if the stock has wacc updated in portfolio table, stocks without wacc can't be sold
-                //when wacc is updated, it'll update the portfolio summary table too
-                $available_quantity = Portfolio::where('shareholder_id', $shareholder_id)
-                    ->whereNotNull('wacc_updated_at')
-                    ->where('stock_id', $stock)
-                    ->sum('quantity');
-                if($available_quantity < $basket_quantity){
-                    $error = true;
-                    $msg = 'Some of the stocks have not been updated. Stocks marked <sup>*</sup> needs to be updated.';
-                }
-            }
-
-            if(! $error ) {
-                //get wacc from portfolio summary
-                $wacc =  PortfolioSummary::where(function($q) use($shareholder_id, $stock){
-                        return $q->where('shareholder_id', $shareholder_id)
-                            ->where('stock_id', $stock);
-                        })
-                        ->average('wacc');
-                
-                $existing_basket_quantity = SalesBasket::where(function($q) use($shareholder_id, $stock){
-                        return $q->where('shareholder_id', $shareholder_id)
-                            ->where('stock_id', $stock);
-                        })
-                        ->sum('quantity');
-                
-                $new_quantity = $existing_basket_quantity + $basket_quantity;
-                $sell_price =  round($wacc * $basket_quantity, 2);
-
-                //check if existing  basket quantity and current quantity exceeds the total quantity
-                if($new_quantity > $available_quantity){
-                    $msg = "Sum of current and existing quantity in the basket exceeds total";
-                    $error = true;
-                }
-            }
-            
-            //todo: update status code
-            if($error){
+            if( $order < config('app.buy-sell-limit')){
                 return response()->json([
-                    'status' => 'error',
-                    'message' => $msg,
-                ], 401);
+                    'status' => 'error','message' => 'Minimum sell limit is ' . config('app.buy-sell-limit'). ' units'], 401);
             }
             
-            //update or create the basket
-            SalesBasket::updateOrCreate(
+            $portfolio  = Portfolio::where('shareholder_id', $shareholder_id)
+                        ->where('stock_id', $stock_id)
+                        ->whereNotNull('wacc_updated_at')
+                        ->get();
+
+            if(empty($portfolio)) {
+                return response()->json(['status'=>'error','message' => 'Could not locate record'], 404) ;
+            }
+            
+            $total = $portfolio->sum('quantity');
+            $existing = SalesBasket::where(function($q) use($shareholder_id, $stock_id){
+                return $q->where('shareholder_id', $shareholder_id)
+                    ->where('stock_id', $stock_id);
+                })
+                ->sum('quantity');
+            
+            if(($order + $existing) > $total) {
+                return response()->json(['message' => 'Order quantity exceeds total quantity. Please also check if this stock has already been added to the basket earlier'], 200) ;
+            }
+            
+            $cart = collect();
+            $diff = $order;                 //diff between order and total quantity (sum)
+
+            //1. pick the exact quantity ordered (if available)
+            foreach($portfolio as $item){
+                if($order == $item->quantity){
+                    $cart->push(['quantity' => $item->quantity, 'id' => $item->id]);
+                    $diff = 0;                      //all orders satisfied 
+                    break;
+                }   
+            }
+
+            //if exact match is not found, loop and sum up individual quantities to match the order placed
+            if(count($cart) < 1){           //$cart is an empty collection, so count will be 0
+                
+                //2. calculate denominations of quantities to meet the order placed
+                $sum = 0;
+                foreach($portfolio as $item){
+                
+                    if(($sum + $item->quantity) <= $order){
+                        $sum +=  $item->quantity;
+                        $diff = $order - $sum;
+                        $cart->push(['quantity' => $item->quantity, 'id'=>$item->id]);          //denominations to satisfy the order
+                    }
+                }
+            }
+            
+            //calculate wacc
+            $wacc =  $portfolio->sum('effective_rate') / count($portfolio);
+          
+            //insert into sales
+            foreach ($cart as $item) {            
+            
+                //update or create the basket
+                SalesBasket::updateOrCreate(
+                    [
+                        'portfolio_id' => $item['id'],
+                        'stock_id' => $stock_id,
+                        'shareholder_id' => $shareholder_id,
+                    ],
+                    [
+                        'quantity' => $item['quantity'],
+                        'wacc' => $wacc,
+                        'sell_price' => round($wacc * $item['quantity'], 2),
+                        'last_modified_by' => Auth::id(),
+                        'basket_date' => Carbon::now(),
+                    ]
+                );
+
+            }
+            
+            //loop the cart and collect the ids
+            $arr_id = collect();
+            foreach ($cart as $item){
+                $arr_id->push([$item['id']]);
+            }
+            
+            //the above operation may not fully satisfy the orders, so handle the diff if any
+            if($diff > 0){
+                
+                //1. get portfolio that has not yet been added into the cart
+                //https://laravel.com/docs/8.x/collections#method-wherenotin
+                $portfolio = $portfolio->whereNotIn('id', $arr_id->toArray());
+
+                //2. add the diff to the cart, deduct the quantity in portfolio
+                $row = $portfolio->first();
+                SalesBasket::updateOrCreate(
                 [
-                    'stock_id' => $request->stock_id,
+                    'portfolio_id' => $row->id,
+                    'stock_id' => $row->stock_id,
                     'shareholder_id' => $shareholder_id,
                 ],
                 [
-                    'quantity' => $new_quantity,
+                    'quantity' => $diff,
                     'wacc' => $wacc,
-                    'sell_price' => $sell_price,
+                    'sell_price' => round($wacc * $diff,2),
                     'last_modified_by' => Auth::id(),
                     'basket_date' => Carbon::now(),
-                ]
-            );
+                ]);
 
-            $message = "$basket_quantity units added to the basket. 
-                        <span class='basket_total'>Cart total : $new_quantity </span>";
+            }
+
+            $message = "$order units added to the basket. 
+                        <span class='basket_total'>Cart total : $order </span>";
                 return response()->json([
                 'status' => 'success',
                 'message' => $message,
@@ -223,5 +242,6 @@ class SalesBasketController extends Controller
             'count' => $count,
        ]);
     }
+
 
 }

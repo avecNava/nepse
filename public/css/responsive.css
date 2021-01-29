@@ -280,6 +280,9 @@ section#top-nav .label {
     padding:8px;
     margin: 2px;
 }
+#top-nav .link:first-child:before {
+    content: '💁‍♂️ ';
+}
 .link:hover {
     background: beige;
 }
@@ -484,6 +487,7 @@ tr.strike {
   div#myModal li {
     margin: 1.2em;
     list-style-type: disc;
+    font-size:1.3rem;
     }
 
 div#myModal #modal-message {
@@ -642,6 +646,28 @@ article#sales_crud {
 }
 article#sales_crud {
     background: #bdc6b7;
+}
+
+/*sales basket / cart */
+#carts input[type=text], #carts input[type=number] {
+    width: 80px;
+    text-align: right;
+}
+
+#carts td {
+    line-height: 1.5em;
+}
+
+#cart-summary {margin: 40px 0;}
+#cart-summary header{text-align: center;}
+
+#cart-summary main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+#cart-summary .left-col, #cart-summary .right-col {
+    padding: 20px;
 }
 
 #share-import-form li {

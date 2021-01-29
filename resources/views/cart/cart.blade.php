@@ -13,72 +13,6 @@
 
 @section('content')
 
-<style>
-    tr.basket-header {
-        background: unset;
-    }
-    tr.basket-header h2 {padding: 0 ; background:revert;}
-    tr.basket-header td {
-        padding: 0 !important;
-        height: 40px !important;
-    }
-    article footer {
-        text-align: right;
-        margin: 5px 0;
-    }
-    article h2 {
-        background: beige;
-        padding: 10px;
-    }
-   
-    main#carts input[type='checkbox'] {
-        width:20px;
-    }
-    main#carts input {
-        font-family: 'Cutive';
-        width: 100px;
-        text-align: right;
-        font-size: 12px;
-    }
-    main#carts .wide input {
-        width: 80px;
-    }
-    section#basket td {
-        padding: 10px 5px;
-        height:50px;
-    }
- 
-    button.sell {
-        background: #efefef;
-        color: black;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        min-width: 50px;
-    }
-    
-    .c_change{max-width: 100px;}
-
-    .gain_label {
-        max-width: 70px;
-        display: flex;
-        flex-direction: column;
-        font-size: 15px;
-        text-align: right;
-    }
-    td.symbol {
-        min-width: 100px;
-    }
-    
-    input#net_receivable {
-        outline: 2px solid #FF9800;
-        font-weight: bold;
-    }
-</style>
-
-<div id="loading-message" style="display:none">Working... Please wait...</div>
 
 <section id="top-nav"  class="optional">
     <div></div>
@@ -98,10 +32,10 @@
 <section id="basket">
 
     <!-- message -->
-    <div class="message">
-        <h3>
-            <div id="sell_message"></div>
-        </h3>
+    <section class="message">
+        <div class="message">
+            
+        </div>
     </div>
     
     <!-- basket -->
@@ -116,23 +50,22 @@
                         <td colspan="14">
                             
                             <div class="flex js-apart al-cntr">
-                            <div class="flex js-start al-cntr">
-                                
-                                    <h2 class="title">
-                                        @if($selected) 
-                                            {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
-                                        @else
-                                            ALL
-                                        @endif
-                                    </h2>
-                                    <div class="notification">
-                                        {{count($baskets)}} record(s)
-                                    </div> 
 
+                            <div class="flex js-start al-cntr">                                
+                                <h2 class="title">
+                                    @if($selected) 
+                                        {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
+                                    @else
+                                        ALL
+                                    @endif
+                                </h2>
+                                <div class="notification">
+                                    {{count($baskets)}} record(s)
+                                </div> 
                             </div>
 
                             <div class="flex al-cntr">
-
+                                <label for="shareholders"></label>
                                 <select name="shareholders" id="shareholders" style="margin:2px 5px">
                                     <option value="">Everyone</option>
                                     @foreach($shareholders as $record)
@@ -144,13 +77,11 @@
                                         {{$record['name']}}
                                     </option>
                                     @endforeach
-                                </select> 
-
+                                </select>
                                 <div class="buttons">
-                                    <button type="button"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
-                                    <button type="button" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
+                                    <button type="button" class="small-btn"  id="edit" onClick="updateBasket(); return false;" title="update records">💾</button>
+                                    <button type="button" class="small-btn" id="delete" onClick="deleteBasket(); return false;" title="delete records">❌</button>
                                 </div>
-
                             </div>
                         </div>
                         </td>
@@ -169,7 +100,6 @@
                         <th class="c_digit" title="SEBON commission">SEBON</th>
                         <th class="c_digit">Effective rate</th>
                         <th class="c_digit" title="Sell Price">Net amount</th>
-                        <th>Shareholder</th>
                         <th>Sell</th>
                     </tr>
                     @if(count($baskets)<=0)
@@ -209,7 +139,9 @@
                     @endphp
                 
                 <tr id="row-{{$row->id}}">
-                    <td class="symbol">
+                    <td class="symbol" title="{{ $row->shareholder->first_name }}">
+                        <div class="flex al-cntr">
+
                         <input type="checkbox" name="s_id" 
                             id="chk-{{ $row->id }}" 
                             data-id="{{ $row->id }}" 
@@ -220,13 +152,16 @@
                                 <abbr for="{{ $row->id }}" title="{{$row->share->id}}-{{ $row->share->security_name }}">
                                     {{ $row->share->symbol }}
                                 </abbr>
-                            </label>     
+                            </label>
+                        </div>
                         <input type="hidden" name="cart_id" value="{{$row->id}}">                           
                     </td>
                     <td class="c_digit">
+                    <label for="qty-{{$row->id}}"></label>
                         <input type="number" name="quantity" id="qty-{{$row->id}}" value="{{ $row->quantity }}">
                     </td>
                     <td class="c_digit">
+                    <label for="wacc-{{$row->id}}"></label>
                         <input type="number" name="wacc" id="wacc-{{$row->id}}" value="{{ $wacc }}">
                     </td>
                     
@@ -240,6 +175,7 @@
                         <div name="ltp" id="ltp-{{$row->id}}">{{ $ltp }}</div>
                     </td>
                     <td class="c_digit wide">
+                        <label for="sell-{{$row->id}}"></label>
                         <input type="text" name="sell_price" id="sell-{{$row->id}}" value="{{ $sales_amount }}">
                     </td>
                     <td>
@@ -256,9 +192,8 @@
                     <td class="c_digit"><div id="sebon-{{$row->id}}"></td>
                     <td class="c_digit"><div id="rate-{{$row->id}}"></td>
                     <td class="c_digit"><div id="net_amount-{{$row->id}}"></td>
-                    <td>{{ $row->shareholder->first_name }}</td>
                     <td>
-                        <button class="sell" title="Mark Sold" onClick="fnSell({{$row->id}})">
+                        <button class="small-btn" title="Mark Sold" onClick="fnSell({{$row->id}})">
                             <span class="cart">🛒</button>
                     </td>
                 </tr>
@@ -274,13 +209,13 @@
 
     <!-- basket summary -->
     @if(count($baskets)>0)
-    <article class="summary">
+    <article id="cart-summary">
         <header>
             <h2>Summary</h2>
         </header>
         <main>
 
-            <div class="col">
+            <div class="left-col">
                 <div class="form-field">
                     <label for="total_quantity">Total quantity</label>
                     <input type="text" name="total_quantity" id="total_quantity" readonly>
@@ -304,7 +239,7 @@
 
             </div>
 
-            <div class="col">
+            <div class="right-col">
 
                 <div class="form-field">
                     <label for="total_sebon_comm">SEBON Commission</label>                

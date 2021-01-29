@@ -181,7 +181,7 @@ class SalesController extends Controller
             return redirect()->back()->with('error','Record not found',404);
         }
     }
-
+  
     //called when marked as Sold is called via Shopping basket
     public function markSold(Request $request)
     {
@@ -191,27 +191,29 @@ class SalesController extends Controller
             
             $error = false;
             $msg = null;
-            $sell_quantity = $request->quantity;
+            $order = $request->quantity;
 
             // check if the stock has wacc updated in portfolio table (otherwise, don't add to sales, don't deduct from portfolio summary )
-            $available_quantity = Portfolio::where('shareholder_id', $request->shareholder_id)
-                ->whereNotNull('wacc_updated_at')
+            $portfolio = Portfolio::where('shareholder_id', $request->shareholder_id)
                 ->where('stock_id', $request->stock_id)
-                ->sum('quantity');
+                ->whereNotNull('wacc_updated_at')
+                ->get();
+            
+            if(empty($portfolio)){
+                $message = 'Could not locate record'; $error = true;
+            }
+
+            $total = $portfolio->sum('quantity');
+            if(!$error && $order > $total) {
+                $msg = "Sell quantity '$order' exceeds the available quantity '$available_quantity'"; 
+                $error = true;
+            }elseif(!$error && $total == 0){
+                $msg = "Total quantity available is 0. Did you update WACC for all the stocks?"; 
+                $error = true;
+            }
                 
-            //check if sell_quantity > $available quantity
-            if($sell_quantity > $available_quantity){
-                $msg = "Sell quantity '$sell_quantity' exceeds the available quantity '$available_quantity'";
-                $error = true;
-            }
-
-            if(!$error &&  $available_quantity <= 0){
-                $msg = "The WACC for this stock needs to be updated before it could be sold";
-                $error = true;
-            }
-
             //check if the sales is within limit
-            if(!$error &&  $sell_quantity < config('app.buy-sell-limit')){
+            if(!$error &&  $order < config('app.buy-sell-limit')){
                 $msg = 'Minimum buy sell limit is ' . config('app.buy-sell-limit');
                 $error = true;
             }
@@ -223,37 +225,33 @@ class SalesController extends Controller
                     'row' => $request->record_id,
                 ], 401);
             }
+            
+            
+            Sales::create([
+                'stock_id' => $request->stock_id,
+                'shareholder_id' => $request->shareholder_id,
+                'quantity' => $request->quantity,
+                'wacc' => $request->wacc,
+                'sales_date' => Carbon::today(),
+                'broker_commission' => $request->broker,
+                'sebon_commission' => $request->sebon,
+                'capital_gain_tax' => $request->cgt,
+                'cost_price' => $request->cost_price,
+                'sell_price' => $request->sell_price,
+                'net_receivable' => $request->net_receivable,
+                'last_modified_by' => Auth::id(),
+            ]);
 
-            DB::transaction(function() use($request){
-
-                //record sales
-                Sales::create([
+            //remove from basket
+            SalesBasket::destroy($request->record_id);
+            
+            //adjst portfolio summary with the sold quantities
+            $new_quantity = PortfolioSummary::salesAdjustment(collect([
                     'stock_id' => $request->stock_id,
                     'shareholder_id' => $request->shareholder_id,
                     'quantity' => $request->quantity,
-                    'wacc' => $request->wacc,
-                    'sales_date' => Carbon::today(),
-                    'broker_commission' => $request->broker,
-                    'sebon_commission' => $request->sebon,
-                    'capital_gain_tax' => $request->cgt,
-                    'cost_price' => $request->cost_price,
-                    'sell_price' => $request->sell_price,
-                    'net_receivable' => $request->net_receivable,
-                    'last_modified_by' => Auth::id(),
-                ]);
-
-                //remove from basket
-                SalesBasket::destroy($request->record_id);
-                
-                //adjst portfolio summary with the sold quantities
-                $new_quantity = PortfolioSummary::salesAdjustment(collect([
-                        'stock_id' => $request->stock_id,
-                        'shareholder_id' => $request->shareholder_id,
-                        'quantity' => $request->quantity,
-                ]));
-                
-            });
-
+            ]));
+            
             return response()->json([
                 'status' => 'success',
                 'message' => "Selected record marked as sold.",

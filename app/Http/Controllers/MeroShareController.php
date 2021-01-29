@@ -275,6 +275,11 @@ class MeroShareController extends Controller
                     PortfolioSummary::updateCascadePortfoliSummaries($shareholder_id, $stock_id);
                });
           }
+
+          //6. delete the data from the meroshare_transactions table          
+          $portfolios->each(function($item){
+               MeroShare::destroy($item['row_id']);
+          });
      
           return response()->json([
                'message' => count($portfolios) . " record(s) have been imported to your portfolio 👌",
@@ -318,6 +323,7 @@ class MeroShareController extends Controller
                     $total_dr += empty($value->debit_quantity) ? 0 : $value->debit_quantity;
                     
                     $row = array(
+                         'row_id' => $value->id,
                          'quantity' => empty($value->credit_quantity) ? $value->debit_quantity : $value->credit_quantity,
                          'shareholder_id' => $value->shareholder_id,
                          'symbol' =>  empty($value->share) ? null : $value->share->symbol,

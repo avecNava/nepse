@@ -198,6 +198,11 @@ class MyShareController extends Controller
           $portfolios->each(function($item){
                PortfolioSummary::updateCascadePortfoliSummaries($item->shareholder_id, $item->share->id);
           });
+
+          //delete the data from the meroshare_transactions table          
+          $portfolios->each(function($item){
+               MyShare::destroy($item->id);
+          });
      
           return response()->json([
                'message' => count($portfolios) . " record(s) have been imported to your portfolio 👌",

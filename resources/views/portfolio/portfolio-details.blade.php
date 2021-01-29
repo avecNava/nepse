@@ -413,7 +413,7 @@ tfoot td {
                                 @if( !empty($record))
                                     <input type="checkbox" name="s_id" id="{{ $record->id }}">
                                     <label for="{{ $record->id }}" style="padding:5px">
-                                        {{ $record->symbol }}@if(empty($record->wacc_updated_at))<sup>*</sup>@endif
+                                        {{ $record->symbol }}
                                     </label>
                                 @endif
                                 </div>
@@ -447,8 +447,12 @@ tfoot td {
                         <tr>
                             <td colspan="11">
                                 <div class="flex js-apart al-end">
-                                    <span><sup>*</sup> Stocks that needs to be updated for Purchase price and Offering type</span>
-                                    <span class="c_info">Last trade date : {{ $transaction_date }} <mark>({{ $transaction_date->diffForHumans() }})</mark></span>
+                                        <div>
+                                        <strong><mark>📢 Attention :</mark></strong>
+                                        <span style="text-decoration:line-through;color:red;">Stocks marked </span>  
+                                        needs cost price to be updated
+                                        </div>
+                                    <span class="c_info" title="Last trade date"> {{ $transaction_date }} ({{ $transaction_date->diffForHumans() }})</mark>
                                 </div>
                             </td>
                         </tr>
