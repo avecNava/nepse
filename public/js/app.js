@@ -1,5 +1,5 @@
 //show notice 
-setTimeout(() => {
+__(() => {
     const el = document.querySelector('#notice');
     if(el.querySelector('.message_wrapper')){
         // el.style.display = "block";

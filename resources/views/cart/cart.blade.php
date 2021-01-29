@@ -36,6 +36,7 @@
         <div class="message">
             
         </div>
+        <div id="sell_message"></div>
     </div>
     
     <!-- basket -->
