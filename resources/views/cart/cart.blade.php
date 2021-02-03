@@ -50,10 +50,10 @@
                        
                         <td colspan="14">
                             
-                            <div class="flex js-apart al-cntr">
+                            <div class="flex js-apart al-cntr band">
 
                             <div class="flex js-start al-cntr">                                
-                                <h2 class="title">
+                                <h2 class="title" style="padding:0 1rem">
                                     @if($selected) 
                                         {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
                                     @else
@@ -89,7 +89,7 @@
                     </tr>
                     
                     <tr>
-                        <th>&nbsp;Symbol</th>
+                        <th style="padding-left:10px">Symbol</th>
                         <th class="c_digit">Quantity</th>
                         <th class="c_digit"><abbr title="Weighted average (Effective rate)">WACC</abbr></th>
                         <th class="c_digit">Cost Price</th>
@@ -148,6 +148,7 @@
                             data-id="{{ $row->id }}" 
                             data-stock="{{$row->share->id}}" 
                             data-user="{{$row->shareholder->id}}"
+                            data-portfolio-id="{{$row->portfolio_id}}"
                             data-user-symbol="{{$row->shareholder->first_name}}-{{$row->share->symbol}}">
                             <label for="chk-{{ $row->id }}">
                                 <abbr for="{{ $row->id }}" title="{{$row->share->id}}-{{ $row->share->security_name }}">
@@ -159,7 +160,7 @@
                     </td>
                     <td class="c_digit">
                     <label for="qty-{{$row->id}}"></label>
-                        <input type="number" name="quantity" id="qty-{{$row->id}}" value="{{ $row->quantity }}">
+                        <input type="number" readonly name="quantity" id="qty-{{$row->id}}" value="{{ $row->quantity }}">
                     </td>
                     <td class="c_digit">
                     <label for="wacc-{{$row->id}}"></label>

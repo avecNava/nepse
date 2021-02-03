@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
+use Illuminate\Support\Facades\Auth;
 
 class PortfolioObserver
 {
@@ -33,6 +34,33 @@ class PortfolioObserver
     public function updated(Portfolio $portfolio)
     {
         
+        $shareholder_id = $portfolio->shareholder_id;
+        $stock_id = $portfolio->stock_id;
+
+        $quantity =  Portfolio::where('shareholder_id', $shareholder_id)
+                    ->whereNotNull('wacc_updated_at')
+                    ->where('stock_id', $stock_id)
+                    ->sum('quantity');                      //returns 0 if not found
+
+        $effective_rate = Portfolio::calculateWACC($shareholder_id, $stock_id);
+        
+        $investment = Portfolio::where('shareholder_id', $shareholder_id)
+                        ->where('stock_id', $stock_id)
+                        ->whereNotNull('wacc_updated_at')
+                        ->sum('total_amount');
+        
+            
+        PortfolioSummary::updateOrCreate(
+        [
+            'shareholder_id' => $shareholder_id,
+            'stock_id' => $stock_id,
+        ],
+        [
+            'quantity' => $quantity,
+            'investment' => $investment,
+            'wacc' => $effective_rate,
+            'last_modified_by' => Auth::id(),
+        ]);
     }
 
     /**

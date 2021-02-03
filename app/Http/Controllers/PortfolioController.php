@@ -235,23 +235,17 @@ class PortfolioController extends Controller
 
         $result = Portfolio::updatePortfolio($request);
 
-        //CALCULATE total_quantity and wacc_rate ; update in summary table
-        
-        $data = $portfolio = Portfolio::find($request->id);  
-        PortfolioSummary::updateCascadePortfoliSummaries($data->shareholder_id, $data->stock_id);
+        //CALCULATE total_quantity and wacc_rate ; update in summary table        
+        // $data = $portfolio = Portfolio::find($request->id);  
+        // PortfolioSummary::updateCascadePortfoliSummaries($data->shareholder_id, $data->stock_id);
 
-        $result = $result->getData();
-        
+        $result = $result->getData();        
         if($result->status=='success'){
-
             return redirect()->back()->with('message', $result->message );
         }
         else{
             return redirect()->back()->withErrors($result->message );
-
         }
-
-
     }
 
     /**

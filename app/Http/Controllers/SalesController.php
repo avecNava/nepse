@@ -213,10 +213,10 @@ class SalesController extends Controller
             }
                 
             //check if the sales is within limit
-            if(!$error &&  $order < config('app.buy-sell-limit')){
-                $msg = 'Minimum buy sell limit is ' . config('app.buy-sell-limit');
-                $error = true;
-            }
+            // if(!$error &&  $order < config('app.buy-sell-limit')){
+            //     $msg = 'Minimum buy sell limit is ' . config('app.buy-sell-limit');
+            //     $error = true;
+            // }
             
             if($error){
                 return response()->json([
@@ -226,9 +226,9 @@ class SalesController extends Controller
                 ], 401);
             }
             
-            
             Sales::create([
                 'stock_id' => $request->stock_id,
+                'portfolio_id' => $request->portfolio_id,
                 'shareholder_id' => $request->shareholder_id,
                 'quantity' => $request->quantity,
                 'wacc' => $request->wacc,
@@ -241,16 +241,17 @@ class SalesController extends Controller
                 'net_receivable' => $request->net_receivable,
                 'last_modified_by' => Auth::id(),
             ]);
+            
+            //adjust portfolio quantity
+            Portfolio::salesAdjustment($request->portfolio_id);
+
+            //adjust portfolio summary with the sold quantities
+            //NOTE: always do this after Portfolio is updated 
+            PortfolioSummary::updateCascadePortfoliSummaries($request->shareholder_id,$request->stock_id);
+
 
             //remove from basket
             SalesBasket::destroy($request->record_id);
-            
-            //adjst portfolio summary with the sold quantities
-            $new_quantity = PortfolioSummary::salesAdjustment(collect([
-                    'stock_id' => $request->stock_id,
-                    'shareholder_id' => $request->shareholder_id,
-                    'quantity' => $request->quantity,
-            ]));
             
             return response()->json([
                 'status' => 'success',

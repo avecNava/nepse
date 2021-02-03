@@ -44,28 +44,6 @@ class PortfolioSummary extends Model
     }
     
     /**
-     * Adjust the quantity after Sales
-     * input: array with stock_id, shareholder_id, sold quantity
-     */
-    public static function salesAdjustment($sales)
-    {   
-        $sales_quantity = $sales['quantity'];
-        $new_quantity = $sales_quantity;
-        
-        $portfolio = PortfolioSummary::where('shareholder_id', $sales['shareholder_id'])
-            ->where('stock_id', $sales['stock_id'])->first();
-        
-        if( ! empty($portfolio) ){
-            $new_quantity = $portfolio->quantity - $sales_quantity;
-            if($new_quantity >= 0){
-                $portfolio->quantity = $new_quantity;
-                $portfolio->save();                
-            }
-        }  
-        return $new_quantity;
-    }
-
-    /**
      * update or create portfolio summary table data based on portfolio table
      * input: shareholder_id, stock_id
      */

@@ -2,9 +2,9 @@ function fnRefreshBasket(){
     const msg = document.querySelector('#sell_message');
     // msg.innerHTML ='Refreshing the basket ⌚ ... ';
     url = `${window.location.origin}/cart`;
-    setTimeout(function(){ 
-        window.location.replace(url);
-    }, 2000);
+    // setTimeout(function(){ 
+    //     window.location.replace(url);
+    // }, 1000);
 }
 
 function __showMessage(message, error = false,  clear_message = false, refresh = false){
@@ -14,7 +14,7 @@ function __showMessage(message, error = false,  clear_message = false, refresh =
     if(error){ msg.classList.add('error'); }else{ msg.classList.add('success'); }
     //reset message that are marked clear_message
     if(clear_message){ setTimeout(function () {  msg.innerHTML=''; }, 2000 ); }
-    if(refresh){ setTimeout(function () {   fnRefreshBasket(); }, 1000 ); }
+    if(refresh){ fnRefreshBasket(); }
 
 }
 
@@ -168,7 +168,8 @@ function fnSell(id){
         
         const obj = document.querySelector(`#chk-${id}`).dataset;    
         const shareholder_id = obj.user;
-        const stock_id = obj.stock;        
+        const portfolio_id = obj.portfolioId;
+        const stock_id = obj.stock;
         const quantity = document.querySelector(`#qty-${id}`).value;
         const wacc = document.querySelector(`#wacc-${id}`).value;
         const broker_comm = document.querySelector(`#comm-${id}`).textContent.replaceAll(',','');
@@ -181,6 +182,7 @@ function fnSell(id){
         let _token = document.getElementsByName('_token')[0].value;
         const querystring = `_token=${_token}
             &record_id=${id}
+            &portfolio_id=${portfolio_id}
             &stock_id=${stock_id}
             &shareholder_id=${shareholder_id}
             &quantity=${quantity}

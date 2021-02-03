@@ -18,10 +18,8 @@ class AppLog extends Model
     public static function createLog($arr_log)
     {
         
-        Log::info('Stock deleted', 
+        Log::info($arr_log['title'], 
         [
-            'Model' =>  $arr_log['module'],
-            'Title' => $arr_log['title'],
             'Description' => $arr_log['desc'],
         ]);
 

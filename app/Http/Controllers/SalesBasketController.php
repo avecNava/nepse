@@ -81,8 +81,9 @@ class SalesBasketController extends Controller
             $portfolio  = Portfolio::where('shareholder_id', $shareholder_id)
                         ->where('stock_id', $stock_id)
                         ->whereNotNull('wacc_updated_at')
+                        ->orderByDesc('purchase_date')
                         ->get();
-
+            
             if(empty($portfolio)) {
                 return response()->json(['status'=>'error','message' => 'Could not locate record'], 404) ;
             }
@@ -162,26 +163,29 @@ class SalesBasketController extends Controller
                 //https://laravel.com/docs/8.x/collections#method-wherenotin
                 $portfolio = $portfolio->whereNotIn('id', $arr_id->toArray());
 
-                //2. add the diff to the cart, deduct the quantity in portfolio
-                $row = $portfolio->first();
-                SalesBasket::updateOrCreate(
-                [
-                    'portfolio_id' => $row->id,
-                    'stock_id' => $row->stock_id,
-                    'shareholder_id' => $shareholder_id,
-                ],
-                [
-                    'quantity' => $diff,
-                    'wacc' => $wacc,
-                    'sell_price' => round($wacc * $diff,2),
-                    'last_modified_by' => Auth::id(),
-                    'basket_date' => Carbon::now(),
-                ]);
+                if(!empty($portfolio)){
+
+                    //2. add the diff to the cart, deduct the quantity in portfolio
+                    $row = $portfolio->first();
+                    SalesBasket::updateOrCreate(
+                    [
+                        'portfolio_id' => $row->id,
+                        'stock_id' => $row->stock_id,
+                        'shareholder_id' => $shareholder_id,
+                    ],
+                    [
+                        'quantity' => $diff,
+                        'wacc' => $wacc,
+                        'sell_price' => round($wacc * $diff, 2),
+                        'last_modified_by' => Auth::id(),
+                        'basket_date' => Carbon::now(),
+                    ]);
+
+                }
 
             }
 
-            $message = "$order units added to the basket. 
-                        <span class='basket_total'>Cart total : $order </span>";
+            $message = "$order units added to the basket.";
                 return response()->json([
                 'status' => 'success',
                 'message' => $message,

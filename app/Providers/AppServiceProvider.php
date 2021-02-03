@@ -42,9 +42,9 @@ class AppServiceProvider extends ServiceProvider
         //https://laravel.com/docs/8.x/database#listening-for-query-events
         // receive each SQL query executed by the  application,
         // DB::listen(function ($query) {            
-        //     Log::info("SQL : " . $query->sql);
-        //     info($query->bindings);
-        //     // $query->time
+            // Log::info("SQL : " . $query->sql);
+            // info($query->bindings);
+            // $query->time
         // });
 
         //https://stackoverflow.com/questions/35337007/how-to-notify-the-user-that-a-job-has-completed-in-laravel

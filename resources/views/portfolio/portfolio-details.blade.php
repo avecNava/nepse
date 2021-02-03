@@ -448,8 +448,8 @@ tfoot td {
                             <td colspan="11">
                                 <div class="flex js-apart al-end">
                                         <div>
-                                        <strong><mark>📢 Attention :</mark></strong>
-                                        <span style="text-decoration:line-through;color:red;">Stocks marked </span>  
+                                        <strong><mark>📢 Attention :</mark></strong>Stocks marked
+                                        <span style="text-decoration:line-through;color:red;"> like this </span>  
                                         needs cost price to be updated
                                         </div>
                                     <span class="c_info" title="Last trade date"> {{ $transaction_date }} ({{ $transaction_date->diffForHumans() }})</mark>

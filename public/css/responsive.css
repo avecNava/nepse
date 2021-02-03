@@ -42,9 +42,9 @@ section.message {
     line-height: 1.4em;
     font-weight: bold;
 }
-.error {color:red;}
+.error {color:red; padding: 1rem; display:inline-block;}
 .error ul {padding: 0 15px;}
-.success {color:green;}
+.success {color:green;padding: 1rem; display:inline-block;}
 .context-link {
     color: darkred;
     padding: 10px;
@@ -526,6 +526,22 @@ div#myModal #modal-message {
   /* end of modal */
 
 /*layout*/
+
+/*dialog*/
+dialog {
+    padding: 0;
+    border-color: #1e4321;
+}
+dialog .form_content {
+    margin: 0 2rem;
+}
+dialog header.band {
+    padding: .5rem 2rem;
+}
+/*users*/
+/* article.form.users_list main {
+    margin: 0 10px;
+} */
 
 /*import share */
 section#share-import-form main {

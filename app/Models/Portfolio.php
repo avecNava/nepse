@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use App\Traits\BelongsToTenant;
 use App\Services\UtilityService;
 use App\Models\PortfolioSummary;
+use App\Models\Portfolio;
+use App\Models\SalesBasket;
 use App\Models\StockPrice;
 use Illuminate\Support\Facades\DB;
 // use App\Services\UtilityService;
@@ -258,6 +260,33 @@ class Portfolio extends Model
         }
         
         return 0;
+    }
+
+    public static function salesAdjustment($portfolio_id)
+    {
+        $portfolio = DB::table('portfolios as p')
+            ->join('sales_basket as b','b.portfolio_id','p.id')
+            ->select('b.*', 'p.quantity as total')
+            ->where('p.id', $portfolio_id)
+            ->first();
+        
+        //if all quantity is sold, delete entry from Portfolio
+        //else update portfolio with the difference
+        if($portfolio->quantity == $portfolio->total){
+            Portfolio::destroy($portfolio_id);
+        }else{
+            $record = Portfolio::find($portfolio_id);            
+            if(!empty($record)){
+                $record->quantity = $portfolio->total - $portfolio->quantity;
+                $record->save();
+                Log::info('Portfolio deducted', 
+                    [   'Original'=>$portfolio->total, 
+                        'New quantity'=>$record->quantity,
+                        'User'=>Auth::id() . '-' . Auth::user()->name, 
+                        'Portfolio id' => $portfolio_id,
+                ]);
+            }
+        }
     }
 
 }

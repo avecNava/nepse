@@ -6,6 +6,7 @@ use App\Models\MeroShare;
 use App\Models\Shareholder;
 use App\Models\Portfolio;
 use App\Models\PortfolioSummary;
+use App\Models\NepseIndex;
 use App\Models\StockPrice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class PortfolioSummaryController extends Controller
         $net_prev_gain = '';
         $diff = '';
         $sectors = '';
-        $scripts ='';
+        $scrips ='';
         $members = '';
 
         $portfolios = 
@@ -66,7 +67,7 @@ class PortfolioSummaryController extends Controller
 
         $net_gain = $net_worth - $total_investment;
         $total_shareholders = $portfolios->unique('shareholder_id');
-        $total_scripts = $portfolios->unique('stock_id');
+        $total_scrips = $portfolios->unique('stock_id');
 
         $score_card = collect([
             'total_investment' => $total_investment,
@@ -75,7 +76,7 @@ class PortfolioSummaryController extends Controller
             'net_gain_per' => $total_investment ? ($net_gain/$total_investment)*100 :'',
             'net_gain_css' => $net_gain > 0 ? 'positive' : 'negative',
             'shareholders' => $total_shareholders->count(),
-            'total_scripts' =>  $total_scripts->count(),
+            'total_scrips' =>  $total_scrips->count(),
         ]);
         
         //group the resultset by shareholder
@@ -122,7 +123,7 @@ class PortfolioSummaryController extends Controller
         $portfolio_agg = $shareholders->map(function ($items, $key) {
 
             $row = $items->first();
-            $total_scripts = $items->count();
+            $total_scrips = $items->count();
             $total_units = $items->sum(function($row){
                 return $row->quantity;
             });            
@@ -150,7 +151,7 @@ class PortfolioSummaryController extends Controller
                 'shareholder' => $row->shareholder,
                 'relation' => $row->relation,
                 'gender' => $row->gender ? $row->gender : 'M' ,
-                'total_scripts' => $total_scripts,
+                'total_scrips' => $total_scrips,
                 'total_units' => $total_units,
                 'total_investment' => $total_investment,
                 'current_worth' => $current_worth,
@@ -170,6 +171,7 @@ class PortfolioSummaryController extends Controller
             'scorecard' => $score_card,
             'arr_grossing' => $top_grossing,
             'arr_gainloss' => $gain_loss,
+            'index' => NepseIndex::getCurrentIndex(),
         ]);
         
     }

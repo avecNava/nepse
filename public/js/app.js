@@ -1,5 +1,5 @@
 //show notice 
-__(() => {
+(() => {
     const el = document.querySelector('#notice');
     if(el.querySelector('.message_wrapper')){
         // el.style.display = "block";
@@ -41,6 +41,15 @@ function hideLoadingMessage() {
     ele_loading.classList.remove('loading');
 }
 
+function getDateTime(){
+    var date = new Date();
+    var temp = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    return temp;
+}
+function showDate(){
+    document.querySelector('input#email_verified_at').value= getDateTime();
+}
+
 function showForm(form_id) {            
     document.getElementById(form_id).classList.add('show');
 }
@@ -53,8 +62,9 @@ function hideForm(form_id) {
 }
 
 function showMessage(message, el = 'message', flag = 'success') {
-    document.getElementById(el).innerHTML=message;
-    document.getElementById(el).classList.add(flag);
+    const msg = document.getElementById(el);
+    msg.innerHTML=message;
+    msg.classList.add(flag);
 }
 
 function clearMessage() {

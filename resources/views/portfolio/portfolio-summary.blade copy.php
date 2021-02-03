@@ -43,8 +43,8 @@
                 <footer></footer>
             </article>
             <article>
-                <header># Scripts</header>
-                <main>{{number_format($scorecard['total_scripts'])}}</main>
+                <header># Scrips</header>
+                <main>{{number_format($scorecard['total_scrips'])}}</main>
                 <footer></footer>
             </article>
             

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StockPriceController;
+use App\Http\Controllers\NepseIndexController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SalesBasketController;
 use App\Http\Controllers\MeroShareController;
@@ -33,15 +34,24 @@ Route::get('mail', function(){
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('stock-data', [HomeController::class, 'stockData']);
+
+//redirect from old site registration page
 Route::get('account/register', function(){
     return redirect('register');
 });
+
+Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin');
+Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
+Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');
+
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}', [ShareholderController::class, 'delete']);
 Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
+Route::get('latest-index', [NepseIndexController::class, 'index']);
 
 Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);
@@ -100,7 +110,6 @@ Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 Auth::routes();
 
 Route::fallback(function() {
-    echo '<center><h2>Ouch! <br><br>Lost your way?<br><br>Wandering around?<h2>';
     echo '<h1>Country roads take me <a href=' . url('/') .'>HOME</h1>';
     echo '</center>';
 });
