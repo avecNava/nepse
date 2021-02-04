@@ -37,10 +37,9 @@
                 <footer>{{$scorecard['net_gain_per'] ? number_format($scorecard['net_gain_per']) :''}}%</footer>
             </article>
             <article class="optional">
-                <header>Index <span class="sm-text"> ({{$index->businessDate}})</span></header>
-                <main class="value">{{number_format($index->closingIndex,2)}}</main>
-                <footer>
-                    
+                <header>Index <span class="sm-text"> @if($index)({{optional($index)->businessDate}})@endif</span></header>
+                <main class="value">{{number_format(optional($index)->closingIndex,2)}}</main>
+                <footer>                    
                 </footer>
             </article>
             <article>
