@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DailyIndex;
 
 class NepseIndex extends Model
 {
@@ -20,4 +21,22 @@ class NepseIndex extends Model
         return $row;
 
     }
+
+    /**gets the last index and updates the NEPSEIndex table */
+    public static function updateCurrentIndex()
+    {
+        
+        $row = DailyIndex::orderByDesc('transactionDate')->first();
+        
+        if($row){
+
+            $date_time = new \DateTime($row['transactionDate']);
+            $businessDate = $date_time->format('Y-m-d');
+            NepseIndex::updateOrCreate(
+                ['transactionDate' => $businessDate],
+                ['closingIndex' => $row['index']],
+            );            
+        }
+    }
+
 }

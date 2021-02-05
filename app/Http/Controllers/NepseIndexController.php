@@ -123,6 +123,7 @@ class NepseIndexController extends Controller
             );
 
             DailyIndex::where('transactionDate','<', $businessDate)->delete();
+            NepseIndex::updateCurrentIndex();
             
             return response()->json("Current index recorded");                
             } catch (\Throwable $th) {

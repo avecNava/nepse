@@ -75,6 +75,7 @@ class RegisterController extends Controller
             'name' => Str::title($data['name']),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'user_role' => 'user',
         ]);
         
         //split name into first and last names

@@ -14,6 +14,7 @@ use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
+use App\Models\NepseIndex;
 
 Auth::routes([
     'verify' => true,
@@ -53,6 +54,7 @@ Route::post('shareholders',[ShareholderController::class, 'create']);
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('latest-index', [NepseIndexController::class, 'indexHistory']);
 Route::get('current-index', [NepseIndexController::class, 'currentIndex']);
+Route::get('what', [NepseIndex::class, 'updateCurrentIndex']);
 
 Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);
