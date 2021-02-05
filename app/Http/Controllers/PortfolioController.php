@@ -31,7 +31,7 @@ class PortfolioController extends Controller
         $this->middleware(['auth', 'verified']); 
     }
 
-    public function shareholderPortfolio($uuid)
+    public function Portfolio($uuid)
     {
 
         $transaction_date = StockPrice::getLastTransactionDate();
@@ -92,7 +92,7 @@ class PortfolioController extends Controller
             ];
 
             return  view(
-                'portfolio.shareholder-dashboard', 
+                'portfolio.portfolio', 
                 [
                     'uuid' => $uuid,
                     'first_name' => optional($row)->first_name,

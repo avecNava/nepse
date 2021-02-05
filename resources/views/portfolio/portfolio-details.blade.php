@@ -148,27 +148,15 @@ tfoot td {
                             </span>
                         </div>  
                         <div class="item">
-                            <label>High </label>
+                            <label>High/Low (LTP) </label>
                             <span class="value"> 
-                                {{number_format($price_high)}}
+                                {{number_format($price_high)}}/{{number_format($price_low)}}
                             </span>
                         </div>
                         <div class="item">
-                            <label>Low </label>
-                            <span class="value"> 
-                                {{number_format($price_low)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>52 weeks high</label>
+                            <label>High/low (52 weeks)</label>
                             <span class="value">
-                                {{number_format($price_high_52)}}
-                            </span>
-                        </div>
-                        <div class="item">
-                            <label>52 weeks low</label>
-                            <span class="value">
-                                {{number_format($price_low_52)}}
+                                {{number_format($price_high_52)}}/{{number_format($price_low_52)}}
                             </span>
                         </div>
                     </div>
@@ -448,9 +436,8 @@ tfoot td {
                             <td colspan="11">
                                 <div class="flex js-apart al-end">
                                         <div>
-                                        <strong><mark>📢 Attention :</mark></strong>Stocks marked
-                                        <span style="text-decoration:line-through;color:red;"> like this </span>  
-                                        needs cost price to be updated
+                                        <strong>📢 </strong>Please edit stocks, update cost price for records marked with 
+                                        <span style="text-decoration:line-through;color:red;"> strikethrough </span>  
                                         </div>
                                     <span class="c_info" title="Last trade date"> {{ $transaction_date }} ({{ $transaction_date->diffForHumans() }})</mark>
                                 </div>

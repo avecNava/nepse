@@ -180,6 +180,8 @@ return [
         * Package Service Providers...
         */
         Jenssegers\Agent\AgentServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
 
         /*
          * Application Service Providers...

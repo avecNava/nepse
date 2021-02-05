@@ -37,9 +37,10 @@
                 <footer>{{$scorecard['net_gain_per'] ? number_format($scorecard['net_gain_per']) :''}}%</footer>
             </article>
             <article class="optional">
-                <header>Index <span class="sm-text"> @if($index)({{optional($index)->businessDate}})@endif</span></header>
-                <main class="value">{{number_format(optional($index)->closingIndex,2)}}</main>
-                <footer>                    
+                <header>Index</header>
+                <main class="value">{{number_format(optional($index)->closingIndex ,2)}}</main>
+                <footer>
+                    as of @if($index){{optional($index)->transactionDate}}@endif
                 </footer>
             </article>
             <article>
@@ -47,7 +48,7 @@
                 <main class="value">{{number_format($scorecard['total_scrips'])}}</main>
                 <footer>
                     @if($scorecard['shareholders'] > 1)
-                        <div style="text-align:right"> {{number_format($scorecard['shareholders'])}} shareholder</div>
+                        {{number_format($scorecard['shareholders'])}} shareholders
                     @endif
                 </footer>
             </article>

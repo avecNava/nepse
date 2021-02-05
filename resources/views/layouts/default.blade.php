@@ -210,8 +210,8 @@
                     <div class="support__wrapper">  
                         <h3>Help & Support</h3>
                         <ul>
-                            <li><a href="{{ url('guidelines') }}"><mark>Guidelines</mark></a></li>
-                            <li><a href="{{ url('faq') }}"><mark>FAQs</mark></a></li>
+                            <li><a href="{{ url('guidelines') }}">Guidelines</a></li>
+                            <li><a href="{{ url('faq') }}">FAQs</a></li>
                             <li><a href="{{ url('feedbacks') }}">Contact us</a></li>
                         </ul>
                     </div>

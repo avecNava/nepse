@@ -51,7 +51,8 @@ Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
-Route::get('latest-index', [NepseIndexController::class, 'index']);
+Route::get('latest-index', [NepseIndexController::class, 'indexHistory']);
+Route::get('current-index', [NepseIndexController::class, 'currentIndex']);
 
 Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);
@@ -82,7 +83,7 @@ Route::post('portfolio/export', [PortfolioController::class, 'export']);
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode
 Route::get('portfolio/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
-Route::get('portfolio/{uuid}', [PortfolioController::class, 'shareholderPortfolio']);
+Route::get('portfolio/{uuid}', [PortfolioController::class, 'Portfolio']);
 
 Route::get('sales', [SalesController::class,'view']);
 Route::get('sales/new', [SalesController::class,'create']);
@@ -108,6 +109,7 @@ Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
 
 
 Auth::routes();
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Route::fallback(function() {
     echo '<h1>Country roads take me <a href=' . url('/') .'>HOME</h1>';

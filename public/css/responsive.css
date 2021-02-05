@@ -791,6 +791,10 @@ table td {
     margin: 20px 0;
     width: 100vw;
 }
+.score_card__wapper footer {
+    text-align: right;
+    /* font-size: 1.2rem; */
+}
 .score_card__wapper article {
     width: calc(93vw/2);
     background: var(--scorecard);
@@ -924,4 +928,8 @@ span.c-social-nav__link {
 }
 footer .links a {
     font-weight: normal;
+}
+
+.sm-text {
+    font-size: 1rem;
 }

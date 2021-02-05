@@ -15,7 +15,7 @@ class CreateNepseIndicesTable extends Migration
     {
         Schema::create('nepse_indices', function (Blueprint $table) {
             $table->id();
-            $table->date('businessDate');
+            $table->date('transactionDate');
             $table->float('closingIndex',8,4)->nullable();
             $table->float('openIndex',8,4)->nullable();
             $table->float('highIndex',8,4)->nullable();
