@@ -25,157 +25,224 @@
 
 @section('content')
 
-<div class="welcome__wrapper">
+<div class="main__wrapper">
 
-    <section class="transactions">
-        <header class="flex js-apart al-end">
-            <h2 style="display:inline-block;min-width:50%">NEPSE stock data</h2>
-            <div title="Last transaction time" style="text-align:right">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
-        </header>
-        @if($transactions)
-        <table>
-            <thead>
-                <tr>
-                    <th class="optional c_digit">&nbsp;SN</th>
-                    <th>Symbol</th>
-                    <th class="c_digit">LTP</th>
-                    <th class="c_digit">Change</th>
-                    <th class="c_digit c_change">% Change</th>
-                    <th class="optional c_digit">Open price</th>
-                    <th class="c_digit">High price</th>
-                    <th class="c_digit">Low Price</th>
-                    <th class="optional c_digit">Total quantity</th>
-                    <th class="optional c_digit">Toal value</th>
-                    <th class="optional c_digit">Previous price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($transactions as $key => $transaction)
-                @php
-                    $ltp = $transaction->last_updated_price;
-                    $prev_price = $transaction->previous_day_close_price;
-                    $change = $ltp - $prev_price;
-                    $change_per = \App\Services\UtilityService::calculatePercentage($change, $prev_price);
-                    $change_css = \App\Services\UtilityService::gainLossClass1($change);
-                @endphp
-                <tr>
-                    <td class="optional c_digit">{{$key+1}}</td>
-                    <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
-                    <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
-                    <td class="{{$change_css}} c_digit">{{$change}}</td>
-                    <td class="c_digit c_change">
-                        <div class="flex apart">
-                        <div class="{{$change_css}}">
-                            {{$change_per}}
-                        </div>
-                        <div class="{{$change_css}}_icon">&nbsp;</div>
-                        </div>
-                    </td>
-                    <td class="c_digit optional">{{ number_format($transaction->open_price) }}</td>
-                    <td class="c_digit">{{ number_format($transaction->high_price) }}</td>
-                    <td class="c_digit">{{ number_format($transaction->low_price) }}</td>
-                    <td class="c_digit optional">{{ number_format($transaction->total_traded_qty) }}</td>
-                    <td class="c_digit optional">{{ number_format($transaction->total_traded_value) }}</td>
-                    <td class="c_digit optional">{{ number_format($transaction->previous_day_close_price) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-            <tfoot></tfoot>
-        </table>
-        @endif
+    <section id="trade_summary" style="display:none">
+    
+        <div class="item">
+            <label>Index </label>
+            <div class="value" id="current_index">{{number_format($currentIndex->closingIndex,2)}}</div>
+            @php
+               $index_change = $currentIndex->closingIndex - $prevIndex->closingIndex;
+               $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
+               $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
+            @endphp
+            <div class="sm-text {{$change_css}}" style="text-align:right">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
+            <div class="sm-text" id="index_date">{{$currentIndex->transactionDate}}</div>
+        </div>
+        
+        <div class="item">
+            <label>Turnover</label>
+            <div class="value" id="current_over">{{ number_format($totalTurnover) }}</div>
+        </div>
+        
+        <div class="item">
+            <label>Previous index </label>
+            <div class="value" id="prev_index">{{number_format($prevIndex->closingIndex,2)}}</div>
+            <div class="sm-text" style="text-align:right">{{$prevIndex->transactionDate}}</div>
+        </div>
+
+        <div class="item">
+            <label>Scrips traded</label>
+            <div class="value">{{ number_format($totalScrips) }}</div>
+        </div>
+       
+        <div class="item">
+            <label></label>
+            <div class="value"><a href="{{url('stock-data')}}">Market data</a></div>
+        </div>
+
     </section>
 
-    <div class="aside">
+    <section class="transactions">
+        <div id="area_chart" style="width: 100%; height: 500px;" hidden></div>
+    </section>
 
-        <section id="top10items">
 
-            <article class="turnovers">
-                <header>
-                    <h2>Top turnovers</h2>
-                </header>
-                <main>
-                    <table>
-                        <tr>
-                            <th>Symbol</th>
-                            <th class="c_digit">Turnover</th>
-                            <th class="c_digit">LTP</th>
-                        </tr>
-                        @foreach($turnovers as $turnover)
-                        <tr>
-                            <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
-                            <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
-                            <td class="c_digit">{{number_format($turnover->last_updated_price)}}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </main>
-            </article>
+    <section id="articles">
 
-            <article class="gainers">
-                <header>
-                    <h2>Top gainers</h2>
-                </header>
-                <main>
-                    <table>
-                        <tr>
-                            <th>Symbol</th>
-                            <th class="c_digit">LTP</th>
-                            <th class="c_digit">Change</th>
-                        </tr>
-                        @foreach($gainers as $turnover)
-                        <tr>
-                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
-                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </main>
-            </article>
-
-            <article class="loosers">
-                <header>
-                    <h2>Top loosers</h2>
-                </header>
-                <main>
-                    <table>
-                        <tr>
-                            <th>Symbol</th>
-                            <th class="c_digit">LTP</th>
-                            <th class="c_digit">Change</th>
-                        </tr>
-                        @foreach($loosers as $turnover)
-                        <tr>
-                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
-                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </main>
-            </article>
-
-        </section>
-
-        @if(!empty($sectors))
-        <section class="sectors">
+        <article class="turnovers">
             <header>
-            <h2>Sectorwise turnover</h2>
+                <h2>Top turnovers</h2>
             </header>
             <main>
-                @foreach($sectors as $sector)
-                <div class="sector">
-                    <h3 class='sector-name' title="{{$sector['sector']}}">{{$sector['sector']}}</h3>
-                    <!-- <div class="quantity">{{$sector['total_qty']}}</div> -->
-                    <div class="volume"><label>Turnover</label> {{ number_format($sector['total_value'])}}</div>
-                </div>
-                @endforeach
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th class="c_digit">Turnover</th>
+                        <th class="c_digit">LTP</th>
+                    </tr>
+                    @foreach($turnovers as $turnover)
+                    <tr>
+                        <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
+                        <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
+                        <td class="c_digit">{{number_format($turnover->last_updated_price)}}</td>
+                    </tr>
+                    @endforeach
+                </table>
             </main>
-            <footer></footer>
-        </section>
-        @endif
+        </article>
 
-    </div>
+        <article class="gainers">
+            <header>
+                <h2>Top gainers</h2>
+            </header>
+            <main>
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th class="c_digit">LTP</th>
+                        <th class="c_digit">Change</th>
+                    </tr>
+                    @foreach($gainers as $turnover)
+                    <tr>
+                        <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                        <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                        <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                    </tr>
+                    @endforeach
+                </table>
+            </main>
+        </article>
+
+        <article class="loosers">
+            <header>
+                <h2>Top loosers</h2>
+            </header>
+            <main>
+                <table>
+                    <tr>
+                        <th>Symbol</th>
+                        <th class="c_digit">LTP</th>
+                        <th class="c_digit">Change</th>
+                    </tr>
+                    @foreach($loosers as $turnover)
+                    <tr>
+                        <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                        <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                        <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                    </tr>
+                    @endforeach
+                </table>
+            </main>
+        </article>
+
+        <article class="turnovers">
+            <header>
+                <h2>Top Turnover by sectors</h2>
+            </header>
+            <main>
+                <table>
+                    <tr>
+                        <th>Sector</th>
+                        <th>Quantity</th>
+                        <th class="c_digit">Turnover</th>
+                    </tr>
+                    @foreach($sectors as $sector)
+                    @php
+                    $perTurnover = ($sector['total_value']/$totalTurnover)*100;
+                    @endphp
+                    <tr>
+                        <td>{{$sector['sector'] ?: 'Blank'}}</td>
+                        <td class="c_digit">{{number_format( $sector['total_qty'] )}}</td>
+                        <td class="c_digit">
+                            {{number_format( $sector['total_value'] )}} ({{ number_format($perTurnover,2)}}%)
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
+            </main>
+        </article>
+
+    </section>
+
+    <section class="footer-date">
+        <div title="Last transaction time">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
+    </section>
+    
 </div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    // Load the Visualization API and the piechart package.
+    google.charts.load('current', {'packages':['corechart']});      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);    
+
+    function drawChart() {
+        let request = new XMLHttpRequest();
+        const url = `${window.location.origin}/index-history`;
+        request.open('GET', url, true);
+        request.onload = function() {
+
+            if (this.status >= 200 && this.status < 400) {
+                json_data = JSON.parse(this.response);
+                
+                const epoch = json_data.epoch*1000;
+                const dt = new Date(json_data.dateString);
+                
+
+                const month = '0' + (dt.getMonth() + 1);
+                const date = '0' + dt.getDate();
+                const date_str = `${dt.getFullYear()}-${ month.substring(month.length-2)}-${ date.substring(date.length-2)} ${dt.getHours()}:${dt.getMinutes()}`;
+
+                var data = new google.visualization.DataTable(json_data.indexHistory);
+                var options = {
+                    legend:'none',
+                    title: `NEPSE index: ${json_data.index} (${date_str})`,
+                    titleTextStyle:{ 
+                                    color: '#000',
+                                    fontSize: '15px',
+                                    bold: true,
+                                },
+                    hAxis: {
+                        
+                        viewWindow: {
+                            min: new Date(dt.getFullYear(), dt.getMonth()+1, dt.getDate(), 11 ),
+                            max: new Date(dt.getFullYear(), dt.getMonth()+1, dt.getDate(), dt.getHours(), dt.getMinutes())
+                        },
+                        gridlines: {
+                            count: -1,
+                            units: {
+                            days: {format: ['MMM dd']},
+                            hours: {format: ['HH:mm', 'ha']},
+                            }
+                        },
+                        minorGridlines: {
+                            units: {
+                            hours: {format: ['hh:mm:ss a', 'ha']},
+                            minutes: {format: ['HH:mm a Z', ':mm']}
+                            }
+                        }
+                        
+                    },
+                    vAxis: {title:"Index"},
+                    hAxis: {title:"Time"},
+                    
+                };
+
+                var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
+                document.getElementById('area_chart').style.display="block";
+                document.getElementById('trade_summary').style.display="flex";
+                chart.draw(data, options);
+            
+            }
+        }  
+        request.send();
+    }
+    
+</script>
         
 @endsection

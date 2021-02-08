@@ -15,6 +15,8 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Models\NepseIndex;
+use App\Models\DailyIndex;
+// use App\Services\UtilityService;
 
 Auth::routes([
     'verify' => true,
@@ -25,6 +27,11 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
+    $epoch = "1612775699";
+    $timeZone = "Asia/Kathmandu";
+    $temp = MyUtility::epochToTimeZone($epoch, $timeZone);
+    $test = new \DateTime($temp);
+    dd($test->format('Y'));
 
 });
 
@@ -42,6 +49,7 @@ Route::get('account/register', function(){
     return redirect('register');
 });
 
+Route::get('index-history', [HomeController::class,'getIndexJson']);
 Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin');
 Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
 Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');
@@ -54,7 +62,6 @@ Route::post('shareholders',[ShareholderController::class, 'create']);
 Route::get('latest-price', [StockPriceController::class, 'index']);
 Route::get('latest-index', [NepseIndexController::class, 'indexHistory']);
 Route::get('current-index', [NepseIndexController::class, 'currentIndex']);
-Route::get('what', [NepseIndex::class, 'updateCurrentIndex']);
 
 Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);

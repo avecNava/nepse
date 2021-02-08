@@ -12,6 +12,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
     <script src="{{ URL::to('js/app.js') }}"></script>
     @yield('custom_css')
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNJB1MNNTB"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FNJB1MNNTB');
+    </script>
+
 </head>
 <body>
     <div id="notice" class="hide">

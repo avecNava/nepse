@@ -85,11 +85,11 @@ class NepseIndexController extends Controller
     public function currentIndex()
     {
     
-        // if(!UtilityService::tradingDay($this->businessDate)){
-        //     return response()->json([
-        //         'message' => 'NEPSE is closed during Saturdays and Fridays',
-        //     ]);
-        // }
+        if(!UtilityService::tradingDay($this->businessDate)){
+            return response()->json([
+                'message' => 'NEPSE is closed during Saturdays and Fridays',
+            ]);
+        }
 
         //58 is for NEPSE Index
         $response = $this->client->request('GET',"graph/index/58", [
@@ -138,7 +138,8 @@ class NepseIndexController extends Controller
             $time_string = $index_date->format('Y-m-d H:i:s');
             $display_time = new \DateTime($time_string, new \DateTimeZone('UTC'));
             $display_time->setTimeZone(new \DateTimeZone('Etc/GMT-6'));             //Ideally the timezone should be Asia/Kathmandu
-            return $display_time->format('Y-m-d H:i:s');
+            // return $display_time->format('Y-m-d H:i:s');
+            return $display_time->format('Y-m-d');
     }
 
 }

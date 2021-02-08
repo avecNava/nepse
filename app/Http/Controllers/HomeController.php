@@ -9,6 +9,8 @@ use App\Models\StockPrice;
 use App\Models\Stock;
 use App\Models\AppLog;
 use App\Models\User;
+use App\Models\DailyIndex;
+use App\Models\NepseIndex;
 use App\Models\StockSector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +53,7 @@ class HomeController extends Controller
                 $join->on('s.id','pr.stock_id')
                     ->where('pr.transaction_date', $date);
             })
-            ->join('stock_sectors as ss','ss.id','s.sector_id')
+            ->leftjoin('stock_sectors as ss','ss.id','s.sector_id')
             ->select('s.symbol', 's.security_name',
                 'pr.*',
                 'ss.id as sector_id','ss.sector'
@@ -59,9 +61,8 @@ class HomeController extends Controller
             ->orderByDesc('pr.last_updated_time')
             ->get();
         
-
+        //todo: get stock price and sector again using left join
         $sector_summary = $transactions->groupBy('sector_id')->map(function($item){
-            
             $row = $item->first();            
             return collect([
                 'sector' => $row->sector,
@@ -74,7 +75,6 @@ class HomeController extends Controller
         $top10Trades = $transactions->sortByDesc('total_traded_qty')->take(10);
 
         // dd($top10Turnovers);
-
         $stocks = $transactions->map(function($stock){            
             $change_per = 0;
             $change = $stock->last_updated_price - $stock->previous_day_close_price;
@@ -94,17 +94,75 @@ class HomeController extends Controller
         $top10Loosers= $stocks->sortBy('change_per')->take(10);
         $last_updated_time = StockPrice::max('last_updated_time');
 
+        $last_trade_date = Str::of($last_updated_time)->substr(0,10);
+
         return view('welcome',
         [
-            'sectors' => $sector_summary->sortBy('sector'),
+            'sectors' => $sector_summary->sortByDesc('total_value'),
             'turnovers' => $top10Turnovers,
             'trades' => $top10Trades,
             'gainers' => $top10Gainers,
             'loosers' => $top10Loosers,
-            'transactions' => $transactions,
+            'totalScrips' => $transactions->count('symbol'),
             'last_updated_time' => Carbon::parse($last_updated_time),
             'notice' => $notice,
+            'totalTurnover' => StockPrice::where('created_at','>=', $last_trade_date)->sum('total_traded_value'),
+            'currentIndex' => NepseIndex::where('transactionDate','>=', $last_trade_date)->orderByDesc('transactionDate')->take(1)->first(),
+            'prevIndex' => NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->take(1)->first(),
+
         ]);
+    }
+
+    /**
+     * sends JSON formatted output (GOOGLE CHART Style) to the response
+     * Reference : https://developers.google.com/chart/interactive/docs/reference#dataparam
+     * Nava Bogatee
+     * 08 Feb 2021
+     */
+    public function getIndexJson()
+    {
+       
+        $cols = array(
+            ["id"=>"Date","label"=>"Date","pattern"=>"","type"=>"datetime"],
+            ["id"=>"","label"=>"Index","pattern"=>"","type"=>"number"],
+        );
+    
+        $hourlyIndex=DailyIndex::get();
+        $last_record = $hourlyIndex->last();
+        $epoch = $last_record->epoch;
+        $datetime_str = UtilityService::epochToTimeZone($epoch, config('app.timezone', 'Asia/Kathmandu'));
+        
+        $rows = $hourlyIndex->map(function( $item, $key){
+            
+            $epoch = $item->epoch;
+            $date_str = new \DateTime(date("Y-m-d H:i:s", substr($epoch, 0, 10)));
+          
+            $year = $date_str->format("Y");
+            $month = $date_str->format("m");
+            $monthName = $date_str->format("F");
+            $day = $date_str->format("d");
+            $hours = $date_str->format("H");
+            $minutes = $date_str->format("i");
+            $seconds = $date_str->format("s");
+
+            return
+            [
+                'c' => [
+                    ['v' => "Date($year, $month, $day, $hours, $minutes, $seconds)", 'f' => "$monthName $day $hours:$minutes"],
+                    ['v' => $item->index, 'f' => null], 
+                ]
+            ];
+        });
+        
+        return response()->json(
+            ['indexHistory'=>
+                ['cols' => $cols,
+                 'rows' => $rows 
+                ],
+             'epoch' => $last_record->epoch,
+             'dateString' => $datetime_str,
+             'index' => $last_record->index,
+             ]);
     }
 
     public function stockData()
@@ -117,9 +175,9 @@ class HomeController extends Controller
             ->join('stocks as s', function($join){
                 $date = StockPrice::max('transaction_date');
                 $join->on('s.id','pr.stock_id')
-                    ->where('pr.transaction_date', $date);
+                    ->where('pr.last_updated_time','>=', $date);
             })
-            ->join('stock_sectors as ss','ss.id','s.sector_id')
+            ->leftjoin('stock_sectors as ss','ss.id','s.sector_id')
             ->select('s.symbol', 's.security_name',
                 'pr.*',
                 'ss.id as sector_id','ss.sector'

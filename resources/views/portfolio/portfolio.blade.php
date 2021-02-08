@@ -16,7 +16,7 @@
 
     <div class="shareholder_dashboard__wrapper">
     
-        @if(($scorecard['scripts']>0))
+        @if(($scorecard['scrips']>0))
             <section class="score_card__wapper">
 
                 <article>
@@ -56,8 +56,8 @@
                 </article>
 
                 <article hidden>
-                    <header># Scripts</header>
-                    &nbsp;<main class="value">{{number_format($scorecard['scripts'])}}</main>
+                    <header># Scrips</header>
+                    &nbsp;<main class="value">{{number_format($scorecard['scrips'])}}</main>
                     <footer></footer>
                 </article>
                 
@@ -77,7 +77,7 @@
                     <h2 class="title">{{ $shareholder }}</h2>
                     @if(count($portfolios)>0)
                     <div class="notification">
-                    &nbsp;({{count($portfolios)}} scripts)
+                    &nbsp;({{count($portfolios)}} scrips)
                     </div>
                     @endif
                 </div>

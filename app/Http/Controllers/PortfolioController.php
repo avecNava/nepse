@@ -61,7 +61,7 @@ class PortfolioController extends Controller
             //todo: sort records by worth
 
             $row = $stocks->first();
-            $scripts =  $stocks->count('stock_id');
+            $scrips =  $stocks->count('stock_id');
             $quantity =  $stocks->sum('quantity');
             $investment =  $stocks->sum(function($item){
                 return $item->quantity * $item->wacc;
@@ -78,7 +78,7 @@ class PortfolioController extends Controller
             $change = $worth - $prev_worth;
            
             $data = [
-                'scripts'  => $scripts,
+                'scrips'  => $scrips,
                 'quantity'  => $quantity,
                 'investment'  => $investment,
                 'worth'  => $worth,

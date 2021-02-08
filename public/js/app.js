@@ -17,6 +17,9 @@ function hide_notice(){
     el.classList.add('d-none');
 }
 
+function convertTZ(date, tzString) {
+    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+}
 
 //select an option in a list
 function setOption(selectElement, value) {

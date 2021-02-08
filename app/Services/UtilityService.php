@@ -190,4 +190,15 @@ class UtilityService
             Log::info("MESSAGE: $message ", [$obj]);
         }
     }
+
+    public static function epochToTimeZone($epoch, $timezone)
+    {
+        // date_default_timezone_set('UTC');
+        $datetime_str = date("Y-m-d H:i:s",substr($epoch, 0, 10));
+        $datetime = new \DateTime($datetime_str);
+        $datetime->setTimezone( new \DateTimeZone($timezone) );
+        return $datetime->format('Y-m-d H:i:s');
+        // return $datetime;
+
+    }
 }
