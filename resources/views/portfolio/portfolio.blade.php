@@ -150,7 +150,7 @@
                     $change = $worth - $prev_worth;
                     $gain = $worth - $investment;
                     $change_class = App\Services\UtilityService::gainLossClass1($change);
-                    $change_per = App\Services\UtilityService::calculatePercentage($worth, $prev_worth);
+                    $change_per = App\Services\UtilityService::calculatePercentage($change, $prev_worth);
                     $gain_class = App\Services\UtilityService::gainLossClass1($gain);
                     $gain_per = App\Services\UtilityService::calculatePercentage($gain, $investment);
                 @endphp

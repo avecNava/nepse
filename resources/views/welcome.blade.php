@@ -64,8 +64,8 @@
 
     </section>
 
-    <section class="transactions">
-        <div id="area_chart" style="width: 100%; height: 500px;" hidden></div>
+    <section class="transactions" style="width:100%">
+        <div id="area_chart" style="width: 100%; min-height: 300px;" hidden></div>
     </section>
 
 

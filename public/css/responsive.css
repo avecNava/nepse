@@ -71,22 +71,25 @@ sup {
 }
 
 /*welcome page css*/
+#trade_summary {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: 10px 0;
+}
 #trade_summary .item {
-    padding: 15px 10px;
+    padding: 10px;
     background: #e4e4b8;
-    min-height: 3rem;
-    font-size: 20px;
+    margin: 5px;
+    width: 14em;
+    font-size: .8em;
 }
 
 #trade_summary .item .value {
-    font-size: 25px;
-    padding: 10px;
+    font-size: 1.3em;
+    padding: 5px 0;
     text-align: center;
-}
-#trade_summary {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
 }
 
 .welcome__wrapper section.transactions {
@@ -117,8 +120,11 @@ section#top10items article {
 
 section#articles {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     flex-wrap: wrap;
+}
+section#articles article {
+    margin: 10px;
 }
 #articles h2 {
     font-size: 18px;
@@ -970,5 +976,5 @@ footer .links a {
 }
 
 .sm-text {
-    font-size: 1rem;
+    font-size: .8em;
 }

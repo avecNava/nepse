@@ -417,6 +417,7 @@ section.sales summary {
         display: inline-block;
     }
     
+    
 
     /*summary paage showcase*/
     .summary__wrapper {
@@ -460,6 +461,13 @@ section.sales summary {
     }
 
     /*welcome page*/
+    #trade_summary .item {
+        font-size: 1em;
+    }
+    #trade_summary {
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
     section.sectors main {
         display: flex;
         flex-wrap: wrap;
