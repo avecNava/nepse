@@ -101,22 +101,39 @@ class MeroShareController extends Controller
                     $offer_type = $this->getOfferType($remarks);
                     
                     //IGNORE merger (they're debited and credited whhich makes it 0)
-                    if ($offer_type != 'MERGER') {
-
-                         $transactions->push( 
-                              array(
-                                   'symbol' => $row['Scrip'], 
-                                   'transaction_date' => $row['Transaction Date'],
-                                   'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
-                                   'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
-                                   'transaction_mode' => $this->getTransactionMode($remarks),
-                                   'offer_type' => $offer_type,
-                                   'remarks' => $remarks,
-                                   'shareholder_id' => $shareholder_id,
-                              )
-                         );
-                    }
+                    //But sometimes, other stocks are also marked as MERGER, dont' know why
+                    // if ($offer_type != 'MERGER') {
+                         if($row['Balance After Transaction'] > 0){
+                              $transactions->push( 
+                                   array(
+                                        'symbol' => $row['Scrip'], 
+                                        'transaction_date' => $this->formatDate($row['Transaction Date']),
+                                        'credit_quantity' => Str::of( $row['Credit Quantity'] )->contains('-') ? null : $row['Credit Quantity'],
+                                        'debit_quantity' => Str::of( $row['Debit Quantity'] )->contains('-') ? null : $row['Debit Quantity'],
+                                        'transaction_mode' => $this->getTransactionMode($remarks),
+                                        'offer_type' => $offer_type,
+                                        'remarks' => $remarks,
+                                        'shareholder_id' => $shareholder_id,
+                                   )
+                              );
+                         }
+                    // }
                });
+
+               //remove existing records with the given shareholder_id
+               MeroShare::where('shareholder_id', $shareholder_id)->delete();
+
+               //add new records
+               $success = MeroShare::importTransactions($transactions);
+               
+               //get uuid for the shareholder
+               $user = Shareholder::find( $request->input('shareholder') );
+
+               if(!$success){
+                    return redirect("import/meroshare/" . $user->uuid)->with('error', "Import completed. <br>Unfortunately, some of the records could not be imported 👀");
+               }
+               
+               return redirect("import/meroshare/" . $user->uuid)->with('success', 'Records imported successfully 👌 <br/>From the records below,  Select records below and click "Save to Portfolio'); 
 
           } catch (\Throwable $th) {
                $error = [
@@ -133,25 +150,22 @@ class MeroShareController extends Controller
                // unlink( $pathToCSV );               //delete the file
           } catch(\Throwable $th){
 
-          }
-
-          //remove existing records with the given shareholder_id
-          MeroShare::where('shareholder_id', $shareholder_id)->delete();
-
-          //add new records
-          $success = MeroShare::importTransactions($transactions);
-          
-          //get uuid for the shareholder
-          $user = Shareholder::find( $request->input('shareholder'));
-
-          if(!$success){
-               return redirect("import/meroshare/" . $user->uuid)->with('error', "Import completed. <br>Unfortunately, some of the records could not be imported 👀");
-          }
-          
-          return redirect("import/meroshare/" . $user->uuid)->with('success', 'Records imported successfully 👌 <br/>From the records below,  Select records below and click "Save to Portfolio');  
+          } 
         
    }
 
+   public function formatDate($dateStr){
+     if(Str::length($dateStr)==10){
+          return $dateStr;
+     }
+
+     //if the $dateStr ccomes as 22-05-18
+     $dd = Str::of($dateStr)->substr(0,2);
+     $mm = Str::of($dateStr)->substr(4,2);
+     $yyyy = "20" . Str::of($dateStr)->substr(6,2);
+
+     return "$yyyy-$mm-$dd";
+}
      
    public static function getOfferType($str){
      
@@ -166,12 +180,6 @@ class MeroShareController extends Controller
      elseif(Str::contains($offering_txt,'ca-merger')){
           return 'MERGER';
      }
-     elseif(Str::contains($offering_txt,['initial public offering','ipo'])) {
-          return 'IPO';
-     }
-     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
-          return 'FPO';
-     }
      elseif(Str::contains($offering_txt,'demat')){
           return 'IPO';
      }
@@ -183,6 +191,12 @@ class MeroShareController extends Controller
      }
      elseif(Str::contains($offering_txt,'on-cr td')) {
           return 'SECONDARY';
+     }
+     elseif(Str::contains($offering_txt,['initial public offering','ipo'])) {
+          return 'IPO';
+     }
+     elseif(Str::containsAll($offering_txt,['initial public offering','fpo'])) {
+          return 'FPO';
      }
      else {
           return 'OTHERS';

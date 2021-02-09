@@ -290,11 +290,11 @@
         </main>
 
         @if( count($transactions)>0 )
-        <footer class="flex">
-            <p class="strong">Note : </p>
+        <footer style="padding:10px 20px">
+            <strong>Note :</strong>
             <div>
                 <p class="note">
-                    If you do not see a checkbox to select some of the transactions, chances are that they might be new and have not been updated into our system yet.
+                    If you do not see a checkbox to select some of the transactions, chances are that they might be new and have not been updated into our system yet.<br/>
                     <strong>If you wish to notify us of this incident, you can do it via the <a href="{{url('feedbacks')}}">Contact us</a> page.</strong>
                 </p>
             </div>
