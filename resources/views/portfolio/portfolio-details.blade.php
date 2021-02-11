@@ -70,7 +70,7 @@ tfoot td {
                     </h2> 
                     @if($stock)
                     <h3 class='highlight'>{{$stock['security_name']}} ({{$stock['symbol']}})</h3>
-                    <h3>{{$stock->sector->sector}}</h3>
+                    <h3>{{optional($stock->sector)->sector}}</h3>
                     @endif
                     <section id="basket" class="item basket">
                     <header>

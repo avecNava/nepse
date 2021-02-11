@@ -461,10 +461,10 @@ section.sales summary {
     }
 
     /*welcome page*/
-    #trade_summary .item {
+    .trade_summary .item {
         font-size: 1em;
     }
-    #trade_summary {
+    .trade_summary {
         justify-content: center;
         flex-wrap: nowrap;
     }

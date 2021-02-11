@@ -27,45 +27,55 @@
 
 <div class="main__wrapper">
 
-    <section id="trade_summary" style="display:none">
-    
-        <div class="item">
-            <label>Index </label>
-            <div class="value" id="current_index">{{number_format($currentIndex->closingIndex,2)}}</div>
+    <section class="transactions" id="trade_summary" style="display:none">
+        
+        <div class="trade_summary__wrapper flex">
+        
+        <div style="width:80%;margin:0 30px">
+            <h2>NEPSE Today</h2>
+            <div>{{$currentIndex->transactionDate}}</div>
+            <div id="area_chart" style="width: 100%; min-height: 300px;"></div>
+        </div>
+        
+        <div class="trade_summary">
+
+            <h3><center><a class="market_open" href="{{url('stock-data')}}">Market data</a></center></h3>
+            
+            <div class="item">
+                <label>Index </label>
+                <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
+            </div>
+
             @php
-               $index_change = $currentIndex->closingIndex - $prevIndex->closingIndex;
-               $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
-               $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
+            $index_change = 0;
+            if($currentIndex){
+                $currentIndex->closingIndex - $prevIndex->closingIndex;
+            }
+            $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
+            $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
             @endphp
-            <div class="sm-text {{$change_css}}" style="text-align:right">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
-            <div class="sm-text" id="index_date">{{$currentIndex->transactionDate}}</div>
-        </div>
-        
-        <div class="item">
-            <label>Turnover</label>
-            <div class="value" id="current_over">{{ number_format($totalTurnover) }}</div>
-        </div>
-        
-        <div class="item">
-            <label>Previous index </label>
-            <div class="value" id="prev_index">{{number_format($prevIndex->closingIndex,2)}}</div>
-            <div class="sm-text" style="text-align:right">{{$prevIndex->transactionDate}}</div>
-        </div>
+            
+            <div class="item">
+                <label>Previous index</label>
+                <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
+            </div>    
+            <div class="item">
+                <label>Change</label>
+                <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
+            </div>
 
-        <div class="item">
-            <label>Scrips traded</label>
-            <div class="value">{{ number_format($totalScrips) }}</div>
-        </div>
-       
-        <div class="item">
-            <label></label>
-            <div class="value"><a href="{{url('stock-data')}}">Market data</a></div>
-        </div>
+            <div class="item">
+                <label>Scrips traded</label>
+                <div class="value">{{ number_format($totalScrips) }}</div>
+            </div>
 
-    </section>
+            <div class="item">
+                <label>Turnover</label>
+                <div class="value" id="current_over">{{ number_format($totalTurnover) }}</div>
+            </div>
 
-    <section class="transactions" style="width:100%">
-        <div id="area_chart" style="width: 100%; min-height: 300px;" hidden></div>
+        </div>
+    </div>
     </section>
 
 
@@ -235,7 +245,7 @@
 
                 var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
                 document.getElementById('area_chart').style.display="block";
-                document.getElementById('trade_summary').style.display="flex";
+                document.getElementById('trade_summary').style.display="block";
                 chart.draw(data, options);
             
             }
