@@ -136,7 +136,7 @@
                     
                     <div class="form-field">
                         <label for="unit_cost" class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                        <input type="number" name="unit_cost" id="unit_cost" required value="{{old('unit_cost')}}" />
+                        <input type="number" name="unit_cost" id="unit_cost" required value="{{old('unit_cost')}}" step=".01"/>
                         <span id="unit_cost_label"></span>
                     </div> 
 
@@ -147,35 +147,35 @@
 
                     <div class="form-field">
                         <label for="base_amount" class="@error('base_amount') is-invalid @enderror" >Base amount</label>
-                        <input type="number" name="base_amount" id='base_amount' required value="{{ old('base_amount') }}" />
+                        <input type="number"  step=".01"  name="base_amount" id='base_amount' required value="{{ old('base_amount') }}" />
                     </div> 
 
                     <section id="secondary">
 
                         <div class="form-field">
                             <label for="broker_commission">Broker Commission</label>
-                            <input type="text" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
+                            <input type="number" step=".01" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">Sebon Commission</label>
-                            <input type="text" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
+                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
                         </div>
                         <div class="form-field">
                             <label for="dp_amount">DP amount</label>
-                            <input type="text" name="dp_amount" id="dp_amount" value="{{old('dp_amount')}}" />
+                            <input type="number" step=".01" name="dp_amount" id="dp_amount" value="{{old('dp_amount')}}" />
                         </div>
 
                         <div class="form-field">
                                 <label for="broker" class="@error('broker') is-invalid @enderror">Broker</label>
                                 <select name="broker">
                                     <option value="0">Select</option>
-                                @foreach($brokers as $broker)
-                                <option value="{{ $broker['broker_no'] }}" 
-                                @if(old('broker') == $broker['broker_no'] )
-                                SELECTED
-                                @endif
-                                >{{ $broker['broker_no'] }}-{{$broker['broker_name']}}</option>
-                                @endforeach
+                                    @foreach($brokers as $broker)
+                                        <option value="{{ $broker['broker_no'] }}" 
+                                        @if(old('broker') == $broker['broker_no'] )
+                                        SELECTED
+                                        @endif
+                                        >{{ $broker['broker_no'] }}-{{$broker['broker_name']}}</option>
+                                    @endforeach
                             </select>
                             <span id="broker_label"></span>
                         </div>
@@ -184,13 +184,13 @@
 
                     <div class="form-field" title="Bill amount">
                         <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                        <input type="text" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                        <input type="number" step=".01" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
                         <span id="total_amount_label"></span>
                     </div>      
                     
                     <div class="form-field">
                         <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
-                        <input type="text" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
+                        <input type="number" step=".01" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
                         <span id="effective_rate_label"></span>
                     </div> 
                     

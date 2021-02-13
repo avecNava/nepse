@@ -26,19 +26,21 @@ tfoot td {
     <div id="portfolio-detail">
    
         @php
-            $ltp=0;
-            $ltp_prev=0;
-            $worth=0;
+            $ltp=100;
+            $ltp_prev=100;
             $price_high=0;
             $price_low=0;
             $price_high_52=0;
             $price_low_52=0;
             $qty = $info['quantity'];
+            $worth= $qty * $ltp;
             $investment = $info['investment'];
             $wacc = ($investment > 0 ) ? $investment / $qty : 0;
             if(!empty($price)){
                 $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
+                if(!$ltp) $ltp = 100; 
                 $ltp_prev = $price->previous_day_close_price;
+                if(!$$ltp_prev) $$ltp_prev = 100; 
                 $worth = $qty * $ltp;
                 $worth_prev = $qty * $ltp_prev;
                 $price_high = $price->high_price;
@@ -123,9 +125,13 @@ tfoot td {
                         </div>
                         <div class="item">
                             <label>Change </label>
+                            @if($change != 0)
                             <span class="value {{$change_class}}">
                                 {{number_format($change)}} ({{number_format($change_per,2)}}%)
                             </span>
+                            @else
+                            -
+                            @endif
                         </div>  
                     </div>
                     <div class="stock right">
@@ -143,21 +149,27 @@ tfoot td {
                         </div>
                         <div class="item">
                             <label>Gain </label>
+                            @if($gain != 0)
                             <span class="value {{$gain_class}}">
                             {{number_format($gain)}} ({{number_format($gain_per,2)}}%)
                             </span>
+                            @endif
                         </div>  
                         <div class="item">
+                        @if($price_high != 0)
                             <label>High/Low (LTP) </label>
                             <span class="value"> 
                                 {{number_format($price_high)}}/{{number_format($price_low)}}
                             </span>
+                        @endif
                         </div>
                         <div class="item">
                             <label>High/low (52 weeks)</label>
+                            @if($price_high_52 != 0)
                             <span class="value">
                                 {{number_format($price_high_52)}}/{{number_format($price_low_52)}}
                             </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -218,7 +230,7 @@ tfoot td {
                         <div class="form-field">
                             <label for="unit_cost"  
                             class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                            <input type="number" name="unit_cost" require id="unit_cost" required 
+                            <input type="number" name="unit_cost" require id="unit_cost" step=".01" required 
                             value="{{ old('unit_cost') }}"/>
                         </div>
                         <div class="form-field">
@@ -230,19 +242,19 @@ tfoot td {
                         <div class="form-field">
                             <label for="" title="Base price * Quantity"
                             class="@error('base_amount') is-invalid @enderror">Base amount</label>
-                            <input type="text" name="base_amount" id="base_amount" required 
+                            <input type="number" step=".01" name="base_amount" id="base_amount" required 
                             value="{{ old('base_amount') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="total_amount" title="Bill amount inclusive commissions"
                             class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                            <input type="text" name="total_amount" id="total_amount" required 
+                            <input type="number" step=".01" name="total_amount" id="total_amount" required 
                             value="{{ old('total_amount') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="effective_rate"
                             class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
-                            <input type="text" name="effective_rate" id="effective_rate" required 
+                            <input type="number" step=".01" name="effective_rate" id="effective_rate" required 
                             value="{{ old('effective_rate') }}"/>
                         </div>
 
@@ -264,15 +276,15 @@ tfoot td {
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">Broker commission<label>
-                            <input type="text" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"> 
+                            <input type="number" step=".01" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"> 
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">SEBON commission<label>
-                            <input type="text" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
+                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
                         </div> 
                         <div class="form-field">
                             <label for="dp_amount">DP amount<label>
-                            <input type="text" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
+                            <input type="number" step=".01" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
                         </div> 
                     </section>
 
@@ -386,6 +398,7 @@ tfoot td {
                     @foreach ($portfolios as $record)
                         @php
                             $ltp = $record->last_updated_price?: $record->close_price;
+                            if(!$ltp) $ltp = 100;
                             $qty = $record->quantity;
                             $worth = $qty * $ltp;
                             $investment = $record->total_amount;
@@ -414,6 +427,7 @@ tfoot td {
                             <td class="c_digit">{{ number_format($ltp) }}</td>
                             <td class="c_digit">{{ number_format($worth) }}</td>
                             <td class="c_digit">
+                                @if($gain !=0)
                                 <div class="c_change">
                                     <div>
                                         <span class="change-val">
@@ -425,6 +439,7 @@ tfoot td {
                                     </div>
                                     <div class="{{$gain_class}}_icon"></div>
                                 </div>
+                                @endif
                             </td>
                             <td class="c_digit optional">{{$record->purchase_date}}</td>
                             <td>{{$record->tags}}</td>

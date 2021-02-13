@@ -64,7 +64,6 @@
             </section>
         @endif
     
-
         @if( !empty($portfolios) )
         
         <section class="main__content">
@@ -144,9 +143,11 @@
                     $wacc = $record->wacc;
                     $quantity = $record->quantity;
                     $investment = $quantity * $wacc;
-                    $close_price = $record->last_updated_price ?  $record->last_updated_price : $record->close_price;
+                    $close_price = $record->close_price ? : $record->last_updated_price;
+                    if(!$close_price) $close_price = 100;
                     $worth = $quantity * $close_price;
                     $prev_worth = $quantity * $record->previous_day_close_price;
+                    if(!$record->previous_day_close_price) $prev_worth = $quantity * 100;
                     $change = $worth - $prev_worth;
                     $gain = $worth - $investment;
                     $change_class = App\Services\UtilityService::gainLossClass1($change);
@@ -170,12 +171,13 @@
                         </a>
 
                     </td>
-                    <td class="c_digit">{{number_format($quantity)}}</td>
+                    <td class="c_digit">@if($quantity != 0) {{number_format($quantity)}} @endif</td>
                     <td class="c_digit optional">{{number_format($wacc,2)}}</td>
-                    <td class="c_digit optional">{{ number_format($investment)}}</td>
+                    <td class="c_digit optional">@if($investment != 0) {{ number_format($investment)}} @endif</td>
                     <td class="c_digit">{{ number_format($close_price)}}</td>
-                    <td class="c_digit">{{ number_format($worth)}}</td>
+                    <td class="c_digit">@if($worth != 0) {{ number_format($worth)}} @endif</td>
                     <td class="c_digit">
+                        @if($gain != 0)
                         <div class="c_change">
                             <div>
                                 <span class="change-val">
@@ -186,10 +188,12 @@
                                 </span>
                             </div>
                             <div class="{{$gain_class}}_icon"></div>
-                        </div>                        
+                        </div>
+                        @endif
                     </td>
                     <td class="c_digit optional" title="Previous price : {{$record->previous_day_close_price}}">{{ number_format($prev_worth)}}</td>
                     <td class="optional">
+                        @if($change != 0)
                         <div class="c_change">
                             <div>
                                 <span class="change-val">
@@ -201,6 +205,7 @@
                             </div>
                             <div class="{{$change_class}}_icon"></div>
                         </div>
+                        @endif
                     </td>
                 </tr>
 

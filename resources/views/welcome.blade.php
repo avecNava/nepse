@@ -29,43 +29,43 @@
 
     <section class="transactions" id="trade_summary" style="display:none">
         
-        <div class="trade_summary__wrapper flex">
+        <div class="trade_summary__wrapper">
         
-        <div style="width:80%;margin:0 30px">
-            <h2>NEPSE Today</h2>
-            <div>{{$currentIndex->transactionDate}}</div>
+        <div>
+            <div class="flex js-apart al-cntr">
+                <div>
+                    <h2>NEPSE Today</h2>
+                    <div>{{$currentIndex->transactionDate}}</div>
+                </div>
+                <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>
+            </div>
             <div id="area_chart" style="width: 100%; min-height: 300px;"></div>
         </div>
         
         <div class="trade_summary">
-
-            <h3><center><a class="market_open" href="{{url('stock-data')}}">Market data</a></center></h3>
+            
+            @php
+                $index_change = 0;
+                if($currentIndex){
+                    $currentIndex->closingIndex - $prevIndex->closingIndex;
+                }
+                $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
+                $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
+            @endphp
             
             <div class="item">
                 <label>Index </label>
                 <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
-            </div>
-
-            @php
-            $index_change = 0;
-            if($currentIndex){
-                $currentIndex->closingIndex - $prevIndex->closingIndex;
-            }
-            $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
-            $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
-            @endphp
-            
-            <div class="item">
-                <label>Previous index</label>
-                <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
-            </div>    
-            <div class="item">
-                <label>Change</label>
                 <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
             </div>
 
             <div class="item">
-                <label>Scrips traded</label>
+                <label>Previous index</label>
+                <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
+            </div>    
+
+            <div class="item">
+                <label># Scrips</label>
                 <div class="value">{{ number_format($totalScrips) }}</div>
             </div>
 
@@ -90,13 +90,13 @@
                     <tr>
                         <th>Symbol</th>
                         <th class="c_digit">Turnover</th>
-                        <th class="c_digit">LTP</th>
+                        <th class="c_digit optional">LTP</th>
                     </tr>
                     @foreach($turnovers as $turnover)
                     <tr>
                         <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
                         <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
-                        <td class="c_digit">{{number_format($turnover->last_updated_price)}}</td>
+                        <td class="c_digit optional">{{number_format($turnover->last_updated_price)}}</td>
                     </tr>
                     @endforeach
                 </table>

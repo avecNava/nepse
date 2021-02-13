@@ -27,12 +27,7 @@ Auth::routes([
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
-    $epoch = "1612775699";
-    $timeZone = "Asia/Kathmandu";
-    $temp = MyUtility::epochToTimeZone($epoch, $timeZone);
-    $test = new \DateTime($temp);
-    dd($test->format('Y'));
-
+    echo number_format(0);
 });
 
 Route::get('mail', function(){
