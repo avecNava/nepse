@@ -40,7 +40,7 @@ tfoot td {
                 $ltp = $price->last_updated_price ? $price->last_updated_price : $price->close_price;
                 if(!$ltp) $ltp = 100; 
                 $ltp_prev = $price->previous_day_close_price;
-                if(!$$ltp_prev) $$ltp_prev = 100; 
+                if(!$ltp_prev) $$ltp_prev = 100; 
                 $worth = $qty * $ltp;
                 $worth_prev = $qty * $ltp_prev;
                 $price_high = $price->high_price;
