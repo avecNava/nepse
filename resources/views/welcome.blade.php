@@ -47,7 +47,7 @@
             @php
                 $index_change = 0;
                 if($currentIndex){
-                    $currentIndex->closingIndex - $prevIndex->closingIndex;
+                    $index_change = $currentIndex->closingIndex - $prevIndex->closingIndex;
                 }
                 $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
                 $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
