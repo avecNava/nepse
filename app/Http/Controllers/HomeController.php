@@ -74,13 +74,12 @@ class HomeController extends Controller
         $top10Turnovers = $transactions->sortByDesc('total_traded_value')->take(10);
         $top10Trades = $transactions->sortByDesc('total_traded_qty')->take(10);
 
-        // dd($top10Turnovers);
-        $stocks = $transactions->map(function($stock){            
+        // dd($transactions);
+        $stocks = $transactions->map(function($stock){
             $change_per = 0;
-            $change = $stock->last_updated_price - $stock->previous_day_close_price;
-            if($stock->previous_day_close_price>0){
-                $change_per = round(($change/$stock->previous_day_close_price)*100,2);
-            }
+            $change = $stock->previous_day_close_price ? $stock->last_updated_price - $stock->previous_day_close_price : $stock->last_updated_price - $stock->open_price;
+            $change_per = $stock->previous_day_close_price > 0 ? round(($change/$stock->previous_day_close_price)*100, 2) : round(($change/$stock->open_price)*100, 2);
+
             return collect([
                 'symbol' => $stock->symbol,
                 'security_name' => $stock->security_name,
@@ -204,10 +203,8 @@ class HomeController extends Controller
 
         $stocks = $transactions->map(function($stock){            
             $change_per = 0;
-            $change = $stock->last_updated_price - $stock->previous_day_close_price;
-            if($stock->previous_day_close_price>0){
-                $change_per = round(($change/$stock->previous_day_close_price)*100,2);
-            }
+            $change = $stock->previous_day_close_price ? $stock->last_updated_price - $stock->previous_day_close_price : $stock->last_updated_price - $stock->open_price;
+            $change_per = $stock->previous_day_close_price > 0 ? round(($change/$stock->previous_day_close_price)*100, 2) : round(($change/$stock->open_price)*100, 2);
             return collect([
                 'symbol' => $stock->symbol,
                 'security_name' => $stock->security_name,

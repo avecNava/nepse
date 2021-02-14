@@ -19,12 +19,12 @@ class CreateStockPricesTable extends Migration
             $table->foreignId('stock_id')->nullable();
             $table->string('symbol')->index();
 
-            $table->unsignedMediumInteger('open_price')->nullable();
-            $table->unsignedMediumInteger('high_price')->nullable();
-            $table->unsignedMediumInteger('low_price')->nullable();
-            $table->unsignedMediumInteger('close_price')->nullable();
-            $table->unsignedMediumInteger('last_updated_price')->nullable();
-            $table->unsignedMediumInteger('previous_day_close_price');
+            $table->float('open_price',8,2)->nullable();
+            $table->float('high_price',8,2)->nullable();
+            $table->float('low_price',8,2)->nullable();
+            $table->float('close_price',8,2)->nullable();
+            $table->float('last_updated_price',8,2)->nullable();
+            $table->float('previous_day_close_price',8,2);
 
             $table->unsignedMediumInteger('total_traded_qty')->nullable();
             $table->unsignedInteger('total_traded_value')->nullable();
