@@ -26,7 +26,7 @@ class Stock extends Model
     
     public function sector()
     {
-        return $this->belongsTo(StockSector::class);
+        return $this->belongsTo(StockSector::class, 'sector_id');
     }
 
     public static function getSymbol($id)
@@ -46,19 +46,18 @@ class Stock extends Model
         foreach ($stocks as $data) {
             
             Stock::updateOrCreate(
-                [
-                    'symbol' => Str::of($data['symbol'])->trim(),
-                ],
-                [
-                    'security_name' => Str::of($data['securityName'])->trim(),                    
-                ]
-            );
+            [
+                'symbol' => Str::of($data['symbol'])->trim(),
+            ],
+            [
+                'security_name' => Str::of($data['securityName'])->trim(),                    
+            ]);
                 
         }
     }
 
     public static function getStockDetail($symbol)
     {
-        return Stock::where('symbol',$symbol)->with('sector:sector,id')->first();
+        return Stock::where('symbol', $symbol)->with('sector:sector,id')->first();
     }
 }

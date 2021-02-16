@@ -14,6 +14,7 @@ use App\Http\Controllers\ShareholderController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\StockController;
 use App\Models\NepseIndex;
 use App\Models\DailyIndex;
 // use App\Services\UtilityService;
@@ -48,6 +49,8 @@ Route::get('index-history', [HomeController::class,'getIndexJson']);
 Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin');
 Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
 Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');
+Route::get('stocks',[StockController::class,'index'])->middleware('admin');
+Route::get('stocks/id/{stock}',[StockController::class,'getStockJSON']);
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}', [ShareholderController::class, 'delete']);
@@ -110,7 +113,6 @@ Route::get('faq', [HomeController::class, 'faq']);
 Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedback');
 Route::post('feedbacks', [FeedbackController::class, 'store']);
 Route::get('feedback/view/{id}', [FeedbackController::class, 'feedback']);
-
 
 Auth::routes();
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
