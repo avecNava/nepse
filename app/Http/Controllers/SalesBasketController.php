@@ -129,7 +129,7 @@ class SalesBasketController extends Controller
             //calculate wacc
             $wacc =  $portfolio->sum('effective_rate') / count($portfolio);
           
-            //insert into sales
+            //insert into salesbasket
             foreach ($cart as $item) {            
             
                 //update or create the basket
@@ -153,7 +153,7 @@ class SalesBasketController extends Controller
             //loop the cart and collect the ids
             $arr_id = collect();
             foreach ($cart as $item){
-                $arr_id->push([$item['id']]);
+                $arr_id->push($item['id']);
             }
             
             //the above operation may not fully satisfy the orders, so handle the diff if any
@@ -161,12 +161,11 @@ class SalesBasketController extends Controller
                 
                 //1. get portfolio that has not yet been added into the cart
                 //https://laravel.com/docs/8.x/collections#method-wherenotin
-                $portfolio = $portfolio->whereNotIn('id', $arr_id->toArray());
-
-                if(!empty($portfolio)){
+                $record = $portfolio->whereNotIn('id', $arr_id->toArray());
+                if(!empty($record)){
 
                     //2. add the diff to the cart, deduct the quantity in portfolio
-                    $row = $portfolio->first();
+                    $row = $record->first();
                     SalesBasket::updateOrCreate(
                     [
                         'portfolio_id' => $row->id,
