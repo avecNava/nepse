@@ -200,7 +200,6 @@ class HomeController extends Controller
         $top10Trades = $transactions->sortByDesc('total_traded_qty')->take(10);
 
         // dd($top10Turnovers);
-
         $stocks = $transactions->map(function($stock){            
             $change_per = 0;
             $change = $stock->previous_day_close_price ? $stock->last_updated_price - $stock->previous_day_close_price : $stock->last_updated_price - $stock->open_price;
@@ -220,7 +219,7 @@ class HomeController extends Controller
 
         return view('stock-data',
         [
-            'sectors' => $sector_summary->sortBy('sector'),
+            'sectors' => $sector_summary->sortByDesc('total_value'),
             'turnovers' => $top10Turnovers,
             'trades' => $top10Trades,
             'gainers' => $top10Gainers,

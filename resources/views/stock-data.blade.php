@@ -148,21 +148,31 @@
         </section>
 
         @if(!empty($sectors))
-        <section class="sectors">
+        
+        <article class="turnovers">
             <header>
-            <h2>Sectorwise turnover</h2>
+                <h2>Top Turnover by sectors</h2>
             </header>
             <main>
-                @foreach($sectors as $sector)
-                <div class="sector">
-                    <h3 class='sector-name' title="{{$sector['sector']}}">{{$sector['sector']}}</h3>
-                    <!-- <div class="quantity">{{$sector['total_qty']}}</div> -->
-                    <div class="volume"><label>Turnover</label> {{ number_format($sector['total_value'])}}</div>
-                </div>
-                @endforeach
+                <table>
+                    <tr>
+                        <th>Sector</th>
+                        <th class="c_digit">Turnover</th>
+                    </tr>
+                    @foreach($sectors as $sector)
+                    @php
+                    //$perTurnover = ($sector['total_value']/$totalTurnover)*100;
+                    @endphp
+                    <tr>
+                        <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 15) ?: 'Blank'}}</td>
+                        <td class="c_digit">
+                            {{MyUtility::formatMoney( $sector['total_value'] )}}
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
             </main>
-            <footer></footer>
-        </section>
+        </article>
         @endif
 
     </div>

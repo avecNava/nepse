@@ -69,9 +69,9 @@
                 <div class="value">{{ number_format($totalScrips) }}</div>
             </div>
 
-            <div class="item">
+            <div class="item" title="{{ number_format( $totalTurnover) }}">
                 <label>Turnover</label>
-                <div class="value" id="current_over">{{ number_format($totalTurnover) }}</div>
+                <div class="value" id="current_over">{{ MyUtility::formatMoney($totalTurnover) }}</div>
             </div>
 
         </div>
@@ -155,7 +155,6 @@
                 <table>
                     <tr>
                         <th>Sector</th>
-                        <th>Quantity</th>
                         <th class="c_digit">Turnover</th>
                     </tr>
                     @foreach($sectors as $sector)
@@ -163,10 +162,9 @@
                     $perTurnover = ($sector['total_value']/$totalTurnover)*100;
                     @endphp
                     <tr>
-                        <td>{{$sector['sector'] ?: 'Blank'}}</td>
-                        <td class="c_digit">{{number_format( $sector['total_qty'] )}}</td>
+                        <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 15) ?: 'Blank'}}</td>
                         <td class="c_digit">
-                            {{number_format( $sector['total_value'] )}} ({{ number_format($perTurnover,2)}}%)
+                            {{MyUtility::formatMoney( $sector['total_value'] )}} ({{ number_format($perTurnover,2)}}%)
                         </td>
                     </tr>
                     @endforeach

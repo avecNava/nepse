@@ -136,35 +136,35 @@ class UtilityService
                 'label'=>'upto50K',
                 'min_amount' => 1,
                 'max_amount' => 50000,
-                'broker' => 0.6,
+                'broker' => 0.4,
                 'sebon' => 0.015,
             ],
             [
                 'label'=>'upto5L',
                 'min_amount' => 50000,
                 'max_amount' => 500000,
-                'broker' => 0.55,
+                'broker' => 0.37,
                 'sebon' => 0.015,
             ],
             [
                 'label'=>'upto20L',
                 'min_amount' => 500000,
                 'max_amount' => 2000000,
-                'broker' => 0.5,
+                'broker' => 0.34,
                 'sebon' => 0.015,
             ],
             [
                 'label'=>'upto1Cr',
                 'min_amount' => 200000,
                 'max_amount' => 10000000,
-                'broker' => 0.45,
+                'broker' => 0.3,
                 'sebon' => 0.015,
             ],
             [
                 'label'=>'beyond1Cr',
                 'min_amount' => 10000000,
                 'max_amount' => 10000000,
-                'broker' => 0.4,
+                'broker' => 0.27,
                 'sebon' => 0.015,
             ],
         ]);
@@ -200,5 +200,23 @@ class UtilityService
         return $datetime->format('Y-m-d H:i:s');
         // return $datetime;
 
+    }
+
+    /**
+     * format money to millions, thousands, hundreds etc
+     */
+    public static function formatMoney($number)
+    {
+        if ($number < 1000000) {
+            // Anything less than a million
+            $format = number_format($number);
+        } else if ($number < 1000000000) {
+            // Anything less than a billion
+            $format = number_format($number / 1000000, 2) . 'M';
+        } else {
+            // At least a billion
+            $format = number_format($number / 1000000000, 2) . 'B';
+        }
+        return $format;
     }
 }
