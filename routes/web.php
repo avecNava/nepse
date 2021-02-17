@@ -50,6 +50,7 @@ Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin'
 Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
 Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');
 Route::get('stocks',[StockController::class,'index'])->middleware('admin');
+Route::post('stocks',[StockController::class,'store'])->name('stocks')->middleware('admin');
 Route::get('stocks/id/{stock}',[StockController::class,'getStockJSON']);
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);

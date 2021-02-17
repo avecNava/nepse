@@ -28,4 +28,32 @@ class StockController extends Controller
     {
         return $stock;
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                'id' => 'nullable',
+                'symbol' => 'required|min:3',
+                'security_name' => 'required|min:3',
+                'active' => 'required',
+                'sector_id' => 'required'
+            ],
+            //customize sector_id to sector in the message
+            $messages = [
+                'sector_id.required' => 'Please choose a sector from the list',
+            ]
+        );
+
+        //checkbox for acive is "on" so update to 1
+        if($request->active){
+            $validated['active'] = 1;
+        }
+
+        Stock::updateOrCreate(
+            [ 'id'=> $validated['id'] ],            
+            $validated
+        );
+        return redirect()->route('stocks')->with('message','✔ Stock persisted', 200);
+    }
 }

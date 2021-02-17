@@ -409,6 +409,9 @@ ul.navbar-nav{
     padding: 5px 10px;
 }
 
+tr.selected {
+    background: #eceff1 imp !important;
+}
 .navbar-nav li.selected {
     background: #da9321;
     font-weight: bold;

@@ -12,7 +12,7 @@ use App\Models\StockSector;
 class Stock extends Model
 {
     use HasFactory;
-    protected $fillable = ['symbol','security_name'];
+    protected $guarded = [];
 
     public function news()
     {
