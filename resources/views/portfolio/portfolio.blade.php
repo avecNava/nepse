@@ -163,7 +163,8 @@
                                     url('portfolio',
                                         [
                                             MyUtility::cleanString($record->symbol), 
-                                            $record->uuid,
+                                            $record->stock_id,  
+                                            $record->uuid,  
                                         ]
                                     )
                                 }}">

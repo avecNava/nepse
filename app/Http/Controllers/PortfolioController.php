@@ -355,11 +355,11 @@ class PortfolioController extends Controller
      * $all (include SALES record from sales table)
      */
 
-    public function showPortfolioDetails($symbol, $uuid)
+    public function showPortfolioDetails($symbol, $stock_id, $uuid)
     {
         
         $shareholder_id = Shareholder::where('uuid', $uuid)->pluck('id')->first();
-        $transaction_date = StockPrice::getLastTransactionDate( $symbol );
+        $transaction_date = StockPrice::getLastTransactionDate( $stock_id );
         
         if(!$shareholder_id){
             return response()->json(['message'=>'Incorect id'], 501);
@@ -372,11 +372,11 @@ class PortfolioController extends Controller
                 ->orderByDesc('sales_date')
                 ->get();
 
-        $sales = $sales->filter(function($item, $key) use($symbol){
-            return $item->share->symbol == $symbol;
+        $sales = $sales->filter(function($item, $key) use($stock_id){
+            return $item->share->id == $stock_id;
         });
 
-        $stock_price = StockPrice::getPrice($symbol);
+        $stock_price = StockPrice::getPrice($stock_id);
         $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
 
         //portfolio data (for the given stock)
@@ -400,8 +400,8 @@ class PortfolioController extends Controller
                 'sh.first_name', 'sh.last_name', 'sh.relation', 'sh.uuid',
                 'o.offer_code','o.offer_name'
                 )
-        ->where(function($query) use($symbol){
-            $query->where('s.symbol','=', $symbol);
+        ->where(function($query) use($stock_id){
+            $query->where('s.id','=', $stock_id);
         })->orderBy('purchase_date', 'DESC')->get();
 
         //summary data to display in the top band

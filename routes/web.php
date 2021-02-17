@@ -90,7 +90,7 @@ Route::post('portfolio/export', [PortfolioController::class, 'export']);
 
 /*put these at the bottom or the portfolio routes*/
 Route::pattern('username','[a-zA-Z0-9\-]+');                        //doesn't support unicode
-Route::get('portfolio/{symbol}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
+Route::get('portfolio/{symbol}/{stock_id}/{member}', [PortfolioController::class, 'showPortfolioDetails']);
 Route::get('portfolio/{uuid}', [PortfolioController::class, 'Portfolio']);
 
 Route::get('sales', [SalesController::class,'view']);

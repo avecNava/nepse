@@ -112,10 +112,10 @@ class StockPrice extends Model
     /**
      * gets the last transaction date and time from stock_prices table
      */
-    public static function getLastTransactionDate( $symbol = null )
+    public static function getLastTransactionDate( $stock_id = null )
     {
-        if($symbol){
-            return StockPrice::where('symbol', $symbol)->max('last_updated_time');
+        if($stock_id){
+            return StockPrice::where('id', $stock_id)->max('last_updated_time');
         }
         return StockPrice::max('last_updated_time');
 
@@ -125,15 +125,16 @@ class StockPrice extends Model
     {
         return $query->where('latest',true);
     }
+    
     /**
      * gets the last transaction price from stock_prices table
      */
-    public static function getPrice(string $symbol)
+    public static function getPrice($stock_id)
     {
         
-        if($symbol){
+        if($stock_id){
 
-            $record = StockPrice::where('symbol', $symbol)
+            $record = StockPrice::find($stock_id)
             ->with(['share'])
             ->LastTradePrice()->first();
             
