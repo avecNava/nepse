@@ -162,7 +162,7 @@
                         <a href="{{ 
                                     url('portfolio',
                                         [
-                                            $record->symbol, 
+                                            MyUtility::cleanString($record->symbol), 
                                             $record->uuid,
                                         ]
                                     )

@@ -67,6 +67,10 @@ class UtilityService
          return $class;
     }
     
+    public static function cleanString($name)
+    {
+        return Str::lower(Str::of( $name )->replaceMatches('/[\/ :_]+/', ""));    
+    }
     public static function serializeString($name, $delim='')
     {
         return Str::lower(Str::of( $name )->replaceMatches('/[ :_]+/', $delim));    
