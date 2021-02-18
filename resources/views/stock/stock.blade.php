@@ -28,7 +28,7 @@
     @endif
     
     @if(session()->has('message'))
-        <h3 class="success">{{ session()->get('message') }} </h3>
+        <h3 class="success">{{ session()->get('message') }}</h3>
     @endif
 
     <article class="form article-stocks_crud">
@@ -42,7 +42,24 @@
                 </div>
             </div>
             
-            <div class="flex">
+            <div class="flex al-cntr">
+                <div class="filter__wrap" style="padding:0 10px">
+
+                @if (!empty($sectors))
+                <select id="filter">
+                    <option value="0">All sectors</option>
+                    @foreach($sectors as $record)
+                    <option value="{{ $record->id }}"
+                    @if(session()->has('sector_id')) 
+                        @if(session()->get('sector_id') == $record->id) SELECTED @endif 
+                    @endif>
+                        {{$record->sector}}
+                    </option>
+                    @endforeach
+                </select> 
+                @endif
+
+                </div>
                 <button id="new">New</button>
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
@@ -154,6 +171,13 @@
     
     <script>
 
+        //filter by sector
+        document.querySelector('select#filter').addEventListener('change', function (e) {
+            const sector = e.target.value;
+           const url = `${window.location.origin}/stocks/sector/${sector}`;
+           window.location.replace(url);
+        });
+
         //handle checkbox click
         document.querySelectorAll('input[name="s_id"]').forEach(element => {
             element.addEventListener('click', function (e) {
@@ -197,7 +221,7 @@
             
             //get record from db
             let request = new XMLHttpRequest();
-            request.open('GET', '/stocks/id/' + stock_id, true);
+            request.open('GET', '/stocks/detail/' + stock_id, true);
 
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400) {

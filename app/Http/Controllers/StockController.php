@@ -13,9 +13,19 @@ class StockController extends Controller
         $this->middleware(['auth', 'verified', 'admin']); 
     }
 
-    public function index()
+    /**
+     * get stocks 
+     */
+    public function index($sector = null)
     {
-        $stocks = Stock::with(['sector:id,sector'])->OrderByDesc('created_at')->get();
+        $stocks = Stock::with(['sector:id,sector'])->OrderBy('symbol')->get();
+        
+        if($sector){
+            session()->flash('sector_id', $sector);
+            $stocks = $stocks->filter(function($item) use($sector){
+                return $item->sector_id == $sector;
+            });
+        }
         $sectors = StockSector::OrderBy('sector','ASC')->get();
         return view('stock.stock', 
         [
