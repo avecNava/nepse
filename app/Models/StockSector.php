@@ -10,7 +10,8 @@ use App\Models\StockPrice;
 class StockSector extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
+    
     public function stocks()
     {
         return $this->hasMany(Stock::class,'sector_id');            //fk on Stocks

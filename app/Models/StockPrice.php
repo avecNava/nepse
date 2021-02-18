@@ -134,7 +134,7 @@ class StockPrice extends Model
         
         if($stock_id){
 
-            $record = StockPrice::find($stock_id)
+            $record = StockPrice::where('stock_id', $stock_id)
             ->with(['share'])
             ->LastTradePrice()->first();
             

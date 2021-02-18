@@ -15,6 +15,7 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PortfolioSummaryController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockSectorController;
 use App\Models\NepseIndex;
 use App\Models\DailyIndex;
 // use App\Services\UtilityService;
@@ -49,10 +50,17 @@ Route::get('index-history', [HomeController::class,'getIndexJson']);
 Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin');
 Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
 Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');
+
+//stocks
 Route::post('stocks',[StockController::class,'store'])->name('stocks')->middleware('admin');
 Route::get('stocks',[StockController::class,'index'])->middleware('admin');
 Route::get('stocks/sector/{sector}',[StockController::class,'index'])->middleware('admin');
-Route::get('stocks/detail/{stock}',[StockController::class,'getStockJSON']);
+Route::get('stock/detail/{sector}',[StockController::class,'getStockJSON']);
+
+//sectors
+Route::get('sector/detail/{sector}',[StockSectorController::class,'getSectorJSON']);
+Route::get('sectors',[StockSectorController::class,'index'])->middleware('admin');
+Route::post('sectors',[StockSectorController::class,'store'])->middleware('admin');
 
 Route::get('shareholder/{id?}',[ShareholderController::class, 'getShareholder']);
 Route::get('shareholder/delete/{id}', [ShareholderController::class, 'delete']);

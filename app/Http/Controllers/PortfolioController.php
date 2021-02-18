@@ -376,7 +376,9 @@ class PortfolioController extends Controller
             return $item->share->id == $stock_id;
         });
 
+        
         $stock_price = StockPrice::getPrice($stock_id);
+        
         $brokers = Broker::select('broker_no','broker_name')->orderBy('broker_no')->get();
 
         //portfolio data (for the given stock)

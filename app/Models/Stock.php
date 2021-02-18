@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\StockPrice;
 use App\Models\StockNews;
 use App\Models\StockSector;
+use App\Models\User;
 
 class Stock extends Model
 {
@@ -27,6 +28,10 @@ class Stock extends Model
     public function sector()
     {
         return $this->belongsTo(StockSector::class, 'sector_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'last_modified_by');
     }
 
     public static function getSymbol($id)
