@@ -62,7 +62,7 @@ class HomeController extends Controller
             ->get();
         
         //todo: get stock price and sector again using left join
-        $sector_summary = $transactions->groupBy('sector_id')->map(function($item){
+        $sector_summary = $transactions->groupBy('sector')->map(function($item){
             $row = $item->first();            
             return collect([
                 'sector' => $row->sector,
@@ -186,7 +186,7 @@ class HomeController extends Controller
         
         // $transactions->dd();
 
-        $sector_summary = $transactions->groupBy('sector_id')->map(function($item){
+        $sector_summary = $transactions->groupBy('sector')->map(function($item){
             
             $row = $item->first();            
             return collect([
