@@ -55,7 +55,7 @@ Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin')
 Route::post('stocks',[StockController::class,'store'])->name('stocks')->middleware('admin');
 Route::get('stocks',[StockController::class,'index'])->middleware('admin');
 Route::get('stocks/sector/{sector}',[StockController::class,'index'])->middleware('admin');
-Route::get('stock/detail/{sector}',[StockController::class,'getStockJSON']);
+Route::get('stock/detail/{stock}',[StockController::class,'getStockJSON']);
 
 //sectors
 Route::get('sector/detail/{sector}',[StockSectorController::class,'getSectorJSON']);
