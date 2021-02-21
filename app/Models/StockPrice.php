@@ -21,6 +21,22 @@ class StockPrice extends Model
     }
 
     /**
+     * get sector name via stock table using hasOneThrough relatinship
+     * https://laravel.com/docs/8.x/eloquent-relationships#has-one-through
+     */
+    public function sector()
+    {
+        return $this->hasOneThrough(
+            \App\Models\StockSector::class,
+            \App\Models\Stock::class,
+            'id',
+            'id',
+            'stock_id',
+            'sector_id',
+        );
+    }
+
+    /**
      * addes the stock prices into the stock_prices table
      * a service scrapes nepse trade data every day and prices are saved to stock_prices table
      * input1: an array with symbol, transaction_date, close_price, open_price and other price details

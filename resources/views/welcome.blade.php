@@ -27,7 +27,7 @@
 
 <div class="main__wrapper">
 
-    <section class="transactions" id="trade_summary" style="display:none">
+    <section class="transactions" id="trade_summary" style="display:block">
         
         <div class="trade_summary__wrapper">
         
@@ -40,8 +40,10 @@
                 <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>
             </div>
             <div id="area_chart" style="width: 100%; min-height: 300px;"></div>
+
         </div>
-        
+
+
         <div class="trade_summary">
             
             @php
@@ -77,7 +79,6 @@
         </div>
     </div>
     </section>
-
 
     <section id="articles">
 
@@ -146,34 +147,42 @@
                 </table>
             </main>
         </article>
-
-        <article class="turnovers">
-            <header>
-                <h2>Top Turnover by sectors</h2>
-            </header>
-            <main>
-                <table>
-                    <tr>
-                        <th>Sector</th>
-                        <th class="c_digit">Turnover</th>
-                    </tr>
-                    @foreach($sectors as $sector)
-                    @php
-                    $perTurnover = ($sector['total_value']/$totalTurnover)*100;
-                    @endphp
-                    <tr>
-                        <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 15) ?: 'Blank'}}</td>
-                        <td class="c_digit">
-                            {{MyUtility::formatMoney( $sector['total_value'] )}} ({{ number_format($perTurnover,2)}}%)
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
-            </main>
-        </article>
-
     </section>
 
+    <section id="sectors">
+        <article>
+            <h2>Top Turnover by sectors</h2>
+        </article>
+        <div>
+            <div id="pie_chart" style="min-width:59.2rem;min-height: 600px;" hidden></div>
+            <article class="sectors">            
+                <main>
+                    <table>
+                        <tr>
+                            <th>Sector</th>
+                            <th class="c_digit">Turnover</th>
+                            <th class="c_digit">%</th>
+                        </tr>
+                        @foreach($sectors as $sector)
+                        @php
+                        $perTurnover = ($sector['total_value']/$totalTurnover)*100;
+                        @endphp
+                        <tr>
+                            <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 15) ?: '***'}}</td>
+                            <td class="c_digit">
+                                {{MyUtility::formatMoney( $sector['total_value'] )}} 
+                            </td>
+                            <td class="c_digit">
+                            {{ number_format($perTurnover, 2)}}%
+                            </td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </main>
+            </article>
+        </div>        
+    </section>
+    
     <section class="footer-date">
         <div title="Last transaction time">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
     </section>
@@ -185,13 +194,17 @@
 <script type="text/javascript">
 
     // Load the Visualization API and the piechart package.
-    google.charts.load('current', {'packages':['corechart']});      
+    google.charts.load('current', {'packages':['corechart','table']});
+
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart);    
+    // google.charts.setOnLoadCallback(drawChart1);    
+    google.charts.setOnLoadCallback(drawChartTradesBySector);    
 
+    //line chart for current index
     function drawChart() {
         let request = new XMLHttpRequest();
-        const url = `${window.location.origin}/index-history`;
+        const url = `${window.location.origin}/chart/current-index`;
         request.open('GET', url, true);
         request.onload = function() {
 
@@ -205,7 +218,8 @@
                 const month = '0' + (dt.getMonth() + 1);
                 const date = '0' + dt.getDate();
                 const date_str = `${dt.getFullYear()}-${ month.substring(month.length-2)}-${ date.substring(date.length-2)} ${dt.getHours()}:${dt.getMinutes()}`;
-
+                // console.table(json_data.indexHistory.cols);
+                // console.table(json_data.indexHistory.rows);
                 var data = new google.visualization.DataTable(json_data.indexHistory);
                 var options = {
                     legend:'none',
@@ -250,7 +264,40 @@
         }  
         request.send();
     }
+
+   
+    function drawChartTradesBySector() {
+        let request = new XMLHttpRequest();
+        const url = `${window.location.origin}/chart/sector-turnover`;
+        request.open('GET', url, true);
+        request.onload = function() {
+
+            if (this.status >= 200 && this.status < 400) {
+                const json = JSON.parse(this.response);
+                
+                // console.table(json.turnover.cols);
+                console.table(json.turnover.rows);
+                
+                var pie_data = new google.visualization.DataTable(json.turnover);
+                var options = {
+                    title: 'Sectorwise Turnover',
+                    is3D: true,
+                    pieHole: 0.4,
+                    pieSliceText: 'none',
+                    sliceVisibilityThreshold: .1,
+                    legend: {position: 'labeled', textStyle: {color: 'blue', fontSize: 16}},
+                    // chartArea:{left:50,top:20,width:'80%',height:'75%'},
+
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('pie_chart'));
+                chart.draw(pie_data, options);                
+                document.getElementById('pie_chart').style.display="block";
+            
+            }
+        }
+        request.send();
+    }
     
 </script>
-        
 @endsection

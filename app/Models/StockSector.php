@@ -17,7 +17,10 @@ class StockSector extends Model
         return $this->hasMany(Stock::class,'sector_id');            //fk on Stocks
     }
 
-    public function price()
+    /**
+     * get price for the last transaction date
+     */
+    public function prices()
     {
         $transaction_date = StockPrice::getLastDate();
         return $this->hasManyThrough(

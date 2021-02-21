@@ -330,7 +330,8 @@ section.sales summary {
 
 /* screens other than mobile */
 /* 575px=35.938em */
-@media only screen and (min-width: 575px){
+/* @media only screen and (min-width: 575px){ */
+@media only screen and (min-width: 491px){
 
     div#app, div#container {
         margin: 0 auto;
@@ -468,11 +469,15 @@ section.sales summary {
         justify-content: center;
         flex-wrap: nowrap;
     }
-    .main__wrapper section.transactions {
+    section.transactions {
         margin: 30px;
         box-shadow: 0px 0px 5px -2px #6b64a0;
         border-radius: 10px;
         padding: 10px;
+    }
+    section#sectors div {
+        display: flex;
+        flex-direction: row;
     }
     section.sectors main {
         display: flex;

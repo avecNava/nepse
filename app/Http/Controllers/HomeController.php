@@ -49,23 +49,25 @@ class HomeController extends Controller
         // $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
         $transactions = DB::table('stock_prices as pr')
             ->join('stocks as s', function($join){
-                $date = StockPrice::max('transaction_date');
                 $join->on('s.id','pr.stock_id')
-                    ->where('pr.transaction_date', $date);
+                    ->where('pr.transaction_date','>=', StockPrice::getLastDate());
             })
             ->leftjoin('stock_sectors as ss','ss.id','s.sector_id')
             ->select('s.symbol', 's.security_name',
                 'pr.*',
-                'ss.id as sector_id','ss.sector'
+                'ss.id as sector_id','ss.sector','ss.sub_sector',
             )
             ->orderByDesc('pr.last_updated_time')
             ->get();
         
-        //todo: get stock price and sector again using left join
-        $sector_summary = $transactions->groupBy('sector')->map(function($item){
-            $row = $item->first();            
+            
+        $filtered =  $transactions->filter( function($item){
+            return Str::of($item->sector)->length() > 0 ;
+        });
+
+        $sector_summary = $filtered->groupBy('sector')->map(function($item, $key){
             return collect([
-                'sector' => $row->sector,
+                'sector' => $key,
                 'total_qty' => $item->sum('total_traded_qty'),
                 'total_value' => $item->sum('total_traded_value'),
             ]);
@@ -113,12 +115,12 @@ class HomeController extends Controller
     }
 
     /**
-     * sends JSON formatted output (GOOGLE CHART Style) to the response
+     * sends JSON formatted output of current index (11am-3pm duration) (GOOGLE CHART Style) to the response
      * Reference : https://developers.google.com/chart/interactive/docs/reference#dataparam
      * Nava Bogatee
      * 08 Feb 2021
      */
-    public function getIndexJson()
+    public function getCurrentIndexJson()
     {
        
         $cols = array(
@@ -153,15 +155,79 @@ class HomeController extends Controller
             ];
         });
         
-        return response()->json(
-            ['indexHistory'=>
-                ['cols' => $cols,
-                 'rows' => $rows 
-                ],
-             'epoch' => $last_record->epoch,
-             'dateString' => $datetime_str,
-             'index' => $last_record->index,
-             ]);
+        return response()->json([
+            'indexHistory'=>
+            [
+                'cols' => $cols,
+                'rows' => $rows ,
+            ],
+            'epoch' => $last_record->epoch,
+            'dateString' => $datetime_str,
+            'index' => $last_record->index,
+        ]);
+
+    }
+
+    /**
+     * sends JSON formatted output of Sectors by Trade
+     * Nava Bogatee
+     * 21 Feb 2021
+     */
+    public function getTurnoverBySectorJson()
+    {
+       
+        $cols = array(
+            ["label"=>"Sector","type"=>"string"],
+            ["label"=>"Turnover","type"=>"number"],
+        );
+        
+        $turnovers = StockSector::with('prices')->get();
+        
+        $turnover_summary=collect();
+        $turnovers->groupBy('sector')->each(function($items, $key) use($turnover_summary){
+            
+            $total_value = 0;
+            $total_qty = 0;
+            foreach ($items as $value) {            
+                $total_value += $value->prices->sum('total_traded_value');
+                $total_qty += $value->prices->sum('total_traded_qty');
+            }
+            $turnover_summary->push( 
+                (object) [
+                'sector' => $key,
+                'total_qty' => $total_qty,
+                'total_value' => $total_value,
+                ]
+            );
+        });
+        
+        $turnover_filtered = $turnover_summary->filter(function($item){
+            return $item->total_value > 0;
+        });
+
+        $turnover_sorted = $turnover_filtered->sortByDesc('total_value');
+        
+        
+        $rows = collect();
+        $turnover_sorted->each(function($item) use($rows){
+
+            $rows->push((object)
+            [
+                'c' => [
+                    ['v' => $item->sector, 'f' => null],
+                    ['v' => $item->total_value, 'f' => UtilityService::formatMoney($item->total_value)],
+                ]
+            ]);
+
+        });
+        
+        return response()->json([
+            'turnover' => [
+                'cols' => $cols,
+                'rows' => $rows, 
+            ],
+        ]);
+
     }
 
     public function stockData()
@@ -172,9 +238,8 @@ class HomeController extends Controller
         // $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
         $transactions = DB::table('stock_prices as pr')
             ->join('stocks as s', function($join){
-                $date = StockPrice::max('transaction_date');
                 $join->on('s.id','pr.stock_id')
-                    ->where('pr.last_updated_time','>=', $date);
+                    ->where('pr.last_updated_time','>=', StockPrice::getLastDate());
             })
             ->leftjoin('stock_sectors as ss','ss.id','s.sector_id')
             ->select('s.symbol', 's.security_name',

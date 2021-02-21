@@ -46,7 +46,9 @@ Route::get('account/register', function(){
     return redirect('register');
 });
 
-Route::get('index-history', [HomeController::class,'getIndexJson']);
+//current index (used by line chart chart)
+Route::get('chart/current-index', [HomeController::class,'getCurrentIndexJson']);
+Route::get('chart/sector-turnover', [HomeController::class,'getTurnoverBySectorJson']);
 Route::get('users/{role?}', [HomeController::class,'users'])->middleware('admin');
 Route::post('users', [HomeController::class,'updateUsers'])->middleware('admin');
 Route::get('users/log', [HomeController::class,'userLogs'])->middleware('admin');

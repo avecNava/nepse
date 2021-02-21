@@ -100,8 +100,8 @@ sup {
     font-size: 1.3em;
     padding: 5px 0;
 }
-.main__wrapper section.transactions {
-    padding:10px;
+.main__wrapper section.transactions,section#sectors  {
+    padding:15px;
 }
 .trade_summary__wrapper {
     display: flex;
@@ -133,17 +133,24 @@ section#top10items article {
     margin: 10px 0;
 }
 
+section#articles{
+    margin:5px;
+}
 section#articles {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
-section#articles article {
-    margin: 10px;
+#articles article, article.sectors {
+    width: 20rem;
 }
-#articles h2 {
-    font-size: 18px;
+section#articles article:first-child {
+    margin-left: 10px;
 }
+section#articles article:last-child {
+    margin-right: 10px;
+}
+
 section.footer-date {
     text-align: center;
     padding: 20px;
