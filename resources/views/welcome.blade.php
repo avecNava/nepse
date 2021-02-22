@@ -27,25 +27,8 @@
 
 <div class="main__wrapper">
 
-    <section class="transactions" id="trade_summary" style="display:block">
-        
-        <div class="trade_summary__wrapper">
-        
-        <div>
-            <div class="flex js-apart al-cntr">
-                <div>
-                    <h2>NEPSE Today</h2>
-                    <div>{{$currentIndex->transactionDate}}</div>
-                </div>
-                <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>
-            </div>
-            <div id="area_chart"></div>
-
-        </div>
-
-
-        <div class="trade_summary">
-            
+    <section id="trade_summary" class="flex">
+    
             @php
                 $index_change = 0;
                 if($currentIndex){
@@ -55,29 +38,52 @@
                 $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
             @endphp
             
-            <div class="item">
-                <label>Index </label>
-                <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
-                <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
-            </div>
+        <div class="trade_summary_wrapper">
 
-            <div class="item">
-                <label>Previous index</label>
-                <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
-            </div>    
+        <div id="area_chart"></div>
 
-            <div class="item">
-                <label># Scrips</label>
-                <div class="value">{{ number_format($totalScrips) }}</div>
-            </div>
+            <div class="trade_summary">
+                
 
-            <div class="item" title="{{ number_format( $totalTurnover) }}">
-                <label>Turnover</label>
-                <div class="value" id="current_over">{{ MyUtility::formatMoney($totalTurnover) }}</div>
+                <div>
+                    <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>    
+                </div>
+
+                <div class="flex">
+                        
+                    <div>
+                        <div class="item">
+                            <label>Index </label>
+                            <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
+                            <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
+                        </div>
+
+                        <div class="item">
+                            <label>Previous index</label>
+                            <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
+                        </div>    
+                    </div>
+
+                    <div>
+                        <div class="item">
+                            <label># Scrips</label>
+                            <div class="value">{{ number_format($totalScrips) }}</div>
+                        </div>
+
+                        <div class="item" title="{{ number_format( $totalTurnover) }}">
+                            <label>Turnover</label>
+                            <div class="value" id="current_over">{{ MyUtility::formatMoney($totalTurnover) }}</div>
+                        </div>
+                    </div>
+                    
+                </div>
+
             </div>
 
         </div>
+
     </div>
+
     </section>
 
     <section id="articles">
@@ -224,7 +230,7 @@
                 var options = {
                     legend:'none',
                     title: `NEPSE index: ${json_data.index} (${date_str})`,
-                    chartArea:{left:50,top:20,width:'95%','height':'80%'},
+                    chartArea:{left:50,top:50,width:'95%','height':'70%'},
                     titleTextStyle:{ 
                                     color: '#000',
                                     fontSize: '15px',
@@ -251,14 +257,13 @@
                         }
                         
                     },
-                    vAxis: {title:"Index"},
-                    hAxis: {title:"Time"},
+                    // vAxis: {title:"Index"},
+                    // hAxis: {title:"Time"},
                     
                 };
 
                 var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
                 document.getElementById('area_chart').style.display="block";
-                document.getElementById('trade_summary').style.display="block";
                 chart.draw(data, options);
             
             }
@@ -288,7 +293,7 @@
                     pieSliceText: 'none',
                     sliceVisibilityThreshold: .1,
                     legend: {position: 'labeled', textStyle: {color: 'blue'}},
-                    // chartArea:{left:50,top:20,width:'95%','height':'80%'},
+                    chartArea:{left:30,top:50, 'width':'80%','height':'80%'},
 
                 };
 

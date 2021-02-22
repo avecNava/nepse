@@ -467,12 +467,15 @@ section.sales summary {
 
     /*welcome page*/
 
-    .trade_summary .item {
-        font-size: 1em;
-    }
-    .trade_summary {
+    .trade_summary_wrapper {
+        display: flex;
+        align-items: center;
         justify-content: center;
-        flex-wrap: nowrap;
+    }
+
+    section#trade_summary {
+        margin: 0 10px;
+        justify-content: center;
     }
     
     section#sectors div {
@@ -494,24 +497,28 @@ section.sales summary {
         width: 21rem;
         padding: 0 15px;
     }
-    /* section#articles article:first-child {
-        margin-left: 10px;
+    .trade_summary .item {
+        width: 150px;
+        margin: 15px;
+        border: 1px dashed #b7abab24;
+        font-size: 1em;
+        text-align: revert;
     }
-    section#articles article:last-child {
-        margin-right: 10px;
-    } */
 
     div#area_chart {
-        margin: 0 auto;
-        padding: 20px 0;
-        width:85vw;
-        height: 400px;
+        width:700px;
     }
     div#pie_chart {
-        width: 55rem;
-        height: 600px;
+        width: 650px;
+        height: 350px;
+        margin:0 auto;
     }    
-   
+    .trade_summary {
+        display: flex;
+        align-self: center;
+        flex-direction: column;
+        margin:0 30px;
+    }
     
     /* layout */
 

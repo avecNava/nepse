@@ -81,33 +81,39 @@ sup {
     animation-iteration-count: infinite;
     animation-duration: 1s;
 }
-
-
+.trade_summary_wrapper {
+    margin: 0 auto;
+}
 .trade_summary {
     display: flex;
     align-self: center;
-    padding: 0 10px;
+    flex-direction: column;
 }
 .trade_summary .item {
-    padding: 5px;
+    padding: 10px;
     margin: 5px;
-    width: 14em;
-    font-size: .8em;
-    width: 50%;
+    border: 1px solid #c1c7b287;
+    font-size: 1em;
+    width: 150px;
+    height: 120px;
 }
 
+.trade_summary>div {
+    align-self: center;
+}
 .trade_summary .item .value {
-    font-size: 1.3em;
-    padding: 5px 0;
+    font-size: 1.5rem;
+    padding: 10px 0;
 }
-.main__wrapper section.transactions,section#sectors  {
-    padding: 20px 0;
+/* .main__wrapper section.transactions,section#sectors  {
     background: #f1f1f1;
-}
+} */
 .trade_summary__wrapper {
     display: flex;
     flex-direction: column;
+    margin: 0 10px;
 }
+
 .welcome__wrapper section.transactions {
     margin: 30px 0;
 }
@@ -141,6 +147,9 @@ section#articles {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 30px 0;
+    background: #f7f7f7;
+    margin: 50px 0;
 }
 
 #articles article, article.sector {
@@ -149,9 +158,12 @@ section#articles {
 }
 
 div#pie_chart {
-    width: 90vw;
-    height: 300px;
-    margin: 0 auto;
+    height: 250px;
+    background-color: #fff;
+}
+
+article.sectors {
+    margin: 30px 20px;
 }
 
 div#area_chart {

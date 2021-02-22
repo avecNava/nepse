@@ -95,8 +95,8 @@ class HomeController extends Controller
         
         $top10Gainers= $stocks->sortByDesc('change_per')->take(10);
         $top10Loosers= $stocks->sortBy('change_per')->take(10);
-        $last_updated_time = StockPrice::max('last_updated_time');
-
+        $last_updated_time = StockPrice::getLastDate();
+        
         $last_trade_date = Str::of($last_updated_time)->substr(0,10);
 
         return view('welcome',
