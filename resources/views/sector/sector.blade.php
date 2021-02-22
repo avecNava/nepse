@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <th></th>                    
-                    <th>Sector</th>                    
+                    <th>Sector group</th>                    
                     <th>Sub sector</th>
                 </tr>
                 

@@ -101,7 +101,8 @@ sup {
     padding: 5px 0;
 }
 .main__wrapper section.transactions,section#sectors  {
-    padding:15px;
+    padding: 20px 0;
+    background: #f1f1f1;
 }
 .trade_summary__wrapper {
     display: flex;
@@ -138,17 +139,26 @@ section#articles{
 }
 section#articles {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 }
-#articles article, article.sectors {
-    width: 20rem;
+
+#articles article, article.sector {
+    width: 90vw;
+    margin: 10px;
 }
-section#articles article:first-child {
-    margin-left: 10px;
+
+div#pie_chart {
+    width: 90vw;
+    height: 300px;
+    margin: 0 auto;
 }
-section#articles article:last-child {
-    margin-right: 10px;
+
+div#area_chart {
+    margin: auto;
+    padding: 20px 0;
+    width:90vw;
+    height: 300px;
 }
 
 section.footer-date {

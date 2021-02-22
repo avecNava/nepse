@@ -53,7 +53,7 @@
                     @if(session()->has('sector_id')) 
                         @if(session()->get('sector_id') == $record->id) SELECTED @endif 
                     @endif>
-                        {{$record->sector}}
+                        {{$record->sub_sector}}
                     </option>
                     @endforeach
                 </select> 
@@ -153,7 +153,7 @@
                             @if(strcasecmp( old('sector_id'), $record->sector ) == 0)
                                 SELECTED
                             @endif
-                            >{{$record->sector}}
+                            >{{$record->sub_sector}}
                             </option>
                         @endforeach
                     @endif

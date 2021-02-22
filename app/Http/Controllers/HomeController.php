@@ -61,10 +61,12 @@ class HomeController extends Controller
             ->get();
         
             
+        //filter records (stocks) where sector is assigned
         $filtered =  $transactions->filter( function($item){
             return Str::of($item->sector)->length() > 0 ;
         });
 
+        //group by sector and format data
         $sector_summary = $filtered->groupBy('sector')->map(function($item, $key){
             return collect([
                 'sector' => $key,

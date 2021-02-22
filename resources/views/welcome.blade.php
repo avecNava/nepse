@@ -39,7 +39,7 @@
                 </div>
                 <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>
             </div>
-            <div id="area_chart" style="width: 100%; min-height: 300px;"></div>
+            <div id="area_chart"></div>
 
         </div>
 
@@ -150,18 +150,18 @@
     </section>
 
     <section id="sectors">
-        <article>
-            <h2>Top Turnover by sectors</h2>
-        </article>
         <div>
-            <div id="pie_chart" style="min-width:59.2rem;min-height: 600px;" hidden></div>
-            <article class="sectors">            
+            <div id="pie_chart" hidden></div>
+            <article class="sectors">
+                <header>
+                <h2>Turnover by sector</h2>
+                </header>
                 <main>
                     <table>
                         <tr>
                             <th>Sector</th>
-                            <th class="c_digit">Turnover</th>
-                            <th class="c_digit">%</th>
+                            <th class="c_digit">Volume</th>
+                            <th class="c_digit">Quantity</th>
                         </tr>
                         @foreach($sectors as $sector)
                         @php
@@ -173,7 +173,7 @@
                                 {{MyUtility::formatMoney( $sector['total_value'] )}} 
                             </td>
                             <td class="c_digit">
-                            {{ number_format($perTurnover, 2)}}%
+                            {{ number_format($sector['total_qty'] )}} 
                             </td>
                         </tr>
                         @endforeach
@@ -224,6 +224,7 @@
                 var options = {
                     legend:'none',
                     title: `NEPSE index: ${json_data.index} (${date_str})`,
+                    chartArea:{left:50,top:20,width:'95%','height':'80%'},
                     titleTextStyle:{ 
                                     color: '#000',
                                     fontSize: '15px',
@@ -276,17 +277,18 @@
                 const json = JSON.parse(this.response);
                 
                 // console.table(json.turnover.cols);
-                console.table(json.turnover.rows);
+                // console.table(json.turnover.rows);
                 
                 var pie_data = new google.visualization.DataTable(json.turnover);
                 var options = {
-                    title: 'Sectorwise Turnover',
-                    is3D: true,
+                    title: 'Sectorwise turnover by Volume',
+                    // is3D: true,
                     pieHole: 0.4,
+                    // pieSliceText: 'percent',
                     pieSliceText: 'none',
                     sliceVisibilityThreshold: .1,
-                    legend: {position: 'labeled', textStyle: {color: 'blue', fontSize: 16}},
-                    // chartArea:{left:50,top:20,width:'80%',height:'75%'},
+                    legend: {position: 'labeled', textStyle: {color: 'blue'}},
+                    // chartArea:{left:50,top:20,width:'95%','height':'80%'},
 
                 };
 

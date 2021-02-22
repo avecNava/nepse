@@ -19,7 +19,7 @@ class StockController extends Controller
      */
     public function index($sector = null)
     {
-        $stocks = Stock::with(['sector:id,sector','user:id,name'])->OrderBy('symbol')->get();
+        $stocks = Stock::with(['sector:id,sector,sub_sector','user:id,name'])->OrderBy('symbol')->get();
         if($sector){
             session()->flash('sector_id', $sector);
             $stocks = $stocks->filter(function($item) use($sector){
@@ -29,7 +29,7 @@ class StockController extends Controller
         $sectors = StockSector::OrderBy('sector','ASC')->get();
         return view('stock.stock', 
         [
-            'stocks' => $stocks,
+            'stocks' => $stocks->sortBy(['sector_id','symbol']),
             'sectors' => $sectors,
         ]);
     }
