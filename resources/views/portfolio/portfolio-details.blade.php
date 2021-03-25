@@ -419,7 +419,11 @@ tfoot td {
                                 @endif
                                 </div>
                             </td>
-                            <td title="{{$record->offer_name}}" class="optional">{{$record->offer_code}}</td>
+                            <td title="{{$record->offer_name}}" class="optional">
+                                <label for="{{ $record->id }}" style="padding:5px">
+                                    {{$record->offer_code}}
+                                </label>
+                            </td>
                             <td class="c_digit">{{ $qty }}</td>
                             <td class="c_digit">{{ number_format($record->unit_cost) }}</td>
                             <td class="c_digit">{{ number_format($record->effective_rate, 2) }}</td>
@@ -548,6 +552,7 @@ tfoot td {
             if (this.status >= 200 && this.status < 400) {
                 data = JSON.parse(this.response);
                 updateInputFields(data);
+                //shows fields related to broker
                 document.querySelector('#offer').dispatchEvent(new Event("change"));
                 hideLoadingMessage();
             }

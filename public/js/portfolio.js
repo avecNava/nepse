@@ -89,8 +89,6 @@ document.getElementById('offer').addEventListener('change',function(){
 
 function updateTotalPrice() {
     
-    document.getElementById('broker_commission').value =  '';
-    document.getElementById('sebon_commission').value =  '';
     document.getElementById('total_amount').value =  '';
     document.getElementById('base_amount').value =  '';
     document.getElementById('effective_rate').value =  '';
@@ -121,6 +119,7 @@ function updateTotalPrice() {
 
         let request = new XMLHttpRequest();
         request.open('GET', url, true);
+        const broker_commission_el = document.getElementById('broker_commission');
     
         request.onload = function() {
 
@@ -133,12 +132,12 @@ function updateTotalPrice() {
                 let broker_commission = ((broker/100) * sub_total);
                 let sebon_commission = ((sebon/100) * sub_total);
                 const dp_amount = document.getElementById('dp_amount').value;
-
+                
                 total_amount = parseFloat(sub_total) + parseFloat(broker_commission) + parseFloat(sebon_commission) + parseInt(dp_amount);
                 eff_rate = (total_amount / quantity);
-                if(broker_commission)
-                    document.getElementById('broker_commission').value =  broker_commission.toFixed(2);
-                if(sebon_commission) 
+                if(broker_commission_el.value == "")
+                    broker_commission_el.value =  broker_commission.toFixed(2);             //only assign value if empty
+                if(document.getElementById('sebon_commission').value == "") 
                     document.getElementById('sebon_commission').value =  sebon_commission.toFixed(2);
                 if(total_amount)
                     document.getElementById('total_amount').value =  total_amount.toFixed(2);

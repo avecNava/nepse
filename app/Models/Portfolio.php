@@ -122,7 +122,7 @@ class Portfolio extends Model
             try {
                 
                 $portfolio = Portfolio::find($request->id);
-                
+                //dd($request->broker_commission);
                 $portfolio->quantity = $request->quantity;
                 $portfolio->unit_cost = $request->unit_cost;
                 $portfolio->effective_rate = $request->effective_rate;
