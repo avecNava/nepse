@@ -293,6 +293,7 @@
                     pieSliceText: 'none',
                     sliceVisibilityThreshold: .1,
                     legend: {position: 'labeled', textStyle: {color: 'blue'}},
+                    pieResidueSliceLabel : 'Miscellaneous',
                     chartArea:{left:30,top:50, 'width':'80%','height':'80%'},
 
                 };
