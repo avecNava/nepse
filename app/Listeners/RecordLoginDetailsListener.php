@@ -29,7 +29,6 @@ class RecordLoginDetailsListener
      */
     public function handle($event)
     {
-        
         UserLogin::createLoginRecords($this->request);
     }
 }

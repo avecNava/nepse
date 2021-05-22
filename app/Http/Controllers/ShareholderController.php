@@ -42,7 +42,6 @@ class ShareholderController extends Controller
         if(empty($id)){
             $id = $request->id;
         }
-
         
         $shareholder = Shareholder::where('id', $id)->first();
         // dd($shareholder->toJson(JSON_PRETTY_PRINT));

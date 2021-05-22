@@ -103,7 +103,7 @@ function resetInputFields() {
 //--------------------------------------------------------------------------------------
 
 function updateInputFields($record) {
-  
+  console.log($record);
   document.getElementById('id').value = $record['id'];
   document.getElementById('first_name').value = $record['first_name'];
   document.getElementById('last_name').value = $record['last_name'];

@@ -129,14 +129,14 @@ class Shareholder extends Model
                 'date_of_birth' => $request->date_of_birth,
                 'gender' => Str::title(Str::substr($request->gender,0,1)),
                 'relation' => (Auth::id() == $request->id) ? null : Str::title($request->relation), //relation is null for main a/c holders
-                'parent' => false,
+                'parent' => Auth::id()==$request->id ?: false,
                 'uuid' => Str::uuid(),
             ]
         );
     }
   
     /**
-     * creates sample records for the logged in user 
+     * creates sample record for the logged in user 
      * Groups are also considered as shareholders 
      */
     public static function createSampleRecord()
