@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+     <!-- Google Tag Manager -->
+     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5QGKNX7');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE</title>
     <meta name="description" content="{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE">
+    
     <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
-    <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 
+    <link rel="icon" href="{{ URL::to('favicon.ico') }}">
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
    
@@ -21,15 +32,6 @@
     gtag('js', new Date());
     gtag('config', 'G-FNJB1MNNTB');
     </script> -->
-
-
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5QGKNX7');</script>
-    <!-- End Google Tag Manager -->
 
 </head>
 <body>
@@ -301,8 +303,8 @@
                 document.getElementById("myNav").style.width = "0%";
             }
         </script>
-
+        
         @yield('custom_js')
-
+        
 </body>
 </html>

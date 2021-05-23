@@ -867,6 +867,20 @@ table td {
     margin: 20px 0;
 }
 
+table#user-portfolio {
+    padding-top: 10px;
+}
+div#user-portfolio_wrapper {
+    background: #e4e4b859;
+    padding: 10px 0;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+    padding: 0 5px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    width: auto;
+}
 /* scorecards */
 .score_card__wapper {
     display: flex;

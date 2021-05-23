@@ -8,14 +8,19 @@
 <h1 class="c_title">Portfolio</h1>
 @endsection
 
-@section('js')
-    
+@section('custom_css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+@endsection
+
+@section('custom_js')
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 @endsection
 
 @section('notice')
 <?php if(strlen($notice)>0){ ?>
     <div role="notice" class='notice' data-show-notice="yes">
-        {!! $notice !!}
+        {!! $notice !!} 
     </div>
 <?php } ?>
 @endsection
@@ -121,9 +126,10 @@
             </header>
 
             <main>
-            <table>
+            <table id="user-portfolio">
+                <thead>
                 <tr>
-                    <th class="c_digit optional">SN</th>
+                    <!-- <th class="c_digit optional">SN</th> -->
                     <th style="text-align:left">Symbol</th>
                     <th class="c_digit">Quantity</th>
                     <th class="c_digit optional">Effective rate</th>
@@ -134,6 +140,10 @@
                     <th class="c_digit optional">Prev. worth</th>
                     <th class="c_digit optional">Change</th>
                 </tr>
+                </thead>
+
+                <tbody>
+            
                 @if(count($portfolios)==0)
                 <tr>
                     <td colspan="10">
@@ -165,7 +175,7 @@
                 @endphp
                     
                 <tr id="row-{{ $record->id }}">
-                    <td class="c_digit optional">{{ $key + 1 }}</td>
+                    <!-- <td class="c_digit optional">{{ $key + 1 }}</td> -->
                     <td style="text-align:left" title="{{ $record->stock_id }}-{{ $record->security_name }}">
                         <a href="{{ 
                                     url('portfolio',
@@ -217,9 +227,9 @@
                         @endif
                     </td>
                 </tr>
-
+               
                 @endforeach   
-
+                </tbody>
             </table>
             
             </main>
@@ -248,6 +258,17 @@
             const url = `/portfolio/${el.value}`;
             window.location.replace(url);
         }
+
+            setTimeout(() => {
+                $(document).ready( function () {
+                    $('#user-portfolio').DataTable(
+                        {"pageLength": 25}
+                        );
+                } );
+            }, 1000);
+      
+
+       
        
     </script>
 

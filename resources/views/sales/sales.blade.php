@@ -15,7 +15,7 @@
 @section('notice')
 <?php if(strlen($notice)>0){ ?>
     <div role="notice" class='notice' data-show-notice="yes">
-        !! $notice !!}
+        {!! $notice !!}
     </div>
 <?php } ?>
 @endsection
