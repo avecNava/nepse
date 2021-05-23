@@ -1,13 +1,12 @@
 //show notice 
-(() => {
-    const el = document.querySelector('#notice');
-    if(el.querySelector('.message_wrapper')){
-        // el.style.display = "block";
-        el.classList.add('show');
-        el.classList.remove('hide');
-        }
-}, 5000);
 
+        const el = document.querySelector('#notice');
+        const notice  = el.querySelector('.notice'); 
+
+        if(notice.dataset.showNotice === "yes"){
+            el.classList.remove('hide');
+            el.classList.add('show');
+        }
 
 function hide_notice(){
     // document.querySelector('.notice_wrapper>.btn>a').addEventListener('click',function(e){

@@ -12,6 +12,15 @@
     <!-- <script src="{{ URL::to('js/portfolio.js') }}"></script> -->
 @endsection
 
+@section('notice')
+<?php if(count($notice)>0){ ?>
+    <div role="notice" class='notice' data-show-notice="yes">
+        <span class='title'>{{$notice['title']}}</span>
+        {!!$notice['message']!!}
+    </div>
+<?php } ?>
+@endsection
+
 @section('content')
 <style>
     
@@ -332,7 +341,7 @@
 
 
     //sales shareholder filter     
-    const el = document.querySelector('select#shareholders').addEventListener('change',function(e){
+    document.querySelector('select#shareholders').addEventListener('change',function(e){
         const uuid = e.target.value;
         const url = `${window.location.origin}/sales/${uuid}`;
         window.location.replace(url);

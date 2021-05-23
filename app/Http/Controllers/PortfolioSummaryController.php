@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Services\UtilityService;
 
 
 class PortfolioSummaryController extends Controller
@@ -171,6 +172,7 @@ class PortfolioSummaryController extends Controller
             'scorecard' => $score_card,
             'arr_grossing' => $top_grossing,
             'arr_gainloss' => $gain_loss,
+            'notice' => UtilityService::getNotice(),
             'index' => NepseIndex::getCurrentIndex(),
         ]);
         

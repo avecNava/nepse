@@ -40,12 +40,8 @@ class HomeController extends Controller
     public function index()
     {
 
-        $name = UtilityService::parseFirstName(optional(Auth::user())->name);
-        $notice = [
-            'title' => "Hey $name",
-            'message' => 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
-        ];
-        
+        $notice = UtilityService::getNotice();
+
         // $sectors = StockSector::with(['stocks','price:close_price,last_updated_price,transaction_date,stock_id'])->get();
         $transactions = DB::table('stock_prices as pr')
             ->join('stocks as s', function($join){
@@ -101,7 +97,6 @@ class HomeController extends Controller
 
         return view('welcome',
         [
-
             'sectors' => $sector_summary->sortByDesc('total_value'),
             'turnovers' => $top10Turnovers,
             'trades' => $top10Trades,

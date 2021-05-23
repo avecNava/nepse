@@ -7,20 +7,21 @@
 @section('header_title')
     <h1>NEPSE.TODAY</h1>
 @endsection
+
 @section('js')
 @endsection
+
 @section('custom_css')
     
 @endsection
+
 @section('notice')
-@if($notice)
-    <div class="message_wrapper" data-title="{{$notice['title']}}">
-        <p class='notice'>
-            <span class='title'>{{$notice['title']}}</span>
-            {!!$notice['message']!!}
-        </p>
+<?php if(count($notice)>0){ ?>
+    <div role="notice" class='notice' data-show-notice="yes">
+        <span class='title'>{{$notice['title']}}</span>
+        {!!$notice['message']!!}
     </div>
-@endif
+<?php } ?>
 @endsection
 
 @section('content')
@@ -195,6 +196,7 @@
     
 </div>
 
+@section('custom_js')
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -308,4 +310,6 @@
     }
     
 </script>
+
+@endsection
 @endsection

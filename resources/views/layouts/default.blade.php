@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'NEPSE.TODAY') }} - Free portfolio management system for Nepal stock exchange</title>
-    <meta name="description" content="nepse, nepal stock, nepse portfolio, nepal share, share lagani, financial management, nepal stock exchange, invest in share, free stock management">
+    <title>{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE</title>
+    <meta name="description" content="{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE">
     <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ URL::to('favicon.ico') }}"> 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
-    <script src="{{ URL::to('js/app.js') }}"></script>
+   
     @yield('custom_css')
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -19,23 +19,37 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-FNJB1MNNTB');
     </script>
 
 </head>
 <body>
-    <div id="notice" class="hide">
-        <div class="notice_wrapper">
-            <div>
-                @yield('notice')
-            </div>
-            <div class="btn" onclick="hide_notice()">
-                <a href="#">❌</a>
-            </div>
-        </div> 
-    </div> 
+    <div style="position:absolute;top:-999px">
+        {{ config('app.name', 'NEPSE.TODAY') }} is a portfolio management system for Nepal stock exchange (#NEPSE) and is available for FREE.
+        Some of the major features are :
+        <ul>
+            <li>Portfolio management for you and your family members in a single place.</li>
+            <li>Know the current market value of your stocks in almost real time.</li>
+            <li>See the consolidated summary of the net worth for you and your family in a dashboard.</li>
+            <li>Ability to import portfolio from Spreadsheet (or MeroShare account).</li>
+            <li>Ability to export your portfolio in a Spreadsheet</li>
+            <li>Keep watch of your purchases and sales. </li>
+            <li>Stock calculator for purchases and sales. </li>
+        </ul>
+    </div>
+
     <div id="container">
+
+        <div id="notice" class="hide">
+            <div class="notice_wrapper">
+                <div>
+                    @yield('notice')
+                </div>
+                <!--<div class="btn" onclick="hide_notice()">
+                     <a href="#">❌</a> 
+                </div>-->
+            </div> 
+        </div> 
         
         <header class="main-header">
         
@@ -258,19 +272,22 @@
 
         </footer>
         
-        @yield('js')
+        <script src="{{ URL::to('js/app.js') }}"></script>
 
         <script>
             const menu = document.getElementById('hamburger');
+
             menu.onclick = function(){
                 document.getElementById("myNav").style.width = "100%";
             };
-
+            
             /* Close when someone clicks on the "x" symbol inside the overlay */
             function closeNav() {
                 document.getElementById("myNav").style.width = "0%";
             }
         </script>
+
+        @yield('custom_js')
 
 </body>
 </html>

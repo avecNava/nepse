@@ -37,6 +37,7 @@ class SalesController extends Controller
             'stocks' => $stocks,
             'brokers' => $brokers,
             'shareholders' => $shareholders,
+            'notice' => UtilityService::getNotice(),
         ]);
     }
 
@@ -141,6 +142,7 @@ class SalesController extends Controller
                 'shareholders' => $shareholders,
                 'selected' => Shareholder::getShareholderDetail($uuid),
                 'brokers' => $brokers,
+                'notice' => UtilityService::getNotice(),
             ]); 
 
     }

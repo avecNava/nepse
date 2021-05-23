@@ -5,9 +5,26 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UtilityService
 {
+    public static function getNotice()
+    {
+       
+        //no message if flag set in ENV
+        if(!config('app.message'))       
+            return array();          
+
+        $name = UtilityService::parseFirstName(optional(Auth::user())->name);
+        
+        $notice = [
+            'title' => "Hey $name",
+            'message' => 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
+        ];
+        return $notice;
+    }
+
     public static function generateToken()
     {
         $token = Hash::make(Carbon::now()->toDateTimeString());

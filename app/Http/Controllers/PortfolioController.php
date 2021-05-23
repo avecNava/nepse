@@ -100,6 +100,7 @@ class PortfolioController extends Controller
                     'portfolios' => $stocks,
                     'scorecard' => $data,
                     'shareholders' => $shareholders,
+                    'notice' => UtilityService::getNotice(),
                     'transaction_date' => Carbon::parse($transaction_date),
                 ]
             );

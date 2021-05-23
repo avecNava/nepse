@@ -12,6 +12,15 @@
     
 @endsection
 
+@section('notice')
+<?php if(count($notice)>0){ ?>
+    <div role="notice" class='notice' data-show-notice="yes">
+        <span class='title'>{{$notice['title']}}</span>
+        {!!$notice['message']!!}
+    </div>
+<?php } ?>
+@endsection
+
 @section('content')
 
     <div class="shareholder_dashboard__wrapper">
