@@ -645,30 +645,20 @@ section.sales summary {
         flex-wrap: wrap;
     }
 
-    #notice .notice_wrapper {
-        transition: display 5s;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+     #notice .notice_wrapper {
         background: var(--color-theme);
-    }
-    #notice .message_wrapper {
+        font-size: 1.2rem;
         padding: 5px;
         text-align: center;
-        font-weight: bold;
-        color: #214b25;
-        display: inline-flex;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
+        font-size: 1.1rem;
+       
     }
-    #notice .title {
+    /*#notice .title {
         font-size: 20px;
         color: #214b25;
         margin: 0 10px;
         font-weight: bold;
-    }
+    } */
 
     .notice li {
         font-size: 1.2rem;

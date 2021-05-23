@@ -124,16 +124,7 @@ sup {
     flex-direction: column;
     margin: 5px;
 } 
-.message_wrapper p {
-    display: inline;
-}
-#notice .title {
-    font-size: 1.2em;
-    color: #4CAF50;
-}
-.notice_wrapper {
-    display: flex;
-}
+
 table {border-spacing: 0px; width:98vw;}
 
 section#top10items article {

@@ -13,10 +13,9 @@
 @endsection
 
 @section('notice')
-<?php if(count($notice)>0){ ?>
+<?php if(strlen($notice)>0){ ?>
     <div role="notice" class='notice' data-show-notice="yes">
-        <span class='title'>{{$notice['title']}}</span>
-        {!!$notice['message']!!}
+        !! $notice !!}
     </div>
 <?php } ?>
 @endsection

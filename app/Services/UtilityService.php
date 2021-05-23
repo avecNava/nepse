@@ -5,7 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class UtilityService
 {
@@ -14,14 +14,12 @@ class UtilityService
        
         //no message if flag set in ENV
         if(!config('app.message'))       
-            return array();          
+            return "";          
 
-        $name = UtilityService::parseFirstName(optional(Auth::user())->name);
+        // $name = UtilityService::parseFirstName(optional(Auth::user())->name);
         
-        $notice = [
-            'title' => "Hey $name",
-            'message' => 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>',
-        ];
+        $notice = 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>';
+        $notice = "<strong>This website is a work in progress.</strong> If you have any issues or feedbacks you can reach us via filling the <a href='feedbacks'>feedback form</a>.";
         return $notice;
     }
 
