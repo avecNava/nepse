@@ -28,6 +28,7 @@ class NepseIndexController extends Controller
     /***
      * reads index history via https://newweb.nepalstock.com/api/nots/index/history/58 and stores in db
      * Runs : once a day after nepse market closes (except holidays and weekends)
+     * Note : This will set the closing Index for current date 0 if run during business hours (as closing index is not yet calculated)
      */
     public function indexHistory()
     {
@@ -81,6 +82,7 @@ class NepseIndexController extends Controller
     /***
      * reads index history via https://newweb.nepalstock.com/api/nots/graph/index/58 and stores in db
      * Runs : once every 15 minutes every day except holidays and weekends
+     * updates
      */
     public function currentIndex()
     {
@@ -104,6 +106,12 @@ class NepseIndexController extends Controller
             
             $businessDate = $this->epochToDate($data_array[0][0]);
             $all_indexes = collect([]);
+
+            //sample data 
+            // [
+            //     1621746300, epoch
+            //     2768.87 index
+            // ],
             foreach($data_array as $data){ 
                 $epoch = $data[0];
                 $index = $data[1];
@@ -119,10 +127,11 @@ class NepseIndexController extends Controller
             DailyIndex::upsert(
                 $all_indexes->toArray(),            //all values
                 ['epoch'],                          //value to check for duplicates
-                ['index','transactionDate']                           //update this value if duplicate
+                ['index','transactionDate']         //update this value if duplicate
             );
 
             DailyIndex::where('transactionDate','<', $businessDate)->delete();
+            //update NepseIndex table with the latest index
             NepseIndex::updateCurrentIndex();
             
             return response()->json("Current index recorded");                

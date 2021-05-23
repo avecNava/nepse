@@ -26,7 +26,7 @@ class NepseIndex extends Model
     public static function updateCurrentIndex()
     {
         
-        $row = DailyIndex::orderByDesc('transactionDate')->first();
+        $row = DailyIndex::orderByDesc('epoch')->first();
         
         if($row){
 

@@ -59,7 +59,12 @@ class PortfolioController extends Controller
             ->get();
             
             //todo: sort records by worth
-
+            
+            //filter out stocks whose quantity = 0
+            $stocks = $stocks->filter(function ($value, $key) {
+                return ($value->quantity > 0);
+            });
+            
             $row = $stocks->first();
             $scrips =  $stocks->count('stock_id');
             $quantity =  $stocks->sum('quantity');

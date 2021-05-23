@@ -54,7 +54,7 @@ class PortfolioSummaryController extends Controller
                 st.symbol, st.security_name,
                 p.*,
                 pr.close_price, pr.last_updated_price, pr.previous_day_close_price'
-            )                    
+            )                  
             ->orderBy('s.first_name','asc')
             ->get();
             

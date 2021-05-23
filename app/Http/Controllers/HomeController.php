@@ -289,6 +289,7 @@ class HomeController extends Controller
             'loosers' => $top10Loosers,
             'transactions' => $transactions,
             'last_updated_time' => Carbon::parse($last_updated_time),
+            'notice' => UtilityService::getNotice(),
         ]);
     }
 
