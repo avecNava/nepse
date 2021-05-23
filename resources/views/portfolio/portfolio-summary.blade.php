@@ -11,7 +11,7 @@
 <style>
 
 </style>
-@section('js')
+@section('custom_js')
     
 @endsection
 

@@ -114,16 +114,9 @@ sup {
     margin: 0 10px;
 }
 
-.welcome__wrapper section.transactions {
-    margin: 30px 0;
-}
 .transactions table td:nth-child(2) {
     max-width: 50px;
 }
-.welcome__wrapper {
-    flex-direction: column;
-    margin: 5px;
-} 
 
 table {border-spacing: 0px; width:98vw;}
 
@@ -867,13 +860,8 @@ table td {
     margin: 20px 0;
 }
 
-table#user-portfolio {
-    padding-top: 10px;
-}
-div#user-portfolio_wrapper {
-    background: #e4e4b859;
-    padding: 10px 0;
-}
+
+/* datatable related CSS */
 .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
     padding: 0 5px;
 }
@@ -881,6 +869,21 @@ div#user-portfolio_wrapper {
 .dataTables_wrapper .dataTables_length select {
     width: auto;
 }
+
+table#user-portfolio,
+table#transactions {
+    padding-top: 10px;
+}
+div#user-portfolio_wrapper,
+div#table#transactions_wrapper {
+    background: #e4e4b859;
+    padding: 10px 0;
+}
+
+section.transactions {
+    margin: 0 5px;
+}
+
 /* scorecards */
 .score_card__wapper {
     display: flex;

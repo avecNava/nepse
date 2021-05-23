@@ -126,7 +126,7 @@
             </header>
 
             <main>
-            <table id="user-portfolio">
+            <table id="user-portfolio" class="cell-border compact stripe hover">
                 <thead>
                 <tr>
                     <!-- <th class="c_digit optional">SN</th> -->
@@ -259,13 +259,13 @@
             window.location.replace(url);
         }
 
-            setTimeout(() => {
-                $(document).ready( function () {
-                    $('#user-portfolio').DataTable(
-                        {"pageLength": 25}
-                        );
-                } );
-            }, 1000);
+        setTimeout(() => {
+            $(document).ready( function () {
+                $('#user-portfolio').DataTable(
+                    {"pageLength": 25}
+                    );
+            } );
+        }, 1000);
       
 
        

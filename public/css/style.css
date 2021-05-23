@@ -611,29 +611,13 @@ section.sales summary {
         display: flex;
     }
 
-    .welcome__wrapper .transactions {
-        margin: 5px 0 !important;
-    }
-    .welcome__wrapper {
-        flex-direction: row;
-        display: flex;
-    }
-    .welcome__wrapper section.transactions {
-        min-width: 60%;
-        /* box-sizing: border-box; */
-    }
-    .welcome__wrapper .aside{
-        margin-left:5px;
-        min-width:25%;
-        box-sizing: border-box;
-    }
     .sectors .sector {
         margin: 4px;
         max-width: 47%;
     }
 
 
-    .portfolio__content, .welcome__wrapper,
+    .portfolio__content,
     .sh_dashboard__wrapper .main__content {
         margin: 0 5px;
     }

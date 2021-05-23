@@ -249,18 +249,18 @@ class HomeController extends Controller
         
         // $transactions->dd();
 
-        $sector_summary = $transactions->groupBy('sector')->map(function($item){
+        // $sector_summary = $transactions->groupBy('sector')->map(function($item){
             
-            $row = $item->first();            
-            return collect([
-                'sector' => $row->sector,
-                'total_qty' => $item->sum('total_traded_qty'),
-                'total_value' => $item->sum('total_traded_value'),
-            ]);
-        });
+        //     $row = $item->first();            
+        //     return collect([
+        //         'sector' => $row->sector,
+        //         'total_qty' => $item->sum('total_traded_qty'),
+        //         'total_value' => $item->sum('total_traded_value'),
+        //     ]);
+        // });
 
-        $top10Turnovers = $transactions->sortByDesc('total_traded_value')->take(10);
-        $top10Trades = $transactions->sortByDesc('total_traded_qty')->take(10);
+        // $top10Turnovers = $transactions->sortByDesc('total_traded_value')->take(10);
+        // $top10Trades = $transactions->sortByDesc('total_traded_qty')->take(10);
 
         // dd($top10Turnovers);
         $stocks = $transactions->map(function($stock){            
@@ -276,17 +276,17 @@ class HomeController extends Controller
                 ]);                   
         });
         
-        $top10Gainers= $stocks->sortByDesc('change_per')->take(10);
-        $top10Loosers= $stocks->sortBy('change_per')->take(10);
+        // $top10Gainers= $stocks->sortByDesc('change_per')->take(10);
+        // $top10Loosers= $stocks->sortBy('change_per')->take(10);
         $last_updated_time = StockPrice::max('last_updated_time');
 
         return view('stock-data',
         [
-            'sectors' => $sector_summary->sortByDesc('total_value'),
-            'turnovers' => $top10Turnovers,
-            'trades' => $top10Trades,
-            'gainers' => $top10Gainers,
-            'loosers' => $top10Loosers,
+            // 'sectors' => $sector_summary->sortByDesc('total_value'),
+            // 'turnovers' => $top10Turnovers,
+            // 'trades' => $top10Trades,
+            // 'gainers' => $top10Gainers,
+            // 'loosers' => $top10Loosers,
             'transactions' => $transactions,
             'last_updated_time' => Carbon::parse($last_updated_time),
             'notice' => UtilityService::getNotice(),

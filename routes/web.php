@@ -25,7 +25,7 @@ Auth::routes([
     'register' => true,
 ]);
     
-Auth::loginUsingId(1);
+// Auth::loginUsingId(1);
 // Auth::loginUsingId(171);
 
 Route::get('test', function(){
