@@ -160,7 +160,7 @@
                                 <tr>
                                     
                                     <td>
-                                        <a href="{{ url('portfolio',[ $record['symbol'], $uuid ]) }}">
+                                        <a href="{{ url('portfolio',[ $record['symbol'],$record['id'], $uuid ]) }}">
                                             <abbr title="{{ $record['name'] }}">{{ $record['symbol'] }}</abbr>
                                         </a>
                                     </td>

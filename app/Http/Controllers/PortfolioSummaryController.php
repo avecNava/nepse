@@ -92,6 +92,7 @@ class PortfolioSummaryController extends Controller
                 $ltp = $row->last_updated_price ?  $row->last_updated_price : $row->close_price;
                 return collect([
                     'name' =>$row->security_name,
+                    'id' =>$row->id,
                     'symbol' =>$row->symbol,
                     'worth' => $ltp * $row->quantity ,
                     'quantity' => $row->quantity ,
