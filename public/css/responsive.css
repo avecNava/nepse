@@ -1,3 +1,18 @@
+body {
+    margin: 0;
+    font-family: 'Scope One', serif; 
+    --scorecard-bg : #dfdfe2;
+    --scorecard-txt : rgba(0, 0, 0, 0.767);
+    --form-band : #6b64a0;
+    --color-theme : #ffc266;
+    --header:#fff5e6;
+    --color-th:#e4e4b8;
+    --color-orange-light95:#fff5e6;
+    --color-orange-light70:#fafafa;
+    --color-green-light30:#499249;
+    --color-black-light30:#4d4d4d;
+    --color-red-light30:#db5050;
+}
 *, *::before,*::after { box-sizing :border-box; }
 h1 { font-size: 1.4em; }
 h1.c_title {
@@ -13,7 +28,9 @@ div#app, div#container {
     box-shadow: unset;
     width:100%;
 } 
-
+.sm-text,.tiny-txt {
+    font-size: .8em;
+}
 /*flex attribute css*/
 .flex {display: flex;}
 .js-apart {justify-content: space-between;}
@@ -57,8 +74,8 @@ section.message {
     padding: 10px;
     border: 1px dotted;
 }
-.negative {background: #e60f05 !important;}
 .is-invalid {color: #fb0000;}
+.negative {background: var(--color-red-light30) !important;}
 .positive {background: var(--color-green-light30) !important;}
 hr {padding: 0; margin: 0; border: 1px solid #f7f7f7;}
 sup {
@@ -844,11 +861,52 @@ ul.shareholder-nav li::before {
 }
 
 
-/*summary page showcase*/
+/*dashboard page css*/
 
-.shareholder_dashboard__wrapper, .summary__wrapper {
+.main__wrapper {
     margin: 10px;
 }
+
+.dsh_layout__wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    grid-gap:20px;
+}
+
+.dsh__card {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(2,1fr);
+}
+
+.box table {
+    margin-top: 5px;
+}
+
+.dsh__card main {
+    /* font-size: 1rem; */
+    font-weight: bold;
+    text-align: left;
+    min-height: 50px;;
+}
+
+.dsh__card header {
+    margin: 5px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #a0a000;
+}
+
+.dsh__card footer {
+    text-align: right;
+}
+.box h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.box {border: 1px solid red;}
+
 table td {
     line-height: 2em;
     font-size:.9em;
@@ -856,10 +914,13 @@ table td {
 .shareholder_dashboard__wrapper table td:nth-child(2) {
     min-width: 50px;
 }
-.summary__wrapper .showcase__wrapper, .summary__wrapper.score_card__wapper {
+.summary__wrapper .showcase__wrapper {
     margin: 20px 0;
 }
 
+.data_wrapper>div {
+    display: inline-block;
+}
 
 /* datatable related CSS */
 .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
@@ -886,29 +947,23 @@ section.transactions {
 
 /* scorecards */
 .score_card__wapper {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px 0;
-    width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
 }
 .score_card__wapper footer {
     text-align: right;
-    /* font-size: 1.2rem; */
 }
-.score_card__wapper article {
-    width: calc(93vw/2);
-    background: var(--scorecard);
+.score_card__wapper article,
+.card article {
+    background: var(--scorecard-bg);
+    color: var(--scorecard-txt);
     padding: 5px;
     margin: 5px;
-    color: #fff;
-    height: 6.5em;
-    font-size: .9em;
-    box-sizing: border-box;
+    /* height: 6.5em; */
+    /* font-size: .9em; */
+    /* box-sizing: border-box; */
 }
-.showcase__wrapper{
-    margin: 20px 0;
-    width: 100vw;
-}
+
 .showcase__wrapper article {
     margin: 20px 2px;
     display: flex;
@@ -920,22 +975,6 @@ section.transactions {
     justify-content: center;
 }
 
-.profile__wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.profile__wrapper .name {
-    padding: 10px 25px;
-    text-align: center;
-}
-.dp-male {
-    width: 150px;
-    height: 150px;
-    background: beige;
-}
-
 p.event {
     width: 200px;
 }
@@ -943,7 +982,7 @@ p.event {
 article.summary .right_section {
     margin-left: 20px 40px;
 }
-.dp{
+/* .dp{
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -954,7 +993,7 @@ article.summary .right_section {
 }
 .dp-female {
     background: url(/assets/images/mf.jpg) -155px -164px;
-}
+} */
 .showcase table th {
     background: revert;
     height:unset;
@@ -1030,6 +1069,3 @@ footer .links a {
     font-weight: normal;
 }
 
-.sm-text {
-    font-size: .8em;
-}

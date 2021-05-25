@@ -27,7 +27,7 @@
 
 @section('content')
 
-    <div class="shareholder_dashboard__wrapper">
+    <div class="main__wrapper">
     
         @if(($scorecard['scrips']>0))
             <section class="score_card__wapper">
@@ -138,6 +138,7 @@
                     <th class="c_digit">Worth</th>
                     <th class="c_digit">Gain</th>
                     <th class="c_digit optional">Prev. worth</th>
+                    <th class="c_digit optional">Change %</th>
                     <th class="c_digit optional">Change</th>
                 </tr>
                 </thead>
@@ -214,15 +215,19 @@
                     <td class="optional">
                         @if($change != 0)
                         <div class="c_change">
-                            <div>
-                                <span class="change-val">
-                                    {{number_format($change)}}
-                                </span>
-                                <span class="change-val {{$change_class}}">
-                                ({{$change_per}})
-                                </span>
-                            </div>
-                            <div class="{{$change_class}}_icon"></div>
+                                <div>
+                                    <span class="change-val {{$change_class}}">{{$change_per}}</span> 
+                                </div>
+                                <div class="{{$change_class}}_icon"></div>
+                        </div>
+                        @endif
+                    </td>
+                    <td class="optional">
+                        @if($change != 0)
+                        <div class="c_change">
+                            <span class="change-val {{$change_class}}">
+                                {{number_format($change)}}
+                            </span>
                         </div>
                         @endif
                     </td>

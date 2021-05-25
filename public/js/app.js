@@ -1,12 +1,14 @@
 //show notice 
 
-        const el = document.querySelector('#notice');
-        const notice  = el.querySelector('.notice'); 
+const el = document.querySelector('#notice');
+const notice  = el.querySelector('.notice'); 
 
-        if(notice.dataset.showNotice === "yes"){
-            el.classList.remove('hide');
-            el.classList.add('show');
-        }
+if(typeof(notice) != 'undefined' && notice != null){
+    if(notice.dataset.showNotice === "yes"){
+        el.classList.remove('hide');
+        el.classList.add('show');
+    }
+}
 
 function hide_notice(){
     // document.querySelector('.notice_wrapper>.btn>a').addEventListener('click',function(e){

@@ -44,7 +44,7 @@ class UtilityService
     public static function calculatePercentage($value, $total_value)
     {
         if($total_value<=0) return 0;
-        return number_format(($value/$total_value)*100,1).'%';
+        return number_format(($value/$total_value)*100, 2).'%';
     }
 
     /**

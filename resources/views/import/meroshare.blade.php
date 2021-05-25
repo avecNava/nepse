@@ -4,7 +4,7 @@
     Your stock portfolio management application over the browser
 @endsection
 
-@section('js')
+@section('custom_js')
     <script src="{{ URL::to('js/meroshare.js') }}"></script>
 @endsection
 
