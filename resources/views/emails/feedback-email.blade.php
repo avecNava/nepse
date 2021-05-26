@@ -14,21 +14,24 @@
 
     <body>
         <div class="top-bar">
-            <p>Dear admin,</p>
-            <p>You received a <mark>{{ $feedback->category }}</mark> from <strong>{{ $feedback->name }}</strong> ({{ $feedback->email}}) on {{ $feedback->created_at }}.</p>
+            <p><h2>{{ $feedback->category }}</h2></p>
         </div>
         
         <h2>{{$feedback->title }}</h2>
 
         <p>
             {{ $feedback->description }}
-        </p>
-
-        <p>&nbsp;</p>
-        
-        <p>
+            <br/>
             <a href= "{{url('feedback/view', $feedback->id)}}" target="_blank" rel="noopener noreferrer">View in app</a>
         </p>
+
+        <p>
+            Name :  {{ $feedback->name }} <br/>
+            Email : {{ $feedback->email}} <br/>
+            Date :  {{ $feedback->created_at }}
+        </p>
+        
+        
        
         <hr>
 

@@ -42,11 +42,10 @@
 
         <div id="area_chart"></div>
 
-            <div class="trade_summary">
-                
+            <div class="trade_summary">                
 
                 <div>
-                    <h3><a class="market_open" href="{{url('stock-data')}}">Market data</a></h3>    
+                    <h3><a class="market_open" href="{{url('nepse-price')}}">Today's price</a></h3>    
                 </div>
 
                 <div class="flex">

@@ -9,9 +9,10 @@ body {
     --color-th:#e4e4b8;
     --color-orange-light95:#fff5e6;
     --color-orange-light70:#fafafa;
-    --color-green-light30:#499249;
+    --color-green-light30:#a2d46a70;
+    --color-green-dark:#63bb00;
     --color-black-light30:#4d4d4d;
-    --color-red-light30:#db5050;
+    --color-red-light30:#f3171745;
 }
 *, *::before,*::after { box-sizing :border-box; }
 h1 { font-size: 1.4em; }
@@ -221,7 +222,7 @@ div#notice .btn {
 }
 
 .increase {
-    color: var(--color-green-light30);
+    color: var(--color-green-dark);
 }
 .decrease {
     color: #ff0000;
@@ -870,7 +871,7 @@ ul.shareholder-nav li::before {
 .dsh_layout__wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto;
     grid-gap:20px;
 }
 
@@ -883,6 +884,14 @@ ul.shareholder-nav li::before {
 .box table {
     margin-top: 5px;
 }
+
+.box table td:first-child a {
+    border-bottom: 1px dashed #6b64a075;
+    padding-bottom: 1px;
+}
+
+.box table td, .box table th {text-align: right;}
+.box table td:first-child,.box table th:first-child {text-align: left; }
 
 .dsh__card main {
     /* font-size: 1rem; */
@@ -905,7 +914,7 @@ ul.shareholder-nav li::before {
     margin: 0;
     font-size: 1.1rem;
 }
-.box {border: 1px solid red;}
+/* .box {border: 1px solid red;} */
 
 table td {
     line-height: 2em;
@@ -955,7 +964,7 @@ section.transactions {
 }
 .score_card__wapper article,
 .card article {
-    background: var(--scorecard-bg);
+    background: var(--color-orange-light70);
     color: var(--scorecard-txt);
     padding: 5px;
     margin: 5px;

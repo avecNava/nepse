@@ -29,7 +29,7 @@
 
 <section class="transactions">
     <header">
-        <h2>NEPSE stock data</h2>
+        <h2>Market data (#NEPSE) </h2>
         <div title="Last transaction time">{{ $last_updated_time }} <mark>({{ $last_updated_time->diffForHumans() }})</mark></div>
     </header>
     @if($transactions)
@@ -60,7 +60,7 @@
             <tr>
                 <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
                 <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
-                <td class="{{$change_css}} c_digit">{{$change}}</td>
+                <td class="{{$change_css}} c_digit">{{number_format($change,2)}}</td>
                 <td class="c_digit c_change">
                     <div class="flex apart">
                     <div class="{{$change_css}}">

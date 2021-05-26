@@ -2,18 +2,12 @@
 <html lang="en">
 <head>
 
-     <!-- Google Tag Manager -->
-     <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5QGKNX7');</script> -->
-    <!-- End Google Tag Manager -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE</title>
-    <meta name="description" content="{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio management system for Nepal stock exchange #NEPSE">
+    <title>{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio manager</title>
+    <meta name="description" content="You can manage portfolio for you and your family member in this application for Nepal stock exchange.">
     
     <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
@@ -25,33 +19,30 @@
     @yield('custom_css')
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNJB1MNNTB"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNJB1MNNTB"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-FNJB1MNNTB');
-    </script> -->
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FNJB1MNNTB');
+    </script>
 
 </head>
 <body>
 
-    <!-- Google Tag Manager (noscript) -->
-    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QGKNX7"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
-    <!-- End Google Tag Manager (noscript) -->
+   
 
     <div style="display:none;visibility:hidden">
         {{ config('app.name', 'NEPSE.TODAY') }} is a portfolio management system for Nepal stock exchange (#NEPSE) and is available for FREE.
         Some of the major features are :
         <ul>
-            <li>Portfolio management for you and your family members in a single place.</li>
-            <li>Know the current market value of your stocks in almost real time.</li>
-            <li>See the consolidated summary of the net worth for you and your family in a dashboard.</li>
-            <li>Ability to import portfolio from Spreadsheet (or MeroShare account).</li>
-            <li>Ability to export your portfolio in a Spreadsheet</li>
-            <li>Keep watch of your purchases and sales. </li>
-            <li>Stock calculator for purchases and sales. </li>
+            <li>Manage portfolio for you and your family members.</li>
+            <li>Know the current worth current of your stocks.</li>
+            <li>Consolidated summary of net worth for you and your family in a single dashboard.</li>
+            <li>Import portfolio from Spreadsheet (or MeroShare account).</li>
+            <li>Export your portfolio in a Spreadsheet</li>
+            <li>Manage your purchases and sales history. </li>
+            <li>Find stock prices, commission and various taxes for purchases and sales. </li>
         </ul>
     </div>
 

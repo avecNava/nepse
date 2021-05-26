@@ -58,10 +58,10 @@ class UtilityService
         $class = '';
 
         if($value > 0)  {
-            $class = 'positive';
+            $class = 'increase';
          }
          else if($value < 0){
-             $class = 'negative';
+             $class = 'decrease';
          }
          return $class;
     }

@@ -44,10 +44,10 @@
                     <footer></footer>
                 </article>
                 
-                <article class="{{$scorecard['gain_class']}}">
+                <article>
                     <header>Net Gain</header>
-                    <main class="value">{{number_format($scorecard['gain'])}}</main>
-                    <footer>{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</footer>
+                    <main class="value {{$scorecard['gain_class']}}">{{number_format($scorecard['gain'])}}</main>
+                    <footer><span class="{{$scorecard['gain_class']}}">{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</span></footer>
                 </article>
 
                 <article title="Previous worth">
@@ -56,10 +56,10 @@
                     <footer></footer>
                 </article>
 
-                <article title="Difference between Current and Previous worth" class="{{$scorecard['change_class']}}">
+                <article title="Difference between Current and Previous worth">
                     <header>Difference</header>
-                    <main class="value">{{number_format($scorecard['change'])}}</main>
-                    <footer>{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</footer>
+                    <main class="value {{$scorecard['change_class']}}">{{number_format($scorecard['change'])}}</main>
+                    <footer><span class="{{$scorecard['change_class']}}">{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</span></footer>
                 </article>
 
                 <article  hidden>
@@ -264,13 +264,16 @@
             window.location.replace(url);
         }
 
-        setTimeout(() => {
-            $(document).ready( function () {
-                $('#user-portfolio').DataTable(
-                    {"pageLength": 25}
-                    );
-            } );
-        }, 1000);
+        //use datatable for bigger screens (>490px)
+        // if(window.screen.availWidth>490){
+            setTimeout(() => {
+                $(document).ready( function () {
+                    $('#user-portfolio').DataTable(
+                        {"pageLength": 25}
+                        );
+                } );
+            }, 1000);
+        // }
       
 
        

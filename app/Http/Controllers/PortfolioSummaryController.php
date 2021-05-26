@@ -95,13 +95,14 @@ class PortfolioSummaryController extends Controller
         
         $last_trade_date = NepseIndex::max('transactionDate');
         $prev_trade_date = NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->select('transactionDate')->first()->toArray()['transactionDate'];
-        
+        $rows = 10;
         return view("portfolio.portfolio-summary", 
         [
             'portfolio_summary' => $this->shareholderSummary($portfolio_grouped),
             'scorecard' => $score_card,
-            'top_grossing' => $this->topGrossing($unique_stocks),
-            'top_gains' => $this->topGainers($unique_stocks),
+            'top_grossing' => $this->topGrossing($unique_stocks)->sortByDesc('worth')->take($rows),
+            'top_gains' => $this->topGainers($unique_stocks)->sortByDesc('change_per')->take($rows),
+            'top_losses' => $this->topGainers($unique_stocks)->sortBy('change_per')->take($rows),
             'notice' => UtilityService::getNotice(),
             'index' => NepseIndex::getCurrentIndex(),
             'prevIndex' => NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->select('closingIndex')->first(),
@@ -181,22 +182,22 @@ class PortfolioSummaryController extends Controller
     }
 
     //top grossing stocks
-    private function topGrossing($stocks, $rows=10){
-        return 
-        $stocks->map(function($items, $key){
+    private function topGrossing($stocks){
+        return $stocks->map(function($items, $key){
+            
             $ltp = $items->last_updated_price ?  $items->last_updated_price : $items->close_price;
-               $temp = collect([
+               
+            return collect([
                    'name' =>$items->security_name,
                    'symbol' =>$items->symbol,
                    'worth' => $ltp * $items->quantity ,
                    'ltp' => $ltp,
                ]);
-           return $temp->sortByDesc('worth');
-       })->take($rows);
+       });
     }
     
     //top gaining stocks
-    private function topGainers($stocks, $rows=10){
+    private function topGainers($stocks){
         return 
         $stocks->map(function($items, $key){
             $ltp = $items->last_updated_price ?  $items->last_updated_price : $items->close_price;
@@ -217,7 +218,7 @@ class PortfolioSummaryController extends Controller
                 'change_css' => $change_class,
             ]);
          
-       })->sortByDesc('change_per')->take($rows);
+       });
     }
 
 }

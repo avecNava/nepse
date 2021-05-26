@@ -39,7 +39,7 @@ Route::get('mail', function(){
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('stock-data', [HomeController::class, 'stockData']);
+Route::get('nepse-price', [HomeController::class, 'stockData']);
 
 //redirect from old site registration page
 Route::get('account/register', function(){

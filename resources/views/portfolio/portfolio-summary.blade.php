@@ -110,6 +110,7 @@
                             <th>Net worth</th>
                             <th>Prev worth</th>
                             <th>Net gain</th>
+                            <th>Gain %</th>
                         </tr>    
                     </thead>
                     <tbody>
@@ -134,17 +135,8 @@
                             <td>{{number_format($row['total_investment'])}}</td>
                             <td>{{number_format( $row['current_worth'] ) }}</td>
                             <td>{{number_format( $row['prev_worth'] ) }}</td>
-                            
-                            <td>
-                                <div class="data_wrapper">
-                                    <div class="{{$row['gain_css']}}"><strong>{{ number_format( $row['gain'] ) }}</strong></div>
-                                    <span>
-                                        @if($row['gain_pc'])
-                                            ({{ $row['gain_pc'] }}%)
-                                        @endif
-                                    </span>
-                                </div>
-                            </td>
+                            <td>{{ number_format( $row['gain'] ) }}</td>
+                            <td>{{ $row['gain_pc'] }}%</td>
                         </tr>
 
                         @endforeach
@@ -170,7 +162,7 @@
                         <tr>
                             <th>Symbol</th>
                             <th>LTP</th>
-                            <th>Change %</th>
+                            <th style="text-align:right">Change %</th>
                             <th style="text-align:right">Net worth</th>
                         </tr>    
                     </thead>
@@ -179,8 +171,8 @@
                         <tr>
                             <td><a href="{{url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
                             <td>{{ number_format($row['ltp']) }}</td>
-                            <td><span class="{{$row['change_css']}}">{{ number_format($row['change_per'],2) }}%</span></td>
-                            <td align="right">{{ number_format($row['worth'],2) }}</td>
+                            <td align="right"><span class="{{$row['change_css']}}">{{ number_format($row['change_per'],2) }}%</span></td>
+                            <td align="right">{{ number_format($row['worth']) }}</td>
                         </tr>
                         @endforeach
 
@@ -193,7 +185,36 @@
         </div>
 
         <div class="box" style="grid-column:2/3">
-            <h2>Your top loss</h2>
+            <h2>Your top losses</h2>
+            @if( !empty($top_losses) )
+
+            <section role="Top gains">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>LTP</th>
+                            <th style="text-align:right">Change %</th>
+                            <th style="text-align:right">Net worth</th>
+                        </tr>    
+                    </thead>
+                    <tbody>
+                        @foreach ($top_losses as $key => $row)
+                        <tr>
+                            <td><a href="{{url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
+                            <td>{{ number_format($row['ltp']) }}</td>
+                            <td align="right"><span class="{{$row['change_css']}}">{{ number_format($row['change_per'],2) }}%</span></td>
+                            <td align="right">{{ number_format($row['worth']) }}</td>
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+
+            </section>
+
+            @endif
         </div>
 
         <div class="box" style="grid-column:3/4">
@@ -206,8 +227,8 @@
                     <thead>
                         <tr>
                             <th>Symbol</th>
-                            <th>Net worth</th>
-                            <th>LTP</th>
+                            <th style="text-align:right">LTP</th>
+                            <th style="text-align:right">Net worth</th>
                         </tr>    
                     </thead>
                     <tbody>
@@ -215,8 +236,8 @@
                         @foreach ($top_grossing as $key => $row)
                         <tr>
                             <td><a href="{{ url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
-                            <td>{{ number_format($row['worth']) }}</td>
-                            <td>{{ number_format($row['ltp']) }}</td>
+                            <td align="right">{{ number_format($row['ltp']) }}</td>
+                            <td align="right">{{ number_format($row['worth']) }}</td>
                         </tr>
                         @endforeach
 
