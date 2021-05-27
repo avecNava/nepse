@@ -104,11 +104,11 @@
                     <thead>
                         <tr>
                             <th>Shareholder</th>
-                            <th># scrips</th>
+                            <th class="optional"># scrips</th>
                             <th>Day gain</th>
                             <th>Investment</th>
                             <th>Net worth</th>
-                            <th>Prev worth</th>
+                            <th class="optional">Prev worth</th>
                             <th>Net gain</th>
                             <th>Gain %</th>
                         </tr>    
@@ -119,12 +119,12 @@
 
                         <tr>
                             <td><strong><a href="{{url('portfolio',[ $row['uuid'] ]) }}">{{ $row['shareholder'] }}</a></strong></td>
-                            <td>{{ number_format($row['total_scrips']) }}</td>
+                            <td class="optional">{{ number_format($row['total_scrips']) }}</td>
 
                             <td>
                                 <div class="data_wrapper">
                                     <div class="{{$row['day_gain_css']}}">{{ number_format( $row['day_gain'] ) }}</div>
-                                    <span>
+                                    <span class="optional">
                                         @if($row['day_gain_pc'])
                                             ({{ $row['day_gain_pc'] }}%)
                                         @endif
@@ -134,7 +134,7 @@
 
                             <td>{{number_format($row['total_investment'])}}</td>
                             <td>{{number_format( $row['current_worth'] ) }}</td>
-                            <td>{{number_format( $row['prev_worth'] ) }}</td>
+                            <td class="optional">{{number_format( $row['prev_worth'] ) }}</td>
                             <td>{{ number_format( $row['gain'] ) }}</td>
                             <td>{{ $row['gain_pc'] }}%</td>
                         </tr>

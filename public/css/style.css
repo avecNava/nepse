@@ -67,30 +67,6 @@ section#top-nav .selected {
     background: #6b64a0;
 }
 
-/*table formatting*/
-table {border-spacing: 0px; width:100%;}
-table th {
-    background: var(--color-th);
-    text-align: left;
-    font-size: 15px;
-    height: 50px;
-}
-table td {
-    line-height: 2.5em;
-    font-size:1em;
-}
-table tr:hover {
-    background: beige;
-    background: #e1ead67a;
-}
-/* tr:nth-child(even) { background: var(--color-black-light90);} */
-tr:nth-child(even) { background: var(--color-orange-light70); }
-tr:last-child td {border-bottom: 1px solid #ebeeef;}
-.c_digit {text-align: right;padding: 0 5px;}
-tr.separator {
-    background: none;
-    height: 30px;
-}
 
 /* div.remarks {
     display: flex;
@@ -166,9 +142,6 @@ tr.separator {
 }
 
 
-.c-social-nav__link.facebook {
-    margin-left: -5px;
-}
 .c-social-nav {
     display: flex;
     align-items: center;
@@ -336,9 +309,9 @@ section.sales summary {
     }
 
     h1, h2, h3 {margin:5px; margin-left:0;}
-    h1 {font-family: 'Cutive', serif;font-size:1.7em;}
-    h2 {font-size: 1.5em;}
-    h3 {font-size: 1.2em;}
+    h1 {font-family: 'Cutive', serif;font-size:1.5em;}
+    h2 {font-size: 1.2em;}
+    h3 {font-size: 1.1em;}
 
     #hamburger{
         display: none;
@@ -377,93 +350,46 @@ section.sales summary {
     ul.navbar-nav li:last-child {display: none;}        /*hide the logout button in big screen*/
     
 
-    .feedbacks.nav li {
-        text-align: left;
-        padding: 0 5px;
-    }
-
-    /*text clip*/
-    .td-clip {
-        min-width: 200px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: inline-block;
-    }
-    .td-clip-75 {
-        width: 100px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: inline-block;
-    }
+   
     
-    
-
     footer.page-footer {
         margin: 0;
     }
 
-    /*summary paage showcase*/
-
-    .score_card__wapper article {
-        width: auto;
-    }
-    .score_card__wapper main.value {
-        text-align: center;
-        font-size: 2em;
-    }
-    
-    .showcase__wrapper article {
-        flex-wrap: nowrap;
-        margin: 40px 0;
-        width: 99%;
+    /*dashboard page css*/
+    .main__wrapper {
+        margin: 10px;
     }
 
-    .showcase__wrapper .left_section {
-        padding: 10px;
+    .dsh_layout__wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        grid-gap:20px;
     }
-    .showcase__wrapper .right_section {
-        display: flex;
-        justify-content: space-evenly;
-        width: 100%;
-        flex-wrap: wrap;
-    }
-    .showcase__wrapper .right_section>div {
-        margin: 0 20px;
+
+    .box h2 {
+        font-size: 1.1rem;
     }
 
     /*welcome page*/
-
-    .trade_summary_wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .home_layout__wrapper {
+        display: grid;
+        grid-gap: 10px;
     }
-
-    section#trade_summary {
-        margin: 0 10px;
-        justify-content: center;
+    section#articles {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        grid-gap: 0 20px;
     }
-    
-    section#sectors div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+    section#sectors {
+        display: grid;
+        grid-template-columns: 1fr 31%;
+        place-items: self-start;
     }
-    section.sectors main {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        width: 30em;
-    }
-    section#sectors article {
-        margin: auto;
-    }
-    #articles article  {
-        width: 21rem;
-        padding: 0 15px;
+    .trade_summary {
+        display: grid;
+        grid-template-columns: repeat(2,auto);
     }
     .trade_summary .item {
         width: 150px;
@@ -472,21 +398,19 @@ section.sales summary {
         font-size: 1em;
         text-align: revert;
     }
-
-    div#area_chart {
-        width:700px;
+    section#trade_summary {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-gap: 10px;
     }
+    div#area_chart {
+        width:auto;
+    }
+
     div#pie_chart {
-        width: 650px;
-        height: 350px;
+        display: block;
         margin:0 auto;
     }    
-    .trade_summary {
-        display: flex;
-        align-self: center;
-        flex-direction: column;
-        margin:0 30px;
-    }
     
     /* layout */
 
@@ -595,25 +519,6 @@ section.sales summary {
         justify-content: space-evenly;
         width: 100vw;
         flex-wrap: wrap;
-    }
-
-     #notice .notice_wrapper {
-        background: var(--color-theme);
-        font-size: 1.2rem;
-        padding: 5px;
-        text-align: center;
-        font-size: 1.1rem;
-       
-    }
-    /*#notice .title {
-        font-size: 20px;
-        color: #214b25;
-        margin: 0 10px;
-        font-weight: bold;
-    } */
-
-    .notice li {
-        font-size: 1.2rem;
     }
 
   /* Modal Content/Box */

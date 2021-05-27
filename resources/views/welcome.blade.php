@@ -27,8 +27,10 @@
 
 <div class="main__wrapper">
 
-    <section id="trade_summary" class="flex">
-    
+    <div class="home_layout__wrapper">    
+
+        <section id="trade_summary">
+        
             @php
                 $index_change = 0;
                 if($currentIndex){
@@ -37,129 +39,114 @@
                 $change_css = \App\Services\UtilityService::gainLossClass1($index_change);
                 $change_per = \App\Services\UtilityService::calculatePercentage($index_change, $prevIndex->closingIndex);
             @endphp
-            
-        <div class="trade_summary_wrapper">
-
-        <div id="area_chart"></div>
+           
+            <div id="area_chart"></div>
 
             <div class="trade_summary">                
 
-                <div>
+                <div style="grid-column:1/3;text-align:center;padding:15px;">
                     <h3><a class="market_open" href="{{url('nepse-price')}}">Today's price</a></h3>    
                 </div>
 
-                <div class="flex">
-                        
-                    <div>
-                        <div class="item">
-                            <label>Index </label>
-                            <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
-                            <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
-                        </div>
-
-                        <div class="item">
-                            <label>Previous index</label>
-                            <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
-                        </div>    
-                    </div>
-
-                    <div>
-                        <div class="item">
-                            <label># Scrips</label>
-                            <div class="value">{{ number_format($totalScrips) }}</div>
-                        </div>
-
-                        <div class="item" title="{{ number_format( $totalTurnover) }}">
-                            <label>Turnover</label>
-                            <div class="value" id="current_over">{{ MyUtility::formatMoney($totalTurnover) }}</div>
-                        </div>
-                    </div>
-                    
+                <div class="item">
+                    <label>Index </label>
+                    <div class="value" id="current_index">{{number_format(optional($currentIndex)->closingIndex,2)}}</div>
+                    <div class="sm-text {{$change_css}}">{{ number_format( $index_change,2)}} &nbsp;({{ $change_per }})</div>
                 </div>
 
-            </div>
+                <div class="item">
+                    <label>Previous index</label>
+                    <div class="value" id="prev_index">{{number_format(optional($prevIndex)->closingIndex,2)}}</div>
+                </div>    
+            
+                <div class="item">
+                    <label># Scrips</label>
+                    <div class="value">{{ number_format($totalScrips) }}</div>
+                </div>
 
-        </div>
+                <div class="item" title="{{ number_format( $totalTurnover) }}">
+                    <label>Turnover</label>
+                    <div class="value" id="current_over">{{ MyUtility::formatMoney($totalTurnover) }}</div>
+                </div>
+                
+            </div>  
+            
+        </section>
 
-    </div>
+        <section id="articles">
 
-    </section>
+            <article class="turnovers">
+                <header>
+                    <h2>Top turnovers</h2>
+                </header>
+                <main>
+                    <table>
+                        <tr>
+                            <th>Symbol</th>
+                            <th class="c_digit">Turnover</th>
+                            <th class="c_digit optional">LTP</th>
+                        </tr>
+                        @foreach($turnovers as $turnover)
+                        <tr>
+                            <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
+                            <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
+                            <td class="c_digit optional">{{number_format($turnover->last_updated_price)}}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </main>
+            </article>
 
-    <section id="articles">
+            <article class="gainers">
+                <header>
+                    <h2>Top gainers</h2>
+                </header>
+                <main>
+                    <table>
+                        <tr>
+                            <th>Symbol</th>
+                            <th class="c_digit">LTP</th>
+                            <th class="c_digit">Change</th>
+                        </tr>
+                        @foreach($gainers as $turnover)
+                        <tr>
+                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </main>
+            </article>
 
-        <article class="turnovers">
-            <header>
-                <h2>Top turnovers</h2>
-            </header>
-            <main>
-                <table>
-                    <tr>
-                        <th>Symbol</th>
-                        <th class="c_digit">Turnover</th>
-                        <th class="c_digit optional">LTP</th>
-                    </tr>
-                    @foreach($turnovers as $turnover)
-                    <tr>
-                        <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
-                        <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
-                        <td class="c_digit optional">{{number_format($turnover->last_updated_price)}}</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </main>
-        </article>
+            <article class="loosers">
+                <header>
+                    <h2>Top loosers</h2>
+                </header>
+                <main>
+                    <table>
+                        <tr>
+                            <th>Symbol</th>
+                            <th class="c_digit">LTP</th>
+                            <th class="c_digit">Change</th>
+                        </tr>
+                        @foreach($loosers as $turnover)
+                        <tr>
+                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                            <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
+                            <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </main>
+            </article>
+        </section>
 
-        <article class="gainers">
-            <header>
-                <h2>Top gainers</h2>
-            </header>
-            <main>
-                <table>
-                    <tr>
-                        <th>Symbol</th>
-                        <th class="c_digit">LTP</th>
-                        <th class="c_digit">Change</th>
-                    </tr>
-                    @foreach($gainers as $turnover)
-                    <tr>
-                        <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                        <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
-                        <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </main>
-        </article>
-
-        <article class="loosers">
-            <header>
-                <h2>Top loosers</h2>
-            </header>
-            <main>
-                <table>
-                    <tr>
-                        <th>Symbol</th>
-                        <th class="c_digit">LTP</th>
-                        <th class="c_digit">Change</th>
-                    </tr>
-                    @foreach($loosers as $turnover)
-                    <tr>
-                        <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
-                        <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
-                        <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </main>
-        </article>
-    </section>
-
-    <section id="sectors">
-        <div>
+        <section id="sectors">
             <div id="pie_chart" hidden></div>
             <article class="sectors">
                 <header>
-                <h2>Turnover by sector</h2>
+                    <h2>Turnover by sector</h2>
                 </header>
                 <main>
                     <table>
@@ -173,7 +160,7 @@
                         $perTurnover = ($sector['total_value']/$totalTurnover)*100;
                         @endphp
                         <tr>
-                            <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 15) ?: '***'}}</td>
+                            <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 30) ?: '***'}}</td>
                             <td class="c_digit">
                                 {{MyUtility::formatMoney( $sector['total_value'] )}} 
                             </td>
@@ -185,13 +172,14 @@
                     </table>
                 </main>
             </article>
-        </div>        
-    </section>
-    
-    <section class="footer-date">
-        <div title="Last transaction time">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
-    </section>
-    
+        </section>
+        
+        <section class="footer-date">
+            <div title="Last transaction time">{{ $last_updated_time }} <mark style="display:inline-block">({{ $last_updated_time->diffForHumans() }})</mark></div>
+        </section>
+
+    </div>
+
 </div>
 
 @section('custom_js')
