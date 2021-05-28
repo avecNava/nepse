@@ -269,7 +269,6 @@ section.sales summary {
     font-weight: bold;
 }
 
-
 /* verification */
 .card-body button {
     margin: 10px 0;
@@ -284,7 +283,6 @@ section.sales summary {
     font-weight: bold;
     font-size: 20px;
 }
-
 
 /* screens other than mobile */
 /* 575px=35.938em */
@@ -349,8 +347,6 @@ section.sales summary {
     ul.navbar-nav li:first-child {display: none;}
     ul.navbar-nav li:last-child {display: none;}        /*hide the logout button in big screen*/
     
-
-   
     
     footer.page-footer {
         margin: 0;
@@ -385,7 +381,6 @@ section.sales summary {
     section#sectors {
         display: grid;
         grid-template-columns: 1fr 31%;
-        place-items: self-start;
     }
     .trade_summary {
         display: grid;
@@ -412,6 +407,19 @@ section.sales summary {
         margin:0 auto;
     }    
     
+    /*portfolio top filter*/
+    .portfolio_top_filter > div {
+        display: flex;
+        align-items: center;
+    }
+    /*user portfolio data table*/
+    table#user-portfolio_wrapper {
+        display: revert;
+    }
+    table th,table td {
+        font-size:1rem;
+        height: 60px;
+    }
     /* layout */
 
     /* portfolio detail */

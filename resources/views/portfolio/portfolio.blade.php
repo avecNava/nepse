@@ -81,11 +81,9 @@
         
         <section class="main__content">
         
-            <header class="info">
+            <header class="portfolio_top_filter">
 
-                <div class="flex js-apart al-end">
-
-                <div class="flex js-start al-cntr">
+                <div>
                     <h2 class="title">{{ $shareholder }}</h2>
                     @if(count($portfolios)>0)
                     <div class="notification">
@@ -94,15 +92,16 @@
                     @endif
                 </div>
 
-                <div class="flex js-start al-cntr">
-                <select name="shareholders" id="shareholders" onchange="refresh()">
-                    @foreach($shareholders as $row)
-                    <option value="{{ $row->uuid }}" @if($uuid == $row->uuid) SELECTED @endif>
-                        {{$row->first_name}} {{$row->last_name}} 
-                    </option>
-                    @endforeach
-                </select>    
-                &nbsp;
+                <div>
+                    <select name="shareholders" id="shareholders" onchange="refresh()">
+                        @foreach($shareholders as $row)
+                        <option value="{{ $row->uuid }}" @if($uuid == $row->uuid) SELECTED @endif>
+                            {{$row->first_name}} {{$row->last_name}} 
+                        </option>
+                        @endforeach
+                    </select>    
+                    &nbsp;
+                        
                     <div class="message" id="message">                    
                         @if(session()->has('message'))
                             <span class="success">{{ session()->get('message') }}</span>
@@ -115,6 +114,7 @@
                     @php
                         $row = $portfolios->first();
                     @endphp
+
                     <form  method="POST" action="/portfolio/export" style="margin:0" class="optional">
                         @csrf()
                         <input name="id" type="hidden" value="{{ optional($row)->shareholder_id }}">

@@ -218,7 +218,7 @@
                 var options = {
                     legend:'none',
                     title: `NEPSE index: ${json_data.index} (${date_str})`,
-                    chartArea:{left:50,top:50,width:'95%','height':'70%'},
+                    chartArea:{left:50,top:50, width:'95%','height':'70%'},
                     titleTextStyle:{ 
                                     color: '#000',
                                     fontSize: '15px',
@@ -282,8 +282,7 @@
                     sliceVisibilityThreshold: .1,
                     legend: {position: 'labeled', textStyle: {color: 'blue'}},
                     pieResidueSliceLabel : 'Miscellaneous',
-                    chartArea:{left:30,top:50, 'width':'80%','height':'80%'},
-
+                    chartArea:{left:10,top:50, 'width':'100%'},
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('pie_chart'));

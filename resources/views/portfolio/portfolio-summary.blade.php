@@ -22,9 +22,9 @@
     
     <div class="dsh_layout__wrapper">
         
-        <div class="box" style="grid-column:1/2">
+        <div class="box box-summary" style="grid-column:1/2">
             
-            <div style="display:flex">
+            <div style="display:flex;justify-content:center">
                 <h2>Summary</h2> &nbsp;as of&nbsp;
                 <div>{{optional($index)->transactionDate}}</div>
             </div>
@@ -126,7 +126,7 @@
                                     <div class="{{$row['day_gain_css']}}">{{ number_format( $row['day_gain'] ) }}</div>
                                     <span class="optional">
                                         @if($row['day_gain_pc'])
-                                            ({{ $row['day_gain_pc'] }}%)
+                                            &nbsp;({{ $row['day_gain_pc'] }}%)
                                         @endif
                                     </span>
                                 </div>

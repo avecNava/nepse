@@ -29,7 +29,7 @@
 
 <section class="transactions">
     <header">
-        <h2>Market data (#NEPSE) </h2>
+        <h2>Stock price</h2>
         <div title="Last transaction time">{{ $last_updated_time }} <mark>({{ $last_updated_time->diffForHumans() }})</mark></div>
     </header>
     @if($transactions)
@@ -39,7 +39,7 @@
                 <th>Symbol</th>
                 <th class="c_digit">Last Price (LTP)</th>
                 <th class="c_digit">Change</th>
-                <th class="c_digit c_change">% Change</th>
+                <th class="c_digit">% Change</th>
                 <th class="optional c_digit">Open price</th>
                 <th class="c_digit">High price</th>
                 <th class="c_digit">Low Price</th>
@@ -62,7 +62,7 @@
                 <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
                 <td class="{{$change_css}} c_digit">{{number_format($change,2)}}</td>
                 <td class="c_digit c_change">
-                    <div class="flex apart">
+                    <div class="flex al-cntr">
                     <div class="{{$change_css}}">
                         {{$change_per}}
                     </div>
