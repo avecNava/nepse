@@ -894,6 +894,7 @@ ul.shareholder-nav li::before {
 .data_wrapper {
     display: flex;
     flex-wrap: nowrap;
+    justify-content: flex-end;
 }
 
 /* datatable related CSS */

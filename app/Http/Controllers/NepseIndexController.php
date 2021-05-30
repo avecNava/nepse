@@ -19,14 +19,21 @@ class NepseIndexController extends Controller
         
         $today = Carbon::now();
         $this->businessDate =  $today->toDateString();
-        $baseURL = 'https://newweb.nepalstock.com/api/nots/';
+        // $baseURL = 'https://newweb.nepalstock.com/api/nots/';
+        // 62 Float
+        // 63 Sen Float
+        // 58 Index
+        // 57 Sensitive Index
         $this->client = new client([
-            'base_uri' => 'https://newweb.nepalstock.com/api/nots/index'
+            // 'base_uri' => 'https://newweb.nepalstock.com/api/nots/index'
+            'base_uri' => 'https://newweb.nepalstock.com.np/api/nots/'
         ]);
     }
     
     /***
-     * reads index history via https://newweb.nepalstock.com/api/nots/index/history/58 and stores in db
+     * Datewise indices 
+     * https://newweb.nepalstock.com.np/api/nots/index/history/58?&size=5 (take only 5 days)
+     * and stores in db
      * Runs : once a day after nepse market closes (except holidays and weekends)
      * Note : This will set the closing Index for current date 0 if run during business hours (as closing index is not yet calculated)
      */
@@ -44,6 +51,9 @@ class NepseIndexController extends Controller
         $response = $this->client->request('GET',"index/history/58", 
         [
             'query' => ['size' => '5'],
+            'headers' => [
+                'User-Agent' => uniqid()        //custom user-agent
+            ],
             'http_errors' => false              //parse the response, not matter it's ok or error
         ]);
         
@@ -80,7 +90,8 @@ class NepseIndexController extends Controller
     }
 
     /***
-     * reads index history via https://newweb.nepalstock.com/api/nots/graph/index/58 and stores in db
+     * Current index for various business hours throughout the day
+     * https://newweb.nepalstock.com.np/api/nots/graph/index/58
      * Runs : once every 15 minutes every day except holidays and weekends
      * updates
      */
@@ -93,9 +104,13 @@ class NepseIndexController extends Controller
             ]);
         }
 
-        //58 is for NEPSE Index
-        $response = $this->client->request('GET',"graph/index/58", [
-            'http_errors' => false              //parse the response, not matter it's ok or error
+         //58 is for NEPSE Index
+         $response = $this->client->request('GET',"graph/index/58", [
+            'http_errors' => false,              //parse the response, not matter it's ok or error
+            'verify' => false,
+            'headers' => [
+                'User-Agent' => uniqid()        //custom user-agent
+            ],
         ]);
 
         try {
@@ -112,6 +127,7 @@ class NepseIndexController extends Controller
             //     1621746300, epoch
             //     2768.87 index
             // ],
+            
             foreach($data_array as $data){ 
                 $epoch = $data[0];
                 $index = $data[1];

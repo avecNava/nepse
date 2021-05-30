@@ -38,9 +38,10 @@ class StockPriceController extends Controller
         // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
         $date_string =  $time_start->toDateString();
         // $date_string =  '2020-12-31';
-        
-        $client = new client([
-            'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
+        /* add trailing slash (/) at the end of base_uri to avoid empty response message*/
+        $client = new Client([
+            // 'base_uri' => 'https://newweb.nepalstock.com/api/nots/nepse-data/'
+            'base_uri' => 'https://newweb.nepalstock.com.np/api/nots/nepse-data/'
         ]);
 
         $response = $client->request('GET',"today-price", [
@@ -48,11 +49,15 @@ class StockPriceController extends Controller
                 'size' => '400',
                 'businessDate' => $date_string
             ],
-            'http_errors' => false              //parse the response, not matter it's ok or error
-            ]);
+            'http_errors' => false,              //parse the response, not matter it's ok or error
+            // 'verify' => false,
+            'headers' => [
+                'User-Agent' => uniqid()      //custom user-agent
+            ]
+        ]);
         
         try {            
-        
+            
                 $body = $response->getBody();
                 $content = $body->getContents();
 

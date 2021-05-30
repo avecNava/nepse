@@ -25,12 +25,14 @@ Auth::routes([
     'register' => true,
 ]);
     
-Auth::loginUsingId(1);
+// Auth::loginUsingId(1);
 // Auth::loginUsingId(171);
-
-Route::get('test', function(){
-    echo number_format(0);
+Route::get('test',function(){
+    dd('Hello ', uniqid());
 });
+// Route::get('test', function(){
+//     echo number_format(0);
+// });
 
 Route::get('mail', function(){
     $user = User::find(1);
