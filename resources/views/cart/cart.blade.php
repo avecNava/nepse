@@ -266,7 +266,7 @@
     @endif
 
 </section>
-<script src="{{ URL::to('js/cart.js') }}"></script>
+<script src="{{ URL::to('js/cart.js') }}" defer></script>
 <script>
         
     const el = document.querySelector('select#shareholders').addEventListener('change',function(e){

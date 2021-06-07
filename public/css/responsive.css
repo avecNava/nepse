@@ -867,6 +867,13 @@ details.form_details h3{
     background: #187700;
     color: wheat;
 }
+.feedback__wrapper {
+    margin-top: 10px;
+}
+.feedback__form form {
+    width: 50%;
+    border: 1px ridge;
+}
 section.feedback__intro {
     margin: 0 10px;
 }

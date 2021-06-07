@@ -1,12 +1,11 @@
 //show notice 
-
-const el = document.querySelector('#notice');
-const notice  = el.querySelector('.notice'); 
+const notice_wrapper = document.querySelector('#notice');
+const notice  = document.querySelector('.notice'); 
 
 if(typeof(notice) != 'undefined' && notice != null){
     if(notice.dataset.showNotice === "yes"){
-        el.classList.remove('hide');
-        el.classList.add('show');
+       notice_wrapper.classList.remove('hide');
+       notice_wrapper.classList.add('show');
     }
 }
 function showHamburgerMenu(){

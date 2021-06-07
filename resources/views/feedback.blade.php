@@ -45,10 +45,10 @@
         </div>
     </section>
 
-    <section class="form__wrapper">
+    <section class="form__wrapper feedback__form">
 
         <form method="POST" action="feedbacks" enctype="multipart/form-data">
-            <header class="info flex js-apart al-cntr band">
+            <header class="info band">
                 <h2>Feedbacks</h2>
                 <div class="flex">
                     <button type="submit" class="focus">Send Feedback</button>
