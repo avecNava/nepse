@@ -306,27 +306,26 @@ section.sales summary {
         display: revert;
     }
 
-    h1, h2, h3 {margin:5px; margin-left:0;}
+    /* h1, h2, h3 {margin:5px; margin-left:0;} */
     h1 {font-family: 'Cutive', serif;font-size:1.5em;}
     h2 {font-size: 1.2em;}
     h3 {font-size: 1.1em;}
-
-    #hamburger{
-        display: none;
+    .menu_wrapper{
+        display: block !important;
     }
-    header.main-header {
-        padding-top: 30px;
+    .menu-item {
+        padding: 5px;
     }
-    .main-header__wrapper {
-        flex-direction: column;
+    .menu-item:hover {
+        background-color: #f7f7f7;
+    }    
+    
+    .sub-menu {
+        margin-left: 10px;
+        font-size: 1.2rem;
     }
-    div#myNav {
-        position: relative;
-    }
-    .site-info__wrapper {
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: nowrap;
+    div#hamburger{
+        display: block;
     }
     div#myNav {
         width: 100%;
@@ -367,7 +366,7 @@ section.sales summary {
     .box h2 {
         font-size: 1.1rem;
     }
-
+    
     /*welcome page*/
     .home_layout__wrapper {
         display: grid;
@@ -420,6 +419,10 @@ section.sales summary {
         font-size:1rem;
         height: 60px;
     }
+    .home_layout__wrapper table th,table td {
+        font-size:1rem;
+        height: 40px;
+    }
     /* layout */
 
     /* portfolio detail */
@@ -454,6 +457,14 @@ section.sales summary {
     }
 
     /*shareholder CRUD*/
+
+    section#shareholder-crud {
+        display: grid;
+        margin-top: 10px;
+        grid-template-columns: 70% 1fr;
+        grid-gap: 10px;
+    }
+    
     .form.c_shareholder_list header {
         flex-direction: row;
         justify-content: space-between;
@@ -468,9 +479,6 @@ section.sales summary {
         justify-content: space-evenly;
         flex-direction: row;
         flex-wrap: wrap;
-    }
-    .form.c_shareholder_list {
-        width: 65%;
     }
     #portfolio-form__wrapper .form-field {
         width: 300px;
@@ -496,27 +504,6 @@ section.sales summary {
         flex-direction: row;
     }
 
-    /*faq and guidelines*/
-
-    section.guidelines, section.faq {
-        margin: 10px 60px;
-    }
-    section.guidelines p,section.faq p {font-size:20px;}
-    section.faq p {
-        padding: 0 20px;
-
-    }
-
-    article.summary main {
-        display: flex;
-    }
-
-    .sectors .sector {
-        margin: 4px;
-        max-width: 47%;
-    }
-
-
     .portfolio__content,
     .sh_dashboard__wrapper .main__content {
         margin: 0 5px;
@@ -527,6 +514,9 @@ section.sales summary {
         justify-content: space-evenly;
         width: 100vw;
         flex-wrap: wrap;
+    }
+    .feedbacks.nav {
+        grid-template-columns: repeat(4,auto);
     }
 
   /* Modal Content/Box */

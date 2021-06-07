@@ -5,10 +5,10 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Stock detail</h1>
+    Stock detail
 @endsection
 
-@section('js')
+@section('custom_js')
     <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
@@ -74,7 +74,7 @@ tfoot td {
                     <h3 class='highlight'>{{$stock['security_name']}} ({{$stock['symbol']}})</h3>
                     <h3>{{optional($stock->sector)->sector}}</h3>
                     @endif
-                    <section id="basket" class="item basket">
+                    <section id="basket" class="item basket" style="display:none">
                     <header>
                         <h3>Add to Sales basket</h3>
                         @csrf()                    
@@ -230,13 +230,13 @@ tfoot td {
                         <div class="form-field">
                             <label for="unit_cost"  
                             class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                            <input type="number" name="unit_cost" require id="unit_cost" step=".01" required 
+                            <input type="number" name="unit_cost" id="unit_cost" step=".01" required 
                             value="{{ old('unit_cost') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="quantity"
                             class="@error('quantity') is-invalid @enderror">Quantity</label>
-                            <input type="number" name="quantity" required id="quantity" required 
+                            <input type="number" name="quantity" id="quantity" required 
                             value="{{ old('quantity') }}"/>
                         </div>
                         <div class="form-field">
@@ -545,6 +545,7 @@ tfoot td {
 
         let request = new XMLHttpRequest();
         const url = `${window.location.origin}/portfolio/get/${chk.id}`;
+        console.log(url);
         request.open('GET', url, true);
 
         request.onload = function() {

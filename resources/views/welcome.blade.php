@@ -5,22 +5,15 @@
 @endsection
 
 @section('header_title')
-    <h1>NEPSE.TODAY</h1>
-@endsection
-
-@section('js')
-@endsection
-
-@section('custom_css')
-    
+    NEPSE.TODAY
 @endsection
 
 @section('notice')
-<?php if(strlen($notice)>0){ ?>
-    <div role="notice" class='notice' data-show-notice="yes">
-        {!! $notice !!}
-    </div>
-<?php } ?>
+    <?php if(strlen($notice)>0){ ?>
+        <div role="notice" class='notice' data-show-notice="yes">
+            {!! $notice !!}
+        </div>
+    <?php } ?>
 @endsection
 
 @section('content')
@@ -182,18 +175,24 @@
 
 </div>
 
-@section('custom_js')
+    @section('custom_js')
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+    
+    setTimeout(() => {
+    
+        // Load the Visualization API and the piechart package.
+        google.charts.load('current', {'packages':['corechart','table']});
 
-    // Load the Visualization API and the piechart package.
-    google.charts.load('current', {'packages':['corechart','table']});
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+        
+        // google.charts.setOnLoadCallback(drawChart1);
+        google.charts.setOnLoadCallback(drawChartTradesBySector);
 
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);    
-    // google.charts.setOnLoadCallback(drawChart1);    
-    google.charts.setOnLoadCallback(drawChartTradesBySector);    
+    }, 1000);
+
 
     //line chart for current index
     function drawChart() {
@@ -259,7 +258,7 @@
         request.send();
     }
 
-   
+
     function drawChartTradesBySector() {
         let request = new XMLHttpRequest();
         const url = `${window.location.origin}/chart/sector-turnover`;
@@ -293,8 +292,9 @@
         }
         request.send();
     }
-    
-</script>
+        
+    </script>
 
-@endsection
+    @endsection
+
 @endsection

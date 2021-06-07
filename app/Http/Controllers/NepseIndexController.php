@@ -62,6 +62,7 @@ class NepseIndexController extends Controller
         
                 $body = $response->getBody();
                 $content = $body->getContents();
+             
                 $data_array = json_decode($content, true);
                 
                 foreach ($data_array['content'] as $data) {
@@ -118,7 +119,6 @@ class NepseIndexController extends Controller
             $body = $response->getBody();
             $content = $body->getContents();
             $data_array = json_decode($content, true);
-            
             $businessDate = $this->epochToDate($data_array[0][0]);
             $all_indexes = collect([]);
 
@@ -138,7 +138,6 @@ class NepseIndexController extends Controller
                     'transactionDate' => $this->epochToDate($epoch),
                 ]);
             }
-            
             //https://laravel.com/docs/8.x/eloquent#upserts
             DailyIndex::upsert(
                 $all_indexes->toArray(),            //all values

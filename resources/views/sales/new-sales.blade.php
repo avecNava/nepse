@@ -5,11 +5,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">New Sales</h1>
-@endsection
-
-@section('js')
-   
+    New Sales
 @endsection
 
 @section('content')

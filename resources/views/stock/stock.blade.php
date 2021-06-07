@@ -4,11 +4,8 @@
     Your stock portfolio management application over the browser
 @endsection
 
-@section('js')
-@endsection
-
 @section('header_title')
-<h1 class="c_title">Stocks</h1>
+    Stocks
 @endsection
 
 @section('content')

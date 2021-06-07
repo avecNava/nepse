@@ -32,13 +32,19 @@ div#app, div#container {
 .sm-text,.tiny-txt {
     font-size: .8em;
 }
+
 /*flex attribute css*/
 .flex {display: flex;}
 .js-apart {justify-content: space-between;}
 .js-start {justify-content: flex-start;}
-.al-end {align-items: flex-end;}
-.al-cntr {align-items: center;}
-
+.al-end {align-items: flex-end;justify-content:flex-end;}
+.al-cntr {align-items: center;justify-content: center;}
+.page-title{
+    display: flex;
+    justify-content: flex-end;
+    font-size:2rem;
+    font-weight: bold;
+}
 #notice .notice_wrapper {
     background: var(--color-theme);
     font-size: 1.2rem;
@@ -66,10 +72,16 @@ mark {padding: 2px 4px;margin: 2px 0;}
 strong{font-weight: normal;}
 
 /* layout */
+.main-header__wrapper {
+    display: grid;
+    grid-template-rows: repeat(3,auto);
+}
+.header-text {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: self-end;
+}
 div#container, div#app {box-shadow: 1px 1px 19px 4px #ddd;}
-/* .home_layout__wrapper section {
-    border: 1px solid red;
-} */
 .c_content__wrapper {
     margin: 0 5px;
 }
@@ -99,9 +111,6 @@ section.footer-date {
     animation-name: twinkle;
     animation-iteration-count: infinite;
     animation-duration: 1s;
-}
-.home_layout__wrapper section {
-    margin: 15px 0;
 }
 .trade_summary {
     display: grid;
@@ -163,6 +172,9 @@ th:last-child, td:last-child {padding-right: 10px;}
 tr.separator {background: none;height: 30px;}
 .transactions table td:nth-child(2) {max-width: 50px;}
 
+section#sectors {
+    margin-top: 10px;
+}
 
 .sectors .sector {
     margin: 2px 1px;
@@ -178,6 +190,9 @@ tr.separator {background: none;height: 30px;}
 #notice .message_wrapper {
     text-align: center;
     font-weight: bold;
+}
+.site-header {
+    padding-bottom: 10px;
 }
 .site-header .optional {
     display: none;
@@ -226,27 +241,71 @@ div#notice .btn {
 }
 
 /* faq and guidelines */
-section.faq header, section.guidelines header{margin:10px 0;}
-section.faq h3, section.guidelines h3{display:inline; }
-section.faq li, section.guidelines li{padding-left: 10px;}
-
+.box-shadow {
+    grid-column: 1/3;
+    background: #f7f7f7;
+    margin-top: 20px;
+    padding: 20px;
+    /* box-shadow: 0px 0px 7px 1px #a8c0d0; */
+    box-shadow: 1px 1px 19px 4px #ddd;
+}
+section.guidelines .col {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 40px;
+}
+section.guidelines { margin: 10px 20px; }
+section.guidelines nav {
+    background: #f7f7f7;
+}
+section.guidelines ul.navbar {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20px;
+    margin: 25px 0 50px 0;
+}
 section.guidelines li::marker {
     content: '📑';
 }
 section.guidelines li {
     margin: 15px 0;
 }
-.guidelines a:hover {
+section.guidelines a:hover {
     background: #CDDC39;
 }
-.guidelines a {
+section.guidelines a {
     color: #3F51B5;
     border-bottom: 1px dashed #FF5722;
     padding: 0 5px;
+    font-size: 1.1rem;
 }
-section.guidelines ul {
-    margin: 0 20px;
+.col section {
+    margin: 35px 0;
 }
+section.guidelines .col ul {
+    padding: 0 20px;
+}
+section.faq main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin:50px 0
+}
+section.faq summary {
+    padding: 20px;
+    background: #f7f7f7;
+    margin: 5px;
+}
+section.faq { margin: 10px; }
+section.faq header, section.guidelines header{margin:10px 0;}
+section.faq h3, section.guidelines h3{display:inline; }
+section.guidelines .col p,
+section.faq details p {
+    font-size: 1.1rem;
+}
+section.faq .desc {
+    margin-left: 10px;
+}
+
 .highlighted {
     transition: font-size .5s;
     color: var(--form-band);
@@ -311,19 +370,17 @@ main.c-main {
 }
 
 /* The Overlay (background) */
-.overlay {
+/* .overlay {
     width: 0;
     position: absolute;
-    z-index: 1; /* Sit on top */
+    z-index: 1; 
     left: 0;
     top: 0;.
-    margin:auto;
-    
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
-  }
-
-
+    margin:auto;    
+    overflow-x: hidden;
+    transition: 0.5s; 
+  } 
+  */
 
 /*menu links*/
 
@@ -353,32 +410,56 @@ section#top-nav .label {
     background: beige;
 }
 
-div#hamburger {
-    background: rgb(162 191 217);
+/* hamburger menu (side menu) */
+#hamburger {
     width: 50px;
     height: 45px;
-    padding: 5px 2px;
+    padding: 5px;
     margin: 1px;
-}   
+    cursor: pointer;
 
+}
 div#hamburger>div {
     height: 6px;
     background: #214b25;
     margin: 4px 2px;
 }
-.top-right {
-    position: absolute;
+nav#right-menu {display: none;}
+nav#right-menu.show-menu{display: block;}
+.side-nav {
+    position: fixed;
+    width: 270px;
     top: 0;
+    margin: 0;
+    height: calc(100vh);
+    height: -moz-calc(100%);
+    padding-bottom: 60px;
+    background-color: #fff;
+    z-index: 999;
+    will-change: transform;
+    backface-visibility: hidden;
     right: 0;
+    font-size: 1.5rem;
 }
+nav#right-menu a {
+    font-size: 1.2rem;
+}
+/* hamburger menu (side menu) */
 
-/*header*/
-.site-info__wrapper {
-    margin: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* charts (homepage) */
+div#area_chart {
+    background: url('/assets/images/area-chart.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
+div#pie_chart {
+    background: url('/assets/images/pie-chart.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+/* charts (homepage) */
 
 .site-logo {
     width: 108px;
@@ -388,15 +469,9 @@ div#hamburger>div {
     background-size: cover;
 }
 
-
 header.main-header {
     background: rgb(202,202,168);
     background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
-    position: relative;
-}
-
-.main-header__wrapper {
-    display: flex;
 }
 
 ul.navbar-nav{
@@ -673,9 +748,9 @@ header.shareholder-list-header{
     flex-direction: column-reverse;
 }
 section#shareholder-crud {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column-reverse;
+    display: grid;
+    margin-top: 10px;
+    grid-gap: 10px;
 }
 .validation-error li {
     list-style-type: disc;
@@ -775,17 +850,12 @@ details.form_details summary:focus {
 details.form_details h3{
     display: inline;
 }
-section.guidelines { margin: 10px 20px; }
-section.faq { margin: 10px; }
+
 .contact-us__form {
     margin: 10px 20px;
 }
 .form_content {
     margin: 0 20px;
-}
-.nav__username {
-    font-size: 20px;
-    font-weight: bold;
 }
 
 .nav__user__wrapper {
@@ -813,8 +883,11 @@ section.feedback__intro {
     margin: 60px 0;
     flex-direction: column;
 }
+section.portfolio__form__wrapper {
+    margin-top: 10px;
+}
 section.portfolio__form__wrapper main {
-    margin: 0 15px;
+    margin: 10px;
 }
 .center-box {
     background: #e3e3b817;

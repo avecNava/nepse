@@ -9,7 +9,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Import Stocks (MeroShare)</h1>
+    Import Stocks (MeroShare)
 @endsection
 
 @section('content')
@@ -30,14 +30,6 @@
             @endif
         </div>
 
-        <div class="links">
-            <div class="link selected">
-                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">Import from MeroShare</a>
-            </div>
-            <div class="link">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import using Spreadsheet</a>
-            </div>
-        </div>
     </section>
 
     <!-- Trigger/Open The Modal -->

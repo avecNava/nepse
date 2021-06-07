@@ -45,22 +45,21 @@ class StockPriceController extends Controller
         ]);
 
         $response = $client->request('GET',"today-price", [
+            'http_errors' => true,              //parse the response, not matter it's ok or error
+            'verify' => false,
+            'headers' => [
+                'User-Agent' => uniqid()      //custom user-agent
+            ],
             'query' => [
                 'size' => '400',
                 'businessDate' => $date_string
             ],
-            'http_errors' => false,              //parse the response, not matter it's ok or error
-            // 'verify' => false,
-            'headers' => [
-                'User-Agent' => uniqid()      //custom user-agent
-            ]
         ]);
-        
         try {            
             
                 $body = $response->getBody();
                 $content = $body->getContents();
-
+               
                 if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
                     $msg = "Scraping failed. Data unavailable.',['. $date_string";
                     Log::warning('Scraping failed. Data unavailable.',['date'=>$date_string,'message'=>$msg]);
@@ -68,7 +67,11 @@ class StockPriceController extends Controller
                 }
                 
                 $data_array = json_decode($content, true);
-            
+                if(sizeof($data_array) < 1){
+                    Log::info('Scraping nepalstock. Response is EMPTY');
+                    return "Empty response. URL https://newweb.nepalstock.com.np/api/nots/nepse-data?size=400&businessDate=2020-06-06";
+                }
+
                 Stock::addOrUpdateStock($data_array['content']);
                 StockPrice::updateOrCreateStockPrice( $data_array['content'] );        
                 StockPrice::updateStockIDs();

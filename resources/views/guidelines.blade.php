@@ -5,42 +5,41 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Guidelines</h1>
+    Guidelines
 @endsection
 
-
-@section('js')
-   
-@endsection
 
 @section('content')
 
 <style>
-    h2 { margin-top: 50px; }
     .scroll-top {scroll-margin-top: .8em;}
     .note {
-    margin: 30px;
+        margin: 30px;
     }
 }
 </style>
     <section class="guidelines">
     <h2>Guidelines</h2>
         
-        <p>
-            <ul class="navbar">
-                <li><a href="#add-stocks">Add Stocks</a></li>
-                <li><a href="#add-shareholder">Add Shareholder</a></li>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#update-stocks">Update stocks</a></li>
-                <li><a href="#delete-stocks">Delete stocks</a></li>
-                <li><a href="#sales">Sales</a></li>
-                <li><a href="#stocks">Stocks</a></li>
-                <li><a href="#brokers">Brokers</a></li>
-                <li><a href="#feedbacks">Feedbacks</a></li>
-            </ul>
-        </p>
-        <article>
+    <nav role="navitation">
+        <ul class="navbar">
+            <li><a href="#add-stocks">Add Stocks</a></li>
+            <li><a href="#add-shareholder">Add Shareholder</a></li>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#update-stocks">Update stocks</a></li>
+            <li><a href="#delete-stocks">Delete stocks</a></li>
+            <li><a href="#sales">Sales</a></li>
+            <li><a href="#stocks">Stocks</a></li>
+            <li><a href="#brokers">Brokers</a></li>
+            <li><a href="#feedbacks">Feedbacks</a></li>
+        </ul>
+    </nav>
+   
+    <div class="col">
+
+        <div>
+            
             <article class="scroll-top" id="add-stocks">
                 
                 <h2>Add Stocks</h2>
@@ -106,15 +105,20 @@
             <article class="scroll-top" id="add-shareholder">
                 
                 <h2>Add Shareholder</h2>
-                <p>You can add your family members, friends circle etc as Shareholder and add stocks under their names. Stocks for different shareholders will be visible in the <a href="{{ url('portfolio') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">dashboard</a>
+                <p>
+                    You can add your family members, friends circle etc as Shareholder and add stocks under their names. Stocks for different shareholders will be visible in the <a href="{{ url('portfolio') }}" title="dashboard"  target="_blank" rel="noopener noreferrer">dashboard</a>
                 </p>
                 <ul>
-                        <li>
-                            <a href="{{ url('shareholders') }}" title="shareholders"  target="_blank" rel="noopener noreferrer">Add shareholder</a>
-                        </li>
+                    <li>
+                        <a href="{{ url('shareholders') }}" title="shareholders"  target="_blank" rel="noopener noreferrer">Add shareholder</a>
+                    </li>
                 </ul>
                                 
             </article>
+        
+        </div>
+
+        <div>
 
             <article class="scroll-top" id="dashboard">
                 
@@ -154,7 +158,7 @@
                     Goto <a href="#portfolio">shareholder portfolio</a>. Click on the symbol you would like to edit and click on <strong>Edit</strong> button.
                 </p>
             </article>
-
+            
             <article class="scroll-top" id="delete-stocks">
                 
                 <h2>Delete stocks</h2>
@@ -205,6 +209,10 @@
                 </ul>
             </article>
 
+        </div>
+
+        <div style="grid-column:1/3;background:#f7f7f7;margin-top:20px;padding:20px;" class="box-shadow">
+
             <article class="scroll-top" id="feedbacks">
                 
                 <h2>Ideas, bugs, suggestions</h2>
@@ -219,8 +227,10 @@
                         </li>
                 </ul>
             </article>
+            
+        </div>
 
-        </article>
+    </div>
     </section>    
 
     <script>

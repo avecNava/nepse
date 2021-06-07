@@ -5,22 +5,11 @@
 @endsection
 
 @section('header_title')
-<h1 class="c_title">FAQ</h1>
-@endsection
-
-@section('js')
-   
+Frequently asked questions
 @endsection
 
 @section('content')
 <style>
-    details {
-        margin: 2px 0;
-    }
-    summary {
-        padding: 10px;
-        background:#f7f7f7;
-    }
     h2 {
         display: inline-block;
         color: var(--form-band);
@@ -29,7 +18,6 @@
         outline: none;
         background: beige;
     }
-
 </style>
 
     <section class="faq">

@@ -9,8 +9,7 @@
 @endsection
 
 @section('header_title')
-<!-- <h1 class="c_title">My Cart ({{ optional(Auth::user())->name }})</h1> -->
-<h1 class="c_title">Sales Cart</h1>
+    Sales Cart
 @endsection
 
 @section('content')

@@ -5,10 +5,10 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Contact us</h1>
+    Contact us
 @endsection
 
-@section('js')
+@section('custom_js')
     
 @endsection
 

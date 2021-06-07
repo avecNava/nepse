@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'NEPSE.TODAY') }} - FREE portfolio manager</title>
@@ -12,38 +9,27 @@
     <link href="{{ URL::to('css/responsive.css') }}" rel="stylesheet">
     <link href="{{ URL::to('css/style.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ URL::to('favicon.ico') }}">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap" rel="stylesheet">
    
-    @yield('custom_css')
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive&family=Lora:wght@700&family=Scope+One&display=swap&family=Material+Icons+Outlined" rel="stylesheet">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNJB1MNNTB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-FNJB1MNNTB');
-    </script>
+    @yield('custom_css')
+    
+    <script src="{{ URL::to('js/app.js') }}" defer></script>
 
 </head>
 <body>
 
-   
-
     <div style="display:none;visibility:hidden">
         {{ config('app.name', 'NEPSE.TODAY') }} is a portfolio management system for Nepal stock exchange (#NEPSE) and is available for FREE.
-        Some of the major features are :
-        <ul>
-            <li>Manage portfolio for you and your family members.</li>
-            <li>Know the current worth current of your stocks.</li>
-            <li>Consolidated summary of net worth for you and your family in a single dashboard.</li>
-            <li>Import portfolio from Spreadsheet (or MeroShare account).</li>
-            <li>Export your portfolio in a Spreadsheet</li>
-            <li>Manage your purchases and sales history. </li>
-            <li>Find stock prices, commission and various taxes for purchases and sales. </li>
-        </ul>
+        <h2>Features</h2>
+        <p>Manage portfolio for you and your family members.</p>
+        <p>Know the current worth current of your stocks.</p>
+        <p>Consolidated summary of net worth for you and your family in a single dashboard.</p>
+        <p>Import portfolio from Spreadsheet (or MeroShare account).</p>
+        <p>Export your portfolio in a Spreadsheet</p>
+        <p>Manage your purchases and sales history. </p>
+        <p>Find stock prices, commission and various taxes for purchases and sales. </p>
     </div>
 
     <div id="container">
@@ -53,9 +39,6 @@
                 <div>
                     @yield('notice')
                 </div>
-                <!--<div class="btn" onclick="hide_notice()">
-                     <a href="#">❌</a> 
-                </div>-->
             </div> 
         </div> 
         
@@ -67,28 +50,40 @@
 
             <div class="main-header__wrapper">
 
-            <div id="hamburger" class="top-right" onclick="showLink()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+            @auth
+            <div style="place-self:end">
+                
+                <div onclick="showHamburgerMenu()" class="menu_wrapper" style="display:none">
+                    <div id="hamburger">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
 
-                <div class="site-info__wrapper">
-                    
+            </div>
+            @endauth
+
+            <div style="display: grid; grid-template-columns: 200px auto;padding:0 10px">
+
+                <div class="logo">
                     <a href="/" title="click to go to the main page">
-                        <div class="site-logo" title="site logo"></div>                
+                        <div class="site-logo" title="NEPSE.TODAY logo" alt="NEPSE.TODAY logo"></div>
                     </a>
+                </div>
+
+                <div class="header-text">
 
                     <div class="site-header">
-
+                        
                         <div class="nav__user__wrapper optional">
 
                             @auth
                             <div class="flex al-end">
                                 <div class="nav__username">
                                     {{ optional(Auth::user())->name }}&nbsp;
-                                </div>                                        
-                            
+                                </div>
+
                                 <form id="logout-form1" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
@@ -100,21 +95,21 @@
                                     </a>
                                 </span>
                             </div>
-                          
                             @endauth
 
                         </div>
 
-                        @yield('header_title')
-
+                        <h1> @yield('header_title')</h1>
+                    
                     </div>
 
                 </div>
+            </div>
 
-                <div id="myNav" class="overlay">
+            <div id="myNav" class="overlay" role="navigation">
 
-                    <nav class="overlay-content">
-                    
+                <nav class="overlay-content">
+
                     <ul class="navbar-nav">
                         <li>
                             <div class="nav_control">
@@ -155,33 +150,14 @@
                         <li class="{{MyUtility::urlMatch('portfolio/'.$uuuid)?'selected':''}}">
                             <a href="{{url('portfolio', [$uuuid]) }}">Portfolio</a>
                         </li>
-                        <li class="{{MyUtility::urlMatch('portfolio/new')?'selected':''}}"><a href="{{ url('portfolio/new') }}">New</a></li>
-                        <li class="{{MyUtility::urlMatch('sales')?'selected':''}}"><a href="{{ url('sales') }}">Sales</a></li>
-                        @if( $basket > 0) 
-                        <li class="{{MyUtility::urlMatch('cart')?'selected':''}}">                        
-                                <a href="{{url('cart')}}" title="View Cart">Cart</a>
-                            </li>
-                        @endif
-                        <li>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                            <span class="nav__logout">
-                                <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                            </span>
-                        </li>
+                        
                         @endauth
                     </ul>
-                    </nav>
+
+                </nav>
 
             </div>
-
-            </div>
-            <div id="loading-message" style="display:none">Loading... Please wait...</div>
+        
         </header>
 
         <main class="c_content">
@@ -191,7 +167,6 @@
             </div>
             
         </main>
-
        
         <footer class="page-footer">
         
@@ -279,8 +254,52 @@
             </div>
 
         </footer>
-        
-        <script src="{{ URL::to('js/app.js') }}"></script>
+
+        @auth
+        <nav id="right-menu" role="navigation" class="side-nav box-shadow">
+            <div class="flex al-cntr" style="cursor:pointer" onclick="showHamburgerMenu()">
+                <span class="material-icons-outlined">close</span>
+            </div>
+
+            <div role="navigation" class="menu">
+            
+                <div class="menu-item"><a href="{{ url('/') }}">Home</a></div>
+                <div class="menu-item"><a href="{{ url('dashboard') }}">Dashboard</a></div>
+                <div class="menu-item"><a href="{{url('portfolio', [$uuuid]) }}">My portfolio</a></div>
+                <div class="menu-item"><a href="{{ url('portfolio/new') }}">Add new stock</a></div>
+                <div class="menu-item"><a href="{{ url('nepse-price') }}">Stock price</a></div>
+                @if( $basket > 0) 
+                    <div class="menu-item">
+                            <a href="{{url('cart')}}" title="View Cart">Cart</a>
+                    </div>
+                @endif
+                <div class="menu-item"><a href="{{ url('shareholders') }}">Manage Shareholders</a></div>
+                <div style="padding:5px">Import stocks</div>
+                <div>
+                    <div class="sub-menu">
+                        <div class="menu-item"><a href="{{ url('import/meroshare') }}">Import from MeroShare</a></div>
+                        <div class="menu-item"><a href="{{ url('import/share') }}">Import from excel file</a></div>
+                    </div>
+                </div>   
+                <div class="menu-item"><a href="{{ url('guidelines') }}">Guidelines</a></div>
+                <div class="menu-item"><a href="{{ url('faq') }}">FAQ</a></div>            
+                <div class="menu-item"><a href="{{ url('feedbacks') }}">Feedback</a></div>
+                <div class="logout menu-item">
+                    <form id="logout-form1" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                    <span class="nav__logout" style="padding:1px 0">
+                        <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                document.getElementById('logout-form1').submit();">
+                            {{ __('Logout') }}
+                        </a>
+                    </span>
+                </div>
+                    
+            </div>
+        </nav>
+        @endauth
 
         <script>
             const menu = document.getElementById('hamburger');
@@ -294,8 +313,8 @@
                 document.getElementById("myNav").style.width = "0%";
             }
         </script>
-        
-        @yield('custom_js')
-        
+       
+       @yield('custom_js')
+
 </body>
 </html>

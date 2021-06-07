@@ -4,34 +4,18 @@
     Your stock portfolio management application over the browser
 @endsection
 
-@section('js')
+@section('custom_js')
 <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
     <script src="{{ URL::to('js/portfolio.js') }}"></script>
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Add new stock</h1>
+    Add new stock
 @endsection
 
 @section('content')
 
 <section class="share_import__wrapper">
-
-    <section id="top-nav"  class="optional">
-        <h3></h3>
-        <div class="links">
-
-            <div class="link">
-                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">MeroShare</a>
-            </div>
-            <div class="link">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Spreadsheet</a>
-            </div>
-            <div class="link">
-                <a href="{{url('shareholders')}}" title="Add new Shareholder">Shareholders</a>
-            </div>
-        </div>
-    </section>
 
     <section class="portfolio__form__wrapper">
     <form method="POST" action="/portfolio/create">
@@ -162,7 +146,7 @@
                         </div>
                         <div class="form-field">
                             <label for="dp_amount">DP amount</label>
-                            <input type="number" step=".01" name="dp_amount" id="dp_amount" value="{{old('dp_amount')}}" />
+                            <input type="number" step=".01" name="dp_amount" id="dp_amount" value="{{old('dp_amount',25)}}" />
                         </div>
 
                         <div class="form-field">

@@ -4,12 +4,12 @@
     Your stock portfolio management application over the browser
 @endsection
 
-@section('js')
+@section('custom_js')
     <script src="{{ URL::to('js/shareholder.js') }}"></script>
 @endsection
 
 @section('header_title')
-<h1 class="c_title">My Shareholders</h1>
+    My Shareholders
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
                 </div>
             </div>
             
-            <div class="flex">
+            <div class="flex al-cntr">
                 <button id="new">New</button>
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
@@ -38,13 +38,7 @@
         @if( !empty($shareholders) )
         <main>
             <table>
-                <tr>
-                    <td colspan="6">
-                        <section class="message">
-                            <div class="message" id="message"></div>
-                        </section>
-                    </td>
-                </tr>
+     
                 <tr>
                     <th></th>                    
                     <th>Name</th>                    
@@ -76,8 +70,6 @@
         
     </article>
 
-    <div>&nbsp;</div>
-    
     <div id="shareholder-form" class="form_container"  @if(session()->has('errors')) style="display:block" @endif>
 
         <form class="form" method="POST" action="/shareholders">

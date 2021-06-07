@@ -5,12 +5,9 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Sales record</h1>
+    Sales record
 @endsection
 
-@section('js')
-    <!-- <script src="{{ URL::to('js/portfolio.js') }}"></script> -->
-@endsection
 
 @section('notice')
 <?php if(strlen($notice)>0){ ?>

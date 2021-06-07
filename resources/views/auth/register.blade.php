@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('header_title')
-    <h1>NEPSE.TODAY</h1>
+    NEPSE.TODAY
 @endsection
 @section('content')
 <style>

@@ -5,16 +5,16 @@
 @endsection
 
 @section('header_title')
-<h1 class="c_title">Portfolio</h1>
+    Portfolio
 @endsection
 
 @section('custom_css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" defer>
 @endsection
 
 @section('custom_js')
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" defer></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" defer></script>
 @endsection
 
 @section('notice')

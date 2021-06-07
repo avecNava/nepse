@@ -9,6 +9,10 @@ if(typeof(notice) != 'undefined' && notice != null){
         el.classList.add('show');
     }
 }
+function showHamburgerMenu(){
+    const menu = document.querySelector('#right-menu');
+    menu.classList.toggle('show-menu');
+}
 
 function hide_notice(){
     // document.querySelector('.notice_wrapper>.btn>a').addEventListener('click',function(e){
@@ -36,13 +40,17 @@ function setOption(selectElement, value) {
 }
 
 function showLoadingMessage() {
-    let ele_loading = document.getElementById('loading-message');
-    ele_loading.classList.add('loading');
+    const element = document.getElementById('loading-message');
+    if(typeof(element) != 'undefined' && element != null){
+    element.classList.add('loading');
+    }
 }
 
 function hideLoadingMessage() {
-    let ele_loading = document.getElementById('loading-message');
-    ele_loading.classList.remove('loading');
+    let element = document.getElementById('loading-message');
+    if(typeof(element) != 'undefined' && element != null){
+        element.classList.remove('loading');
+    }
 }
 
 function getDateTime(){
@@ -66,13 +74,18 @@ function hideForm(form_id) {
 }
 
 function showMessage(message, el = 'message', flag = 'success') {
-    const msg = document.getElementById(el);
-    msg.innerHTML=message;
-    msg.classList.add(flag);
+    const element = document.getElementById(el);
+    if(typeof(element) != 'undefined' && element != null){
+        element.innerHTML=message;
+        element.classList.add(flag);
+    }
 }
 
 function clearMessage() {
-    document.getElementById('message').innerHTML='';
+    const element = document.getElementById('message');
+    if(typeof(element) != 'undefined' && element != null){
+        element.innerHTML='';
+    }
 }
 
 //parse record_id returns "28" from string "chk-28"

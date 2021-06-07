@@ -4,12 +4,8 @@
     showing users
 @endsection
 
-@section('js')
-    <!-- <script src="{{ URL::to('js/app.js') }}"></script> -->
-@endsection
-
 @section('header_title')
-<h1 class="c_title">Users</h1>
+    Users
 @endsection
 
 @section('content')

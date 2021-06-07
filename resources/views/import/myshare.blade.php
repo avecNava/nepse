@@ -9,7 +9,7 @@
 @endsection
 
 @section('header_title')
-    <h1 class="c_title">Import Stocks (Spreadsheet)</h1>
+    Import Stocks (Spreadsheet)
 @endsection
 
 @section('content')
@@ -32,14 +32,6 @@
             @endif
         </div>
         
-        <div class="links">
-            <div class="link">
-                <a href="{{url('import/meroshare')}}" title="Import Share from Meroshare account">Import from MeroShare</a>
-            </div>
-            <div class="link selected">
-                <a href="{{url('import/share')}}" title="Import Share from Excel file">Import using Spreadsheet</a>
-            </div>
-        </div>
     </section>
 
     <details class="form_details">
