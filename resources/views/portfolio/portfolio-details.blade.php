@@ -320,7 +320,7 @@ tfoot td {
         
         <div class="portfolio__content">
 
-            <header class="info js-apart flex al-end">
+            <header class="info js-apart flex">
                 @php
                     $count = count($portfolios);
                     $quantity = $portfolios->sum('quantity');

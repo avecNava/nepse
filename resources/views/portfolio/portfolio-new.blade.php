@@ -21,7 +21,7 @@
     <form method="POST" action="/portfolio/create">
         @csrf()
         <input type="hidden" value="{{old('id')}}" name="id">  
-        <header class="info flex js-apart al-end band">
+        <header class="info flex js-apart band">
             <div>
                 <h2>Add new stock</h2>
                 <h3>Enter the following details</h3>

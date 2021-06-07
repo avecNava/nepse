@@ -50,21 +50,31 @@
 
             <div class="main-header__wrapper">
 
-            @auth
+           
             <div style="place-self:end">
-                
-                <div onclick="showHamburgerMenu()" class="menu_wrapper" style="display:none">
+
+                @guest
+                    <div class="quick_link" style="padding:10px">
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}">Register</a>
+                        @endif
+                        &nbsp; &nbsp;
+                        <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </div>
+                 @endguest
+                 @auth
+                <div onclick="showHamburgerMenu()" class="menu_wrapper">
                     <div id="hamburger">
                         <div></div>
                         <div></div>
                         <div></div>
                     </div>
                 </div>
-
+                @endauth
             </div>
-            @endauth
+         
 
-            <div style="display: grid; grid-template-columns: 200px auto;padding:0 10px">
+            <div style="display: grid; grid-template-columns: 200px auto;padding:10px">
 
                 <div class="logo">
                     <a href="/" title="click to go to the main page">
@@ -105,56 +115,8 @@
 
                 </div>
             </div>
-
-            <div id="myNav" class="overlay" role="navigation">
-
-                <nav class="overlay-content">
-
-                    <ul class="navbar-nav">
-                        <li>
-                            <div class="nav_control">
-
-                                <div class="nav__user__wrapper">
-
-                                    @if(Auth::check())
-                                        <div class="nav__username">
-                                            {{ optional(Auth::user())->name }}
-                                        </div>                                        
-                                    @endif
-                                </div>
-
-                                <div class="close">
-                                    <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-                                </div>
-
-                            </div>
-                        </li>
-                        <li class="{{MyUtility::urlMatch('home')?'selected':''}}"><a href="{{ url('/') }}">Home</a></li>
-                        @guest
-                        <li class="{{MyUtility::urlMatch('register')?'selected':''}}">
-                            @if (Route::has('register'))
-                            <div>
-                                <a href="{{ route('register') }}">Register</a>
-                            </div>
-                            @endif
-                        </li>
-                        <li class="{{ MyUtility::urlMatch('login') ? 'selected' : '' }}">
-                            <a href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        <li></li>
-                        @endguest
-
-                        @auth
-                        @php $uuuid = \App\Models\Shareholder::getShareholderUUID(session('shareholder_id')); @endphp
-                        <li class="{{MyUtility::urlMatch('dashboard')?'selected':''}}"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                        <li class="{{MyUtility::urlMatch('portfolio/'.$uuuid)?'selected':''}}">
-                            <a href="{{url('portfolio', [$uuuid]) }}">Portfolio</a>
-                        </li>
-                        
-                        @endauth
-                    </ul>
-
-                </nav>
+            @php $uuuid = \App\Models\Shareholder::getShareholderUUID(session('shareholder_id')); @endphp
+           
 
             </div>
         
@@ -229,7 +191,7 @@
                         <h3>Manage sales</h3>
                         <ul>
                             <li><a href="{{ url('sales') }}">Sales</a></li>
-                            <li><a href="{{ url('basket') }}">My Cart</a></li>
+                            <li><a href="{{ url('cart') }}">My Cart</a></li>
                         </ul>
                     </div>
 
@@ -304,9 +266,11 @@
         <script>
             const menu = document.getElementById('hamburger');
 
-            menu.onclick = function(){
-                document.getElementById("myNav").style.width = "100%";
-            };
+            if(typeof(menu) != 'undefined' && menu != null){
+                menu.onclick = function(){
+                    document.getElementById("myNav").style.width = "100%";
+                }
+            }
             
             /* Close when someone clicks on the "x" symbol inside the overlay */
             function closeNav() {

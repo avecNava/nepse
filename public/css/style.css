@@ -334,11 +334,9 @@ section.sales summary {
     ul.navbar-nav {
         background: unset;
         margin: 0;
-        font-size: 18px;
-        text-align: right;
-        display: block;
+        display: flex;
+        flex-direction: row;
     }
-
     .navbar-nav a {
         color: white;
     }
@@ -360,7 +358,7 @@ section.sales summary {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: auto;
-        grid-gap:20px;
+        grid-gap:35px;
     }
 
     .box h2 {
@@ -380,6 +378,7 @@ section.sales summary {
     section#sectors {
         display: grid;
         grid-template-columns: 1fr 31%;
+        margin: 15px 0;
     }
     .trade_summary {
         display: grid;
@@ -519,6 +518,20 @@ section.sales summary {
         grid-template-columns: repeat(4,auto);
     }
 
+    /* guideline */
+    section.guidelines .col {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-gap: 40px;
+    }
+    
+    /* faq */
+    section.faq main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+
   /* Modal Content/Box */
   .modal-content {
     margin: auto; 
@@ -554,9 +567,6 @@ section.sales summary {
         height: 100px;
         width: 600px;
         box-sizing: border-box;
-    }
-    input[type="title"] {
-        width: 400px;
     }
     .portfolio__form .form-left {
         width: 500px;

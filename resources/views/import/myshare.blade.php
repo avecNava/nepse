@@ -142,7 +142,7 @@
         
         <header class="info">
             
-            <div class="flex js-apart al-end">
+            <div class="flex js-apart">
 
                 <div class="flex js-start al-cntr">
                     

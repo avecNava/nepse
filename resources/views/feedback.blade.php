@@ -52,7 +52,6 @@
                 <h2>Feedbacks</h2>
                 <div class="flex">
                     <button type="submit" class="focus">Send Feedback</button>
-                    <button id="cancel" type="reset" class="optional">Reset</button>
                 </div>
             </header>
             <main>

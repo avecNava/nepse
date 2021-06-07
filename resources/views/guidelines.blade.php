@@ -21,7 +21,7 @@
     <section class="guidelines">
     <h2>Guidelines</h2>
         
-    <nav role="navitation">
+    <nav role="navigation">
         <ul class="navbar">
             <li><a href="#add-stocks">Add Stocks</a></li>
             <li><a href="#add-shareholder">Add Shareholder</a></li>

@@ -273,19 +273,25 @@
                 
                 var pie_data = new google.visualization.DataTable(json.turnover);
                 var options = {
+                    width: 600,
+                    height: 600,
                     title: 'Sectorwise turnover by Volume',
                     // is3D: true,
                     pieHole: 0.4,
                     // pieSliceText: 'percent',
+                    // pieSliceText: 'percent',
                     pieSliceText: 'none',
                     sliceVisibilityThreshold: .1,
-                    legend: {position: 'labeled', textStyle: {color: 'blue'}},
+                    legend: {position: 'labeled',  textStyle: {color: 'blue'}},
+                    // legend: {position: 'bottom', maxLines: 5,  textStyle: {color: 'blue'}},
                     pieResidueSliceLabel : 'Miscellaneous',
-                    chartArea:{left:10,top:50, 'width':'100%'},
+                    chartArea:{left:10, top:50, 'width':'100%'},
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('pie_chart'));
                 chart.draw(pie_data, options);                
+                document.getElementById('pie_chart').style.backgroundColor = "transparent";
+                document.getElementById('pie_chart').style.opacity = "";
                 document.getElementById('pie_chart').style.display="block";
             
             }
