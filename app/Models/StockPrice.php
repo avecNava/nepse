@@ -97,6 +97,62 @@ class StockPrice extends Model
         //where `symbol` in ('NSEWA') and `transaction_date` <> '2020-12-31' and `latest` = 1
         
     }
+   
+    //similar as above function but modified for stocklive data only
+    public static function updateOrCreateStockPriceForStockLive(Array $stock_prices)
+    {
+        if(empty($stock_prices)) return;
+        
+        $symbols = collect([]);
+        $trade_date = substr($stock_prices[0]['lastUpdatedDateTime'],0,10);
+        
+        //task-1 : save new price, set latest=true
+        DB::transaction(function() use($stock_prices, $symbols) {
+            
+            foreach ($stock_prices as $record) {
+
+                $symbols->push($record['symbol']);
+
+                StockPrice::updateOrCreate(
+                    [
+                        'symbol' => $record['symbol'],
+                        'transaction_date' => substr($record['lastUpdatedDateTime'],0,10),
+                    ],
+                    [
+                        'latest' => true,
+                        'open_price' => $record['openPrice'],
+                        'high_price' => $record['highPrice'],
+                        'low_price' => $record['lowPrice'],
+                        'close_price' => empty($record['lastTradedPrice']),
+                        'last_updated_price' => $record['lastTradedPrice'],
+                        'previous_day_close_price' => $record['previousClose'],
+                        'total_traded_qty' => $record['totalTradeQuantity'],
+                        'total_traded_value' => $record['totalTradeQuantity'] * $record['lastTradedPrice'],
+                        
+                        // 'total_trades' => $record['totalTrades'],
+                        // 'avg_traded_price' => $record['averageTradedPrice'],
+                        // 'fifty_two_week_high_price' => $record['fiftyTwoWeekHigh'],
+                        // 'fifty_two_week_low_price' => $record['fiftyTwoWeekLow'],
+                        'last_updated_time' => $record['lastUpdatedDateTime'] ,
+                        'created_at' => Carbon::now(),
+                    ]
+                );
+            }
+
+        });
+
+        //task-2 : query all records with given symbol, transaction_date (from input array) and latest=true
+        //set latest to false
+
+        StockPrice::whereIn('symbol', $symbols->toArray())
+            ->where('transaction_date','<>', $trade_date)                 //or use != instead
+            ->where('latest',true)
+            ->update(['latest' => false]);
+
+        //update `stock_prices` set `latest` = 0, `stock_prices`.`updated_at` = '2021-01-01 05:44:44' 
+        //where `symbol` in ('NSEWA') and `transaction_date` <> '2020-12-31' and `latest` = 1
+        
+    }
 
 
     /**

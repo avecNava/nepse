@@ -150,7 +150,9 @@
                         </tr>
                         @foreach($sectors as $sector)
                         @php
-                        $perTurnover = ($sector['total_value']/$totalTurnover)*100;
+                        if($totalTurnover>0){
+                            $perTurnover = ($sector['total_value']/$totalTurnover)*100;
+                        }
                         @endphp
                         <tr>
                             <td title="{{$sector['sector']}}">{{ \Illuminate\Support\Str::limit($sector['sector'], 30) ?: '***'}}</td>

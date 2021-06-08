@@ -72,6 +72,7 @@ Route::get('shareholders',[ShareholderController::class, 'index']);
 Route::post('shareholders',[ShareholderController::class, 'create']);
 
 Route::get('latest-price', [StockPriceController::class, 'index']);
+Route::get('stocklive', [StockPriceController::class, 'stockLive']);
 Route::get('latest-index', [NepseIndexController::class, 'indexHistory']);
 Route::get('current-index', [NepseIndexController::class, 'currentIndex']);
 
