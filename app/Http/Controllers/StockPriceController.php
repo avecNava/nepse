@@ -17,14 +17,19 @@ use Symfony\Component\HttpClient\HttpClient;
 class StockPriceController extends Controller
 {
     
-    public function index()
+    public function latestPrice($date=null, $id=0)
     {
 
-        $time_start = Carbon::now();        
-        // $time_start = $time_start->sub('1 day');     
-        // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
+        $time_start = Carbon::now();
+        
+        if($date){
+            $arr = explode('-',$date);
+            $year = $arr[0]; $month = $arr[1]; $day = $arr[2];
+            $hour = 11; $minute = 0; $second = 0; $tz = 'Asia/Kathmandu';
+            $time_start = Carbon::parse(Carbon::createFromDate($year, $month, $day, $tz));
+        }
+        
         $date_string =  $time_start->toDateString();
-        // $date_string =  '2021-06-10';
 
         //do not proceed for non working days
         if(!UtilityService::tradingDay($time_start)){
@@ -42,8 +47,10 @@ class StockPriceController extends Controller
         $client = new Client([
             'base_uri' => $base_uri,
             // 'debug' => true,
-            // 'body' => json_encode(['id'=>'330']),           //330 is the id of the API endpoint for today-price
-            'json'=> ['id' => '330'],
+            // 'body' => json_encode(['id'=>'330']),
+            'json'=> [
+                'id' => $id == 0 ? rand(100,999) : $id,     //id validates the request
+            ],
             'query' => [
                 'size' => '400',
                 'businessDate' => $date_string,
@@ -115,6 +122,7 @@ class StockPriceController extends Controller
     public function stockLive()
     {
         $time_start = Carbon::now();
+
         //stop request during non working days
         if(!UtilityService::tradingDay($time_start)){
             return response()->json([
