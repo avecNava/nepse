@@ -10,23 +10,23 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Goutte\Client as GoutteClient;
+use Symfony\Component\HttpClient\HttpClient;
+
 
 class StockPriceController extends Controller
 {
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //todo: check holidays - check saturdays and fridays
 
-        $time_start = Carbon::now();
-        
-        // $time_start = $time_start->sub('3 days');     
-        //stop request during non working days
+        $time_start = Carbon::now();        
+        // $time_start = $time_start->sub('1 day');     
+        // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
+        $date_string =  $time_start->toDateString();
+        // $date_string =  '2021-06-10';
+
+        //do not proceed for non working days
         if(!UtilityService::tradingDay($time_start)){
             return response()->json([
                 'message' => 'NEPSE is closed during Saturdays and Fridays',
@@ -34,52 +34,62 @@ class StockPriceController extends Controller
             ]);
         }
 
-        // $date_string =  "$time_start->year-$time_start->month-$time_start->day";
-        $date_string =  $time_start->toDateString();
-        // $date_string =  '2021-06-07';
-        // $base_uri = 'https://182.93.68.4/api/nots/nepse-data/';
-        // $base_uri = 'https://newweb.nepalstock.com.np/api/nots/nepse-data/today-price?&size=20&businessDate=2021-06-08'
-        $base_uri = 'https://newweb.nepalstock.com.np/api/nots/nepse-data/';
-
+        
+        //URL resolution (PSR) : https://datatracker.ietf.org/doc/html/rfc3986#section-5.2
+        // $url = 'https://newweb.nepalstock.com/api/nots/nepse-data/today-price?';
+        $base_uri = 'https://newweb.nepalstock.com.np';
+        
         $client = new Client([
-            'base_uri' => $base_uri
-        ]);
-
-        $response = $client->request('GET',"today-price", [
+            'base_uri' => $base_uri,
+            // 'debug' => true,
+            // 'body' => json_encode(['id'=>'330']),           //330 is the id of the API endpoint for today-price
+            'json'=> ['id' => '330'],
             'query' => [
                 'size' => '400',
-                'businessDate' => $date_string
+                'businessDate' => $date_string,
             ],
             'headers' => [
-                'User-Agent' => 'testing/1.0',
-                'Accept'     => 'application/json',
-                'X-Foo'      => ['Bar', 'Baz']
+                'User-Agent'=> 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
+                'content-type'=>'application/json',
+                'accept' => '*/*',
+                'content-encoding'=>'gzip',
+                'Accept-Encoding'=> 'gzip, deflate, br',
+                // 'Content-Length'=> '10',
+                'Origin'=> 'https://newweb.nepalstock.com',
+                'Referer'=> 'https://newweb.nepalstock.com/today-price',
             ],
-            'http_errors' =>true,              //parse the response, not matter it's ok or error
-            'verify' => false,
         ]);
-        // dd($response->getUri());
-        // $response->getEffectiveUrl();
+
+        $response = $client->request('POST',"/api/nots/nepse-data/today-price?",  
+        [
+            // 'allow_redirects' => true,
+            // 'timeout' => 2000,
+            'http_errors' => FALSE,
+        ]);
+
+        // $code = $response->getStatusCode(); // 200, 400
+        // $reason = $response->getReasonPhrase(); // OK, Bad Request
+        
         try {            
             
-            $body = $response->getBody();
-            $content = $body->getContents();
-            // $body->uncompress();
+            $content = $response->getBody()->getContents();
+          
             if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
-                $msg = "Scraping failed. Data unavailable.',['. $date_string";
-                Log::warning('Scraping failed. Data unavailable.',['date'=>$date_string,'message'=>$msg]);
+                $msg = "Scraping failed. Data not available for $date_string";
+                Log::warning('Scraping FAILED',['date'=>$date_string,'method'=>'today-price','message'=>$msg]);
                 return response()->json( ['message'=> $msg] );
             }
             
-            $data_array = json_decode($content, true);
+            $data = json_decode($content, true)['content'];
+            
             $url = "$base_uri/today-price?size=400&businessDate=$date_string";
-            if(sizeof($data_array) < 1){
+            if(sizeof($data) < 1){
                 Log::error("Refreshing stock prices from $url. EMPTY RESPONSE");
                 return "EMPTY RESPONSE<hr>$url";
             }
 
-            Stock::addOrUpdateStock($data_array['content']);
-            StockPrice::updateOrCreateStockPrice( $data_array['content'] );        
+            Stock::addOrUpdateStock($data);
+            StockPrice::updateOrCreateStockPrice($data);        
             StockPrice::updateStockIDs();
 
             $time_finish = Carbon::now();
@@ -87,7 +97,7 @@ class StockPriceController extends Controller
 
             $arr_output = [
                 'time_taken' => $time_elapsed ."s",
-                '# records' => count($data_array['content']),
+                '# records' => count($data),
                 'start_time' => "$time_start",
                 'end_time' => "$time_finish",
             ];
@@ -101,7 +111,7 @@ class StockPriceController extends Controller
             return response()->json( ['message'=> $th->getMessage()] );
         }
     }
-    
+
     public function stockLive()
     {
         $time_start = Carbon::now();
@@ -114,44 +124,38 @@ class StockPriceController extends Controller
         }
 
         $base_uri = 'https://newweb.nepalstock.com.np/api/nots/';
-        $client = new Client([
-            'base_uri' => $base_uri,
-        ]);
+        $client = new Client(['base_uri' => $base_uri]);
 
         $response = $client->request('GET',"lives-market", [
             'query' => [
                 'size' => '400',
             ],
             'headers' => [
-                'User-Agent' => 'testing/1.0',
+                'User-Agent' => 'Jay Nepal',
                 'Accept'     => 'application/json',
-                'X-Foo'      => ['Bar', 'Baz']
             ],
-            // 'http_errors' =>true,              //parse the response, not matter it's ok or error
-            // 'verify' => false,
         ]);
-        // dd($response->getUri());
-        // $response->getEffectiveUrl();
+
         try {            
             
             $body = $response->getBody();
             $content = $body->getContents();
-            // $body->uncompress();
-            if(Str::of(Str::lower($content))->exactly('searched date is not valid.')){
-                $msg = "Scraping failed. Data unavailable.',['. $date_string";
-                Log::warning('Scraping failed. Data unavailable.',['date'=>$date_string,'message'=>$msg]);
+
+            if(Str::of(Str::lower($content))->exactly('searched date is not valid.') || strlen($content)==0){
+                $msg = "SYNC stocklive FAILED. Data not available.";
+                Log::error('STOCKLIVE',['method'=>'stocklive','message'=>$msg]);
                 return response()->json( ['message'=> $msg] );
             }
             
             $data_array = json_decode($content, true);
-            
-            $url = "$base_uri/lives-market";
+
+            $empty_msg  = "EMPTY RESPONSE received from $base_uri/lives-market";
             if(sizeof($data_array) < 1){
-                Log::error("Refreshing stock prices from $url. EMPTY RESPONSE");
-                return "EMPTY RESPONSE<hr>$url";
+                Log::error($empty_msg);
+                return $empty_msg;
             }
 
-            // Stock::addOrUpdateStock($data_array['content']);
+            // Stock::addOrUpdateStock($data);
             StockPrice::updateOrCreateStockPriceForStockLive( $data_array );        
             StockPrice::updateStockIDs();
 
@@ -159,17 +163,14 @@ class StockPriceController extends Controller
             $time_elapsed = $time_start->diffInSeconds($time_finish);
 
             $arr_output = [
-                'time_taken' => $time_elapsed ."s",
+                'time_taken' => $time_elapsed .'s',
                 '# records' => count($data_array),
-                'start_time' => "$time_start",
-                'end_time' => "$time_finish",
             ];
 
-            Log::info("Synchronizing to STOCKLIVE $url. DONE.", $arr_output);             
+            Log::info('SYNC stocklive', $arr_output);             
             return response()->json($arr_output);
             
         } catch (\Throwable $th) {
-            // dd($th);
             Log::warning($th->getMessage());
             return response()->json( ['message'=> $th->getMessage()] );
         }
