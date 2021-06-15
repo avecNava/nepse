@@ -176,6 +176,8 @@ tfoot td {
             </div>
       
 
+            <div style="position:relative">
+
             @php 
                 $hidden = 'hidden';
                 if($errors->any()){
@@ -185,7 +187,7 @@ tfoot td {
 
             <div id="portfolio-form__wrapper" {{$hidden}}>
 
-                <header style="margin-left:15px">
+                <header>
                     <h2>Edit Stock</h2>
                 </header>
 
@@ -194,19 +196,17 @@ tfoot td {
                     @csrf()
                     <input type="hidden" name="id" id="id"  value="{{ old('id') }}"> 
                     <input type="hidden" name="shareholder_id" id="shareholder_id"  value="{{ old('shareholder_id', $shareholder['uuid']) }}">
-                    @if($stock)
+                    <!-- @if($stock)
                     <input type="hidden" name="stock_id" value="{{ old('stock_id', $stock['id']) }}">
                     @endif
+                    @if($stock)
+                    <div class="form-field">
+                        <label>Script</label><div><strong>{{$stock['security_name']}}</strong></div>
+                    </div>
+                    @endif -->
 
                     <section>
-                        <div class="form-field">
-                            <label>Shareholder</label><div><strong>{{$shareholder['name']}}</strong></div>
-                        </div>
-                        @if($stock)
-                        <div class="form-field">
-                            <label>Script</label><div><strong>{{$stock['security_name']}}</strong></div>
-                        </div>
-                        @endif
+                        
                         <div class="form-field">
                             <label for="offer" class="@error('offer') is-invalid @enderror">Offering type</label>
                             <select name="offer" id="offer">
@@ -224,37 +224,35 @@ tfoot td {
                                 @endif
                             </select> 
                         </div>
-                    </section>
 
-                    <section>
                         <div class="form-field">
                             <label for="unit_cost"  
                             class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                            <input type="number" name="unit_cost" id="unit_cost" step=".01" required 
+                            <input type="number" name="unit_cost" id="unit_cost" step=".01" required  class="input-sm" 
                             value="{{ old('unit_cost') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="quantity"
                             class="@error('quantity') is-invalid @enderror">Quantity</label>
-                            <input type="number" name="quantity" id="quantity" required 
+                            <input type="number" name="quantity" id="quantity" required  class="input-sm" 
                             value="{{ old('quantity') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="" title="Base price * Quantity"
                             class="@error('base_amount') is-invalid @enderror">Base amount</label>
-                            <input type="number" step=".01" name="base_amount" id="base_amount" required 
+                            <input type="number" step=".01" name="base_amount" id="base_amount" required  class="input-sm" 
                             value="{{ old('base_amount') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="total_amount" title="Bill amount inclusive commissions"
                             class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                            <input type="number" step=".01" name="total_amount" id="total_amount" required 
+                            <input type="number" step=".01" name="total_amount" id="total_amount" required  class="input-sm" 
                             value="{{ old('total_amount') }}"/>
                         </div>
                         <div class="form-field">
                             <label for="effective_rate"
                             class="@error('effective_rate') is-invalid @enderror">Effective rate</label>
-                            <input type="number" step=".01" name="effective_rate" id="effective_rate" required 
+                            <input type="number" step=".01" name="effective_rate" id="effective_rate" required  class="input-sm" 
                             value="{{ old('effective_rate') }}"/>
                         </div>
 
@@ -262,7 +260,7 @@ tfoot td {
 
                     <section id='secondary' class='hide'>
 
-                    <div class="form-field">
+                        <div class="form-field">
                             <label for="broker"
                             class="@error('broker') is-invalid @enderror">Broker</label>
                             <select name="broker" id="broker">
@@ -276,20 +274,21 @@ tfoot td {
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">Broker commission<label>
-                            <input type="number" step=".01" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"> 
+                            <input type="number" step=".01" name="broker_commission" id="broker_commission"  value="{{ old('broker_commission','') }}"  class="input-sm" > 
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">SEBON commission<label>
-                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"> 
+                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission"  value="{{ old('sebon_commission','') }}"  class="input-sm" > 
                         </div> 
                         <div class="form-field">
                             <label for="dp_amount">DP amount<label>
-                            <input type="number" step=".01" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}"> 
+                            <input type="number" step=".01" name="dp_amount" id="dp_amount"  value="{{ old('dp_amount','') }}" class="input-sm"  class="input-sm" > 
                         </div> 
                     </section>
 
                     <section>
-                    <div class="form-field">
+                        
+                        <div class="form-field">
                             <label for="receipt_number"
                             class="@error('receipt_number') is-invalid @enderror">Receipt number</label>
                             <input type="text" name="receipt_number" id="receipt_number" 
@@ -304,22 +303,23 @@ tfoot td {
                         <div class="form-field optional">
                             <label for="purchase_date"
                             class="@error('purchase_date') is-invalid @enderror">Purchase date</label><br/>
-                            <input type="date" name="purchase_date" id="purchase_date" 
+                            <input type="date" name="purchase_date" id="purchase_date"  class="input-sm" 
                             value="{{ old('purchase_date') }}"/>
                         </div>
                         <div class='flex'>
                             <button type="submit" class="focus">Save</button>
                             <button id="cancel" type="reset">Cancel</button>
                         </div>
+
                     </section>
+        
                 </form> 
 
             </div>
 
         </section>
         
-        <div class="portfolio__content">
-
+        
             <header class="info js-apart flex">
                 @php
                     $count = count($portfolios);
@@ -455,10 +455,9 @@ tfoot td {
                             <td colspan="11">
                                 <div class="flex js-apart al-end">
                                         <div>
-                                        <strong>📢 </strong>Please edit stocks, update cost price for records marked with 
-                                        <span style="text-decoration:line-through;color:red;"> strikethrough </span>  
+                                            <strong>📢 </strong>Stocks marked with 
+                                            <span style="text-decoration:line-through;color:red;"> strikethrough needs to be udpated for Purchase price </span>  
                                         </div>
-                                    <span class="c_info" title="Last trade date"> {{ $transaction_date }} ({{ $transaction_date->diffForHumans() }})</mark>
                                 </div>
                             </td>
                         </tr>

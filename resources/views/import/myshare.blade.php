@@ -117,7 +117,7 @@
         <h2>Shareholders</h2>
         <!-- shareholder filter -->   
         @if(count($shareholders)>0)
-        <article id="shareholders"  class="center-box">
+        <article id="shareholders">
             <header>
                 <ul class="shareholder-nav">
                     @foreach($shareholders as $record)
@@ -144,7 +144,7 @@
             
             <div class="flex js-apart">
 
-                <div class="flex js-start al-cntr">
+                <div class="flex js-start">
                     
                     @php
                         $row = $transactions->first();
@@ -179,7 +179,7 @@
         <table>
             <tr>
                 <th>
-                    <div class="flex al-cntr">
+                    <div class="flex">
                         <input type="checkbox" name="select_all" id="select_all" onClick="checkAll()">
                         <label for="select_all">&nbsp;Symbol</label>
                     </div>
@@ -221,7 +221,7 @@
 
             <tr>
                 
-                <td class="flex al-cntr">
+                <td class="flex">
                     @if ( !empty($stock_id) )
                         <input type="checkbox" name="t_id" id="{{ $trans->id }}">
                     @endif

@@ -120,33 +120,33 @@
                     
                     <div class="form-field">
                         <label for="unit_cost" class="@error('unit_cost') is-invalid @enderror">Unit cost</label>
-                        <input type="number" name="unit_cost" id="unit_cost" required value="{{old('unit_cost')}}" step=".01"/>
+                        <input type="number" name="unit_cost" id="unit_cost" required value="{{old('unit_cost')}}" step=".01" class="input-sm"/>
                         <span id="unit_cost_label"></span>
                     </div> 
 
                     <div class="form-field">
                         <label for="quantity" class="@error('quantity') is-invalid @enderror" >Quantity</label>
-                        <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" />
+                        <input type="number" name="quantity" id='quantity' required value="{{ old('quantity') }}" class="input-sm" />
                     </div> 
 
                     <div class="form-field">
                         <label for="base_amount" class="@error('base_amount') is-invalid @enderror" >Base amount</label>
-                        <input type="number"  step=".01"  name="base_amount" id='base_amount' required value="{{ old('base_amount') }}" />
+                        <input type="number"  step=".01"  name="base_amount" id='base_amount' required value="{{ old('base_amount') }}" class="input-sm" />
                     </div> 
 
                     <section id="secondary">
 
                         <div class="form-field">
                             <label for="broker_commission">Broker Commission</label>
-                            <input type="number" step=".01" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" />
+                            <input type="number" step=".01" name="broker_commission" id="broker_commission" value="{{old('broker_commission')}}" class="input-sm" />
                         </div>
                         <div class="form-field">
                             <label for="sebon_commission">Sebon Commission</label>
-                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" />
+                            <input type="number" step=".01" name="sebon_commission" id="sebon_commission" value="{{old('sebon_commission')}}" class="input-sm" />
                         </div>
                         <div class="form-field">
                             <label for="dp_amount">DP amount</label>
-                            <input type="number" step=".01" name="dp_amount" id="dp_amount" value="{{old('dp_amount',25)}}" />
+                            <input type="number" step=".01" name="dp_amount" id="dp_amount" value="{{old('dp_amount',25)}}"  class="input-sm" />
                         </div>
 
                         <div class="form-field">
@@ -168,13 +168,13 @@
 
                     <div class="form-field" title="Bill amount">
                         <label for="total_amount" title="bill amount" class="@error('total_amount') is-invalid @enderror">Total amount</label>
-                        <input type="number" step=".01" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"/>
+                        <input type="number" step=".01" name="total_amount" id="total_amount" required value="{{old('total_amount')}}"  class="input-sm" />
                         <span id="total_amount_label"></span>
                     </div>      
                     
                     <div class="form-field">
                         <label for="effective_rate" class="@error('effective_rate') is-invalid @enderror">Effective rate <em>(per share)</em></label>
-                        <input type="number" step=".01" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}" />
+                        <input type="number" step=".01" name="effective_rate" id="effective_rate" required value="{{old('effective_rate')}}"  class="input-sm" />
                         <span id="effective_rate_label"></span>
                     </div> 
                     

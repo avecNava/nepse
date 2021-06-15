@@ -285,13 +285,11 @@ section.sales summary {
 }
 
 /* screens other than mobile */
-/* 575px=35.938em */
-/* @media only screen and (min-width: 575px){ */
 @media only screen and (min-width: 491px){
 
     div#app, div#container {
         margin: 0 auto;
-        width: 1100px;
+        width: var(--screen-L);
     }
     .site-logo {
         background: url("/assets/logo.png");
@@ -374,6 +372,7 @@ section.sales summary {
         display: grid;
         grid-template-columns: repeat(3, auto);
         grid-gap: 0 20px;
+        margin: 40px 0;
     }
     section#sectors {
         display: grid;
@@ -386,7 +385,6 @@ section.sales summary {
     }
     .trade_summary .item {
         width: 150px;
-        margin: 15px;
         border: 1px dashed #b7abab24;
         font-size: 1em;
         text-align: revert;
@@ -429,34 +427,19 @@ section.sales summary {
     /* form section inside portfolio details */
     #portfolio-detail .ps__wrapper {
         display: flex;
-        justify-content: space-between;
-        margin: 0 10px;
-    }
-    .shareholder-info {
-        width: 40%;
     }
     .item label {
         width: 200px;
-    }
-    div#portfolio-form__wrapper form {
-        flex-direction: row;
-        box-shadow: 0 0 1px 0px;
-        width: 98%;
-        padding: 20px;
     }
     #portfolio-form__wrapper {
         position: absolute;
         top: 0;
         background: #f7f7f7;
-        width: 98.5%;
-        box-shadow: inset 0 0 3px -2px;
-        box-sizing: border-box;
         padding: 10px;
-        min-height: 475px;
-    }
-
+        width:100%;
+    }    
+    
     /*shareholder CRUD*/
-
     section#shareholder-crud {
         display: grid;
         margin-top: 10px;
@@ -485,19 +468,17 @@ section.sales summary {
 
 
     /* sales CRUD */
-    #sales .form_content input {
-        width: 50%;
-    }
-    
+   
     #sales .form_content {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    #sales textarea#remarks {
-        width: 18em;
-        height: 5em;
+        display: grid;
+        grid-template-columns: repeat(3,auto);
     }
 
+    #sales textarea#remarks {
+        width: 75%;
+        height: 5em;
+    }
+    
     /*import share*/
     section#share-import-form main {
         flex-direction: row;
@@ -544,12 +525,14 @@ section.sales summary {
   /* input buttons */
 
     input, select {
-        width: 200px;
+        width: 300px;
     }
 
     .form-field input, .form-field select {
-        width: 80%;
+        width: 300px;
     }
+
+    input.input-sm {width:180px}
     
     input[type="radio"],input[type="checkbox"] {
         width: 25px;
@@ -560,7 +543,7 @@ section.sales summary {
         font-size: 18px;
         border-radius: 5px;
         padding: 5px;
-        width: 600px;
+        /* width: 600px; */
         box-sizing: border-box;
     }
     input[type="file"] {
@@ -595,21 +578,13 @@ section.sales summary {
 
 }
 
-@media only screen and(min-wdth:575px) and(max-width: 1000px){
+
+/* larger screens */
+@media only screen and (min-width: 1101px){
 
     div#app, div#container {
-        --screen-width:62.5em;
         margin: 0 auto;
-        width: var(--screen-width);
-    }
-}
-
- @media only screen and (min-width: 1101px){
-
-    div#app, div#container {
-        --screen-width:81.15em;         /*1300px */
-        margin: 0 auto;
-        width: var(--screen-width);
+        width: var(--screen-XL);
     }
 
 } 

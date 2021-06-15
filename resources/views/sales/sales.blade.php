@@ -79,7 +79,7 @@
             <header class="band">
                 <div class="flex">
                     <h2>Edit Sales</h2> 
-                    <div class="flex al-cntr">
+                    <div class="flex">
                         <h2 id="symbol">{{old('stock_name')}}</h2>
                             <h2 id="shareholder-name">{{old('shareholder_name')}}</h2>
                     </div>
@@ -166,9 +166,6 @@
                 class="@error('name_transfer') is-invalid @enderror tax" />
             </div> 
             <div class="form-field">
-
-            </div>
-            <div class="form-field">
                 <label for="net_receivable">Net receivable</label>
                 <input type="text" value="{{old('net_receivable')}}" name="net_receivable" id="net_receivable"
                 class="@error('net_receivable') is-invalid @enderror" />
@@ -201,16 +198,15 @@
                 class="@error('receipt_number') is-invalid @enderror" />
             </div> 
 
-            <div class="form-field">
+            <div class="form-field" style="grid-column:1/3">
                 <label for="remarks">Remarks</label>
                 <textarea name="remarks" id="remarks" class="@error('remarks') is-invalid @enderror">{{old('remarks')}}</textarea>
             </div> 
             
-                <div style="margin-top:20px">
-                    <button type="submit" class="focus">Update</button>
-                    <button id="cancel" type="button" >Cancel</button>
-                </div>
-                <div class="form-field"></div>
+            <div >
+                <button type="submit" class="focus">Update</button>
+                <button id="cancel" type="button" >Cancel</button>
+            </div>
 
         </form>
     </article>
@@ -229,11 +225,11 @@
             </div>
         </section>
 
-        <header class="band info flex js-apart al-cntr">
+        <header class="band info flex js-apart">
 
            <div></div>
             
-            <div class="flex al-cntr">
+            <div class="flex">
                 <form  method="POST" action="/sales/export" style="margin:0" class="optional">
                     @csrf()
                     <button style="margin:0">Export</button>
@@ -260,7 +256,7 @@
             <thead>
                 <tr>
                     <td colspan="13">
-                        <div class="flex js-start al-cntr">
+                        <div class="flex js-start">
                             <h2 class="title">
                                 @php $temp = $sales->first(); @endphp                             
                                 {{ Str::title($temp->shareholder->first_name)}} {{Str::title($temp->shareholder->last_name)}}                           

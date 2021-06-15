@@ -19,7 +19,7 @@ class UtilityService
         // $name = UtilityService::parseFirstName(optional(Auth::user())->name);
         
         $notice = 'We have revamped the website. The old site has been moved <a href="http://old.nepse.today"target="_blank" rel="noopener noreferrer">here</a>';
-        $notice = "<strong>This website is a work in progress.</strong> If you have any issues or feedbacks you can reach us via filling the <a href='feedbacks'>feedback form</a>.";
+        $notice = "<strong>This website is a work in progress.</strong> If you have any issues or feedbacks you can reach us via filling the <a href='/feedbacks'>feedback form</a>.";
         return $notice;
     }
 

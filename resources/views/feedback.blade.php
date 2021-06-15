@@ -93,7 +93,7 @@
 
                     <div class="form-field" style="display:flex">
                         <label for="feedback">Feedback</label>
-                        <textarea name="feedback" id="feedback" cols="80" rows="20" class="@error('feedback') is-invalid @enderror">{{old('feedback','')}}</textarea>
+                        <textarea name="feedback" id="feedback" cols="40" rows="20" class="@error('feedback') is-invalid @enderror">{{old('feedback','')}}</textarea>
                     </div>
 
                     <div class="form-field">

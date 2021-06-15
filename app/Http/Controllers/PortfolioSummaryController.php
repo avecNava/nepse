@@ -58,7 +58,8 @@ class PortfolioSummaryController extends Controller
             ->orderBy('s.first_name','asc')
             ->get();
         
-        //filter out stocks with qty = 0
+        
+            //filter out stocks with qty = 0
         $filtered = $portfolios->filter(function($value, $key){
             return $value->quantity > 0;
         });
@@ -94,8 +95,10 @@ class PortfolioSummaryController extends Controller
         $unique_stocks = $filtered->unique('symbol');
         
         $last_trade_date = NepseIndex::max('transactionDate');
-        $prev_trade_date = NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->select('transactionDate')->first()->toArray()['transactionDate'];
+        $prev_trade_date = NepseIndex::where('transactionDate','<', $last_trade_date)
+                            ->orderByDesc('transactionDate')->select('transactionDate')->first()->toArray()['transactionDate'];
         $rows = 10;
+        
         return view("portfolio.portfolio-summary", 
         [
             'portfolio_summary' => $this->shareholderSummary($portfolio_grouped),
@@ -105,7 +108,7 @@ class PortfolioSummaryController extends Controller
             'top_losses' => $this->topGainers($unique_stocks)->sortBy('change_per')->take($rows),
             'notice' => UtilityService::getNotice(),
             'index' => NepseIndex::getCurrentIndex(),
-            'prevIndex' => NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->select('closingIndex')->first(),
+            'previousIndex' => NepseIndex::where('transactionDate','<', $last_trade_date)->orderByDesc('transactionDate')->select('closingIndex')->first(),
             'totalTurnover' => StockPrice::where('transaction_date','=', $last_trade_date)->sum('total_traded_value'),
             'prevTurnover' => StockPrice::where('transaction_date','=', $prev_trade_date)->sum('total_traded_value'),
         ]);

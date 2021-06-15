@@ -1,4 +1,6 @@
+
 @extends('layouts.default')
+
 
 @section('title')
     Your stock portfolio management application over the browser
@@ -18,6 +20,8 @@
 
 @section('content')
 
+
+
 <div class="main__wrapper">
     
     <div class="dsh_layout__wrapper">
@@ -32,7 +36,7 @@
             <div role="summary" class="card dsh__card">
                     
                 @php
-                    $changeIndex = optional($index)->closingIndex - optional($prevIndex)->closingIndex;
+                    $changeIndex = optional($index)->closingIndex - optional($previousIndex)->closingIndex;
                     $increase = $changeIndex > 0 ? true : false;
                     $changeIndexColor = $increase == true ? 'increase' : 'decrease';
                 @endphp
@@ -55,7 +59,7 @@
                         </span>
                     </main>
                     <footer>
-                        ≪{{number_format(optional($prevIndex)->closingIndex,2)}}≫
+                        ≪{{number_format(optional($previousIndex)->closingIndex,2)}}≫
                         <!-- as of @if($index){{optional($index)->transactionDate}}@endif -->
                     </footer>
                 </article>

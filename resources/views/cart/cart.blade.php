@@ -47,9 +47,9 @@
                        
                         <td colspan="14">
                             
-                            <div class="flex js-apart al-cntr band">
+                            <div class="flex js-apart band">
 
-                            <div class="flex js-start al-cntr">                                
+                            <div class="flex js-start">                                
                                 <h2 class="title" style="padding:0 1rem">
                                     @if($selected) 
                                         {{ Str::title($selected->first_name)}} {{Str::title($selected->last_name)}}
@@ -62,7 +62,7 @@
                                 </div> 
                             </div>
 
-                            <div class="flex al-cntr">
+                            <div class="flex">
                                 <label for="shareholders"></label>
                                 <select name="shareholders" id="shareholders" style="margin:2px 5px">
                                     <option value="">Everyone</option>
@@ -138,7 +138,7 @@
                 
                 <tr id="row-{{$row->id}}">
                     <td class="symbol" title="{{ $row->shareholder->first_name }}">
-                        <div class="flex al-cntr">
+                        <div class="flex">
 
                         <input type="checkbox" name="s_id" 
                             id="chk-{{ $row->id }}" 
@@ -214,52 +214,45 @@
         </header>
         <main>
 
-            <div class="left-col">
                 <div class="form-field">
                     <label for="total_quantity">Total quantity</label>
-                    <input type="text" name="total_quantity" id="total_quantity" readonly>
+                    <input type="text" name="total_quantity" id="total_quantity" readonly class="input-sm">
                 </div>
                 <div class="form-field">
                     <label for="total_investment">Total Investment</label>
-                    <input type="text" name="total_investment" id="total_investment" readonly>
+                    <input type="text" name="total_investment" id="total_investment" readonly class="input-sm">
                 </div>
                 <div class="form-field">
                     <label for="total_amount">Total sales </label>
-                    <input type="text" name="total_amount" id="total_amount" readonly>
+                    <input type="text" name="total_amount" id="total_amount" readonly class="input-sm">
                 </div>
                 <div class="form-field">
                     <label for="total_gain">Net Gain</label>
-                    <input type="text" name="total_gain" id="total_gain" readonly>
+                    <input type="text" name="total_gain" id="total_gain" readonly class="input-sm">
                 </div>
                 <div class="form-field">
                     <label for="total_gain_tax">Gain tax</label>
-                    <input type="text" name="total_gain_tax" id="total_gain_tax" readonly>
+                    <input type="text" name="total_gain_tax" id="total_gain_tax" readonly class="input-sm">
                 </div>
-
-            </div>
-
-            <div class="right-col">
 
                 <div class="form-field">
                     <label for="total_sebon_comm">SEBON Commission</label>                
-                    <input type="text" name="total_sebon_comm" id="total_sebon_comm" readonly>
+                    <input type="text" name="total_sebon_comm" id="total_sebon_comm" readonly class="input-sm">
                 </div>
                 <div class="form-field">
                     <label for="total_broker_comm">Broker Commission</label>       
-                    <input type="text" name="total_broker_comm" id="total_broker_comm" readonly>
+                    <input type="text" name="total_broker_comm" id="total_broker_comm" readonly class="input-sm">
                 </div>
                 
                 <div class="form-field">
                     <label for="dp_amount">DP amount</label>
-                    <input type="text" name="dp_amount" id="dp_amount" readonly>
+                    <input type="text" name="dp_amount" id="dp_amount" readonly class="input-sm">
                 </div>
                 <div class="form-field net_pay">
                     <label for="net_receivable">Net Receivable </label>
-                    <input type="text" name="net_receivable" id="net_receivable" readonly>
+                    <input type="text" name="net_receivable" id="net_receivable" readonly class="input-sm">
                 </div>
-
-            </div>
-
+                <div class="form-field"></div>
         </main>
         <footer></footer>
     </article>

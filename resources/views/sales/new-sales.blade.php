@@ -102,82 +102,79 @@
            <div class="form-field">
                <label for="sales_date">Sales date</label>
                <input type="date" value="{{old('sales_date')}}" name="sales_date" id="sales_date" 
-               class="@error('sales_date') is-invalid @enderror" />
+               class="@error('sales_date') is-invalid @enderror input-sm" />
            </div>
 
            <div class="form-field">
                <label for="quantity">Quantity</label>
                <input type="text" value="{{old('quantity')}}" name="quantity" id="quantity" 
-               class="@error('quantity') is-invalid @enderror" />
+               class="@error('quantity') is-invalid @enderror input-sm" />
            </div>
 
            <div class="form-field">
                <label for="wacc"><abbr title="Weighted average cost of capital">WACC</abbr></label>
                <input type="text" value="{{old('wacc')}}" name="wacc" id="wacc"
-               class="@error('wacc') is-invalid @enderror" />
+               class="@error('wacc') is-invalid @enderror input-sm" />
            </div> 
-           <div class="form-field"></div>
+           
            <div class="form-field">
                <label for="cost_price">Cost price</label>
                <input type="text" value="{{old('cost_price')}}" name="cost_price" id="cost_price"
-               class="@error('cost_price') is-invalid @enderror" />
+               class="@error('cost_price') is-invalid @enderror input-sm" />
            </div> 
            
            <div class="form-field">
                <label for="sell_price">Sell price</label>
                <input type="text" value="{{old('sell_price')}}" name="sell_price" id="sell_price"
-               class="@error('sell_price') is-invalid @enderror" />
+               class="@error('sell_price') is-invalid @enderror input-sm" />
            </div> 
 
            <div class="form-field">
                <label for="gain">Gain</label>
                <input type="text" value="{{old('gain')}}" name="gain" id="gain"
-               class="@error('gain') is-invalid @enderror" />
+               class="@error('gain') is-invalid @enderror input-sm" />
            </div> 
 
             <div class="form-field">
                <label for="broker_commission">Broker commission</label>
                <input type="text" value="{{old('broker_commission')}}" name="broker_commission" id="broker_commission"
-               class="@error('broker_commission') is-invalid @enderror tax" />
+               class="@error('broker_commission') is-invalid @enderror tax input-sm" />
            </div> 
 
             <div class="form-field">
                <label for="sebon_commission">SEBON commission</label>
                <input type="text" value="{{old('sebon_commission')}}" name="sebon_commission" id="sebon_commission"
-               class="@error('sebon_commission') is-invalid @enderror tax" />
+               class="@error('sebon_commission') is-invalid @enderror tax input-sm input-sm" />
            </div> 
            
            
            <div class="form-field">
                <label for="capital_gain_tax">Capital gain tax</label>
                <input type="text" value="{{old('capital_gain_tax')}}" name="capital_gain_tax" id="capital_gain_tax"
-               class="@error('capital_gain_tax') is-invalid @enderror tax" />
+               class="@error('capital_gain_tax') is-invalid @enderror tax input-sm" />
            </div> 
           
            <div class="form-field">
                <label for="dp_amount">DP amount</label>
                <input type="text" value="{{old('dp_amount')}}" name="dp_amount" id="dp_amount"
-               class="@error('dp_amount') is-invalid @enderror tax" />
+               class="@error('dp_amount') is-invalid @enderror tax input-sm" />
            </div> 
            
            <div class="form-field">
                <label for="name_transfer">Name transfer</label>
                <input type="text" value="{{old('name_transfer')}}" name="name_transfer" id="name_transfer"
-               class="@error('name_transfer') is-invalid @enderror tax" />
+               class="@error('name_transfer') is-invalid @enderror tax input-sm" />
            </div> 
-           <div class="form-field">
-
-           </div>
            <div class="form-field">
                <label for="net_receivable">Net receivable</label>
                <input type="text" value="{{old('net_receivable')}}" name="net_receivable" id="net_receivable"
-               class="@error('net_receivable') is-invalid @enderror" />
+               class="@error('net_receivable') is-invalid @enderror input-sm" />
            </div> 
            
            <div class="form-field">
                <label for="payment_date">Payment received on</label>
                <input type="date" value="{{old('payment_date')}}" name="payment_date" id="payment_date"
-               class="@error('payment_date') is-invalid @enderror" />
+               class="@error('payment_date') is-invalid @enderror input-sm" />
            </div> 
 
            <div class="form-field">
@@ -202,7 +199,7 @@
                class="@error('receipt_number') is-invalid @enderror" />
            </div> 
 
-           <div class="form-field">
+           <div class="form-field" style="grid-column:1/3">
                <label for="remarks">Remarks</label>
                <textarea name="remarks" id="remarks" class="@error('remarks') is-invalid @enderror">{{old('remarks')}}</textarea>
            </div> 
@@ -211,7 +208,7 @@
                 <button class="focus">Save</button>
                 <button  type="reset">Reset</button>
             </div>
-            <div class="form-field"></div>
+            
 
     </form>
 

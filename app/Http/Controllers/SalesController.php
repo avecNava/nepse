@@ -47,18 +47,19 @@ class SalesController extends Controller
         $sales = new Sales();
         $sales->stock_id = $request->stock_id;
         $sales->shareholder_id = $request->shareholder_id;
+        $sales->portfolio_id = -1;
         $sales->quantity = $request->quantity;
         $sales->wacc = $request->wacc;
         $sales->cost_price = $request->cost_price;
         $sales->sell_price = $request->sell_price;
         $sales->net_receivable = $request->net_receivable;
-        $sales->sales_date = $request->sales_date;
+        $sales->sales_date = $request->sales_date ?: Carbon::today()->toDateString();
         $sales->payment_date = $request->payment_date;
         $sales->broker_commission = $request->broker_commission;
         $sales->sebon_commission = $request->sebon_commission;
         $sales->capital_gain_tax = $request->capital_gain_tax;
         $sales->gain = $request->gain;
-        $sales->dp_amount = $request->dp_amount;
+        $sales->dp_amount = $request->dp_amount ?: 0;
         $sales->name_transfer = $request->name_transfer;
         $sales->receipt_number = $request->receipt_number;
         $sales->broker_no = $request->broker;
@@ -110,7 +111,7 @@ class SalesController extends Controller
         //get sales for the given ids
         $sales = Sales::whereIn('shareholder_id', $arr_shareholder_id)
                 ->with(['shareholder','share:id,symbol,security_name'])
-                ->orderByDesc('sales_date')
+                ->orderByDesc('updated_at')
                 ->get();
         
         $shareholders = Shareholder::shareholdersWithSales(Auth::id());

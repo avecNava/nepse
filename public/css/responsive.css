@@ -1,3 +1,9 @@
+
+:root {
+    --screen-XL:80em;        /*1300px */
+    --screen-L:62.5em;          /*1300px */
+}
+
 body {
     margin: 0;
     font-family: 'Scope One', serif; 
@@ -34,7 +40,7 @@ div#app, div#container {
 }
 
 /*flex attribute css*/
-.flex {display: flex;}
+.flex {display: flex; align-items: center;}
 .js-apart {justify-content: space-between;}
 .js-start {justify-content: flex-start;}
 .al-end {align-items: flex-end;justify-content:flex-end;}
@@ -70,7 +76,9 @@ abbr {font-weight: bold; color: #3c3f40;}
 a {text-decoration: none;}
 mark {padding: 2px 4px;margin: 2px 0;}
 strong{font-weight: normal;}
-
+summary::marker {
+    content: '';
+}
 /* layout */
 .main-header__wrapper {
     display: grid;
@@ -116,8 +124,7 @@ section.footer-date {
     place-items: center;
 }
 .trade_summary .item {
-    padding: 10px;
-    margin: 5px;
+    padding: 5px;
     border: 1px solid #c1c7b287;
     font-size: 1em;
     width: 150px;
@@ -649,16 +656,6 @@ dialog .form_content {
 dialog header.band {
     padding: .5rem 2rem;
 }
-/*users*/
-/* article.form.users_list main {
-    margin: 0 10px;
-} */
-
-/*import share */
-section#share-import-form main {
-    display: flex;
-    flex-direction: column;
-}
 
 /*share import*/
 #share-import-form input[type=file] {
@@ -669,24 +666,26 @@ section#share-import-form main {
     font-size: 15px;
     line-height: 30px;
 }
-
-#share-import-form main{
-    display: flex;
-}   
+   
 #share-import-form .form {
     background: #fafafa;
     padding: 5px 10px;
 }
 
+#share-import-form main {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 25px;
+}
 
 .c_portfolio_container .flex {
     flex-wrap: wrap;
 }
 
 .shareholder-info {
-    margin: 10px;
     background: #f7f7f7;
     padding: 10px;
+    min-width: 400px;
 }
 .ps__wrapper {
     margin: 20px 0;
@@ -698,7 +697,6 @@ section#share-import-form main {
 
 #portfolio-detail {
     padding: 20px 10px;
-    position: relative;
 }
 .item label {
     color: darkslategrey;
@@ -706,10 +704,10 @@ section#share-import-form main {
 }
 
 div#portfolio-form__wrapper form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3,auto);
     background: #f7f7f7;
-    width: 100vw;
+    grid-gap: 25px;
 }
 
 /*shareholder crud*/
@@ -757,6 +755,9 @@ section#shareholder-crud {
     display: flex;
     align-items: center;
 }
+.basket-header td {
+    padding: 0;
+}
 .item.basket h2 {
     margin-right: 30px;
 }
@@ -792,17 +793,21 @@ article#sales_crud {
 #carts td {
     line-height: 1.5em;
 }
-
-#cart-summary {margin: 40px 0;}
-#cart-summary header{text-align: center;}
-
-#cart-summary main {
+#cart-summary {
+    margin: 40px 10px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
 }
-#cart-summary .left-col, #cart-summary .right-col {
-    padding: 20px;
+#cart-summary main {
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+    width:fit-content;
+    grid-gap:20px;
+}
+#cart-summary h2 {
+    font-size: 1.5rem;
 }
 
 #share-import-form li {
