@@ -362,6 +362,7 @@ section.sales summary {
     .box h2 {
         font-size: 1.1rem;
     }
+
     
     /*welcome page*/
     .home_layout__wrapper {
@@ -372,7 +373,6 @@ section.sales summary {
         display: grid;
         grid-template-columns: repeat(3, auto);
         grid-gap: 0 20px;
-        margin: 40px 0;
     }
     section#sectors {
         display: grid;
@@ -392,7 +392,7 @@ section.sales summary {
     section#trade_summary {
         display: grid;
         grid-template-columns: 1fr auto;
-        grid-gap: 10px;
+        grid-gap: 30px;
     }
     div#area_chart {
         width:auto;
@@ -403,6 +403,12 @@ section.sales summary {
         margin:0 auto;
     }    
     
+    .score_card__wapper {
+        display: grid;
+        grid-template-columns: repeat(8,auto);
+        grid-gap: 20px;
+    }
+
     /*portfolio top filter*/
     .portfolio_top_filter > div {
         display: flex;

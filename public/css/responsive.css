@@ -122,13 +122,14 @@ section.footer-date {
 .trade_summary {
     display: grid;
     place-items: center;
+    grid-gap: 20px;
 }
 .trade_summary .item {
     padding: 5px;
     border: 1px solid #c1c7b287;
     font-size: 1em;
-    width: 150px;
     height: 120px;
+    width: 100%;
 }
 .trade_summary .item .value {
     font-size: 1.5rem;
@@ -429,6 +430,8 @@ div#pie_chart {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    height: 400px;
+    width: 400px;
 }
 /* charts (homepage) */
 
@@ -445,16 +448,11 @@ header.main-header {
     background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
 }
 
-/* ul.navbar-nav{
-    padding:0;
-    display: flex;
-    flex-direction: column; 
-    background: rgb(202,202,168);
-    background: radial-gradient(circle, rgba(202,202,168,1) 0%, rgba(148,187,233,1) 100%);
-    margin: 0;
-    font-size: 18px;
-    text-align: center;
-} */
+section#articles {
+    display: grid;
+    grid-gap: 30px;
+    margin: 20px 0;
+}
 
 ul.navbar-nav {
     display: grid;
@@ -518,10 +516,10 @@ input, select {
     border-radius: 5px;
     height: 2.5em;
     border: 1px solid #c4c8ae;
-    width: 98vw;
+    width: 62vw;
     padding: 3px;
 }
-
+/* input.input-sm {width:180px} */
 select#shareholders {
     min-width: 150px;
 }
@@ -1011,7 +1009,8 @@ section.transactions {
 /* scorecards */
 .score_card__wapper {
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 15px;
 }
 .score_card__wapper footer {
     text-align: right;

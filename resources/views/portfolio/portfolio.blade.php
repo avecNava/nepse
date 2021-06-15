@@ -50,7 +50,7 @@
                     <footer><span class="{{$scorecard['gain_class']}}">{{$scorecard['gain_per'] ? $scorecard['gain_per'] :''}}</span></footer>
                 </article>
 
-                <article title="Previous worth">
+                <article title="Previous worth" class="optional">
                     <header>Prev. worth</header>
                     <main class="value">{{number_format($scorecard['prev_worth'])}}</main>
                     <footer></footer>
@@ -62,13 +62,13 @@
                     <footer><span class="{{$scorecard['change_class']}}">{{$scorecard['change_per'] ? $scorecard['change_per'] :''}}</span></footer>
                 </article>
 
-                <article  hidden>
+                <article  class="optional">
                     <header># Units</header>
                     <main class="value">{{number_format($scorecard['quantity'])}}</main>
                     <footer></footer>
                 </article>
 
-                <article hidden>
+                <article class="optional">
                     <header># Scrips</header>
                     &nbsp;<main class="value">{{number_format($scorecard['scrips'])}}</main>
                     <footer></footer>
