@@ -58,7 +58,12 @@
                 $change_css = \App\Services\UtilityService::gainLossClass1($change);
             @endphp
             <tr>
-                <td title="{{$transaction->security_name}}" class="symbol">{{$transaction->symbol}}</td>
+                <td class="symbol">
+                    <a href="https://nepsealpha.com/trading/chart?symbol={{ $transaction->symbol }}" title="{{$transaction->security_name}}"
+                       target="_blank" rel="noopener noreferrer" title="{{ $transaction->symbol }}">
+                        {{$transaction->symbol}}
+                    </a>
+                </td>
                 <td class="c_digit">{{ number_format($transaction->last_updated_price) }}</td>
                 <td class="{{$change_css}} c_digit">{{number_format($change,2)}}</td>
                 <td class="c_digit c_change">

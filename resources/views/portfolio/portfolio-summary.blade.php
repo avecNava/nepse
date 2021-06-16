@@ -173,7 +173,7 @@
                     <tbody>
                         @foreach ($top_gains as $key => $row)
                         <tr>
-                            <td><a href="{{url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
+                            <td><a href="https://nepsealpha.com/trading/chart?symbol={{ $row['symbol'] }}" target="_blank" rel="noopener noreferrer" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
                             <td>{{ number_format($row['ltp']) }}</td>
                             <td align="right"><span class="{{$row['change_css']}}">{{ number_format($row['change_per'],2) }}%</span></td>
                             <td align="right">{{ number_format($row['worth']) }}</td>
@@ -206,7 +206,7 @@
                     <tbody>
                         @foreach ($top_losses as $key => $row)
                         <tr>
-                            <td><a href="{{url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
+                            <td><a href="https://nepsealpha.com/trading/chart?symbol={{ $row['symbol'] }}" target="_blank" rel="noopener noreferrer" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
                             <td>{{ number_format($row['ltp']) }}</td>
                             <td align="right"><span class="{{$row['change_css']}}">{{ number_format($row['change_per'],2) }}%</span></td>
                             <td align="right">{{ number_format($row['worth']) }}</td>
@@ -239,7 +239,7 @@
                     
                         @foreach ($top_grossing as $key => $row)
                         <tr>
-                            <td><a href="{{ url('#') }}" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
+                            <td><a href="https://nepsealpha.com/trading/chart?symbol={{ $row['symbol'] }}" target="_blank" rel="noopener noreferrer" title="{{ $row['name'] }}">{{ $row['symbol'] }}</a></td>
                             <td align="right">{{ number_format($row['ltp']) }}</td>
                             <td align="right">{{ number_format($row['worth']) }}</td>
                         </tr>

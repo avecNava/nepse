@@ -81,7 +81,12 @@
                         </tr>
                         @foreach($turnovers as $turnover)
                         <tr>
-                            <td title="{{ $turnover->security_name }}">{{$turnover->symbol}}</td>
+                            <td>
+                            <a href="https://nepsealpha.com/trading/chart?symbol={{ $turnover->symbol }}" 
+                                target="_blank" rel="noopener noreferrer" title="{{ $turnover->security_name }}">
+                                {{$turnover->symbol}}
+                            </a>
+                            </td>
                             <td class="c_digit">{{number_format($turnover->total_traded_value)}}</td>
                             <td class="c_digit optional">{{number_format($turnover->last_updated_price)}}</td>
                         </tr>
@@ -103,7 +108,12 @@
                         </tr>
                         @foreach($gainers as $turnover)
                         <tr>
-                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                            <td>
+                            <a href="https://nepsealpha.com/trading/chart?symbol={{ $turnover['symbol'] }}" 
+                                target="_blank" rel="noopener noreferrer" title="{{ $turnover['security_name'] }}">
+                                {{$turnover['symbol']}}
+                            </a>
+                            </td>
                             <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
                             <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
                         </tr>
@@ -125,7 +135,12 @@
                         </tr>
                         @foreach($loosers as $turnover)
                         <tr>
-                            <td title="{{$turnover['security_name']}}">{{$turnover['symbol']}}</td>
+                            <td>
+                                <a href="https://nepsealpha.com/trading/chart?symbol={{ $turnover['symbol'] }}" 
+                                    target="_blank" rel="noopener noreferrer" title="{{$turnover['security_name']}}">
+                                    {{$turnover['symbol']}}
+                                </a>
+                            </td>
                             <td class="c_digit">{{number_format($turnover['ltp'])}}</td>
                             <td class="c_digit" title="{{number_format($turnover['change'])}}">{{number_format($turnover['change_per'],2)}}%</td>
                         </tr>
