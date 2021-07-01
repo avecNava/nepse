@@ -69,8 +69,6 @@ class StockPriceController extends Controller
 
         $response = $client->request('POST',"/api/nots/nepse-data/today-price?",  
         [
-            // 'allow_redirects' => true,
-            // 'timeout' => 2000,
             'http_errors' => FALSE,
         ]);
 

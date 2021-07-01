@@ -218,7 +218,39 @@ class UtilityService
         $datetime->setTimezone( new \DateTimeZone($timezone) );
         return $datetime->format('Y-m-d H:i:s');
         // return $datetime;
+    }
 
+    /*
+    * returns date part from date time string
+    * input date_string
+    */
+    public static function getDateFromString($date_string){
+        $display_time = new \DateTime($date_string);
+        return $display_time->format('Y-m-d');
+    }
+
+    /*
+    * converts epoch to date
+    * input : epoch
+    *  the epoch is Unix time 0 (midnight 1/1/1970) and length is of 10 characters
+    * //sample epoch 
+    * // [
+    * //     1621746300
+    * // ],
+    */
+    public static function getDateFromEpoch($epoch)
+    {
+        try {
+            $index_date = new \DateTime("@$epoch");
+            $time_string = $index_date->format('Y-m-d H:i:s');
+            $display_time = new \DateTime($time_string, new \DateTimeZone('UTC'));
+            $display_time->setTimeZone(new \DateTimeZone('Etc/GMT-6'));             //Ideally the timezone should be Asia/Kathmandu
+            // return $display_time->format('Y-m-d H:i:s');
+            return $display_time->format('Y-m-d');
+
+        } catch (\Throwable $th) {
+            return response()->json( ['message'=> $th->getMessage()] );
+        }
     }
 
     /**

@@ -76,6 +76,7 @@ Route::get('latest-price/dt/{date?}/id/{id?}', [StockPriceController::class, 'la
 Route::get('stocklive', [StockPriceController::class, 'stockLive']);
 Route::get('latest-index', [NepseIndexController::class, 'indexHistory']);
 Route::get('current-index', [NepseIndexController::class, 'currentIndex']);
+Route::get('current-index/id/{id?}', [NepseIndexController::class, 'currentIndex']);
 
 Route::get('import/share/{uuid?}', [MyShareController::class, 'create']);
 Route::post('import/share/store', [MyShareController::class, 'store']);
